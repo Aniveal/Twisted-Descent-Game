@@ -1,2 +1,9 @@
 ﻿# Ignore Jetbrains IDE Stuff
 .idea
+
+# Ignore build output
+src/bin
+src/obj
+
+# Unnecessary MonoGame files
+.mgstats
