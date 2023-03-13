@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Meridian2;
 
+//Hello from Timo
+
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
