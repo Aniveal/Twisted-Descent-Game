@@ -11,7 +11,7 @@ public class RopeSegment {
     private Vector2 _position;
     private Vector2 _size;
 
-    private Body _body;
+    public Body Body;
 
     private const float RopeDensity = 1f;
 
@@ -22,13 +22,13 @@ public class RopeSegment {
         _position = position;
         _size = size;
         
-        _body = _world.CreateRectangle(size.X, size.Y, RopeDensity, position, bodyType: BodyType.Dynamic);
-        _body.LinearDamping = 0.1f;
-        _body.AngularDamping = 0.1f;
+        Body = _world.CreateRectangle(size.X, size.Y, RopeDensity, position, bodyType: BodyType.Dynamic);
+        Body.LinearDamping = 0.1f;
+        Body.AngularDamping = 0.1f;
     }
 
     public void Draw(SpriteBatch batch) {
-        batch.Draw(_rope.BaseTexture, sourceRectangle: null, position: _body.Position, scale: 1f, rotation: _body.Rotation,
+        batch.Draw(_rope.BaseTexture, sourceRectangle: null, position: Body.Position, scale: 1f, rotation: Body.Rotation,
             color: Color.White, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
     }
 }

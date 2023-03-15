@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
@@ -36,6 +37,8 @@ public class Rope {
 
             _segments.Insert(i, segment);
         }
+        
+        _segments.Last().Body.ApplyLinearImpulse(new Vector2(-50, 10));
     }
 
     private void CreateBaseTexture() {
