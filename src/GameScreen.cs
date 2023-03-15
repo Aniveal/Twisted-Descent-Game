@@ -18,14 +18,16 @@ public class GameScreen : Screen {
     public override void Init() {
         base.Init();
 
-        _world = new World();
+        _world = new World(Vector2.Zero);
         _batch = new SpriteBatch(_game.GraphicsDevice);
-        _rope = new Rope(_game, _world, new Vector2(300, 50), 100, 20, 10);
+        _rope = new Rope(_game, _world, new Vector2(300, 50), 20);
     }
 
     public override void Update(GameTime gameTime) {
+        // Progress world physics
+        _world.Step(gameTime.ElapsedGameTime);
+        
         base.Update(gameTime);
-
         _rope.Update(gameTime);
     }
 

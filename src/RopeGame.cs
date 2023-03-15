@@ -40,7 +40,7 @@ public class RopeGame : Game {
         // TODO: Add your update logic here
 
         base.Update(gameTime);
-        
+
         gameScreen.Update(gameTime);
     }
 
