@@ -8,6 +8,7 @@ namespace Meridian2;
 public class RopeGame : Game {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    public SpriteFont Font;
 
     public GameScreen gameScreen;
 
@@ -18,8 +19,6 @@ public class RopeGame : Game {
     }
 
     protected override void Initialize() {
-        // TODO: Add your initialization logic here
-
         base.Initialize();
         
         gameScreen = new GameScreen(this);
@@ -29,15 +28,13 @@ public class RopeGame : Game {
     protected override void LoadContent() {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
+        Font = Content.Load<SpriteFont>("Arial");
     }
 
     protected override void Update(GameTime gameTime) {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-
-        // TODO: Add your update logic here
 
         base.Update(gameTime);
 
@@ -46,8 +43,6 @@ public class RopeGame : Game {
 
     protected override void Draw(GameTime gameTime) {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
-        // TODO: Add your drawing code here
 
         base.Draw(gameTime);
         

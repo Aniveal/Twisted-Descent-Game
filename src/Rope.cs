@@ -18,7 +18,7 @@ public class Rope {
     private List<RopeSegment> _segments;
 
     public Texture2D BaseTexture;
-    private const int TextureHeight = 8;
+    private const int TextureHeight = 4;
     private const int TextureWidth = 2;
 
     public Rope(RopeGame game, World world, Vector2 pos, int segments) {

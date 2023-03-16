@@ -10,9 +10,11 @@ public class GameScreen : Screen {
     private World _world;
 
     private Rope _rope;
+    private FpsCounter _fpsCounter;
 
     public GameScreen(RopeGame game) : base(game) {
         this._game = getGame();
+        _fpsCounter = new FpsCounter();
     }
 
     public override void Init() {
@@ -20,7 +22,7 @@ public class GameScreen : Screen {
 
         _world = new World(Vector2.Zero);
         _batch = new SpriteBatch(_game.GraphicsDevice);
-        _rope = new Rope(_game, _world, new Vector2(_game.GraphicsDevice.Viewport.Width / 2f, 20), 40);
+        _rope = new Rope(_game, _world, new Vector2(_game.GraphicsDevice.Viewport.Width / 2f, 20), 100);
     }
 
     public override void Update(GameTime gameTime) {
@@ -29,6 +31,7 @@ public class GameScreen : Screen {
 
         base.Update(gameTime);
         _rope.Update(gameTime);
+        _fpsCounter.Update(gameTime);
     }
 
     public override void Draw() {
@@ -36,6 +39,7 @@ public class GameScreen : Screen {
 
         _batch.Begin();
         _rope.Draw(_batch);
+        _fpsCounter.Draw(_batch, _game.Font, new Vector2(10,10), Color.Red);
         _batch.End();
     }
 }
