@@ -20,7 +20,7 @@ public class GameScreen : Screen {
 
         _world = new World(Vector2.Zero);
         _batch = new SpriteBatch(_game.GraphicsDevice);
-        _rope = new Rope(_game, _world, new Vector2(300, 50), 20);
+        _rope = new Rope(_game, _world, new Vector2(300, 50), 40);
     }
 
     public override void Update(GameTime gameTime) {

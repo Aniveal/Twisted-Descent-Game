@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
+using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Meridian2;
 
@@ -14,7 +16,7 @@ public class Rope {
     private List<RopeSegment> _segments;
 
     public Texture2D BaseTexture;
-    private const int TextureHeight = 10;
+    private const int TextureHeight = 8;
     private const int TextureWidth = 2;
 
     public Rope(RopeGame game, World world, Vector2 pos, int segments) {
@@ -22,7 +24,7 @@ public class Rope {
         this._world = world;
 
         CreateBaseTexture();
-        
+
         CreateSegments(pos, segments);
     }
 
@@ -36,9 +38,11 @@ public class Rope {
                 new Vector2(TextureWidth, TextureHeight));
 
             _segments.Insert(i, segment);
+
+            if (i > 0) {
+                JointFactory.CreateRevoluteJoint(_world, _segments[i - 1].Body, _segments[i].Body, Vector2.Zero);
+            }
         }
-        
-        _segments.Last().Body.ApplyLinearImpulse(new Vector2(-50, 10));
     }
 
     private void CreateBaseTexture() {
@@ -52,14 +56,12 @@ public class Rope {
     }
 
     public void Update(GameTime gameTime) {
-        updateForce(gameTime);
-        updatePhysics(gameTime);
-    }
-
-    private void updatePhysics(GameTime gameTime) {
-    }
-
-    private void updateForce(GameTime gameTime) {
+        Body lastSegment = _segments.Last().Body;
+        MouseState mouse = Mouse.GetState();
+        if (mouse.LeftButton == ButtonState.Pressed) {
+            lastSegment.ApplyForce((new Vector2(mouse.X, mouse.Y) - lastSegment.Position) * 30,
+                lastSegment.GetWorldPoint(new Vector2(1, 3)));
+        }
     }
 
     public void Draw(SpriteBatch batch) {
