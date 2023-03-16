@@ -13,6 +13,8 @@ public class Rope {
     private readonly RopeGame _game;
     private readonly World _world;
 
+    private Body _anchor;
+    private Body _endAnchor;
     private List<RopeSegment> _segments;
 
     public Texture2D BaseTexture;
@@ -32,6 +34,7 @@ public class Rope {
         Debug.Assert(num >= 0, "Cannot create less than one rope segment!");
         _segments = new List<RopeSegment>(num);
 
+        _anchor = _world.CreateCircle(1f, 1f, pos);
         for (int i = 0; i < num; i++) {
             RopeSegment segment = new RopeSegment(this, _game, _world,
                 new Vector2(pos.X, pos.Y + TextureHeight * i),
@@ -42,7 +45,14 @@ public class Rope {
             if (i > 0) {
                 JointFactory.CreateRevoluteJoint(_world, _segments[i - 1].Body, _segments[i].Body, Vector2.Zero);
             }
+            else {
+                JointFactory.CreateRevoluteJoint(_world, _anchor, _segments[0].Body, Vector2.Zero);
+            }
         }
+        
+        // Attach an anchor to the end of the rope to pull on
+        _endAnchor = _world.CreateCircle(2f, 0.5f, new Vector2(pos.X, pos.Y + TextureHeight * num), BodyType.Dynamic);
+        JointFactory.CreateRevoluteJoint(_world, _segments.Last().Body, _endAnchor, Vector2.Zero);
     }
 
     private void CreateBaseTexture() {
@@ -56,11 +66,10 @@ public class Rope {
     }
 
     public void Update(GameTime gameTime) {
-        Body lastSegment = _segments.Last().Body;
         MouseState mouse = Mouse.GetState();
         if (mouse.LeftButton == ButtonState.Pressed) {
-            lastSegment.ApplyForce((new Vector2(mouse.X, mouse.Y) - lastSegment.Position) * 30,
-                lastSegment.GetWorldPoint(new Vector2(1, 3)));
+            _endAnchor.ApplyForce((new Vector2(mouse.X, mouse.Y) - _endAnchor.Position) * 30,
+                _endAnchor.GetWorldPoint(new Vector2(1, 3)));
         }
     }
 
