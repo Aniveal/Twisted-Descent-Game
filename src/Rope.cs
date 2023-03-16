@@ -51,7 +51,7 @@ public class Rope {
         }
         
         // Attach an anchor to the end of the rope to pull on
-        _endAnchor = _world.CreateCircle(2f, 0.5f, new Vector2(pos.X, pos.Y + TextureHeight * num), BodyType.Dynamic);
+        _endAnchor = _world.CreateCircle(3f, 0.1f, new Vector2(pos.X, pos.Y + TextureHeight * num), BodyType.Dynamic);
         JointFactory.CreateRevoluteJoint(_world, _segments.Last().Body, _endAnchor, Vector2.Zero);
     }
 
