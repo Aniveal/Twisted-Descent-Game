@@ -66,14 +66,19 @@ namespace Meridian2
         {
             int half_tile = TILE_SIZE.X / 2;
             int quater_tile = TILE_SIZE.X / 4;
+
             var ScreenX = (int)((map_coordinates.X - map_coordinates.Y) * half_tile);
             var ScreenY = (int)((map_coordinates.X + map_coordinates.Y) * quater_tile);
-            return new(ScreenX, ScreenY);
+            return new(ScreenX + (int)Globals.CameraPosition.X, ScreenY + (int)Globals.CameraPosition.Y);
         }
 
         // ScreenToMap: takes pixel position, returns the index of the tile at this position.
+        // TODO test if this function still works ... could be broken by camera
         public Point ScreenToMap(Point ScreenPos) 
         {
+            ScreenPos.X += (int)Globals.CameraPosition.X;
+            ScreenPos.Y += (int)Globals.CameraPosition.Y;
+
             int half_tile = TILE_SIZE.X / 2;
             int quater_tile = TILE_SIZE.X / 4;
             int mapX = (int)((ScreenPos.X / half_tile + ScreenPos.Y / quater_tile) / 2);

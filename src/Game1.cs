@@ -89,7 +89,7 @@ public class Game1 : Game
             input.Normalize();
         }
 
-        Globals.Update(gameTime);
+        Globals.UpdateTime(gameTime);
         _player.Update(input);
 
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;

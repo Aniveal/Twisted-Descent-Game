@@ -14,23 +14,28 @@ namespace Meridian2
 
         // PlayerSpritePosition is where we draw the PNG Sprite (top-left of png)
         // PlayerPosition is where he's standing, e.g. to compute which tile he stands on
-        Vector2 PlayerSpritePosition = new Vector2(100, 100);
-        Vector2 PlayerPosition = new Vector2(100,100);
+        Vector2 PlayerSpritePosition;
+        Vector2 PlayerPosition;
+        
 
         /* Initialization */
         public Player()
 		{
             hero = Globals.Content.Load<Texture2D>("hero");
+            PlayerSpritePosition = new(512 - PLAYER_SIZE.X/2, 600 - PLAYER_SIZE.Y);
+            PlayerPosition = FeetPosition(PlayerSpritePosition);
         }
 
         /* Update */
         public void Update(Vector2 input)
         {
             float deltaTime = (float)Globals.TotalSeconds;
-            Vector2 updatedPos = PlayerSpritePosition + input * deltaTime * PLAYER_VELOCITY;
+            //Vector2 updatedPos = PlayerSpritePosition + input * deltaTime * PLAYER_VELOCITY;
+            Vector2 updatedCamera = Globals.CameraPosition - input * deltaTime * PLAYER_VELOCITY;
+            Globals.UpdateCamera(updatedCamera);
 
-            PlayerSpritePosition = updatedPos;
-            PlayerPosition = FeetPosition(PlayerSpritePosition); // where the player would stand after updating
+            //PlayerSpritePosition = updatedPos;
+            //PlayerPosition = FeetPosition(PlayerSpritePosition); // where the player would stand after updating
         }
 
         /* Draw */
