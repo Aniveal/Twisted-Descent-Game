@@ -38,6 +38,11 @@ namespace Meridian2
         /* Draw */
         public void Draw()
         {
+
+            // Point a = MapToScreen(new(10, 10));  // Debug code for ScreenToMap, MapToScreen
+            // Point b = ScreenToMap(a);
+            // Debug.WriteLine(a + " -- " + b);
+
             for (int x = 0; x < TILE_TYPE.GetLength(0); x++)
             {
                 for (int y = 0; y < TILE_TYPE.GetLength(1); y++)
@@ -45,21 +50,26 @@ namespace Meridian2
                     Point screen_pos = MapToScreen(new(x, y));
                     Rectangle tile_pos = new Rectangle(screen_pos.X, screen_pos.Y, TILE_SIZE.X, TILE_SIZE.Y);
                     //_spriteBatch.Draw(empty_tile, tile_pos, null, c, 0.0f, Vector2.Zero, SpriteEffects.None, 2);
-                    Globals.SpriteBatch.Draw(empty_tile, tile_pos, Color.White);
+
+                    //Globals.SpriteBatch.Draw(empty_tile, tile_pos, Color.White);
+                    Globals.SpriteBatch.Draw(empty_tile, tile_pos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+
+
 
                     if (TILE_TYPE[x, y] == 1)  
                     {
                         Rectangle rock_pos = new Rectangle(screen_pos.X, screen_pos.Y - TILE_SIZE.Y/2, TILE_SIZE.X, TILE_SIZE.Y);
-                        Globals.SpriteBatch.Draw(rock, rock_pos, Color.White);
+                        
+                        //Globals.SpriteBatch.Draw(rock, rock_pos, Color.White);
+                        Globals.SpriteBatch.Draw(rock, rock_pos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.1f);
                     }
-
                 }
             }
         }
 
         /* Helper Functions */
         // Isometric Math: https://clintbellanger.net/articles/isometric_math/
-        // Note: our tiles have slightly different shape
+        // Note: our tiles have slightly different shape, (they're twice as high: take 1/4 of the height instead of 1/2)
 
         // MapToScreen: take index of a tile as an input (e.g. (2,1)) returns pixel position.
         public Point MapToScreen(Point map_coordinates)
@@ -73,11 +83,10 @@ namespace Meridian2
         }
 
         // ScreenToMap: takes pixel position, returns the index of the tile at this position.
-        // TODO test if this function still works ... could be broken by camera
         public Point ScreenToMap(Point ScreenPos) 
         {
-            ScreenPos.X += (int)Globals.CameraPosition.X;
-            ScreenPos.Y += (int)Globals.CameraPosition.Y;
+            ScreenPos.X -= (int)Globals.CameraPosition.X;
+            ScreenPos.Y -= (int)Globals.CameraPosition.Y;
 
             int half_tile = TILE_SIZE.X / 2;
             int quater_tile = TILE_SIZE.X / 4;

@@ -15,11 +15,11 @@ namespace Meridian2;
  *      - don't let the player start on a rock!
  *      - MapTiles need to be accessible when computing player position update (make the map a global?)
  * 
- *  - Make camera move with player
- * 
  *  - Separate between foreground background:
  *      - so far 4 layers: rocks (infront of player), player, rocks (behind player), basic tiles
  *      - need to know player position to know which rocks are infront / behind him 
+ *      
+ *  - create more tiles
  */
 
 public class Game1 : Game
@@ -40,12 +40,14 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        _graphics.PreferredBackBufferWidth = 1200;
-        _graphics.PreferredBackBufferHeight = 1024;
+        _graphics.PreferredBackBufferWidth = 1024;
+        _graphics.PreferredBackBufferHeight = 800;
         //_graphics.ToggleFullScreen();
         _graphics.ApplyChanges();
 
         Globals.Content = Content;
+        Globals.graphics = _graphics;
+
         _map = new();
         _player = new();
 
@@ -99,13 +101,12 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
-
         _spriteBatch.Begin();
 
         _map.Draw();
         _player.Draw();
-        _spriteBatch.End();
 
+        _spriteBatch.End();
         base.Draw(gameTime);
     }
 }

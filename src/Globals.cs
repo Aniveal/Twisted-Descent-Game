@@ -11,6 +11,7 @@ namespace Meridian2
         public static ContentManager Content { get; set; }
         public static SpriteBatch SpriteBatch { get; set; }
         public static Vector2 CameraPosition { get; set; }
+        public static GraphicsDeviceManager graphics { get; set; }
 
         public static void UpdateTime(GameTime gt)
         {
