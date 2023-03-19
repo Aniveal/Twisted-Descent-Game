@@ -25,6 +25,11 @@ public class RopeSegment {
         Body = _world.CreateRectangle(size.X, size.Y, RopeDensity, position, bodyType: BodyType.Dynamic);
         Body.LinearDamping = 0.4f;
         Body.AngularDamping = 0.8f;
+
+        // Disable rope self collision
+        foreach (Fixture fixture in Body.FixtureList) {
+            fixture.CollisionGroup = -1;
+        }
     }
 
     public void Draw(SpriteBatch batch) {

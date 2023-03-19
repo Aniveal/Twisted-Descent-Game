@@ -35,6 +35,12 @@ public class Rope {
         _segments = new List<RopeSegment>(num);
 
         _anchor = _world.CreateCircle(1f, 1f, pos);
+        
+        // Disable rope collision of anchor
+        foreach (Fixture fixture in _anchor.FixtureList) {
+            fixture.CollisionGroup = -1;
+        }
+        
         for (int i = 0; i < num; i++) {
             RopeSegment segment = new RopeSegment(this, _game, _world,
                 new Vector2(pos.X, pos.Y + TextureHeight * i),
@@ -51,7 +57,13 @@ public class Rope {
         }
         
         // Attach an anchor to the end of the rope to pull on
-        _endAnchor = _world.CreateCircle(3f, 0.1f, new Vector2(pos.X, pos.Y + TextureHeight * num), BodyType.Dynamic);
+        _endAnchor = _world.CreateCircle(1f, 0.1f, new Vector2(pos.X, pos.Y + TextureHeight * num), BodyType.Dynamic);
+        
+        // Disable rope collision of end anchor
+        foreach (Fixture fixture in _endAnchor.FixtureList) {
+            fixture.CollisionGroup = -1;
+        }
+        
         JointFactory.CreateRevoluteJoint(_world, _segments.Last().Body, _endAnchor, Vector2.Zero);
     }
 
