@@ -35,12 +35,12 @@ public class Rope {
         _segments = new List<RopeSegment>(num);
 
         _anchor = _world.CreateCircle(1f, 1f, pos);
-        
+
         // Disable rope collision of anchor
         foreach (Fixture fixture in _anchor.FixtureList) {
             fixture.CollisionGroup = -1;
         }
-        
+
         for (int i = 0; i < num; i++) {
             RopeSegment segment = new RopeSegment(this, _game, _world,
                 new Vector2(pos.X, pos.Y + TextureHeight * i),
@@ -50,20 +50,19 @@ public class Rope {
 
             if (i > 0) {
                 JointFactory.CreateRevoluteJoint(_world, _segments[i - 1].Body, _segments[i].Body, Vector2.Zero);
-            }
-            else {
+            } else {
                 JointFactory.CreateRevoluteJoint(_world, _anchor, _segments[0].Body, Vector2.Zero);
             }
         }
-        
+
         // Attach an anchor to the end of the rope to pull on
-        _endAnchor = _world.CreateCircle(1f, 0.1f, new Vector2(pos.X, pos.Y + TextureHeight * num), BodyType.Dynamic);
-        
+        _endAnchor = _world.CreateCircle(1f, 0.2f, new Vector2(pos.X, pos.Y + TextureHeight * num), BodyType.Dynamic);
+
         // Disable rope collision of end anchor
         foreach (Fixture fixture in _endAnchor.FixtureList) {
             fixture.CollisionGroup = -1;
         }
-        
+
         JointFactory.CreateRevoluteJoint(_world, _segments.Last().Body, _endAnchor, Vector2.Zero);
     }
 
@@ -78,10 +77,17 @@ public class Rope {
     }
 
     public void Update(GameTime gameTime) {
+        Diagnostics.Instance.SetForce(_endAnchor.LinearVelocity.LengthSquared());
+        
         MouseState mouse = Mouse.GetState();
         if (mouse.LeftButton == ButtonState.Pressed) {
-            _endAnchor.ApplyForce((new Vector2(mouse.X, mouse.Y) - _endAnchor.Position) * 30,
-                _endAnchor.GetWorldPoint(new Vector2(1, 3)));
+            Vector2 mouseDirection = (new Vector2(mouse.X, mouse.Y) - _endAnchor.Position) * 3;
+            if (mouseDirection.LengthSquared() > 3000) {
+                mouseDirection.Normalize();
+                mouseDirection *= 3000;
+            }
+
+            _endAnchor.ApplyForce(mouseDirection, _endAnchor.GetWorldPoint(new Vector2(1, 3)));
         }
     }
 

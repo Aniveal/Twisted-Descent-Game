@@ -13,7 +13,7 @@ public class RopeSegment {
 
     public Body Body;
 
-    private const float RopeDensity = 0.1f;
+    private const float RopeDensity = 0.01f;
 
     public RopeSegment(Rope rope, RopeGame game, World world, Vector2 position, Vector2 size) {
         _rope = rope;
@@ -23,8 +23,8 @@ public class RopeSegment {
         _size = size;
         
         Body = _world.CreateRectangle(size.X, size.Y, RopeDensity, position, bodyType: BodyType.Dynamic);
-        Body.LinearDamping = 0.4f;
-        Body.AngularDamping = 0.8f;
+        Body.LinearDamping = 1f;
+        Body.AngularDamping = 2f;
 
         // Disable rope self collision
         foreach (Fixture fixture in Body.FixtureList) {
