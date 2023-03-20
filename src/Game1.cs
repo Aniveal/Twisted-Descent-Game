@@ -1,53 +1,84 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
-namespace Meridian2;
-
-//Hello from Timo
-
-public class Game1 : Game
+namespace GameLab
 {
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
-
-    public Game1()
+    public class Game1 : Game
     {
-        _graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
-        IsMouseVisible = true;
-    }
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
 
-    protected override void Initialize()
-    {
-        // TODO: Add your initialization logic here
+        private Camera _camera;
+        private Player player;
+        private Enemy enemy;
 
-        base.Initialize();
-    }
+        public static int ScreenHeight;
+        public static int ScreenWidth;
 
-    protected override void LoadContent()
-    {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        public Game1()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+        }
 
-        // TODO: use this.Content to load your game content here
-    }
+        protected override void Initialize()
+        {
+            ScreenHeight = graphics.PreferredBackBufferHeight;
+            ScreenWidth = graphics.PreferredBackBufferWidth;
 
-    protected override void Update(GameTime gameTime)
-    {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
+            base.Initialize();
+        }
 
-        // TODO: Add your update logic here
+        protected override void LoadContent()
+        {
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        base.Update(gameTime);
-    }
+            var playerTexture = Content.Load<Texture2D>("Sprite");
+            var enemyTexture = Content.Load<Texture2D>("Enemy");
 
-    protected override void Draw(GameTime gameTime)
-    {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+            _camera = new Camera();
 
-        // TODO: Add your drawing code here
+            player = new Player(playerTexture)
+            {
+                Position = new Vector2(100, 100),
+                Origin = new Vector2(20, 20),
+            };
 
-        base.Draw(gameTime);
+            enemy = new Enemy(enemyTexture)
+            {
+                Position = new Vector2(400, 200),
+                Origin = new Vector2(15, 15),
+            };
+        }
+
+        protected override void UnloadContent()
+        {
+            // TODO: Unload any non ContentManager content here
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            player.Update();
+            enemy.Update(0, player);
+            _camera.Follow(player);
+
+            base.Update(gameTime);
+        }
+
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin(transformMatrix: _camera.Transform);
+
+            player.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
+
+            spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
     }
 }

@@ -1,3 +1,14 @@
-﻿
-using var game = new Meridian2.Game1();
-game.Run();
+﻿using System;
+
+namespace GameLab
+{
+    public static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            using (var game = new Game1())
+                game.Run();
+        }
+    }
+}
