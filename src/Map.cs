@@ -43,9 +43,25 @@ namespace Meridian2
             // Point b = ScreenToMap(a);
             // Debug.WriteLine(a + " -- " + b);
 
-            for (int x = 0; x < TILE_TYPE.GetLength(0); x++)
+            // only draw planes that are visible on screen:
+            int h = Globals.graphics.PreferredBackBufferHeight;
+            int w = Globals.graphics.PreferredBackBufferWidth;
+
+            int addon_tiles = 2;
+
+            int x_min = ScreenToMap(new(0, 0)).X - addon_tiles;
+            int x_max = ScreenToMap(new(h, w)).X + addon_tiles;
+            int y_min = ScreenToMap(new(w, 0)).Y - addon_tiles;
+            int y_max = ScreenToMap(new(0, h)).Y + addon_tiles;
+
+            x_min = (x_min < 0) ? 0 : x_min;
+            x_max = (x_max >= TILE_TYPE.GetLength(0)) ? TILE_TYPE.GetLength(0) - 1 : x_max;
+            y_min = (y_min < 0) ? 0 : y_min;
+            y_max = (y_max >= TILE_TYPE.GetLength(1)) ? TILE_TYPE.GetLength(0) - 1 : y_max;
+
+            for (int x = x_min; x < x_max; x++)
             {
-                for (int y = 0; y < TILE_TYPE.GetLength(1); y++)
+                for (int y = y_min; y < y_max; y++)
                 {
                     Point screen_pos = MapToScreen(new(x, y));
                     Rectangle tile_pos = new Rectangle(screen_pos.X, screen_pos.Y, TILE_SIZE.X, TILE_SIZE.Y);
