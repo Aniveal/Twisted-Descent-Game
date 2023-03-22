@@ -11,13 +11,13 @@ namespace Meridian2
 {
     public class Column
     {
-        private RopeGame _game;
-        private World _world;
-        private Vector2 _center;
-        private float _radius;
+        protected RopeGame _game;
+        protected World _world;
+        protected Vector2 _center;
+        protected float _radius;
 
         public Body Body;
-        private Texture2D _columnTexture;
+        protected Texture2D _columnTexture;
 
         public Column(RopeGame game, World world, Vector2 center, float radius, Texture2D texture)
         {

@@ -12,6 +12,7 @@ public class GameScreen : Screen {
 
     private Rope _rope;
     private Column _column;
+    private ActivableColumn _activatedColumn;
 
     public GameScreen(RopeGame game) : base(game) {
         this._game = getGame();
@@ -24,6 +25,7 @@ public class GameScreen : Screen {
         _batch = new SpriteBatch(_game.GraphicsDevice);
         _rope = new Rope(_game, _world, new Vector2(_game.GraphicsDevice.Viewport.Width / 2f, 20), 150);
         _column = new Column(_game, _world, new Vector2(_game.GraphicsDevice.Viewport.Width / 2f + 10, 160), 5, _game.ColumnTexture);
+        _activatedColumn = new ActivableColumn(_game, _world, new Vector2(_game.GraphicsDevice.Viewport.Width / 2f -50, 120), 5, _game.ColumnTexture);
     }
 
     public override void Update(GameTime gameTime) {
@@ -45,6 +47,7 @@ public class GameScreen : Screen {
         Diagnostics.Instance.Draw(_batch, _game.Font, new Vector2(10,10), Color.Red);
         _rope.Draw(_batch);
         _column.Draw(_batch);
+        _activatedColumn.Draw(_batch);
         _batch.End();
     }
 }
