@@ -10,7 +10,7 @@ namespace Meridian2
 	{
         Texture2D hero;
         Point PLAYER_SIZE = new Point(60, 120);
-        const int PLAYER_VELOCITY = 200;
+        const int PLAYER_VELOCITY = 300;
 
         // PlayerSpritePosition is where we draw the PNG Sprite (top-left of png)
         // PlayerPosition is where he's standing, e.g. to compute which tile he stands on
