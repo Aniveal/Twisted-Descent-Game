@@ -23,19 +23,44 @@ namespace Meridian2
             Body.OnSeparation += OnSeparation;
         }
 
-        //TODO: differentiate string contacts from other contacts
         private bool OnCollision(Fixture sender, Fixture other, Contact contact)
         {
-            _nContacts++;
-            _activated = true;
+            if (sender.Body.Tag != null && sender.Body.Tag is RopeSegment)
+            {
+                RopeSegment segment = (RopeSegment)sender.Body.Tag;
+                _nContacts++;
+                _activated = true;
+                segment.ColumnCallback(this, true);
+            }
+            else if (other.Body.Tag != null && other.Body.Tag is RopeSegment)
+            {
+                RopeSegment segment = (RopeSegment)other.Body.Tag;
+                _nContacts++;
+                _activated = true;
+                segment.ColumnCallback(this, true);
+            }
             return true;
         }
 
         private void OnSeparation(Fixture sender, Fixture other, Contact contact) 
         {
-            if (--_nContacts == 0)
+            if (sender.Body.Tag != null && sender.Body.Tag is RopeSegment)
             {
-                _activated = false;
+                RopeSegment segment = (RopeSegment)sender.Body.Tag;
+                segment.ColumnCallback(this, false);
+                if (--_nContacts == 0)
+                {
+                    _activated = false;
+                }
+            }
+            else if (other.Body.Tag != null && other.Body.Tag is RopeSegment)
+            {
+                RopeSegment segment = (RopeSegment)other.Body.Tag;
+                segment.ColumnCallback(this, false);
+                if (--_nContacts == 0)
+                {
+                    _activated = false;
+                }
             }
         }
 
