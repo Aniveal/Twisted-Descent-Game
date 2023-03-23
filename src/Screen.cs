@@ -9,13 +9,13 @@ public abstract class Screen {
         this.game = game;
     }
 
-    virtual public void Init() {
+    virtual public void Initialize() {
     }
 
     virtual public void Update(GameTime gameTime) {
     }
 
-    virtual public void Draw() {
+    virtual public void Draw(GameTime gameTime) {
     }
 
     protected RopeGame getGame() {

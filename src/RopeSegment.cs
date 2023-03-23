@@ -4,7 +4,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2;
 
-public class RopeSegment {
+public class RopeSegment : IGameObject {
     private Rope _rope;
     private RopeGame _game;
     private World _world;
@@ -21,8 +21,10 @@ public class RopeSegment {
         _world = world;
         _position = position;
         _size = size;
-        
-        Body = _world.CreateRectangle(size.X, size.Y, RopeDensity, position, bodyType: BodyType.Dynamic);
+    }
+
+    public void Initialize() {
+        Body = _world.CreateRectangle(_size.X, _size.Y, RopeDensity, _position, bodyType: BodyType.Dynamic);
         Body.LinearDamping = 1f;
         Body.AngularDamping = 2f;
 
@@ -32,7 +34,15 @@ public class RopeSegment {
         }
     }
 
-    public void Draw(SpriteBatch batch) {
+    public void LoadContent() {
+        // Nothing to load
+    }
+
+    public void Update(GameTime gameTime) {
+        // Nothing to update
+    }
+
+    public void Draw(GameTime gameTime, SpriteBatch batch) {
         batch.Draw(_rope.BaseTexture, sourceRectangle: null, position: Body.Position, scale: 1f, rotation: Body.Rotation,
             color: Color.White, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
     }

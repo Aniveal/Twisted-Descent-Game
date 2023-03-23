@@ -4,72 +4,91 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Meridian2
-{
-	public class Player
-	{
-        Texture2D hero;
-        Point PLAYER_SIZE = new Point(60, 120);
-        const int PLAYER_VELOCITY = 300;
+namespace Meridian2 {
+    public class Player : IGameObject {
+        private Texture2D _hero;
+        private readonly Point _playerSize = new Point(60, 120);
+        private const int PlayerVelocity = 300;
 
         // PlayerSpritePosition is where we draw the PNG Sprite (top-left of png)
         // PlayerPosition is where he's standing, e.g. to compute which tile he stands on
-        Vector2 PlayerSpritePosition;
-        Vector2 PlayerPosition;
-        
+        private Vector2 _playerSpritePosition;
+        private Vector2 _playerPosition;
 
-        /* Initialization */
-        public Player()
-		{
-            hero = Globals.Content.Load<Texture2D>("hero");
-            PlayerSpritePosition = new(512 - PLAYER_SIZE.X/2, 400 - PLAYER_SIZE.Y);
-            PlayerPosition = FeetPosition(PlayerSpritePosition);
+        /* HELPER FUNCTION */
+        // Given the Sprite Position (top-left of PNG, compute where his feet are
+        Vector2 FeetPosition(Vector2 SpritePos) {
+            return new Vector2(SpritePos.X + _playerSize.X / 2, SpritePos.Y + _playerSize.Y);
         }
 
-        /* Update */
-        public void Update(Vector2 input)
-        {
-            float deltaTime = (float)Globals.TotalSeconds;
-            Vector2 movement =  input * deltaTime * PLAYER_VELOCITY;
-            
+        private Vector2 cartesian_to_isometric(Vector2 vector) {
+            return new Vector2(vector.X - vector.Y, (vector.X + vector.Y) / 2);
+        }
+
+        public void Initialize() {
+            _playerSpritePosition = new(512 - _playerSize.X / 2, 400 - _playerSize.Y);
+            _playerPosition = FeetPosition(_playerSpritePosition);
+        }
+
+        public void LoadContent() {
+            _hero = Globals.Content.Load<Texture2D>("hero");
+        }
+
+        public void Update(GameTime gameTime) {
+            Vector2 input = Vector2.Zero;
+            KeyboardState keyboard = Keyboard.GetState();
+
+            if (keyboard.IsKeyDown(Keys.Right)) // makes player move similar to isometric perspective
+            {
+                input += new Vector2(9, -9); // weird numbers make it fit to the tiles (get's normalized anyways)
+            }
+
+            if (keyboard.IsKeyDown(Keys.Left)) {
+                input += new Vector2(-9, 9);
+            }
+
+            if (keyboard.IsKeyDown(Keys.Down)) {
+                input += new Vector2(9, 9);
+            }
+
+            if (keyboard.IsKeyDown(Keys.Up)) {
+                input += new Vector2(-9, -9);
+            }
+
+            input = cartesian_to_isometric(input);
+
+            if (input.LengthSquared() > 1) {
+                input.Normalize();
+            }
+
+            Vector2 movement = input * (float)gameTime.ElapsedGameTime.TotalSeconds * PlayerVelocity;
+
             // If the player is within a rectangle of the center of the screen, move the player, else move the camera:
 
             int fraction = 3; // rectangle in the center makes up 1/3 of the width and 1/3 of the width
 
-            Vector2 updated_position = PlayerSpritePosition + movement;
-            Vector2 updated_feetpos = FeetPosition(updated_position);
+            Vector2 updatedPosition = _playerSpritePosition + movement;
+            Vector2 updatedFeetpos = FeetPosition(updatedPosition);
 
-            float lowerX = (fraction - 1) * (Globals.graphics.PreferredBackBufferWidth / 2) / fraction;
-            float upperX = (fraction + 1) * (Globals.graphics.PreferredBackBufferWidth / 2) / fraction;
-            float lowerY = (fraction - 1) * (Globals.graphics.PreferredBackBufferHeight / 2) / fraction;
-            float upperY = (fraction + 1) * (Globals.graphics.PreferredBackBufferHeight / 2) / fraction;
+            float lowerX = (fraction - 1) * (Globals.Graphics.PreferredBackBufferWidth / 2) / fraction;
+            float upperX = (fraction + 1) * (Globals.Graphics.PreferredBackBufferWidth / 2) / fraction;
+            float lowerY = (fraction - 1) * (Globals.Graphics.PreferredBackBufferHeight / 2) / fraction;
+            float upperY = (fraction + 1) * (Globals.Graphics.PreferredBackBufferHeight / 2) / fraction;
 
-            if (updated_position.X < lowerX || updated_feetpos.X > upperX || updated_position.Y < lowerY || updated_feetpos.Y > upperY)
-            {
+            if (updatedPosition.X < lowerX || updatedFeetpos.X > upperX || updatedPosition.Y < lowerY ||
+                updatedFeetpos.Y > upperY) {
                 Vector2 updatedCamera = Globals.CameraPosition - movement; // move the camera
                 Globals.UpdateCamera(updatedCamera);
-            }
-            else
-            {
-                PlayerSpritePosition = updated_position;   // move the player
-                PlayerPosition = FeetPosition(PlayerSpritePosition);
+            } else {
+                _playerSpritePosition = updatedPosition; // move the player
+                _playerPosition = FeetPosition(_playerSpritePosition);
             }
         }
 
-        /* Draw */
-        public void Draw()
-		{
-            Rectangle SpritePos = new((int)PlayerSpritePosition.X, (int)PlayerSpritePosition.Y, (int)PLAYER_SIZE.X, (int)PLAYER_SIZE.Y);
-            //Globals.SpriteBatch.Draw(hero, SpritePos, Color.White);
-            Globals.SpriteBatch.Draw(hero, SpritePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.5f);
+        public void Draw(GameTime gameTime, SpriteBatch batch) {
+            Rectangle spritePos = new((int)_playerSpritePosition.X, (int)_playerSpritePosition.Y, (int)_playerSize.X,
+                (int)_playerSize.Y);
+            batch.Draw(_hero, spritePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.5f);
         }
-
-        /* HELPER FUNCTION */
-        // Given the Sprite Position (top-left of PNG, compute where his feet are
-         Vector2 FeetPosition(Vector2 SpritePos)
-        {
-            return new Vector2(SpritePos.X + PLAYER_SIZE.X/2, SpritePos.Y + PLAYER_SIZE.Y);
-        }
-	}
+    }
 }
-

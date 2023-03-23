@@ -9,9 +9,11 @@ using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Meridian2;
 
-public class Rope {
+public class Rope : IGameObject {
     private readonly RopeGame _game;
     private readonly World _world;
+    private readonly Vector2 _pos;
+    private readonly int _segmentCount;
 
     private Body _anchor;
     private Body _endAnchor;
@@ -22,12 +24,10 @@ public class Rope {
     private const int TextureWidth = 2;
 
     public Rope(RopeGame game, World world, Vector2 pos, int segments) {
-        this._game = game;
-        this._world = world;
-
-        CreateBaseTexture();
-
-        CreateSegments(pos, segments);
+        _game = game;
+        _world = world;
+        _pos = pos;
+        _segmentCount = segments;
     }
 
     private void CreateSegments(Vector2 pos, int num) {
@@ -45,6 +45,7 @@ public class Rope {
             RopeSegment segment = new RopeSegment(this, _game, _world,
                 new Vector2(pos.X, pos.Y + TextureHeight * i),
                 new Vector2(TextureWidth, TextureHeight));
+            segment.Initialize();
 
             _segments.Insert(i, segment);
 
@@ -76,9 +77,21 @@ public class Rope {
         BaseTexture.SetData(data);
     }
 
+    public void Initialize() {
+        CreateBaseTexture();
+
+        CreateSegments(_pos, _segmentCount);
+    }
+
+    public void LoadContent() {
+        foreach (RopeSegment segment in _segments) {
+            segment.LoadContent();
+        }
+    }
+
     public void Update(GameTime gameTime) {
         Diagnostics.Instance.SetForce(_endAnchor.LinearVelocity.LengthSquared());
-        
+
         MouseState mouse = Mouse.GetState();
         if (mouse.LeftButton == ButtonState.Pressed) {
             Vector2 mouseDirection = (new Vector2(mouse.X, mouse.Y) - _endAnchor.Position) * 3;
@@ -91,9 +104,9 @@ public class Rope {
         }
     }
 
-    public void Draw(SpriteBatch batch) {
+    public void Draw(GameTime gameTime, SpriteBatch batch) {
         foreach (RopeSegment segment in _segments) {
-            segment.Draw(batch);
+            segment.Draw(gameTime, batch);
         }
     }
 }
