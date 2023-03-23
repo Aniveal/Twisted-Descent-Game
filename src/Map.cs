@@ -11,34 +11,44 @@ namespace Meridian2
 {
 	public class Map
 	{
-        private Texture2D empty_tile;
-        private Texture2D rock;
+        private Texture2D ground;
 
-        public Point TILE_SIZE = new(80, 80); // pixels
+        private Texture2D[] column =
+        {
+            Globals.Content.Load<Texture2D>("column"),
+            Globals.Content.Load<Texture2D>("column_lower"),
+            Globals.Content.Load<Texture2D>("column_upper"),
+        };
+
+        private Texture2D[] rock_textures =
+            {
+                Globals.Content.Load<Texture2D>("wall_1b"),
+                Globals.Content.Load<Texture2D>("wall_1r"),
+                Globals.Content.Load<Texture2D>("wall_1f"),
+                Globals.Content.Load<Texture2D>("wall_1l"),
+                Globals.Content.Load<Texture2D>("wall_2lf"),
+                Globals.Content.Load<Texture2D>("wall_2rf"),
+                Globals.Content.Load<Texture2D>("wall_2rb"),
+                Globals.Content.Load<Texture2D>("wall_2lb"),
+                Globals.Content.Load<Texture2D>("wall_3b"),
+                Globals.Content.Load<Texture2D>("wall_3r"),
+                Globals.Content.Load<Texture2D>("wall_3f"),
+                Globals.Content.Load<Texture2D>("wall_3l"),
+                Globals.Content.Load<Texture2D>("wall_4"),
+            };
+
+        public Point TILE_SIZE = new(160, 160); // pixels
         public int[,] TILE_TYPE = new int[100, 100]; // contains type of each tile: 0 for empty_tile, 1 for rock_tile
 
         /* Initialization */
         public Map()
 		{
-            empty_tile = Globals.Content.Load<Texture2D>("empty_tile");
-            rock = Globals.Content.Load<Texture2D>("rock");
-
-
-            Random rng = new Random();
-            for (int x = 0; x < TILE_TYPE.GetLength(0); x++)
-            {
-                for (int y = 0; y < TILE_TYPE.GetLength(1); y++)
-                {
-                    float type = rng.Next(0, 20); // 1 out of 20 tiles should contain a rock
-                    TILE_TYPE[x, y] = (type == 1) ? 1 : 0; // if neq 1, set it to zero (empty tile)
-                }
-            }
+            ground = Globals.Content.Load<Texture2D>("ground");
         }
 
         /* Draw */
         public void Draw()
         {
-
             // Point a = MapToScreen(new(10, 10));  // Debug code for ScreenToMap, MapToScreen
             // Point b = ScreenToMap(a);
             // Debug.WriteLine(a + " -- " + b);
@@ -63,25 +73,80 @@ namespace Meridian2
             {
                 for (int y = y_min; y < y_max; y++)
                 {
+                    Color c = (Globals.SelectedTile.X == x && Globals.SelectedTile.Y == y) ? Color.Red : Color.White;
+
                     Point screen_pos = MapToScreen(new(x, y));
                     Rectangle tile_pos = new Rectangle(screen_pos.X, screen_pos.Y, TILE_SIZE.X, TILE_SIZE.Y);
-                    //_spriteBatch.Draw(empty_tile, tile_pos, null, c, 0.0f, Vector2.Zero, SpriteEffects.None, 2);
 
-                    //Globals.SpriteBatch.Draw(empty_tile, tile_pos, Color.White);
-                    Globals.SpriteBatch.Draw(empty_tile, tile_pos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+                    Globals.SpriteBatch.Draw(ground, tile_pos, null, c, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
 
-
-
-                    if (TILE_TYPE[x, y] == 1)  
+                    int tile_type = TILE_TYPE[x, y];
+                    if (tile_type > 0)  
                     {
-                        Rectangle rock_pos = new Rectangle(screen_pos.X, screen_pos.Y - TILE_SIZE.Y/2, TILE_SIZE.X, TILE_SIZE.Y);
-                        
-                        //Globals.SpriteBatch.Draw(rock, rock_pos, Color.White);
-                        Globals.SpriteBatch.Draw(rock, rock_pos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.1f);
+                        Rectangle rock_pos = new Rectangle(screen_pos.X, screen_pos.Y, TILE_SIZE.X, TILE_SIZE.Y);
+                        //Globals.SpriteBatch.Draw(rock_textures[tile_type], rock_pos, null, c, 0.0f, Vector2.Zero, SpriteEffects.None, 0.1f);
+                        Globals.SpriteBatch.Draw(rock_textures[tile_type - 1], rock_pos, c);
+                    }
+                    else if (tile_type < 0)
+                    {
+                        Rectangle rock_pos = new Rectangle(screen_pos.X, screen_pos.Y, TILE_SIZE.X, TILE_SIZE.Y);
+                        Globals.SpriteBatch.Draw(column[(-1 * tile_type) - 1], rock_pos, c);
                     }
                 }
             }
         }
+
+        
+        public void place_column() // iterate between 0,13
+        {
+            int x = Globals.SelectedTile.X;
+            int y = Globals.SelectedTile.Y;
+            TILE_TYPE[x, y] = ((TILE_TYPE[x, y] - 1) < -3 || (TILE_TYPE[x, y] - 1) >= 0) ? -1 : (TILE_TYPE[x, y] - 1);
+            
+            Debug.WriteLine(TILE_TYPE[x, y] + " : " + ((-1 * TILE_TYPE[x, y]) - 1));
+        }
+
+        public void place_rock_0() // iterate between 0,13
+        {
+            int x = Globals.SelectedTile.X;
+            int y = Globals.SelectedTile.Y;
+            TILE_TYPE[x, y] = 0;
+        }
+
+        public void place_rock_1() // iterate between 1,2,3,4
+        {
+            int x = Globals.SelectedTile.X;
+            int y = Globals.SelectedTile.Y;
+            TILE_TYPE[x, y] = 1 + (TILE_TYPE[x, y] % 4);
+
+            Debug.WriteLine("Set to: " + TILE_TYPE[x, y]);
+        }
+
+        public void place_rock_2() // iterate between 5,6,7,8
+        {
+            int x = Globals.SelectedTile.X;
+            int y = Globals.SelectedTile.Y;
+            TILE_TYPE[x, y] = 5 + (TILE_TYPE[x, y] % 4);
+
+            Debug.WriteLine("Set to: " + TILE_TYPE[x, y]);
+        }
+
+        public void place_rock_3() // iterate between 9,10,11,12
+        {
+            int x = Globals.SelectedTile.X;
+            int y = Globals.SelectedTile.Y;
+            TILE_TYPE[x, y] = 9 + (TILE_TYPE[x, y] % 4);
+
+            Debug.WriteLine("Set to: " + TILE_TYPE[x, y]);
+        }
+
+        public void place_rock_4() // iterate between 0,13
+        {
+            int x = Globals.SelectedTile.X;
+            int y = Globals.SelectedTile.Y;
+            TILE_TYPE[x, y] = 13;
+        }
+
 
         /* Helper Functions */
         // Isometric Math: https://clintbellanger.net/articles/isometric_math/
@@ -90,25 +155,35 @@ namespace Meridian2
         // MapToScreen: take index of a tile as an input (e.g. (2,1)) returns pixel position.
         public Point MapToScreen(Point map_coordinates)
         {
+            int h = Globals.graphics.PreferredBackBufferHeight;
+            int w = Globals.graphics.PreferredBackBufferWidth;
+
             int half_tile = TILE_SIZE.X / 2;
             int quater_tile = TILE_SIZE.X / 4;
 
-            var ScreenX = (int)((map_coordinates.X - map_coordinates.Y) * half_tile);
-            var ScreenY = (int)((map_coordinates.X + map_coordinates.Y) * quater_tile);
-            return new(ScreenX + (int)Globals.CameraPosition.X, ScreenY + (int)Globals.CameraPosition.Y);
+            int x = map_coordinates.X - Globals.SelectedTile.X;
+            int y = map_coordinates.Y - Globals.SelectedTile.Y;
+
+            var ScreenX = (int)((x - y) * half_tile);
+            var ScreenY = (int)((x + y) * quater_tile);
+            return new(ScreenX + (w - TILE_SIZE.X)/2, ScreenY + (h - TILE_SIZE.Y) / 2);
         }
 
         // ScreenToMap: takes pixel position, returns the index of the tile at this position.
         public Point ScreenToMap(Point ScreenPos) 
         {
-            ScreenPos.X -= (int)Globals.CameraPosition.X;
-            ScreenPos.Y -= (int)Globals.CameraPosition.Y;
+            int h = Globals.graphics.PreferredBackBufferHeight;
+            int w = Globals.graphics.PreferredBackBufferWidth;
+
+            int x = ScreenPos.X - (w - TILE_SIZE.X) / 2;
+            int y = ScreenPos.Y - (h - TILE_SIZE.Y) / 2;
 
             int half_tile = TILE_SIZE.X / 2;
             int quater_tile = TILE_SIZE.X / 4;
-            int mapX = (int)((ScreenPos.X / half_tile + ScreenPos.Y / quater_tile) / 2);
-            int mapY = (int)((ScreenPos.Y / quater_tile - ScreenPos.X / half_tile) / 2);
-            return new(mapX, mapY);
+
+            int mapX = (int)((x / half_tile + y / quater_tile) / 2);
+            int mapY = (int)((y / quater_tile - x / half_tile) / 2);
+            return new(mapX + Globals.SelectedTile.X, mapY + Globals.SelectedTile.Y);
         }
     }
 }

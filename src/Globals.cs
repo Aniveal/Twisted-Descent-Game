@@ -10,17 +10,21 @@ namespace Meridian2
         public static float TotalSeconds { get; set; }
         public static ContentManager Content { get; set; }
         public static SpriteBatch SpriteBatch { get; set; }
-        public static Vector2 CameraPosition { get; set; }
         public static GraphicsDeviceManager graphics { get; set; }
+
+        public static Point SelectedTile { get; set; }
 
         public static void UpdateTime(GameTime gt)
         {
             TotalSeconds = (float)gt.ElapsedGameTime.TotalSeconds;
         }
 
-        public static void UpdateCamera(Vector2 NewPosition)
+        public static void UpdateTile(Point update)
         {
-            CameraPosition = NewPosition;
+            int x = SelectedTile.X + update.X;
+            int y = SelectedTile.Y + update.Y;
+            SelectedTile = new((x < 0) ? 0 : x, (y < 0) ? 0 : y);
+
         }
     }
 }

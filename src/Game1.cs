@@ -27,9 +27,12 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Map _map;
-    private Player _player;
 
-    
+    private Vector2 last_input;
+    private float time_last_input;
+
+
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -49,7 +52,6 @@ public class Game1 : Game
         Globals.graphics = _graphics;
 
         _map = new();
-        _player = new();
 
         base.Initialize();
     }
@@ -62,9 +64,6 @@ public class Game1 : Game
         
     }
 
-    private Vector2 cartesian_to_isometric(Vector2 vector) {
-        return new Vector2(vector.X - vector.Y, (vector.X + vector.Y) / 2);
-    }
     
     protected override void Update(GameTime gameTime)
     {
@@ -74,32 +73,77 @@ public class Game1 : Game
         Vector2 input = Vector2.Zero;
         KeyboardState keyboard = Keyboard.GetState();
 
+
         if (keyboard.IsKeyDown(Keys.Right))     // makes player move similar to isometric perspective
         {
-            input += new Vector2(9, -9);        // weird numbers make it fit to the tiles (get's normalized anyways)
+            input += new Vector2(1, 0);        // weird numbers make it fit to the tiles (get's normalized anyways)
         }
         if (keyboard.IsKeyDown(Keys.Left))
         {
-            input += new Vector2(-9, 9);
+            input += new Vector2(-1, 0);
         }
         if (keyboard.IsKeyDown(Keys.Down))
         {
-            input += new Vector2(9, 9);
+            input += new Vector2(0, 1);
         }
         if (keyboard.IsKeyDown(Keys.Up))
         {
-            input += new Vector2(-9, -9);
+            input += new Vector2(0, -1);
         }
-        
-        input = cartesian_to_isometric(input);
         
         if (input.LengthSquared() > 1)
         {
             input.Normalize();
         }
 
+        // single key press might cover ~10 frames -> input given 10 times
+        // --> only read input once every 0.2 seconds (unless different input is given)
+        float timedelta = (float)gameTime.TotalGameTime.TotalSeconds - time_last_input;
+        if (last_input != input || timedelta > 0.12)
+        {
+            last_input = input;
+            time_last_input = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            var keys = keyboard.GetPressedKeys();
+            if (keys.Length > 0)
+            {
+                Debug.WriteLine(keys[0]);
+
+                if (keys[0].ToString() == "D1")
+                {
+                    _map.place_rock_1();
+                }
+                else if (keys[0].ToString() == "D2")
+                {
+                    _map.place_rock_2();
+                }
+                else if (keys[0].ToString() == "D3")
+                {
+                    _map.place_rock_3();
+                }
+                else if (keys[0].ToString() == "D4")
+                {
+                    _map.place_rock_4();
+                }
+                else if (keys[0].ToString() == "D0")
+                {
+                    _map.place_rock_0();
+                }
+                else if (keys[0].ToString() == "C")
+                {
+                    _map.place_column();
+                }
+                else if (keys[0].ToString() == "P")
+                {
+                    Debug.WriteLine(_map.TILE_TYPE);
+                }
+
+            }
+            
+            Globals.UpdateTile(new((int)input.X, (int)input.Y));
+        }
+
         Globals.UpdateTime(gameTime);
-        _player.Update(input);
 
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         base.Update(gameTime);
@@ -111,7 +155,6 @@ public class Game1 : Game
         _spriteBatch.Begin();
 
         _map.Draw();
-        _player.Draw();
 
         _spriteBatch.End();
         base.Draw(gameTime);
