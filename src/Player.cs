@@ -21,10 +21,6 @@ namespace Meridian2 {
             return new Vector2(SpritePos.X + _playerSize.X / 2, SpritePos.Y + _playerSize.Y);
         }
 
-        private Vector2 cartesian_to_isometric(Vector2 vector) {
-            return new Vector2(vector.X - vector.Y, (vector.X + vector.Y) / 2);
-        }
-
         public void Initialize() {
             _playerSpritePosition = new(512 - _playerSize.X / 2, 400 - _playerSize.Y);
             _playerPosition = FeetPosition(_playerSpritePosition);
@@ -34,28 +30,45 @@ namespace Meridian2 {
             _hero = Globals.Content.Load<Texture2D>("hero");
         }
 
+        private Vector2 ScreenToIsometric(Vector2 vector) {
+            var rotSin = Math.Sin(-Math.PI / 4);
+            var rotCos = Math.Cos(-Math.PI / 4);
+            
+            // Rotate by 45 degrees
+            var isoX = (float)(rotCos * vector.X - rotSin * vector.Y);
+            var isoY = (float)(rotSin * vector.X + rotCos * vector.Y);
+            
+            // Stretch to 2:1 ratio
+            return new Vector2(isoX - isoY, (isoX + isoY) / 2);
+        }
+
         public void Update(GameTime gameTime) {
             Vector2 input = Vector2.Zero;
-            KeyboardState keyboard = Keyboard.GetState();
 
-            if (keyboard.IsKeyDown(Keys.Right)) // makes player move similar to isometric perspective
-            {
-                input += new Vector2(9, -9); // weird numbers make it fit to the tiles (get's normalized anyways)
+            GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
+            if (gamePadCapabilities.IsConnected) {
+                input = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
+                input.Y *= -1;
+            }
+
+            KeyboardState keyboard = Keyboard.GetState();
+            if (keyboard.IsKeyDown(Keys.Right)) {
+                input.X += 1;
             }
 
             if (keyboard.IsKeyDown(Keys.Left)) {
-                input += new Vector2(-9, 9);
+                input.X -= 1;
             }
 
             if (keyboard.IsKeyDown(Keys.Down)) {
-                input += new Vector2(9, 9);
+                input.Y += 1;
             }
 
             if (keyboard.IsKeyDown(Keys.Up)) {
-                input += new Vector2(-9, -9);
+                input.Y -= 1;
             }
 
-            input = cartesian_to_isometric(input);
+            input = ScreenToIsometric(input);
 
             if (input.LengthSquared() > 1) {
                 input.Normalize();
