@@ -7,3 +7,7 @@ src/obj
 
 # Unnecessary MonoGame files
 .mgstats
+
+# Ignore built content files
+*.mgcontent
+*.xnb
