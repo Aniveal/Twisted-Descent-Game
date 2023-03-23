@@ -5,26 +5,24 @@ using tainicom.Aether.Physics2D.Dynamics;
 namespace Meridian2;
 
 public class RopeSegment : IGameObject {
-    private Rope _rope;
-    private RopeGame _game;
-    private World _world;
-    private Vector2 _position;
-    private Vector2 _size;
+    private readonly Rope _rope;
+    private readonly GameScreen _gameScreen;
+    private readonly Vector2 _position;
+    private readonly Vector2 _size;
 
     public Body Body;
 
     private const float RopeDensity = 0.01f;
 
-    public RopeSegment(Rope rope, RopeGame game, World world, Vector2 position, Vector2 size) {
+    public RopeSegment(Rope rope, GameScreen gameScreen, Vector2 position, Vector2 size) {
         _rope = rope;
-        _game = game;
-        _world = world;
+        _gameScreen = gameScreen;
         _position = position;
         _size = size;
     }
 
     public void Initialize() {
-        Body = _world.CreateRectangle(_size.X, _size.Y, RopeDensity, _position, bodyType: BodyType.Dynamic);
+        Body = _gameScreen.World.CreateRectangle(_size.X, _size.Y, RopeDensity, _position, bodyType: BodyType.Dynamic);
         Body.LinearDamping = 1f;
         Body.AngularDamping = 2f;
 
