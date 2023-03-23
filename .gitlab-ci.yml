@@ -1,0 +1,16 @@
+image: mcr.microsoft.com/dotnet/sdk:6.0
+
+stages:
+  - build
+
+release:
+  stage: build
+  artifacts:
+    paths:
+      - bin/Release/net6.0/win-x64/Meridian2.exe
+  only:
+    refs:
+      - master
+  script:
+    # The output path is relative to the position of the csproj-file
+    - dotnet publish -c Release -r win-x64 /p:PublishReadyToRun=false /p:TieredCompilation=false --self-contained
