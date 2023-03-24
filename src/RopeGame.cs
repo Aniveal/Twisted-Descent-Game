@@ -14,7 +14,7 @@ public class RopeGame : Game {
     public SpriteFont Font;
     public Texture2D ColumnTexture;
 
-    public GameScreen gameScreen;
+    private GameScreen _gameScreen;
 
     public RopeGame() {
         _graphics = new GraphicsDeviceManager(this);
@@ -24,18 +24,21 @@ public class RopeGame : Game {
 
     protected override void Initialize() {
         base.Initialize();
-        
+
         // Set target framerate
         double temp = (1000d / TargetFrameRate) * 10000d;
         TargetElapsedTime = new TimeSpan((long)temp);
-        
+
         // Set resolution
         _graphics.PreferredBackBufferWidth = 1280;
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
+        
+        Globals.Content = Content;
+        Globals.Graphics = _graphics;
 
-        gameScreen = new GameScreen(this);
-        gameScreen.Init();
+        _gameScreen = new GameScreen(this);
+        _gameScreen.Initialize();
     }
 
     protected override void LoadContent() {
@@ -52,14 +55,14 @@ public class RopeGame : Game {
 
         base.Update(gameTime);
 
-        gameScreen.Update(gameTime);
+        _gameScreen.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime) {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         base.Draw(gameTime);
-        
-        gameScreen.Draw();
+
+        _gameScreen.Draw(gameTime);
     }
 }
