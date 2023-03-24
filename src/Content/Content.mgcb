@@ -68,3 +68,123 @@
 /processorParam:TextureFormat=Color
 /build:rock.png
 
+#begin Sound/GravelFootsteps/gravel0.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel0.mp3
+
+#begin Sound/GravelFootsteps/gravel1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel1.mp3
+
+#begin Sound/GravelFootsteps/gravel10.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel10.mp3
+
+#begin Sound/GravelFootsteps/gravel11.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel11.mp3
+
+#begin Sound/GravelFootsteps/gravel12.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel12.mp3
+
+#begin Sound/GravelFootsteps/gravel13.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel13.mp3
+
+#begin Sound/GravelFootsteps/gravel14.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel14.mp3
+
+#begin Sound/GravelFootsteps/gravel15.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel15.mp3
+
+#begin Sound/GravelFootsteps/gravel16.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel16.mp3
+
+#begin Sound/GravelFootsteps/gravel17.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel17.mp3
+
+#begin Sound/GravelFootsteps/gravel18.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel18.mp3
+
+#begin Sound/GravelFootsteps/gravel19.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel19.mp3
+
+#begin Sound/GravelFootsteps/gravel2.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel2.mp3
+
+#begin Sound/GravelFootsteps/gravel3.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel3.mp3
+
+#begin Sound/GravelFootsteps/gravel4.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel4.mp3
+
+#begin Sound/GravelFootsteps/gravel5.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel5.mp3
+
+#begin Sound/GravelFootsteps/gravel6.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel6.mp3
+
+#begin Sound/GravelFootsteps/gravel7.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel7.mp3
+
+#begin Sound/GravelFootsteps/gravel8.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel8.mp3
+
+#begin Sound/GravelFootsteps/gravel9.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GravelFootsteps/gravel9.mp3
+

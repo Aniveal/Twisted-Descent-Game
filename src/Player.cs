@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -107,6 +108,7 @@ namespace Meridian2 {
             //     _playerSpritePosition = updatedPosition; // move the player
             //     _playerPosition = FeetPosition(_playerSpritePosition);
             // }
+
         }
 
         public void Draw(GameTime gameTime, SpriteBatch batch) {

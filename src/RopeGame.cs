@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,6 +21,7 @@ public class RopeGame : Game {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        
     }
 
     protected override void Initialize() {
@@ -39,6 +41,9 @@ public class RopeGame : Game {
 
         _gameScreen = new GameScreen(this);
         _gameScreen.Initialize();
+
+        Globals.SoundEngine = new SoundEngine(); //Create the sound engine
+
     }
 
     protected override void LoadContent() {
@@ -46,6 +51,7 @@ public class RopeGame : Game {
 
         Font = Content.Load<SpriteFont>("Arial");
         ColumnTexture = Content.Load<Texture2D>("circle");
+
     }
 
     protected override void Update(GameTime gameTime) {
