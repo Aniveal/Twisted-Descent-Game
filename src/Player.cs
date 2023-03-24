@@ -15,6 +15,11 @@ namespace Meridian2 {
         private readonly Point _playerSize = new(60, 120);
         private const int PlayerForce = 5000;
 
+        //How many milliseconds between footsteps
+        private float footstepSoundDelayMax = 400f;
+        //Current value of delay
+        private float footstepSoundDelayCurrent = 0f;
+
         public Body Body;
 
         public Player(GameScreen gameScreen) {
@@ -61,22 +66,41 @@ namespace Meridian2 {
                 input.Y *= -1;
             }
 
+            bool isWalking = false;
+
             KeyboardState keyboard = Keyboard.GetState();
             if (keyboard.IsKeyDown(Keys.Right)) {
                 input.X += 1;
+                isWalking = true;
             }
 
             if (keyboard.IsKeyDown(Keys.Left)) {
                 input.X -= 1;
+                isWalking = true;
             }
 
             if (keyboard.IsKeyDown(Keys.Down)) {
                 input.Y += 1;
+                isWalking = true;
             }
 
             if (keyboard.IsKeyDown(Keys.Up)) {
                 input.Y -= 1;
+                isWalking = true;
             }
+
+
+            //Footstep Sound:
+            if(footstepSoundDelayCurrent >= 0)
+                footstepSoundDelayCurrent -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (isWalking && footstepSoundDelayCurrent < 0)
+            {
+                Globals.SoundEngine.playGravelFootstep();
+                footstepSoundDelayCurrent = footstepSoundDelayMax;
+            }
+
+
 
             input = ScreenToIsometric(input);
 

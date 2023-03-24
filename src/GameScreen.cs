@@ -16,8 +16,6 @@ public class GameScreen : Screen {
     private Map _map;
     public Player Player;
 
-    public AudioTest audioTest;
-
 
     public GameScreen(RopeGame game) : base(game) {
         Game = getGame();
@@ -28,8 +26,6 @@ public class GameScreen : Screen {
         _batch = new SpriteBatch(Game.GraphicsDevice);
         Rope = new Rope(this, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f, 20), 150);
         
-        //This just plays a footstep whe pressing the "F" key (to pay respects)
-        audioTest = new AudioTest();
     }
 
     public override void Initialize() {
@@ -58,7 +54,6 @@ public class GameScreen : Screen {
         Player.Update(gameTime);
         Rope.Update(gameTime);
         Diagnostics.Instance.Update(gameTime);
-        audioTest.Update(gameTime);
     }
 
     public override void Draw(GameTime gameTime) {
