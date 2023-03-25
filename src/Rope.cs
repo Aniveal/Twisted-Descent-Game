@@ -21,6 +21,8 @@ public class Rope : IGameObject {
     private const int TextureHeight = 4;
     private const int TextureWidth = 2;
 
+    public List<FragileColumn> _fragiles = new List<FragileColumn>();
+
     public Rope(GameScreen gameScreen, Vector2 pos, int segmentCount) {
         _gameScreen = gameScreen;
         _pos = pos;
@@ -61,6 +63,17 @@ public class Rope : IGameObject {
                 JointFactory.CreateRevoluteJoint(_gameScreen.World, _anchor, _segments[0].Body, Vector2.Zero);
             }
         }
+    }
+
+    public void Pull()
+    {
+        if (_fragiles.Count > 0) 
+        {
+            FragileColumn col = _fragiles.Last();
+            _fragiles.RemoveAll(c => c == col);
+            col.Break();
+        }
+        
     }
 
     private void CreateBaseTexture() {
