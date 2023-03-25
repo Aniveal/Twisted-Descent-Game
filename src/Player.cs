@@ -79,7 +79,7 @@ namespace Meridian2 {
 
             if (keyboard.IsKeyDown(Keys.P))
             {
-                _gameScreen.Rope.Pull();
+                _gameScreen.Rope.Pull(gameTime);
             }
 
             input = ScreenToIsometric(input);
