@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2 {
     public class Map : IGameObject {
-        private Texture2D _emptyTile;
-        private Texture2D _rock;
+        private Texture2D _ground;
+        private List<Texture2D> _column;
+        private List<Texture2D> _rockTextures;
 
-        public Point TileSize = new(80, 80); // pixels
+        public Point TileSize = new(160, 160); // pixels
         public int[,] TileType = new int[100, 100]; // contains type of each tile: 0 for empty_tile, 1 for rock_tile
 
         /* Helper Functions */
@@ -37,18 +39,37 @@ namespace Meridian2 {
         }
 
         public void Initialize() {
-            Random rng = new Random();
             for (int x = 0; x < TileType.GetLength(0); x++) {
                 for (int y = 0; y < TileType.GetLength(1); y++) {
-                    float type = rng.Next(0, 20); // 1 out of 20 tiles should contain a rock
-                    TileType[x, y] = (type == 1) ? 1 : 0; // if neq 1, set it to zero (empty tile)
+                    TileType[x, y] = 0;
                 }
             }
         }
-        
+
         public void LoadContent() {
-            _emptyTile = Globals.Content.Load<Texture2D>("empty_tile");
-            _rock = Globals.Content.Load<Texture2D>("rock");
+            _ground = Globals.Content.Load<Texture2D>("ground");
+            
+            _column = new List<Texture2D> {
+                Globals.Content.Load<Texture2D>("column"),
+                Globals.Content.Load<Texture2D>("column_lower"),
+                Globals.Content.Load<Texture2D>("column_upper")
+            };
+
+            _rockTextures = new List<Texture2D> {
+                Globals.Content.Load<Texture2D>("wall_1b"),
+                Globals.Content.Load<Texture2D>("wall_1r"),
+                Globals.Content.Load<Texture2D>("wall_1f"),
+                Globals.Content.Load<Texture2D>("wall_1l"),
+                Globals.Content.Load<Texture2D>("wall_2lf"),
+                Globals.Content.Load<Texture2D>("wall_2rf"),
+                Globals.Content.Load<Texture2D>("wall_2rb"),
+                Globals.Content.Load<Texture2D>("wall_2lb"),
+                Globals.Content.Load<Texture2D>("wall_3b"),
+                Globals.Content.Load<Texture2D>("wall_3r"),
+                Globals.Content.Load<Texture2D>("wall_3f"),
+                Globals.Content.Load<Texture2D>("wall_3l"),
+                Globals.Content.Load<Texture2D>("wall_4")
+            };
         }
 
         public void Update(GameTime gameTime) {
@@ -80,18 +101,18 @@ namespace Meridian2 {
                 for (int y = yMin; y < yMax; y++) {
                     Point screenPos = MapToScreen(new(x, y));
                     Rectangle tilePos = new Rectangle(screenPos.X, screenPos.Y, TileSize.X, TileSize.Y);
-                    //_spriteBatch.Draw(empty_tile, tile_pos, null, c, 0.0f, Vector2.Zero, SpriteEffects.None, 2);
 
-                    batch.Draw(_emptyTile, tilePos, null, Color.White, 0.0f, Vector2.Zero,
+                    batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero,
                         SpriteEffects.None, 0.9f);
-
-
-                    if (TileType[x, y] == 1) {
-                        Rectangle rockPos = new Rectangle(screenPos.X, screenPos.Y - TileSize.Y / 2, TileSize.X,
-                            TileSize.Y);
-
-                        batch.Draw(_rock, rockPos, null, Color.White, 0.0f, Vector2.Zero,
-                            SpriteEffects.None, 0.1f);
+                    
+                    int tile_type = TileType[x, y];
+                    if (tile_type > 0)  
+                    {
+                        batch.Draw(_rockTextures[tile_type - 1], tilePos, Color.White);
+                    }
+                    else if (tile_type < 0)
+                    {
+                        batch.Draw(_column[(-1 * tile_type) - 1], tilePos, Color.White);
                     }
                 }
             }
