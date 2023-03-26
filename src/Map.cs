@@ -42,13 +42,36 @@ namespace Meridian2 {
             for (int x = 0; x < TileType.GetLength(0); x++) {
                 for (int y = 0; y < TileType.GetLength(1); y++) {
                     TileType[x, y] = 0;
+
+                    // Walls
+                    if (x == 0) {
+                        TileType[x, y] = 5;
+                    }
+                    
+                    if (x == TileType.GetLength(0) - 1) {
+                        TileType[x, y] = 7;
+                    }
+                    
+                    if (y == 0) {
+                        TileType[x, y] = 6;
+                    }
+
+                    if (y == TileType.GetLength(1) - 1) {
+                        TileType[x, y] = 8;
+                    }
                 }
             }
+            
+            // Corners
+            TileType[0, 0] = 11;
+            TileType[TileType.GetLength(0) - 1, 0] = 10;
+            TileType[0, TileType.GetLength(1) - 1] = 12;
+            TileType[TileType.GetLength(0) - 1, TileType.GetLength(1) - 1] = 9;
         }
 
         public void LoadContent() {
             _ground = Globals.Content.Load<Texture2D>("ground");
-            
+
             _column = new List<Texture2D> {
                 Globals.Content.Load<Texture2D>("column"),
                 Globals.Content.Load<Texture2D>("column_lower"),
@@ -56,19 +79,19 @@ namespace Meridian2 {
             };
 
             _rockTextures = new List<Texture2D> {
-                Globals.Content.Load<Texture2D>("wall_1b"),
-                Globals.Content.Load<Texture2D>("wall_1r"),
-                Globals.Content.Load<Texture2D>("wall_1f"),
-                Globals.Content.Load<Texture2D>("wall_1l"),
-                Globals.Content.Load<Texture2D>("wall_2lf"),
-                Globals.Content.Load<Texture2D>("wall_2rf"),
-                Globals.Content.Load<Texture2D>("wall_2rb"),
-                Globals.Content.Load<Texture2D>("wall_2lb"),
-                Globals.Content.Load<Texture2D>("wall_3b"),
-                Globals.Content.Load<Texture2D>("wall_3r"),
-                Globals.Content.Load<Texture2D>("wall_3f"),
-                Globals.Content.Load<Texture2D>("wall_3l"),
-                Globals.Content.Load<Texture2D>("wall_4")
+                Globals.Content.Load<Texture2D>("wall_1b"), // 1
+                Globals.Content.Load<Texture2D>("wall_1r"), // 2
+                Globals.Content.Load<Texture2D>("wall_1f"), // 3 
+                Globals.Content.Load<Texture2D>("wall_1l"), // 4
+                Globals.Content.Load<Texture2D>("wall_2lf"), // 5
+                Globals.Content.Load<Texture2D>("wall_2rf"), // 6 
+                Globals.Content.Load<Texture2D>("wall_2rb"), // 7
+                Globals.Content.Load<Texture2D>("wall_2lb"), // 8
+                Globals.Content.Load<Texture2D>("wall_3b"), // 9
+                Globals.Content.Load<Texture2D>("wall_3r"), // 10
+                Globals.Content.Load<Texture2D>("wall_3f"), // 11
+                Globals.Content.Load<Texture2D>("wall_3l"), // 12
+                Globals.Content.Load<Texture2D>("wall_4") // 13
             };
         }
 
@@ -104,15 +127,12 @@ namespace Meridian2 {
 
                     batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero,
                         SpriteEffects.None, 0.9f);
-                    
-                    int tile_type = TileType[x, y];
-                    if (tile_type > 0)  
-                    {
-                        batch.Draw(_rockTextures[tile_type - 1], tilePos, Color.White);
-                    }
-                    else if (tile_type < 0)
-                    {
-                        batch.Draw(_column[(-1 * tile_type) - 1], tilePos, Color.White);
+
+                    int tileType = TileType[x, y];
+                    if (tileType > 0) {
+                        batch.Draw(_rockTextures[tileType - 1], tilePos, Color.White);
+                    } else if (tileType < 0) {
+                        batch.Draw(_column[(-1 * tileType) - 1], tilePos, Color.White);
                     }
                 }
             }
