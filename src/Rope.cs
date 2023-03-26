@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -20,6 +21,11 @@ public class Rope : IGameObject {
     public Texture2D BaseTexture;
     private const int TextureHeight = 4;
     private const int TextureWidth = 2;
+
+    public List<FragileColumn> _fragiles = new List<FragileColumn>();
+    public TimeSpan lastBreak = TimeSpan.Zero;
+    // 1 second cooldown between column breaks
+    public TimeSpan breakCoolDown = new TimeSpan(0, 0, 1);
 
     public Rope(GameScreen gameScreen, Vector2 pos, int segmentCount) {
         _gameScreen = gameScreen;
@@ -61,6 +67,22 @@ public class Rope : IGameObject {
                 JointFactory.CreateRevoluteJoint(_gameScreen.World, _anchor, _segments[0].Body, Vector2.Zero);
             }
         }
+    }
+
+    public void Pull(GameTime gameTime)
+    {
+        
+        if (_fragiles.Count > 0) 
+        {
+            if (gameTime.TotalGameTime - lastBreak > breakCoolDown)
+            {
+                FragileColumn col = _fragiles.Last();
+                _fragiles.RemoveAll(c => c == col);
+                col.Break();
+                lastBreak = gameTime.TotalGameTime;
+            }
+        }
+        
     }
 
     private void CreateBaseTexture() {

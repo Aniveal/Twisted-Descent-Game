@@ -100,7 +100,10 @@ namespace Meridian2 {
                 footstepSoundDelayCurrent = footstepSoundDelayMax;
             }
 
-
+            if (keyboard.IsKeyDown(Keys.P))
+            {
+                _gameScreen.Rope.Pull(gameTime);
+            }
 
             input = ScreenToIsometric(input);
 

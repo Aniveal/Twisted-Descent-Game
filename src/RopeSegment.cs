@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Data.Common;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2;
@@ -56,8 +57,27 @@ public class RopeSegment : IGameObject {
             color: Color.White, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
     }
 
-    public void ColumnCallback(ActivableColumn column, bool collision)
+    /**
+     * column: The column making the callback
+     * collision: True if collision, false if separation
+     * unique: true if first colliding segment or last separation
+     * 
+     * TODO: change unique to encompass situation where column is wrapped on two separate occasions, will currently not behave as expected by player
+     */
+    public void ColumnCallback(ActivableColumn column, bool collision, bool unique)
     {
         _black = collision;
+        if (column is FragileColumn)
+        {
+            if (collision & unique)
+            {
+                _rope._fragiles.Add((FragileColumn)column);
+            }
+            if (!collision & unique)
+            {
+                //TODO: change this when changing unique trigger
+                _rope._fragiles.RemoveAll(x => x == column);
+            }
+        }
     }
 }

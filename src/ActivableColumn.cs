@@ -23,44 +23,44 @@ namespace Meridian2
             Body.OnSeparation += OnSeparation;
         }
 
-        private bool OnCollision(Fixture sender, Fixture other, Contact contact)
+        protected bool OnCollision(Fixture sender, Fixture other, Contact contact)
         {
             if (sender.Body.Tag != null && sender.Body.Tag is RopeSegment)
             {
                 RopeSegment segment = (RopeSegment)sender.Body.Tag;
                 _nContacts++;
+                segment.ColumnCallback(this, true, !_activated);
                 _activated = true;
-                segment.ColumnCallback(this, true);
             }
             else if (other.Body.Tag != null && other.Body.Tag is RopeSegment)
             {
                 RopeSegment segment = (RopeSegment)other.Body.Tag;
                 _nContacts++;
+                segment.ColumnCallback(this, true, !_activated);
                 _activated = true;
-                segment.ColumnCallback(this, true);
             }
             return true;
         }
 
-        private void OnSeparation(Fixture sender, Fixture other, Contact contact) 
+        protected void OnSeparation(Fixture sender, Fixture other, Contact contact) 
         {
             if (sender.Body.Tag != null && sender.Body.Tag is RopeSegment)
             {
                 RopeSegment segment = (RopeSegment)sender.Body.Tag;
-                segment.ColumnCallback(this, false);
                 if (--_nContacts == 0)
                 {
                     _activated = false;
                 }
+                segment.ColumnCallback(this, false, !_activated);
             }
             else if (other.Body.Tag != null && other.Body.Tag is RopeSegment)
             {
                 RopeSegment segment = (RopeSegment)other.Body.Tag;
-                segment.ColumnCallback(this, false);
                 if (--_nContacts == 0)
                 {
                     _activated = false;
                 }
+                segment.ColumnCallback(this, false, !_activated);
             }
         }
 
