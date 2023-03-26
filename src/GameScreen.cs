@@ -14,6 +14,7 @@ public class GameScreen : Screen {
     private Column _column;
     private ActivableColumn _activatedColumn;
     private FragileColumn _fragile;
+    private Amphora _amphora;
     private Map _map;
     public Player Player;
 
@@ -26,19 +27,20 @@ public class GameScreen : Screen {
         World = new World(Vector2.Zero);
         _batch = new SpriteBatch(Game.GraphicsDevice);
         Rope = new Rope(this, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f, 20), 150);
-        
+        _amphora = new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 50, 420), 10);
     }
 
     public override void Initialize() {
         base.Initialize();
     
+        _amphora.Initialize();
         _map.Initialize();
         Rope.Initialize();
         Player.Initialize();
 
-        _column = new Column(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 80), 5, Game.ColumnTexture);
-        _activatedColumn = new ActivableColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f -50, 120), 5, Game.ColumnTexture);
-        _fragile = new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 80, 120), 5, Game.ColumnTexture);
+        _column = new Column(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 280), 5, Game.ColumnTexture);
+        _activatedColumn = new ActivableColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f -50, 320), 5, Game.ColumnTexture);
+        _fragile = new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 520), 5, Game.ColumnTexture);
         _map.LoadContent();
         Rope.LoadContent();
         Player.LoadContent();
@@ -69,6 +71,7 @@ public class GameScreen : Screen {
         _column.Draw(_batch);
         _activatedColumn.Draw(_batch);
         _fragile.Draw(_batch);
+        _amphora.Draw(gameTime, _batch);
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10,10), Color.Red);
         _batch.End();
     }

@@ -108,7 +108,7 @@ namespace Meridian2 {
             int h = Globals.Graphics.PreferredBackBufferHeight;
             int w = Globals.Graphics.PreferredBackBufferWidth;
 
-            int addonTiles = 2;
+            int addonTiles = 4;
 
             int xMin = ScreenToMap(new(0, 0)).X - addonTiles;
             int xMax = ScreenToMap(new(h, w)).X + addonTiles;
@@ -123,7 +123,7 @@ namespace Meridian2 {
             for (int x = xMin; x < xMax; x++) {
                 for (int y = yMin; y < yMax; y++) {
                     Point screenPos = MapToScreen(new(x, y));
-                    Rectangle tilePos = new Rectangle(screenPos.X, screenPos.Y, TileSize.X, TileSize.Y);
+                    Rectangle tilePos = new Rectangle(screenPos.X+ Globals.Graphics.PreferredBackBufferWidth/2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
 
                     batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero,
                         SpriteEffects.None, 0.9f);
