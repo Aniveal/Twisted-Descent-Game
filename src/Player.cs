@@ -13,7 +13,7 @@ namespace Meridian2 {
 
         private Texture2D _hero;
         private readonly Point _playerSize = new(60, 120);
-        private const int PlayerForce = 5000;
+        private int PlayerForce = 5000;
 
         //How many milliseconds between footsteps
         private float footstepSoundDelayMax = 400f;
@@ -21,6 +21,11 @@ namespace Meridian2 {
         private float footstepSoundDelayCurrent = 0f;
 
         public Body Body;
+
+        private double DashTimer = 0;
+        private const int DashCoolDown = 5000;
+        private const int DashUsageTime = 400;
+        private bool Dash = false;
 
         public Player(GameScreen gameScreen) {
             _gameScreen = gameScreen;
@@ -59,6 +64,7 @@ namespace Meridian2 {
 
         public void Update(GameTime gameTime) {
             Vector2 input = Vector2.Zero;
+            DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (gamePadCapabilities.IsConnected) {
@@ -69,6 +75,18 @@ namespace Meridian2 {
             bool isWalking = false;
 
             KeyboardState keyboard = Keyboard.GetState();
+            if (keyboard.IsKeyDown(Keys.Space) & DashTimer >= DashCoolDown)
+            {
+                Dash = true;
+                DashTimer = 0;
+                PlayerForce = 50000;
+            }
+            if (Dash & DashTimer >= DashUsageTime)
+            {
+                Dash = false;
+                PlayerForce = 5000;
+                DashTimer = 0;
+            }
             if (keyboard.IsKeyDown(Keys.Right)) {
                 input.X += 1;
                 isWalking = true;

@@ -4,6 +4,7 @@
 # Ignore build output
 src/bin
 src/obj
+src/.vs
 
 # Unnecessary MonoGame files
 .mgstats
