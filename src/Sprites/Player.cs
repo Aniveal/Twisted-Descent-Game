@@ -11,25 +11,63 @@ namespace GameLab
         private float angle;
         public Vector2 Position;
         public Vector2 Origin;
-        public float RotationVelocity = 3f;
         public float LinearVelocity = 4f;
+        public float DashMultiplier = 20f;
+        bool isDashActive = false;
+        public double CoolDownTime = 0;
+
+
 
         public Player(Texture2D texture)
         {
             _texture = texture;
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
+            CoolDownTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) & CoolDownTime >= 5000)
+            {
+                isDashActive = true;
+                CoolDownTime = 0;
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                angle -= MathHelper.ToRadians(RotationVelocity);
-            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                angle += MathHelper.ToRadians(RotationVelocity);
-
-            var direction = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - angle), -(float)Math.Sin(MathHelper.ToRadians(90) - angle));
-
+            {
+                Position.X -= LinearVelocity;
+                if (isDashActive)
+                {
+                    isDashActive = false;
+                    Position.X -= DashMultiplier * LinearVelocity;
+                }
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                Position.X += LinearVelocity;
+                if (isDashActive) 
+                {
+                    isDashActive = false;
+                    Position.X += DashMultiplier * LinearVelocity;
+                }
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                Position += direction * LinearVelocity;
+            {
+                Position.Y -= LinearVelocity;
+                if (isDashActive)
+                {
+                    isDashActive = false;
+                    Position.Y -= DashMultiplier * LinearVelocity;
+                }
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                Position.Y += LinearVelocity;
+                if (isDashActive)
+                {
+                    isDashActive = false;
+                    Position.Y += DashMultiplier * LinearVelocity;
+                }
+            }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)

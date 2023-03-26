@@ -59,7 +59,7 @@ namespace GameLab
 
         protected override void Update(GameTime gameTime)
         {
-            player.Update();
+            player.Update(gameTime);
             enemy.Update(0, player);
             _camera.Follow(player);
 
