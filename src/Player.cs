@@ -14,6 +14,7 @@ namespace Meridian2 {
         private Texture2D idle;
         private Texture2D running_l;
         private Texture2D running_r;
+        private Texture2D running_f;
         private readonly Point _playerSize = new(60, 120);
         private int PlayerForce = 5000;
 
@@ -54,6 +55,7 @@ namespace Meridian2 {
             idle = Globals.Content.Load<Texture2D>("idle");
             running_l = Globals.Content.Load<Texture2D>("running");
             running_r = Globals.Content.Load<Texture2D>("running_r");
+            running_f = Globals.Content.Load<Texture2D>("running_f");
         }
 
         private Vector2 ScreenToIsometric(Vector2 vector) {
@@ -177,7 +179,17 @@ namespace Meridian2 {
                 float run_duration = 200f;
                 int run_frame_idx = (int)(totalTime / run_duration) % 4;
 
-                Texture2D running_sprite = (input.X > 0) ? running_r : running_l;
+                Texture2D running_sprite = running_f;
+
+                if (input.X > 0 && input.X > input.Y)
+                {
+                    running_sprite = running_r;
+                }
+                else if (input.X < 0)
+                {
+                    running_sprite = running_l;
+                }
+                //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
 
                 batch.Draw(
                     running_sprite,
