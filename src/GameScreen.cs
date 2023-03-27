@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using tainicom.Aether.Physics2D;
 using tainicom.Aether.Physics2D.Dynamics;
 
@@ -18,6 +19,7 @@ public class GameScreen : Screen {
     private ElectricColumn _electricColumn;
     private Map _map;
     public Player Player;
+    public List<DummyRectangle> walls = new List<DummyRectangle>();
 
 
     public GameScreen(RopeGame game) : base(game) {
@@ -77,7 +79,13 @@ public class GameScreen : Screen {
         _fragile.Draw(_batch);
         _amphora.Draw(gameTime, _batch);
         _electricColumn.Draw(_batch);
+        foreach (DummyRectangle rec in walls)
+        {
+            rec.Draw(_batch);
+        }
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10,10), Color.Red);
         _batch.End();
+
+        
     }
 }
