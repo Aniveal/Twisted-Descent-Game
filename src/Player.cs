@@ -11,7 +11,7 @@ namespace Meridian2 {
     public class Player : IGameObject {
         private readonly GameScreen _gameScreen;
 
-        private Texture2D _hero;
+        private Texture2D idle;
         private readonly Point _playerSize = new(60, 120);
         private int PlayerForce = 5000;
 
@@ -47,7 +47,7 @@ namespace Meridian2 {
         }
 
         public void LoadContent() {
-            _hero = Globals.Content.Load<Texture2D>("hero");
+            idle = Globals.Content.Load<Texture2D>("idle");
         }
 
         private Vector2 ScreenToIsometric(Vector2 vector) {
@@ -162,7 +162,17 @@ namespace Meridian2 {
             var playerSpriteY = Body.Position.Y - _playerSize.Y;
 
             Rectangle spritePos = new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y);
-            batch.Draw(_hero, spritePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.5f);
+
+            float PLAYER_FRAME_DURATION = 400f; // ms
+            float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
+            int idle_frame_idx = (int)(totalTime / PLAYER_FRAME_DURATION) % 2;
+
+            batch.Draw(
+                idle,
+                new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y),
+                new Rectangle(idle_frame_idx * 512, 0, 512, 768),
+                Color.White
+            );
         }
     }
 }
