@@ -12,7 +12,7 @@ public class GameScreen : Screen {
     public World World;
     public Rope Rope;
 
-    private List<Column> _columns;
+    private List<Column> _columns = new List<Column>();
     private Amphora _amphora;
     private Map _map;
     public Player Player;
@@ -49,6 +49,7 @@ public class GameScreen : Screen {
         _columns.Add(new Column(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 280), 10, Game.ColumnTexture));
         _columns.Add(new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 520), 10, Game.ColumnTexture));
         _columns.Add(new ElectricColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 80, 400), 10, Game.ColumnTexture));
+        _columns.Add(new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 150, 220), 10, Game.ColumnTexture));
         //_map.LoadContent();
         Rope.LoadContent();
         Player.LoadContent();
