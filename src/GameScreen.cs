@@ -80,7 +80,6 @@ public class GameScreen : Screen {
         Player.Draw(gameTime, _batch);
         Rope.Draw(gameTime, _batch);
         _column.Draw(_batch);
-        _activatedColumn.Draw(_batch);
         _fragile.Draw(_batch);
         _amphora.Draw(gameTime, _batch);
         _electricColumn.Draw(_batch);
