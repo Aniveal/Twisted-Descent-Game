@@ -63,6 +63,8 @@ public class Rope : IGameObject {
             if (i > 0) {
                 JointFactory.CreateRevoluteJoint(_gameScreen.World, _segments[i - 1].Body, _segments[i].Body,
                     Vector2.Zero);
+                segment.SetPrevious(_segments[i - 1]);
+                _segments[i - 1].SetNext(segment);
             } else {
                 JointFactory.CreateRevoluteJoint(_gameScreen.World, _anchor, _segments[0].Body, Vector2.Zero);
             }

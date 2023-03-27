@@ -15,6 +15,7 @@ public class GameScreen : Screen {
     private ActivableColumn _activatedColumn;
     private FragileColumn _fragile;
     private Amphora _amphora;
+    private ElectricColumn _electricColumn;
     private Map _map;
     public Player Player;
 
@@ -38,9 +39,12 @@ public class GameScreen : Screen {
         Rope.Initialize();
         Player.Initialize();
 
+
         _column = new Column(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 280), 5, Game.ColumnTexture);
         _activatedColumn = new ActivableColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f -50, 320), 5, Game.ColumnTexture);
         _fragile = new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 520), 5, Game.ColumnTexture);
+       
+        _electricColumn = new ElectricColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 80, 400), 5, Game.ColumnTexture);
         _map.LoadContent();
         Rope.LoadContent();
         Player.LoadContent();
@@ -72,6 +76,7 @@ public class GameScreen : Screen {
         _activatedColumn.Draw(_batch);
         _fragile.Draw(_batch);
         _amphora.Draw(gameTime, _batch);
+        _electricColumn.Draw(_batch);
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10,10), Color.Red);
         _batch.End();
     }
