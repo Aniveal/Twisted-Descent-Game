@@ -12,6 +12,8 @@ namespace Meridian2 {
         private readonly GameScreen _gameScreen;
 
         private Texture2D idle;
+        private Texture2D running_l;
+        private Texture2D running_r;
         private readonly Point _playerSize = new(60, 120);
         private int PlayerForce = 5000;
 
@@ -26,6 +28,8 @@ namespace Meridian2 {
         private const int DashCoolDown = 5000;
         private const int DashUsageTime = 400;
         private bool Dash = false;
+        private bool isWalking = false;
+        private Vector2 input = Vector2.Zero;
 
         public Player(GameScreen gameScreen) {
             _gameScreen = gameScreen;
@@ -48,6 +52,8 @@ namespace Meridian2 {
 
         public void LoadContent() {
             idle = Globals.Content.Load<Texture2D>("idle");
+            running_l = Globals.Content.Load<Texture2D>("running");
+            running_r = Globals.Content.Load<Texture2D>("running_r");
         }
 
         private Vector2 ScreenToIsometric(Vector2 vector) {
@@ -63,7 +69,7 @@ namespace Meridian2 {
         }
 
         public void Update(GameTime gameTime) {
-            Vector2 input = Vector2.Zero;
+            input = Vector2.Zero;
             DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             DashTimer = Math.Min(DashTimer, 5000);
 
@@ -73,7 +79,7 @@ namespace Meridian2 {
                 input.Y *= -1;
             }
 
-            bool isWalking = false;
+            isWalking = false;
 
             KeyboardState keyboard = Keyboard.GetState();
             if (keyboard.IsKeyDown(Keys.Space) & DashTimer >= DashCoolDown)
@@ -163,16 +169,35 @@ namespace Meridian2 {
 
             Rectangle spritePos = new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y);
 
-            float PLAYER_FRAME_DURATION = 400f; // ms
+            
             float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
-            int idle_frame_idx = (int)(totalTime / PLAYER_FRAME_DURATION) % 2;
 
-            batch.Draw(
-                idle,
-                new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y),
-                new Rectangle(idle_frame_idx * 512, 0, 512, 768),
-                Color.White
-            );
+            if (isWalking)
+            {
+                float run_duration = 200f;
+                int run_frame_idx = (int)(totalTime / run_duration) % 4;
+
+                Texture2D running_sprite = (input.X > 0) ? running_r : running_l;
+
+                batch.Draw(
+                    running_sprite,
+                    new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y),
+                    new Rectangle(run_frame_idx * 512, 0, 512, 768),
+                    Color.White
+                );
+            }
+            else
+            {
+                float idle_duration = 400f; //ms
+                int idle_frame_idx = (int)(totalTime / idle_duration) % 2;
+
+                batch.Draw(
+                    idle,
+                    new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y),
+                    new Rectangle(idle_frame_idx * 512, 0, 512, 768),
+                    Color.White
+                );
+            }
         }
     }
 }
