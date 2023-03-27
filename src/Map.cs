@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
@@ -11,6 +12,10 @@ namespace Meridian2
 {
 	public class Map
 	{
+        String directory = "/Users/benjaminglaus/Desktop/GameLab/Git/gamelab2023-meridian-team2/src/Content/Maps/";
+        bool readMapFromFile = true;
+        String MapFile = "map_27-03-2023_07-44-56.map";
+
         private Texture2D ground;
 
         private Texture2D[] column =
@@ -44,6 +49,10 @@ namespace Meridian2
         public Map()
 		{
             ground = Globals.Content.Load<Texture2D>("ground");
+            if (readMapFromFile)
+            {
+                ReadMapFromFile(directory + MapFile);
+            }
         }
 
         /* Draw */
@@ -146,6 +155,49 @@ namespace Meridian2
             int y = Globals.SelectedTile.Y;
             TILE_TYPE[x, y] = 13;
         }
+
+        public void WriteMapToFile()
+        {
+            int rows = TILE_TYPE.GetLength(0);
+            int columns = TILE_TYPE.GetLength(1);
+            String currentTime = DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
+
+            using (StreamWriter writer = new StreamWriter(directory + "map_" + currentTime + ".map"))
+            {
+                writer.WriteLine(rows);
+                writer.WriteLine(columns);
+
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < columns; j++)
+                    {
+                        writer.Write($"{TILE_TYPE[i, j]} ");
+                    }
+                    writer.WriteLine();
+                }
+            }
+            return;
+        }
+
+
+        public void ReadMapFromFile(string fileName)
+        {
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                int rows = int.Parse(reader.ReadLine());
+                int columns = int.Parse(reader.ReadLine());
+                for (int i = 0; i < rows; i++)
+                {
+                    string[] values = reader.ReadLine().Split(' ');
+                    for (int j = 0; j < columns; j++)
+                    {
+                        TILE_TYPE[i, j] = int.Parse(values[j]);
+                    }
+                }
+            }
+            return;
+        }
+
 
 
         /* Helper Functions */

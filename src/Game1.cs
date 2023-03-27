@@ -6,8 +6,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Meridian2;
 
-//Hello from Timo
-// Hi Timo, Hello from Beni
+/* LOADING A MAP:
+ * In Map.cs, set the directory and filename
+ */
 
 /* -- TODO --
  * 
@@ -133,9 +134,9 @@ public class Game1 : Game
                 {
                     _map.place_column();
                 }
-                else if (keys[0].ToString() == "P")
+                else if (keys[0].ToString() == "S")
                 {
-                    Debug.WriteLine(_map.TILE_TYPE);
+                    _map.WriteMapToFile();
                 }
 
             }
