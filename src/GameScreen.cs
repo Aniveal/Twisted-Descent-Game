@@ -12,11 +12,8 @@ public class GameScreen : Screen {
     public World World;
     public Rope Rope;
 
-    private Column _column;
-    private ActivableColumn _activatedColumn;
-    private FragileColumn _fragile;
+    private List<Column> _columns;
     private Amphora _amphora;
-    private ElectricColumn _electricColumn;
     private Map _map;
     public Player Player;
     public List<DummyRectangle> walls = new List<DummyRectangle>();
@@ -42,16 +39,16 @@ public class GameScreen : Screen {
         Player.Initialize();
 
         //Create dummy walls
+        
         walls.Add(new DummyRectangle(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width/2, 20), Game.GraphicsDevice.Viewport.Width, 10, Game.rectangleTexture));
         walls.Add(new DummyRectangle(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2, Game.GraphicsDevice.Viewport.Height - 50), Game.GraphicsDevice.Viewport.Width, 10, Game.rectangleTexture));
 
         walls.Add(new DummyRectangle(Game, World, new Vector2(100, Game.GraphicsDevice.Viewport.Height / 2), 10, Game.GraphicsDevice.Viewport.Height, Game.rectangleTexture));
         walls.Add(new DummyRectangle(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width - 100, Game.GraphicsDevice.Viewport.Height / 2), 10, Game.GraphicsDevice.Viewport.Height, Game.rectangleTexture));
 
-        _column = new Column(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 280), 5, Game.ColumnTexture);
-       
-        _fragile = new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 520), 5, Game.ColumnTexture);
-        _electricColumn = new ElectricColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 80, 400), 5, Game.ColumnTexture);
+        _columns.Add(new Column(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 280), 10, Game.ColumnTexture));
+        _columns.Add(new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 520), 10, Game.ColumnTexture));
+        _columns.Add(new ElectricColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 80, 400), 10, Game.ColumnTexture));
         //_map.LoadContent();
         Rope.LoadContent();
         Player.LoadContent();
@@ -79,10 +76,12 @@ public class GameScreen : Screen {
         //_map.Draw(gameTime, _batch);
         Player.Draw(gameTime, _batch);
         Rope.Draw(gameTime, _batch);
-        _column.Draw(_batch);
-        _fragile.Draw(_batch);
+
         _amphora.Draw(gameTime, _batch);
-        _electricColumn.Draw(_batch);
+        foreach (Column c in _columns)
+        {
+            c.Draw(_batch);
+        }
         foreach (DummyRectangle rec in walls)
         {
             rec.Draw(_batch);

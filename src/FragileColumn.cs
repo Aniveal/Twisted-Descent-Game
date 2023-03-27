@@ -27,7 +27,7 @@ namespace Meridian2
                 batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.Orange);
             } else
             {
-                base.Draw(batch);
+                batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.White);
             }
         }
 
