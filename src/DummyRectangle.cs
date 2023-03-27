@@ -30,11 +30,12 @@ namespace Meridian2
             _texture = texture;
 
             body = _world.CreateRectangle(_w, _h, 0, _pos, 0, BodyType.Static);
+            
         }
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(_texture, new Rectangle((int)_pos.X, (int)_pos.Y, _w, _h), Color.Black);
+            batch.Draw(_texture, new Rectangle((int)_pos.X- _w/2, (int)_pos.Y- _h/2, _w, _h), Color.Black);
         }
     }
 }
