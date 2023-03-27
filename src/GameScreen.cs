@@ -35,7 +35,7 @@ public class GameScreen : Screen {
         base.Initialize();
     
         _amphora.Initialize();
-        _map.Initialize();
+        //_map.Initialize();
         Rope.Initialize();
         Player.Initialize();
 
@@ -45,7 +45,7 @@ public class GameScreen : Screen {
         _fragile = new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 520), 5, Game.ColumnTexture);
        
         _electricColumn = new ElectricColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 80, 400), 5, Game.ColumnTexture);
-        _map.LoadContent();
+        //_map.LoadContent();
         Rope.LoadContent();
         Player.LoadContent();
     }
@@ -69,7 +69,7 @@ public class GameScreen : Screen {
 
         _batch.Begin();
 
-        _map.Draw(gameTime, _batch);
+        //_map.Draw(gameTime, _batch);
         Player.Draw(gameTime, _batch);
         Rope.Draw(gameTime, _batch);
         _column.Draw(_batch);
