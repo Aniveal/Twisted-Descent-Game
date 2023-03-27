@@ -14,6 +14,7 @@ public class GameScreen : Screen {
 
     private List<Column> _columns = new List<Column>();
     private Amphora _amphora;
+    private Amphora _amph2;
     private Map _map;
     public Player Player;
     public List<DummyRectangle> walls = new List<DummyRectangle>();
@@ -28,12 +29,14 @@ public class GameScreen : Screen {
         _batch = new SpriteBatch(Game.GraphicsDevice);
         Rope = new Rope(this, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f, 20), 150);
         _amphora = new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 50, 420), 10);
+        _amph2 = new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f -100, 270), 10);
     }
 
     public override void Initialize() {
         base.Initialize();
     
         _amphora.Initialize();
+        _amph2.Initialize();
         //_map.Initialize();
         Rope.Initialize();
         Player.Initialize();
@@ -46,7 +49,7 @@ public class GameScreen : Screen {
         walls.Add(new DummyRectangle(Game, World, new Vector2(100, Game.GraphicsDevice.Viewport.Height / 2), 10, Game.GraphicsDevice.Viewport.Height, Game.rectangleTexture));
         walls.Add(new DummyRectangle(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width - 100, Game.GraphicsDevice.Viewport.Height / 2), 10, Game.GraphicsDevice.Viewport.Height, Game.rectangleTexture));
 
-        _columns.Add(new Column(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 280), 10, Game.ColumnTexture));
+        _columns.Add(new Column(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 120, 200), 10, Game.ColumnTexture));
         _columns.Add(new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 40, 520), 10, Game.ColumnTexture));
         _columns.Add(new ElectricColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 80, 400), 10, Game.ColumnTexture));
         _columns.Add(new FragileColumn(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 150, 220), 10, Game.ColumnTexture));
@@ -79,6 +82,7 @@ public class GameScreen : Screen {
         Rope.Draw(gameTime, _batch);
 
         _amphora.Draw(gameTime, _batch);
+        _amph2.Draw(gameTime, _batch);
         foreach (Column c in _columns)
         {
             c.Draw(_batch);
