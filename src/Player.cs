@@ -22,7 +22,7 @@ namespace Meridian2 {
 
         public Body Body;
 
-        private double DashTimer = 0;
+        public double DashTimer = 0;
         private const int DashCoolDown = 5000;
         private const int DashUsageTime = 400;
         private bool Dash = false;
@@ -65,6 +65,7 @@ namespace Meridian2 {
         public void Update(GameTime gameTime) {
             Vector2 input = Vector2.Zero;
             DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            DashTimer = Math.Min(DashTimer, 5000);
 
             GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (gamePadCapabilities.IsConnected) {

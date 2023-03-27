@@ -57,7 +57,7 @@ public class GameScreen : Screen {
         _map.Update(gameTime);
         Player.Update(gameTime);
         Rope.Update(gameTime);
-        Diagnostics.Instance.Update(gameTime);
+        Diagnostics.Instance.Update(gameTime, Player);
     }
 
     public override void Draw(GameTime gameTime) {

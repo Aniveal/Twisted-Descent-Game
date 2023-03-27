@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2 {
@@ -25,12 +26,13 @@ namespace Meridian2 {
         private string _fpsMessage = "";
         private double _force;
         private string _forceMessage = "";
+        private string _dashMessage = "";
         
         public void SetForce(double force) {
             _force = force;
         }
 
-        public void Update(GameTime gameTime) {
+        public void Update(GameTime gameTime, Player player) {
             _now = gameTime.TotalGameTime.TotalSeconds;
             _elapsed = (_now - _last);
             if (_elapsed > MsgFrequency) {
@@ -41,12 +43,15 @@ namespace Meridian2 {
             }
 
             _forceMessage = "Force: " + _force;
+            _dashMessage = "Dash Cooldown: " + (5000 - Math.Round(player.DashTimer, 0));
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont font, Vector2 fpsDisplayPosition, Color fpsTextColor) {
             spriteBatch.DrawString(font, _fpsMessage, fpsDisplayPosition, fpsTextColor, 0f, Vector2.Zero, 0.7f,
                 SpriteEffects.None, 1f);
             spriteBatch.DrawString(font, _forceMessage, fpsDisplayPosition + new Vector2(0, 15), fpsTextColor, 0f,
+                Vector2.Zero, 0.7f, SpriteEffects.None, 1f);
+            spriteBatch.DrawString(font, _dashMessage, fpsDisplayPosition + new Vector2(0, 35), fpsTextColor, 0f,
                 Vector2.Zero, 0.7f, SpriteEffects.None, 1f);
             _frames++;
         }
