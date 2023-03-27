@@ -30,7 +30,7 @@ namespace Meridian2
             Body = _world.CreateCircle(_radius, 0, _center, BodyType.Static);
         }
 
-        public void Draw(SpriteBatch batch)
+        public virtual void Draw(SpriteBatch batch)
         {
             batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius*2), Color.Gray);
         }

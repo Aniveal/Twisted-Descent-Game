@@ -64,7 +64,7 @@ namespace Meridian2
             }
         }
 
-        public new void Draw(SpriteBatch batch)
+        public override void Draw(SpriteBatch batch)
         {
             if (_activated)
             {
