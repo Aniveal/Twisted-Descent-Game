@@ -14,6 +14,7 @@ public class RopeGame : Game {
     private const int TargetFrameRate = 144;
     public SpriteFont Font;
     public Texture2D ColumnTexture;
+    public Texture2D rectangleTexture;
 
     private GameScreen _gameScreen;
 
@@ -51,7 +52,7 @@ public class RopeGame : Game {
 
         Font = Content.Load<SpriteFont>("Arial");
         ColumnTexture = Content.Load<Texture2D>("circle");
-
+        rectangleTexture = Content.Load<Texture2D>("rectangle");
     }
 
     protected override void Update(GameTime gameTime) {

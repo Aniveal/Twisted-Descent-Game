@@ -20,6 +20,7 @@ namespace Meridian2
 
         public Body body;
 
+        //position = middle of the rectangle
         public DummyRectangle(RopeGame game, World world, Vector2 pos, int width, int height, Texture2D texture)
         {
             _game = game;
