@@ -9,7 +9,7 @@ using System.Transactions;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
-namespace Meridian2
+namespace Meridian2.Columns
 {
     public class ActivableColumn : Column
     {
@@ -42,7 +42,7 @@ namespace Meridian2
             return true;
         }
 
-        protected void OnSeparation(Fixture sender, Fixture other, Contact contact) 
+        protected void OnSeparation(Fixture sender, Fixture other, Contact contact)
         {
             if (sender.Body.Tag != null && sender.Body.Tag is RopeSegment)
             {

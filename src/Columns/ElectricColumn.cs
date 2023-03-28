@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2
+namespace Meridian2.Columns
 {
     internal class ElectricColumn : ActivableColumn
     {

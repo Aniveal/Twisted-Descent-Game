@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2
+namespace Meridian2.Columns
 {
     public class Column
     {
@@ -32,7 +32,7 @@ namespace Meridian2
 
         public virtual void Draw(SpriteBatch batch)
         {
-            batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius*2), Color.Gray);
+            batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.Gray);
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
-namespace Meridian2
+namespace Meridian2.Columns
 {
     public class FragileColumn : ActivableColumn
     {
@@ -21,11 +21,12 @@ namespace Meridian2
 
         public override void Draw(SpriteBatch batch)
         {
-            if (_broken) 
+            if (_broken)
             {
                 //TODO: broken texture
                 batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.Orange);
-            } else
+            }
+            else
             {
                 batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.White);
             }
@@ -35,7 +36,7 @@ namespace Meridian2
         {
             _broken = true;
             Body.Enabled = false;
-            
+
         }
     }
 }
