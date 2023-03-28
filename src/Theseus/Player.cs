@@ -7,8 +7,10 @@ using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Joints;
 
-namespace Meridian2 {
-    public class Player : IGameObject {
+namespace Meridian2.Theseus
+{
+    public class Player : IGameObject
+    {
         private readonly GameScreen _gameScreen;
 
         private Texture2D idle;
@@ -33,18 +35,21 @@ namespace Meridian2 {
         private bool isWalking = false;
         private Vector2 input = Vector2.Zero;
 
-        public Player(GameScreen gameScreen) {
+        public Player(GameScreen gameScreen)
+        {
             _gameScreen = gameScreen;
         }
 
-        public void Initialize() {
+        public void Initialize()
+        {
             Body = _gameScreen.World.CreateEllipse((float)_playerSize.X / 2, (float)_playerSize.X / 4, 20, 0.1f,
                 _gameScreen.Rope.GetEndPosition(), 0f, BodyType.Dynamic);
             Body.FixedRotation = true;
             Body.LinearDamping = 1f;
 
             // Disable rope collision
-            foreach (Fixture fixture in Body.FixtureList) {
+            foreach (Fixture fixture in Body.FixtureList)
+            {
                 fixture.CollisionGroup = -1;
             }
 
@@ -52,7 +57,8 @@ namespace Meridian2 {
                 Vector2.Zero);
         }
 
-        public void LoadContent() {
+        public void LoadContent()
+        {
             idle = Globals.Content.Load<Texture2D>("idle");
             running_l = Globals.Content.Load<Texture2D>("running");
             running_r = Globals.Content.Load<Texture2D>("running_r");
@@ -60,7 +66,8 @@ namespace Meridian2 {
             running_b = Globals.Content.Load<Texture2D>("running_b");
         }
 
-        private Vector2 ScreenToIsometric(Vector2 vector) {
+        private Vector2 ScreenToIsometric(Vector2 vector)
+        {
             var rotSin = Math.Sin(-Math.PI / 4);
             var rotCos = Math.Cos(-Math.PI / 4);
 
@@ -72,13 +79,15 @@ namespace Meridian2 {
             return new Vector2(isoX - isoY, (isoX + isoY) / 2);
         }
 
-        public void Update(GameTime gameTime) {
+        public void Update(GameTime gameTime)
+        {
             input = Vector2.Zero;
             DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             DashTimer = Math.Min(DashTimer, 5000);
 
             GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
-            if (gamePadCapabilities.IsConnected) {
+            if (gamePadCapabilities.IsConnected)
+            {
                 input = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
                 input.Y *= -1;
             }
@@ -98,29 +107,33 @@ namespace Meridian2 {
                 PlayerForce = 5000;
                 DashTimer = 0;
             }
-            if (keyboard.IsKeyDown(Keys.Right)) {
+            if (keyboard.IsKeyDown(Keys.Right))
+            {
                 input.X += 1;
                 isWalking = true;
             }
 
-            if (keyboard.IsKeyDown(Keys.Left)) {
+            if (keyboard.IsKeyDown(Keys.Left))
+            {
                 input.X -= 1;
                 isWalking = true;
             }
 
-            if (keyboard.IsKeyDown(Keys.Down)) {
+            if (keyboard.IsKeyDown(Keys.Down))
+            {
                 input.Y += 1;
                 isWalking = true;
             }
 
-            if (keyboard.IsKeyDown(Keys.Up)) {
+            if (keyboard.IsKeyDown(Keys.Up))
+            {
                 input.Y -= 1;
                 isWalking = true;
             }
 
 
             //Footstep Sound:
-            if(footstepSoundDelayCurrent >= 0)
+            if (footstepSoundDelayCurrent >= 0)
                 footstepSoundDelayCurrent -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (isWalking && footstepSoundDelayCurrent < 0)
@@ -136,7 +149,8 @@ namespace Meridian2 {
 
             input = ScreenToIsometric(input);
 
-            if (input.LengthSquared() > 1) {
+            if (input.LengthSquared() > 1)
+            {
                 input.Normalize();
             }
 
@@ -167,13 +181,14 @@ namespace Meridian2 {
 
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch batch) {
+        public void Draw(GameTime gameTime, SpriteBatch batch)
+        {
             var playerSpriteX = Body.Position.X - (float)_playerSize.X / 2;
             var playerSpriteY = Body.Position.Y - _playerSize.Y;
 
             Rectangle spritePos = new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y);
 
-            
+
             float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
 
             if (isWalking)
@@ -195,14 +210,14 @@ namespace Meridian2 {
                 {
                     running_sprite = running_b;
                 }
-                    //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
+                //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
 
-                    batch.Draw(
-                    running_sprite,
-                    new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y),
-                    new Rectangle(run_frame_idx * 512, 0, 512, 768),
-                    Color.White
-                );
+                batch.Draw(
+                running_sprite,
+                new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y),
+                new Rectangle(run_frame_idx * 512, 0, 512, 768),
+                Color.White
+            );
             }
             else
             {

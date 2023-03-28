@@ -6,9 +6,10 @@ using System.Data.Common;
 using System.Reflection.Metadata.Ecma335;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2;
+namespace Meridian2.Theseus;
 
-public class RopeSegment : IGameObject {
+public class RopeSegment : IGameObject
+{
     private readonly Rope _rope;
     private readonly GameScreen _gameScreen;
     private readonly Vector2 _position;
@@ -29,14 +30,16 @@ public class RopeSegment : IGameObject {
     public bool elecFromPrev = false;
     public bool elecFromNext = false;
 
-    public RopeSegment(Rope rope, GameScreen gameScreen, Vector2 position, Vector2 size) {
+    public RopeSegment(Rope rope, GameScreen gameScreen, Vector2 position, Vector2 size)
+    {
         _rope = rope;
         _gameScreen = gameScreen;
         _position = position;
         _size = size;
     }
 
-    public void Initialize() {
+    public void Initialize()
+    {
         Body = _gameScreen.World.CreateRectangle(_size.X, _size.Y, RopeDensity, _position, bodyType: BodyType.Dynamic);
         Body.LinearDamping = 1f;
         Body.AngularDamping = 2f;
@@ -44,7 +47,8 @@ public class RopeSegment : IGameObject {
         _black = false;
 
         // Disable rope self collision
-        foreach (Fixture fixture in Body.FixtureList) {
+        foreach (Fixture fixture in Body.FixtureList)
+        {
             fixture.CollisionGroup = -1;
         }
     }
@@ -54,8 +58,8 @@ public class RopeSegment : IGameObject {
         this.previous = previous;
     }
 
-    public void SetNext(RopeSegment next) 
-    { 
+    public void SetNext(RopeSegment next)
+    {
         this.next = next;
     }
 
@@ -72,21 +76,23 @@ public class RopeSegment : IGameObject {
         if (fromPrev)
         {
             next?.Electrify(src, intensity - 1, true);
-        } else
+        }
+        else
         {
             previous?.Electrify(src, intensity - 1, false);
         }
-       
+
     }
 
     public void DeElectrify(bool fromPrev)
     {
-        if (elecSrcSegment != null && elecSrcSegment.isElecSrc) 
+        if (elecSrcSegment != null && elecSrcSegment.isElecSrc)
         {
             if (fromPrev)
             {
                 previous.Electrify(elecSrcSegment, elecIntensity - 1, false);
-            } else
+            }
+            else
             {
                 next.Electrify(elecSrcSegment, elecIntensity - 1, true);
             }
@@ -97,24 +103,28 @@ public class RopeSegment : IGameObject {
         if (fromPrev)
         {
             next?.DeElectrify(true);
-        } else
+        }
+        else
         {
             previous?.DeElectrify(false);
         }
     }
 
-    public void LoadContent() {
+    public void LoadContent()
+    {
         // Nothing to load
     }
 
-    public void Update(GameTime gameTime) {
+    public void Update(GameTime gameTime)
+    {
         // Nothing to update
     }
 
-    public void Draw(GameTime gameTime, SpriteBatch batch) {
+    public void Draw(GameTime gameTime, SpriteBatch batch)
+    {
         if (elecIntensity > 0)
         {
-           
+
             batch.Draw(_rope.BaseTexture, sourceRectangle: null, position: Body.Position, scale: 1f, rotation: Body.Rotation,
             color: Color.Black, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
             return;
@@ -168,7 +178,7 @@ public class RopeSegment : IGameObject {
                 elecSrcSegment = null;
                 next?.DeElectrify(true);
                 previous?.DeElectrify(false);
-            }            
+            }
         }
     }
 }

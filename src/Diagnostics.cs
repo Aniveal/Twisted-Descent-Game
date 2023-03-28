@@ -1,8 +1,10 @@
 ﻿using System;
+using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2 {
+namespace Meridian2
+{
     public sealed class Diagnostics {
         private static readonly Diagnostics instance = new Diagnostics();
 
