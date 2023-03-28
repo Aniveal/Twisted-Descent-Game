@@ -22,7 +22,6 @@ public class RopeGame : Game {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        
     }
 
     protected override void Initialize() {
@@ -44,7 +43,6 @@ public class RopeGame : Game {
         _gameScreen.Initialize();
 
         Globals.SoundEngine = new SoundEngine(); //Create the sound engine
-
     }
 
     protected override void LoadContent() {

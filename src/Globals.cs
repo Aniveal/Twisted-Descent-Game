@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2 {
     public class Globals {

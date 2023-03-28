@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2 {
-    public class Map : IGameObject {
+    public class Map : DrawableGameComponent {
         private Texture2D _ground;
         private List<Texture2D> _column;
         private List<Texture2D> _rockTextures;
@@ -136,6 +136,9 @@ namespace Meridian2 {
                     }
                 }
             }
+        }
+
+        public Map(Game game) : base(game) {
         }
     }
 }

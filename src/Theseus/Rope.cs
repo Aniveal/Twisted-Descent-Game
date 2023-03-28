@@ -11,7 +11,7 @@ using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Meridian2.Theseus;
 
-public class Rope : IGameObject
+public class Rope : DrawableGameComponent
 {
     private readonly GameScreen _gameScreen;
     private readonly Vector2 _pos;
@@ -29,7 +29,7 @@ public class Rope : IGameObject
     // 1 second cooldown between column breaks
     public TimeSpan breakCoolDown = new TimeSpan(0, 0, 1);
 
-    public Rope(GameScreen gameScreen, Vector2 pos, int segmentCount)
+    public Rope(GameScreen gameScreen, Vector2 pos, int segmentCount) : base(gameScreen.Game)
     {
         _gameScreen = gameScreen;
         _pos = pos;

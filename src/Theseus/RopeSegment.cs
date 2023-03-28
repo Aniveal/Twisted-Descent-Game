@@ -8,7 +8,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Theseus;
 
-public class RopeSegment : IGameObject
+public class RopeSegment : DrawableGameComponent
 {
     private readonly Rope _rope;
     private readonly GameScreen _gameScreen;
@@ -30,7 +30,7 @@ public class RopeSegment : IGameObject
     public bool elecFromPrev = false;
     public bool elecFromNext = false;
 
-    public RopeSegment(Rope rope, GameScreen gameScreen, Vector2 position, Vector2 size)
+    public RopeSegment(Rope rope, GameScreen gameScreen, Vector2 position, Vector2 size) : base(gameScreen.Game)
     {
         _rope = rope;
         _gameScreen = gameScreen;

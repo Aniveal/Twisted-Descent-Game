@@ -25,7 +25,7 @@ public class GameScreen : Screen {
     public GameScreen(RopeGame game) : base(game) {
         Game = getGame();
         
-        _map = new Map();
+        _map = new Map(game);
         Player = new Player(this);
         World = new World(Vector2.Zero);
         _batch = new SpriteBatch(Game.GraphicsDevice);
@@ -36,7 +36,7 @@ public class GameScreen : Screen {
 
     public override void Initialize() {
         base.Initialize();
-    
+
         _amphora.Initialize();
         _amph2.Initialize();
         _map.Initialize();
@@ -59,7 +59,7 @@ public class GameScreen : Screen {
         _columns.Add(new Column(Game, World, new Vector2(8 * w / 10, 2 * h/10), 10, Game.ColumnTexture));
         _columns.Add(new Column(Game, World, new Vector2(1 * w / 10, 2 * h / 10), 10, Game.ColumnTexture));
         _columns.Add(new Column(Game, World, new Vector2(1 * w / 10, 3 * h / 10), 10, Game.ColumnTexture));
-        _columns.Add(new FragileColumn(Game, World, new Vector2(2 * w / 10, 7 * h / 10), 10, Game.ColumnTexture));
+        _columns.Add(new FragileColumn(Game, World, new Vector2(4 * w / 10, 6 * h / 10), 10, Game.ColumnTexture));
         _columns.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 9 * h / 10), 10, Game.ColumnTexture));
         _columns.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 4 * h / 10), 10, Game.ColumnTexture));
         _columns.Add(new FragileColumn(Game, World, new Vector2(8 * w / 10, 3 * h / 10), 10, Game.ColumnTexture));

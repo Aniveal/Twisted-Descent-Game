@@ -9,7 +9,7 @@ using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Meridian2.Theseus
 {
-    public class Player : IGameObject
+    public class Player : DrawableGameComponent
     {
         private readonly GameScreen _gameScreen;
 
@@ -35,7 +35,7 @@ namespace Meridian2.Theseus
         private bool isWalking = false;
         private Vector2 input = Vector2.Zero;
 
-        public Player(GameScreen gameScreen)
+        public Player(GameScreen gameScreen) : base(gameScreen.Game)
         {
             _gameScreen = gameScreen;
         }
