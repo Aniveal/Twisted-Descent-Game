@@ -9,7 +9,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Columns
 {
-    public class Column
+    public class Column : DrawableGameComponent
     {
         protected RopeGame _game;
         protected World _world;
@@ -19,7 +19,7 @@ namespace Meridian2.Columns
         public Body Body;
         protected Texture2D _columnTexture;
 
-        public Column(RopeGame game, World world, Vector2 center, float radius, Texture2D texture)
+        public Column(RopeGame game, World world, Vector2 center, float radius, Texture2D texture) : base(game)
         {
             _game = game;
             _world = world;
