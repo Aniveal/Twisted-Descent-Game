@@ -37,22 +37,22 @@ public class GameScreen : Screen {
     
         _amphora.Initialize();
         _amph2.Initialize();
-        //_map.Initialize();
+        _map.Initialize();
         Rope.Initialize();
         Player.Initialize();
 
         //Create dummy walls
         int w = Game.GraphicsDevice.Viewport.Width;
         int h = Game.GraphicsDevice.Viewport.Height;
-        int thick = w / 40;
+        //int thick = w / 40;
 
-        walls.Add(new DummyRectangle(Game, World, new Vector2(2 * w / 10, 0), thick, 6 * h / 10, Game.rectangleTexture));
-        walls.Add(new DummyRectangle(Game, World, new Vector2(0, 6 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
-        walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), 3 * w / 10, thick, Game.rectangleTexture));
-        walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
-        walls.Add(new DummyRectangle(Game, World, new Vector2(3 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
-        walls.Add(new DummyRectangle(Game, World, new Vector2(8 * w / 10, 8 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
-        walls.Add(new DummyRectangle(Game, World, new Vector2(9 * w / 10, 1 * h / 10), 7 * w / 10, thick, Game.rectangleTexture));
+        //walls.Add(new DummyRectangle(Game, World, new Vector2(2 * w / 10, 0), thick, 6 * h / 10, Game.rectangleTexture));
+        //walls.Add(new DummyRectangle(Game, World, new Vector2(0, 6 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
+        //walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), 3 * w / 10, thick, Game.rectangleTexture));
+        //walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
+        //walls.Add(new DummyRectangle(Game, World, new Vector2(3 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
+        //walls.Add(new DummyRectangle(Game, World, new Vector2(8 * w / 10, 8 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
+        //walls.Add(new DummyRectangle(Game, World, new Vector2(9 * w / 10, 1 * h / 10), 7 * w / 10, thick, Game.rectangleTexture));
 
         _columns.Add(new Column(Game, World, new Vector2(8 * w / 10, 2 * h/10), 10, Game.ColumnTexture));
         _columns.Add(new Column(Game, World, new Vector2(1 * w / 10, 2 * h / 10), 10, Game.ColumnTexture));
@@ -61,7 +61,7 @@ public class GameScreen : Screen {
         _columns.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 9 * h / 10), 10, Game.ColumnTexture));
         _columns.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 4 * h / 10), 10, Game.ColumnTexture));
         _columns.Add(new FragileColumn(Game, World, new Vector2(8 * w / 10, 3 * h / 10), 10, Game.ColumnTexture));
-        //_map.LoadContent();
+        _map.LoadContent();
         Rope.LoadContent();
         Player.LoadContent();
     }
@@ -85,7 +85,7 @@ public class GameScreen : Screen {
 
         _batch.Begin();
 
-        //_map.Draw(gameTime, _batch);
+        _map.Draw(gameTime, _batch);
         Player.Draw(gameTime, _batch);
         Rope.Draw(gameTime, _batch);
 
@@ -95,10 +95,10 @@ public class GameScreen : Screen {
         {
             c.Draw(_batch);
         }
-        foreach (DummyRectangle rec in walls)
-        {
-            rec.Draw(_batch);
-        }
+        //foreach (DummyRectangle rec in walls)
+        //{
+        //    rec.Draw(_batch);
+        //}
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10,10), Color.Red);
         _batch.End();
 
