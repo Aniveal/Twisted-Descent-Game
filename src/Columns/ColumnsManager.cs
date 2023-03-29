@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace Meridian2.Columns
 {
+    /**
+     * Propagates Update(), DrawFirst(), DrawSecond() to all columns
+     * 
+     * TODO: add a system to only work on columns on or close to the screen once we have a bigger map
+     */
     public class ColumnsManager
     {
         private List<TwoPhaseGameElement> columns;

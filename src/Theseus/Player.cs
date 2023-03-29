@@ -12,8 +12,9 @@ namespace Meridian2.Theseus
 {
     public class Player : DrawableGameElement
     {
-        private readonly GameScreen _gameScreen;
         private readonly RopeGame _game;
+        private Rope _rope;
+        private World _world;
 
         private Texture2D idle;
         private Texture2D running_l;
@@ -37,16 +38,17 @@ namespace Meridian2.Theseus
         private bool isWalking = false;
         private Vector2 input = Vector2.Zero;
 
-        public Player(GameScreen gameScreen)
+        public Player(RopeGame game, World world, Rope rope)
         { 
-            _gameScreen = gameScreen;
-            _game = gameScreen.Game;
+            _rope = rope;
+            _game = game;
+            _world = world;
         }
 
         public void Initialize()
         {
-            Body = _gameScreen.World.CreateEllipse((float)_playerSize.X / 2, (float)_playerSize.X / 4, 20, 0.1f,
-                _gameScreen.Rope.GetEndPosition(), 0f, BodyType.Dynamic);
+            Body = _world.CreateEllipse((float)_playerSize.X / 2, (float)_playerSize.X / 4, 20, 0.1f,
+                _rope.GetEndPosition(), 0f, BodyType.Dynamic);
             Body.FixedRotation = true;
             Body.LinearDamping = 1f;
 
@@ -56,7 +58,7 @@ namespace Meridian2.Theseus
                 fixture.CollisionGroup = -1;
             }
 
-            JointFactory.CreateRevoluteJoint(_gameScreen.World, _gameScreen.Rope.LastSegment().Body, Body,
+            JointFactory.CreateRevoluteJoint(_world, _rope.LastSegment().Body, Body,
                 Vector2.Zero);
         }
 
@@ -147,7 +149,7 @@ namespace Meridian2.Theseus
 
             if (keyboard.IsKeyDown(Keys.P))
             {
-                _gameScreen.Rope.Pull(gameTime);
+                _rope.Pull(gameTime);
             }
 
             input = ScreenToIsometric(input);
