@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2 {
-    public class Map : DrawableGameComponent {
+    public class Map : DrawableGameElement {
+        private readonly Game _game;
         private Texture2D _ground;
         private List<Texture2D> _column;
         private List<Texture2D> _rockTextures;
@@ -70,36 +72,36 @@ namespace Meridian2 {
         }
 
         public void LoadContent() {
-            _ground = Globals.Content.Load<Texture2D>("ground");
+            _ground = _game.Content.Load<Texture2D>("ground");
 
             _column = new List<Texture2D> {
-                Globals.Content.Load<Texture2D>("column"),
-                Globals.Content.Load<Texture2D>("column_lower"),
-                Globals.Content.Load<Texture2D>("column_upper")
+                _game.Content.Load<Texture2D>("column"),
+                _game.Content.Load<Texture2D>("column_lower"),
+                _game.Content.Load<Texture2D>("column_upper")
             };
 
             _rockTextures = new List<Texture2D> {
-                Globals.Content.Load<Texture2D>("wall_1b"), // 1
-                Globals.Content.Load<Texture2D>("wall_1r"), // 2
-                Globals.Content.Load<Texture2D>("wall_1f"), // 3 
-                Globals.Content.Load<Texture2D>("wall_1l"), // 4
-                Globals.Content.Load<Texture2D>("wall_2lf"), // 5
-                Globals.Content.Load<Texture2D>("wall_2rf"), // 6 
-                Globals.Content.Load<Texture2D>("wall_2rb"), // 7
-                Globals.Content.Load<Texture2D>("wall_2lb"), // 8
-                Globals.Content.Load<Texture2D>("wall_3b"), // 9
-                Globals.Content.Load<Texture2D>("wall_3r"), // 10
-                Globals.Content.Load<Texture2D>("wall_3f"), // 11
-                Globals.Content.Load<Texture2D>("wall_3l"), // 12
-                Globals.Content.Load<Texture2D>("wall_4") // 13
+                _game.Content.Load<Texture2D>("wall_1b"), // 1
+                _game.Content.Load<Texture2D>("wall_1r"), // 2
+                _game.Content.Load<Texture2D>("wall_1f"), // 3 
+                _game.Content.Load<Texture2D>("wall_1l"), // 4
+                _game.Content.Load<Texture2D>("wall_2lf"), // 5
+                _game.Content.Load<Texture2D>("wall_2rf"), // 6 
+                _game.Content.Load<Texture2D>("wall_2rb"), // 7
+                _game.Content.Load<Texture2D>("wall_2lb"), // 8
+                _game.Content.Load<Texture2D>("wall_3b"), // 9
+                _game.Content.Load<Texture2D>("wall_3r"), // 10
+                _game.Content.Load<Texture2D>("wall_3f"), // 11
+                _game.Content.Load<Texture2D>("wall_3l"), // 12
+                _game.Content.Load<Texture2D>("wall_4") // 13
             };
         }
 
-        public void Update(GameTime gameTime) {
+        public override void Update(GameTime gameTime) {
             // Do nothing
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch batch) {
+        public override void Draw(GameTime gameTime, SpriteBatch batch) {
             // Point a = MapToScreen(new(10, 10));  // Debug code for ScreenToMap, MapToScreen
             // Point b = ScreenToMap(a);
             // Debug.WriteLine(a + " -- " + b);
@@ -138,7 +140,8 @@ namespace Meridian2 {
             }
         }
 
-        public Map(Game game) : base(game) {
+        public Map(RopeGame game) {
+            _game = game;
         }
     }
 }

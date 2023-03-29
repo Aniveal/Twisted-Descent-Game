@@ -36,13 +36,12 @@ public class RopeGame : Game {
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
         
-        Globals.Content = Content;
         Globals.Graphics = _graphics;
 
         _gameScreen = new GameScreen(this);
         _gameScreen.Initialize();
 
-        Globals.SoundEngine = new SoundEngine(); //Create the sound engine
+        Globals.SoundEngine = new SoundEngine(this); //Create the sound engine
     }
 
     protected override void LoadContent() {

@@ -19,9 +19,10 @@ namespace Meridian2
         //A list of all the possible gravel Footstep sounds to chose from
         private List<SoundEffect> gravelFootsteps;
         private int nGravelFootsteps = 20;
+        private readonly RopeGame _game;
 
-        public SoundEngine() {
-
+        public SoundEngine(RopeGame game) {
+            _game = game;
             gravelFootsteps = new List<SoundEffect>();
             LoadContent();
         }
@@ -34,7 +35,7 @@ namespace Meridian2
             
             for(int i = 0; i < nGravelFootsteps; i++)
             {
-                gravelFootsteps.Add(Globals.Content.Load<SoundEffect>("Sound/GravelFootsteps/gravel" + i));
+                gravelFootsteps.Add(_game.Content.Load<SoundEffect>("Sound/GravelFootsteps/gravel" + i));
             }
 
             Debug.WriteLine("Done!");

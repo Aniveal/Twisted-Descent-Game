@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection.Metadata;
+using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,9 +10,10 @@ using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Meridian2.Theseus
 {
-    public class Player : DrawableGameComponent
+    public class Player : DrawableGameElement
     {
         private readonly GameScreen _gameScreen;
+        private readonly RopeGame _game;
 
         private Texture2D idle;
         private Texture2D running_l;
@@ -35,9 +37,10 @@ namespace Meridian2.Theseus
         private bool isWalking = false;
         private Vector2 input = Vector2.Zero;
 
-        public Player(GameScreen gameScreen) : base(gameScreen.Game)
-        {
+        public Player(GameScreen gameScreen)
+        { 
             _gameScreen = gameScreen;
+            _game = gameScreen.Game;
         }
 
         public void Initialize()
@@ -59,11 +62,11 @@ namespace Meridian2.Theseus
 
         public void LoadContent()
         {
-            idle = Globals.Content.Load<Texture2D>("idle");
-            running_l = Globals.Content.Load<Texture2D>("running");
-            running_r = Globals.Content.Load<Texture2D>("running_r");
-            running_f = Globals.Content.Load<Texture2D>("running_f");
-            running_b = Globals.Content.Load<Texture2D>("running_b");
+            idle = _game.Content.Load<Texture2D>("idle");
+            running_l = _game.Content.Load<Texture2D>("running");
+            running_r = _game.Content.Load<Texture2D>("running_r");
+            running_f = _game.Content.Load<Texture2D>("running_f");
+            running_b = _game.Content.Load<Texture2D>("running_b");
         }
 
         private Vector2 ScreenToIsometric(Vector2 vector)
@@ -79,7 +82,7 @@ namespace Meridian2.Theseus
             return new Vector2(isoX - isoY, (isoX + isoY) / 2);
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             input = Vector2.Zero;
             DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -181,7 +184,7 @@ namespace Meridian2.Theseus
 
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch batch)
+        public override void Draw(GameTime gameTime, SpriteBatch batch)
         {
             var playerSpriteX = Body.Position.X - (float)_playerSize.X / 2;
             var playerSpriteY = Body.Position.Y - _playerSize.Y;
