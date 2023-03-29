@@ -10,6 +10,11 @@ namespace Meridian2.GameElements
 {
     public class TwoPhaseGameElement : IUpdatableObject, ITwoPhaseDrawableObject
     {
+
+        public virtual void Initialize()
+        {
+
+        }
         public virtual void DrawFirst(GameTime gameTime, SpriteBatch batch)
         {
             

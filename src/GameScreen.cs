@@ -13,8 +13,6 @@ public class GameScreen : Screen {
     private SpriteBatch _batch;
     public World World;
 
-    private Amphora _amphora;
-    private Amphora _amph2;
     private Map _map;
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
 
@@ -32,15 +30,11 @@ public class GameScreen : Screen {
         columnsManager = new ColumnsManager();
         theseusManager = new TheseusManager(Game, World);
 
-        _amphora = new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 50, 420), 10);
-        _amph2 = new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f -100, 270), 10);
     }
 
     public override void Initialize() {
         base.Initialize();
 
-        _amphora.Initialize();
-        _amph2.Initialize();
         _map.Initialize();
         
         theseusManager.Initialize();
@@ -66,6 +60,9 @@ public class GameScreen : Screen {
         columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 9 * h / 10), 10, Game.ColumnTexture));
         columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 4 * h / 10), 10, Game.ColumnTexture));
         columnsManager.Add(new FragileColumn(Game, World, new Vector2(8 * w / 10, 3 * h / 10), 10, Game.ColumnTexture));
+        columnsManager.Add(new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 50, 420), 10));
+        columnsManager.Add(new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 100, 270), 10));
+
         _map.LoadContent();
        
         theseusManager.LoadContent();
@@ -100,8 +97,6 @@ public class GameScreen : Screen {
 
         columnsManager.DrawSecond(gameTime, _batch);
 
-        _amphora.Draw(gameTime, _batch);
-        _amph2.Draw(gameTime, _batch);
         //foreach (DummyRectangle rec in walls)
         //{
         //    rec.Draw(_batch);
