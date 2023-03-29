@@ -35,7 +35,7 @@ public class GameScreen : Screen {
 
         columnsManager = new ColumnsManager();
 
-        Rope = new Rope(this, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f, 20), 150);
+        Rope = new Rope(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f, 20), 150);
         _amphora = new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 50, 420), 10);
         _amph2 = new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f -100, 270), 10);
     }

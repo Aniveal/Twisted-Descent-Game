@@ -14,7 +14,8 @@ namespace Meridian2.Theseus;
 
 public class Rope : DrawableGameElement
 {
-    private readonly GameScreen _gameScreen;
+    private readonly RopeGame _game;
+    private readonly World _world;
     private readonly Vector2 _pos;
     private readonly int _segmentCount;
 
@@ -30,9 +31,10 @@ public class Rope : DrawableGameElement
     // 1 second cooldown between column breaks
     public TimeSpan breakCoolDown = new TimeSpan(0, 0, 1);
 
-    public Rope(GameScreen gameScreen, Vector2 pos, int segmentCount)
+    public Rope(RopeGame game, World world, Vector2 pos, int segmentCount)
     {
-        _gameScreen = gameScreen;
+        _game = game;
+        _world = world;
         _pos = pos;
         _segmentCount = segmentCount;
     }
@@ -52,7 +54,7 @@ public class Rope : DrawableGameElement
         Debug.Assert(num >= 0, "Cannot create less than one rope segment!");
         _segments = new List<RopeSegment>(num);
 
-        _anchor = _gameScreen.World.CreateCircle(1f, 1f, pos);
+        _anchor = _world.CreateCircle(1f, 1f, pos);
 
         // Disable rope collision of anchor
         foreach (Fixture fixture in _anchor.FixtureList)
@@ -62,7 +64,7 @@ public class Rope : DrawableGameElement
 
         for (int i = 0; i < num; i++)
         {
-            RopeSegment segment = new RopeSegment(this, _gameScreen,
+            RopeSegment segment = new RopeSegment(this, _world,
                 new Vector2(pos.X, pos.Y + TextureHeight * i),
                 new Vector2(TextureWidth, TextureHeight));
             segment.Initialize();
@@ -71,14 +73,14 @@ public class Rope : DrawableGameElement
 
             if (i > 0)
             {
-                JointFactory.CreateRevoluteJoint(_gameScreen.World, _segments[i - 1].Body, _segments[i].Body,
+                JointFactory.CreateRevoluteJoint(_world, _segments[i - 1].Body, _segments[i].Body,
                     Vector2.Zero);
                 segment.SetPrevious(_segments[i - 1]);
                 _segments[i - 1].SetNext(segment);
             }
             else
             {
-                JointFactory.CreateRevoluteJoint(_gameScreen.World, _anchor, _segments[0].Body, Vector2.Zero);
+                JointFactory.CreateRevoluteJoint(_world, _anchor, _segments[0].Body, Vector2.Zero);
             }
         }
     }
@@ -101,7 +103,7 @@ public class Rope : DrawableGameElement
 
     private void CreateBaseTexture()
     {
-        BaseTexture = new Texture2D(_gameScreen.Game.GraphicsDevice, TextureWidth, TextureHeight);
+        BaseTexture = new Texture2D(_game.GraphicsDevice, TextureWidth, TextureHeight);
         Color[] data = new Color[BaseTexture.Width * BaseTexture.Height];
         for (int i = 0; i < data.Length; i++)
         {

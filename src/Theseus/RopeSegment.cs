@@ -12,7 +12,7 @@ namespace Meridian2.Theseus;
 public class RopeSegment : DrawableGameElement
 {
     private readonly Rope _rope;
-    private readonly GameScreen _gameScreen;
+    private readonly World _world;
     private readonly Vector2 _position;
     private readonly Vector2 _size;
     public RopeSegment previous = null; //may be null if none
@@ -31,17 +31,17 @@ public class RopeSegment : DrawableGameElement
     public bool elecFromPrev = false;
     public bool elecFromNext = false;
 
-    public RopeSegment(Rope rope, GameScreen gameScreen, Vector2 position, Vector2 size)
+    public RopeSegment(Rope rope, World world, Vector2 position, Vector2 size)
     {
         _rope = rope;
-        _gameScreen = gameScreen;
+        _world = world;
         _position = position;
         _size = size;
     }
 
     public void Initialize()
     {
-        Body = _gameScreen.World.CreateRectangle(_size.X, _size.Y, RopeDensity, _position, bodyType: BodyType.Dynamic);
+        Body = _world.CreateRectangle(_size.X, _size.Y, RopeDensity, _position, bodyType: BodyType.Dynamic);
         Body.LinearDamping = 1f;
         Body.AngularDamping = 2f;
         Body.Tag = this;
