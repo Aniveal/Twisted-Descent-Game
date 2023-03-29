@@ -8,13 +8,17 @@ using tainicom.Aether.Physics2D.Dynamics;
 namespace Meridian2;
 
 public class RopeGame : Game {
-    private GraphicsDeviceManager _graphics;
+    public GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
     private const int TargetFrameRate = 144;
+
+    //TODO: move textures somewhere else?
     public SpriteFont Font;
     public Texture2D ColumnTexture;
     public Texture2D rectangleTexture;
+
+    public SoundEngine soundEngine;
 
     private GameScreen _gameScreen;
 
@@ -35,13 +39,11 @@ public class RopeGame : Game {
         _graphics.PreferredBackBufferWidth = 1280;
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
-        
-        Globals.Graphics = _graphics;
 
         _gameScreen = new GameScreen(this);
         _gameScreen.Initialize();
 
-        Globals.SoundEngine = new SoundEngine(this); //Create the sound engine
+        soundEngine = new SoundEngine(this); //Create the sound engine
     }
 
     protected override void LoadContent() {

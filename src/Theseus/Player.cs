@@ -143,7 +143,7 @@ namespace Meridian2.Theseus
 
             if (isWalking && footstepSoundDelayCurrent < 0)
             {
-                Globals.SoundEngine.playGravelFootstep();
+                _game.soundEngine.playGravelFootstep();
                 footstepSoundDelayCurrent = footstepSoundDelayMax;
             }
 

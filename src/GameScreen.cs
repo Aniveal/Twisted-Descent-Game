@@ -13,11 +13,10 @@ public class GameScreen : Screen {
     private SpriteBatch _batch;
     public World World;
 
-    private List<Column> _columns = new List<Column>();
     private Amphora _amphora;
     private Amphora _amph2;
     private Map _map;
-    public List<DummyRectangle> walls = new List<DummyRectangle>();
+    //public List<DummyRectangle> walls = new List<DummyRectangle>();
 
     public TheseusManager theseusManager;
     public ColumnsManager columnsManager;

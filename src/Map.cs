@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2 {
     public class Map : DrawableGameElement {
-        private readonly Game _game;
+        private readonly RopeGame _game;
         private Texture2D _ground;
         private List<Texture2D> _column;
         private List<Texture2D> _rockTextures;
@@ -107,8 +107,8 @@ namespace Meridian2 {
             // Debug.WriteLine(a + " -- " + b);
 
             // only draw planes that are visible on screen:
-            int h = Globals.Graphics.PreferredBackBufferHeight;
-            int w = Globals.Graphics.PreferredBackBufferWidth;
+            int h = _game._graphics.PreferredBackBufferHeight;
+            int w = _game._graphics.PreferredBackBufferWidth;
 
             int addonTiles = 4;
 
@@ -125,7 +125,7 @@ namespace Meridian2 {
             for (int x = xMin; x < xMax; x++) {
                 for (int y = yMin; y < yMax; y++) {
                     Point screenPos = MapToScreen(new(x, y));
-                    Rectangle tilePos = new Rectangle(screenPos.X+ Globals.Graphics.PreferredBackBufferWidth/2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
+                    Rectangle tilePos = new Rectangle(screenPos.X+ _game._graphics.PreferredBackBufferWidth/2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
 
                     batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero,
                         SpriteEffects.None, 0.9f);
