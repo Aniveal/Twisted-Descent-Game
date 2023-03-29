@@ -3,9 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2;
+namespace Meridian2.Columns;
 
-public class Amphora : TwoPhaseGameElement {
+public class Amphora : TwoPhaseGameElement
+{
     private World _world;
     private RopeGame _game;
     private Vector2 _position;
@@ -15,7 +16,8 @@ public class Amphora : TwoPhaseGameElement {
 
     private const float Density = 0.1f;
 
-    public Amphora(RopeGame game, World world, Vector2 position, float radius) {
+    public Amphora(RopeGame game, World world, Vector2 position, float radius)
+    {
         _game = game;
         _world = world;
         _position = position;
@@ -24,11 +26,12 @@ public class Amphora : TwoPhaseGameElement {
         Initialize();
     }
 
-    public override void Initialize() {
+    public override void Initialize()
+    {
         _body = _world.CreateCircle(_radius, Density, _position, BodyType.Dynamic);
         _body.FixedRotation = true;
         _body.LinearDamping = 0.1f;
-        
+
         base.Initialize();
     }
 
