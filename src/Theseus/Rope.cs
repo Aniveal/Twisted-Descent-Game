@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Meridian2.Columns;
+using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,7 +12,7 @@ using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Meridian2.Theseus;
 
-public class Rope : DrawableGameComponent
+public class Rope : DrawableGameElement
 {
     private readonly GameScreen _gameScreen;
     private readonly Vector2 _pos;
@@ -29,7 +30,7 @@ public class Rope : DrawableGameComponent
     // 1 second cooldown between column breaks
     public TimeSpan breakCoolDown = new TimeSpan(0, 0, 1);
 
-    public Rope(GameScreen gameScreen, Vector2 pos, int segmentCount) : base(gameScreen.Game)
+    public Rope(GameScreen gameScreen, Vector2 pos, int segmentCount)
     {
         _gameScreen = gameScreen;
         _pos = pos;
@@ -125,7 +126,7 @@ public class Rope : DrawableGameComponent
         }
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         // Diagnostics.Instance.SetForce(_endAnchor.LinearVelocity.LengthSquared());
         //
@@ -141,7 +142,7 @@ public class Rope : DrawableGameComponent
         // }
     }
 
-    public void Draw(GameTime gameTime, SpriteBatch batch)
+    public override void Draw(GameTime gameTime, SpriteBatch batch)
     {
         foreach (RopeSegment segment in _segments)
         {

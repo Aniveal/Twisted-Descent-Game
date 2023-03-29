@@ -1,4 +1,5 @@
 ﻿using Meridian2.Columns;
+using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -8,7 +9,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Theseus;
 
-public class RopeSegment : DrawableGameComponent
+public class RopeSegment : DrawableGameElement
 {
     private readonly Rope _rope;
     private readonly GameScreen _gameScreen;
@@ -30,7 +31,7 @@ public class RopeSegment : DrawableGameComponent
     public bool elecFromPrev = false;
     public bool elecFromNext = false;
 
-    public RopeSegment(Rope rope, GameScreen gameScreen, Vector2 position, Vector2 size) : base(gameScreen.Game)
+    public RopeSegment(Rope rope, GameScreen gameScreen, Vector2 position, Vector2 size)
     {
         _rope = rope;
         _gameScreen = gameScreen;
@@ -120,7 +121,7 @@ public class RopeSegment : DrawableGameComponent
         // Nothing to update
     }
 
-    public void Draw(GameTime gameTime, SpriteBatch batch)
+    public override void Draw(GameTime gameTime, SpriteBatch batch)
     {
         if (elecIntensity > 0)
         {
