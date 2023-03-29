@@ -19,7 +19,7 @@ namespace Meridian2.Columns
 
         }
 
-        public override void Draw(SpriteBatch batch)
+        public override void DrawFirst(GameTime gameTime, SpriteBatch batch)
         {
             if (_broken)
             {
@@ -30,6 +30,11 @@ namespace Meridian2.Columns
             {
                 batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.White);
             }
+        }
+
+        public override void DrawSecond(GameTime gameTime, SpriteBatch batch)
+        {
+            //TODO: update once sprites are available
         }
 
         public void Break()

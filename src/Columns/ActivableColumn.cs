@@ -65,7 +65,7 @@ namespace Meridian2.Columns
             }
         }
 
-        public override void Draw(SpriteBatch batch)
+        public override void DrawFirst(GameTime gameTime, SpriteBatch batch)
         {
             if (_activated)
             {
@@ -75,8 +75,13 @@ namespace Meridian2.Columns
             else
             {
                 //draw noraml column
-                base.Draw(batch);
+                base.DrawFirst(gameTime, batch);
             }
+        }
+
+        public override void DrawSecond(GameTime gameTime, SpriteBatch batch)
+        {
+            //TODO: update once sprites are available
         }
     }
 }

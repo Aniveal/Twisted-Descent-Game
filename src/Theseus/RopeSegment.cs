@@ -115,7 +115,7 @@ public class RopeSegment : DrawableGameComponent
         // Nothing to load
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         // Nothing to update
     }
