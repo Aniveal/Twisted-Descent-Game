@@ -25,15 +25,20 @@ namespace Meridian2
 
         public string name;
 
+        //The higher, the more likely this prototype is picked
+        public int weight;
+
         //Name of prototype (i.e. "Wall1ur" for Wall1, up, right)
         public readonly Texture2D texture;
 
 
-        public Prototype(Texture2D t, string n, int[] sockets)
+        public Prototype(Texture2D t, string n, int[] sockets, int w)
         {
             texture = t;
             name = n;
             this.sockets = sockets;
+            weight = w;
+
         }
 
     }

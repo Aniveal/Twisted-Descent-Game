@@ -35,12 +35,10 @@ namespace Meridian2
         //Return value is if the superposition has changed or not, i.e. if we have to propagate
         public bool collapseFunction(Tile other, string dir)
         {
-            Debug.WriteLine("Start Collapsing cell " + this.x + " " + this.y + " to " + dir);
 
             //Allready finished!
             if (superpositions.Count <= 1)
             {
-                Debug.WriteLine("Allready Collapsed");
                 return false;
             }
                 
@@ -56,8 +54,6 @@ namespace Meridian2
             {
                 foreach (Prototype thisPrototype in this.superpositions)
                 {
-                    Debug.WriteLine("This Prototype: " + thisPrototype.sockets[0] + " " + thisPrototype.sockets[1] + " " + thisPrototype.sockets[2] + " " + thisPrototype.sockets[3] + " ");
-                    Debug.WriteLine("Other Prototype: " + otherPrototype.sockets[0] + " " + otherPrototype.sockets[1] + " " + otherPrototype.sockets[2] + " " + otherPrototype.sockets[3] + " ");
                     //Add all possible neighbour prototypes
                     switch (dir)
                     {
@@ -73,12 +69,6 @@ namespace Meridian2
             superpositions.Clear();
             superpositions.AddRange(protList);
 
-            Debug.WriteLine("Result: ");
-            foreach(Prototype p in protList)
-            {
-                Debug.WriteLine(p.sockets[0] + " " + p.sockets[1] + " " + p.sockets[2] + " " + p.sockets[3] + " ");
-            }
-
             if (superpositions.Count == n)
             {
                 changed = false;
@@ -89,7 +79,6 @@ namespace Meridian2
             //Finished!!
             if (superpositions.Count == 1)
             {
-                Debug.WriteLine("Finished!");
                 finalPrototype = superpositions[0];
             }
             if(superpositions.Count == 0) {
@@ -102,8 +91,31 @@ namespace Meridian2
 
         public void chooseRandomPrototype()
         {
-            finalPrototype = superpositions[new Random().Next(superpositions.Count)];
+            //Step 1: get sum of all weights
+            int totalWeight = 0;
+            foreach (Prototype p in superpositions)
+            {
+                totalWeight += p.weight;
+            }
+
+            //Step 2: find element
+            int weightSum = 0;
+            int randomNumber = new Random().Next(totalWeight);
+            for(int i = 0; i < superpositions.Count; i++)
+            {
+                weightSum += superpositions[i].weight;
+                if (weightSum > randomNumber)
+                {
+                    finalPrototype = superpositions[i];
+                    break;
+                }
+
+            }
+
             superpositions = new List<Prototype> { finalPrototype };
+
+            
+            Debug.WriteLine("Chose prot: " + finalPrototype.name + "    WeightSum = " + weightSum + "   randomNumber == " + randomNumber + "       Total Weight: " + totalWeight);
         }
 
     }
