@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +13,7 @@ namespace Meridian2 {
         private List<Texture2D> _rockTextures;
 
         public Point TileSize = new(160, 160); // pixels
-        public int[,] TileType = new int[100, 100]; // contains type of each tile: 0 for empty_tile, 1 for rock_tile
+        public Tile[,] TileMap; // contains a prototype object for each tile coordinate
 
         /* Helper Functions */
         // Isometric Math: https://clintbellanger.net/articles/isometric_math/
@@ -40,35 +41,17 @@ namespace Meridian2 {
             return new(mapX, mapY);
         }
 
-        public void Initialize() {
-            for (int x = 0; x < TileType.GetLength(0); x++) {
-                for (int y = 0; y < TileType.GetLength(1); y++) {
-                    TileType[x, y] = 0;
+        public void Initialize() 
+        {
+            MapGenerator mapGenerator = new MapGenerator(_game);
 
-                    // Walls
-                    if (x == 0) {
-                        TileType[x, y] = 5;
-                    }
-                    
-                    if (x == TileType.GetLength(0) - 1) {
-                        TileType[x, y] = 7;
-                    }
-                    
-                    if (y == 0) {
-                        TileType[x, y] = 6;
-                    }
+            Debug.WriteLine("Initializing Map");
 
-                    if (y == TileType.GetLength(1) - 1) {
-                        TileType[x, y] = 8;
-                    }
-                }
-            }
-            
-            // Corners
-            TileType[0, 0] = 11;
-            TileType[TileType.GetLength(0) - 1, 0] = 10;
-            TileType[0, TileType.GetLength(1) - 1] = 12;
-            TileType[TileType.GetLength(0) - 1, TileType.GetLength(1) - 1] = 9;
+            //The new Map generation
+            TileMap = mapGenerator.createMap(5, 5);
+
+            Debug.WriteLine(TileMap);
+                    
         }
 
         public void LoadContent() {
@@ -80,6 +63,7 @@ namespace Meridian2 {
                 _game.Content.Load<Texture2D>("column_upper")
             };
 
+            
             _rockTextures = new List<Texture2D> {
                 _game.Content.Load<Texture2D>("wall_1b"), // 1
                 _game.Content.Load<Texture2D>("wall_1r"), // 2
@@ -106,6 +90,8 @@ namespace Meridian2 {
             // Point b = ScreenToMap(a);
             // Debug.WriteLine(a + " -- " + b);
 
+            int c = 0;
+
             // only draw planes that are visible on screen:
             int h = _game._graphics.PreferredBackBufferHeight;
             int w = _game._graphics.PreferredBackBufferWidth;
@@ -118,26 +104,28 @@ namespace Meridian2 {
             int yMax = ScreenToMap(new(0, h)).Y + addonTiles;
 
             xMin = (xMin < 0) ? 0 : xMin;
-            xMax = (xMax >= TileType.GetLength(0)) ? TileType.GetLength(0) - 1 : xMax;
+            xMax = (xMax >= TileMap.GetLength(0)) ? TileMap.GetLength(0) - 1 : xMax;
             yMin = (yMin < 0) ? 0 : yMin;
-            yMax = (yMax >= TileType.GetLength(1)) ? TileType.GetLength(0) - 1 : yMax;
+            yMax = (yMax >= TileMap.GetLength(1)) ? TileMap.GetLength(0) - 1 : yMax;
 
-            for (int x = xMin; x < xMax; x++) {
-                for (int y = yMin; y < yMax; y++) {
-                    Point screenPos = MapToScreen(new(x, y));
-                    Rectangle tilePos = new Rectangle(screenPos.X+ _game._graphics.PreferredBackBufferWidth/2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
 
-                    batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero,
+            
+            foreach (Tile t in TileMap)
+            {
+                Point screenPos = MapToScreen(new((int)t.position.X, (int)t.position.Y));
+                Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
+
+                batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero,
                         SpriteEffects.None, 0.9f);
 
-                    int tileType = TileType[x, y];
-                    if (tileType > 0) {
-                        batch.Draw(_rockTextures[tileType - 1], tilePos, Color.White);
-                    } else if (tileType < 0) {
-                        batch.Draw(_column[(-1 * tileType) - 1], tilePos, Color.White);
-                    }
+                if (t.finalPrototype != null)
+                {
+                    c++;
+                    batch.Draw(t.finalPrototype.texture, tilePos, Color.White);
                 }
             }
+
+            
         }
 
         public Map(RopeGame game) {
