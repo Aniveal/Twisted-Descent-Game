@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
+using Microsoft.Xna.Framework.Input;
 
 
 namespace Meridian2
@@ -68,6 +69,8 @@ namespace Meridian2
             base.Update(gameTime);
             _map.Update(gameTime);
 
+            processInput(gameTime);
+
             //putting it here cuz otherwise we'll forget about it the day when columns actually need updating
             //columnsManager.Update(gameTime);
         }
@@ -89,5 +92,12 @@ namespace Meridian2
 
 
         }
+
+        private void processInput(GameTime gameTime)
+        {
+            
+        }
+
+
     }
 }

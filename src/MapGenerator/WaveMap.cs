@@ -5,8 +5,10 @@ using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2 {
-    public class Map : DrawableGameElement {
+namespace Meridian2
+{
+    public class WaveMap : DrawableGameElement
+    {
         private readonly RopeGame _game;
         private Texture2D _ground;
         private List<Texture2D> _column;
@@ -20,7 +22,8 @@ namespace Meridian2 {
         // Note: our tiles have slightly different shape, (they're twice as high: take 1/4 of the height instead of 1/2)
 
         // MapToScreen: take index of a tile as an input (e.g. (2,1)) returns pixel position.
-        public Point MapToScreen(Point map_coordinates) {
+        public Point MapToScreen(Point map_coordinates)
+        {
             int halfTile = TileSize.X / 2;
             int quaterTile = TileSize.X / 4;
 
@@ -30,7 +33,8 @@ namespace Meridian2 {
         }
 
         // ScreenToMap: takes pixel position, returns the index of the tile at this position.
-        public Point ScreenToMap(Point screenPos) {
+        public Point ScreenToMap(Point screenPos)
+        {
             screenPos.X -= (int)Globals.CameraPosition.X;
             screenPos.Y -= (int)Globals.CameraPosition.Y;
 
@@ -41,20 +45,21 @@ namespace Meridian2 {
             return new(mapX, mapY);
         }
 
-        public void Initialize() 
+        public void Initialize()
         {
             MapGenerator mapGenerator = new MapGenerator(_game);
 
             Debug.WriteLine("Initializing Map");
 
             //The new Map generation
-            TileMap = mapGenerator.createMap(10, 10);
+            TileMap = mapGenerator.createMap(5, 5);
 
             Debug.WriteLine(TileMap);
-                    
+
         }
 
-        public void LoadContent() {
+        public void LoadContent()
+        {
             _ground = _game.Content.Load<Texture2D>("ground");
 
             _column = new List<Texture2D> {
@@ -63,7 +68,7 @@ namespace Meridian2 {
                 _game.Content.Load<Texture2D>("column_upper")
             };
 
-            
+
             _rockTextures = new List<Texture2D> {
                 _game.Content.Load<Texture2D>("wall_1b"), // 1
                 _game.Content.Load<Texture2D>("wall_1r"), // 2
@@ -81,11 +86,13 @@ namespace Meridian2 {
             };
         }
 
-        public override void Update(GameTime gameTime) {
+        public override void Update(GameTime gameTime)
+        {
             // Do nothing
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch batch) {
+        public override void Draw(GameTime gameTime, SpriteBatch batch)
+        {
             // Point a = MapToScreen(new(10, 10));  // Debug code for ScreenToMap, MapToScreen
             // Point b = ScreenToMap(a);
             // Debug.WriteLine(a + " -- " + b);
@@ -109,7 +116,7 @@ namespace Meridian2 {
             yMax = (yMax >= TileMap.GetLength(1)) ? TileMap.GetLength(0) - 1 : yMax;
 
 
-            
+
             foreach (Tile t in TileMap)
             {
                 Point screenPos = MapToScreen(new(t.x, t.y));
@@ -125,10 +132,11 @@ namespace Meridian2 {
                 }
             }
 
-            
+
         }
 
-        public Map(RopeGame game) {
+        public WaveMap(RopeGame game)
+        {
             _game = game;
         }
     }

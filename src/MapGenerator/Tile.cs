@@ -15,33 +15,28 @@ namespace Meridian2
 {
     public class Tile
     {
-        public Vector2 position;
+        public int x, y;
 
         //The superposition list of this tile
-        public List<Prototype> superpositions = new List<Prototype>();
+        public List<Prototype> superpositions;
 
         public Prototype finalPrototype;
 
-        public int x;
-        public int y;
-
-        public int numSuperpositions { get; set; }
-
         public Tile(List<Prototype> protList)
         {
+            superpositions = new List<Prototype>();
             superpositions.AddRange(protList);
-            numSuperpositions = protList.Count();
-            position = new Vector2 (0, 0);
+            x = y = 0;
         }
 
         //Collapse the wave function where the socket on the direction dir is incompatible (dir is the direction from here to where to fit)
         //Return value is if the superposition has changed or not, i.e. if we have to propagate
         public bool collapseFunction(Tile other, string dir)
         {
-            Debug.WriteLine("Start Collapse between cells: ");
+            Debug.WriteLine("Start Collapsing cell " + this.x + " " + this.y + " to " + dir);
 
             //Allready finished!
-            if (numSuperpositions <= 1)
+            if (superpositions.Count <= 1)
             {
                 Debug.WriteLine("Allready Collapsed");
                 return false;
@@ -49,11 +44,10 @@ namespace Meridian2
                 
 
             bool changed = true;
+            int n = superpositions.Count;
 
             //new list of superpositions
             List<Prototype> protList = new List<Prototype>();
-
-
 
             //Iterate over all prototypes in sup and only keep the ones which are compatible
             foreach (Prototype otherPrototype in other.superpositions)
@@ -65,14 +59,17 @@ namespace Meridian2
                     //Add all possible neighbour prototypes
                     switch (dir)
                     {
-                        case "up": if(thisPrototype.sockets[0] == otherPrototype.sockets[1]) protList.Add(otherPrototype); break;
-                        case "down": if (thisPrototype.sockets[1] == otherPrototype.sockets[0]) protList.Add(otherPrototype); break;
-                        case "left": if (thisPrototype.sockets[2] == otherPrototype.sockets[3]) protList.Add(otherPrototype); break;
-                        case "right": if (thisPrototype.sockets[3] == otherPrototype.sockets[2]) protList.Add(otherPrototype); break;
+                        case "up": if(thisPrototype.sockets[0] == otherPrototype.sockets[1]) protList.Add(thisPrototype); break;
+                        case "down": if (thisPrototype.sockets[1] == otherPrototype.sockets[0]) protList.Add(thisPrototype); break;
+                        case "left": if (thisPrototype.sockets[2] == otherPrototype.sockets[3]) protList.Add(thisPrototype); break;
+                        case "right": if (thisPrototype.sockets[3] == otherPrototype.sockets[2]) protList.Add(thisPrototype); break;
                         default: break;
                     }
                 }
             }
+            protList = protList.Distinct().ToList();
+            superpositions.Clear();
+            superpositions.AddRange(protList);
 
             Debug.WriteLine("Result: ");
             foreach(Prototype p in protList)
@@ -80,15 +77,12 @@ namespace Meridian2
                 Debug.WriteLine(p.sockets[0] + " " + p.sockets[1] + " " + p.sockets[2] + " " + p.sockets[3] + " ");
             }
 
-            if (superpositions.Count == protList.Count)
+            if (superpositions.Count == n)
             {
                 changed = false;
             }
 
-
-            superpositions = protList;
-
-            numSuperpositions = superpositions.Count();
+            
 
             //Finished!!
             if (superpositions.Count == 1)
@@ -108,7 +102,6 @@ namespace Meridian2
         {
             finalPrototype = superpositions[new Random().Next(superpositions.Count)];
             superpositions = new List<Prototype> { finalPrototype };
-            numSuperpositions = 1;
         }
 
     }

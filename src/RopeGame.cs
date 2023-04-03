@@ -20,7 +20,7 @@ public class RopeGame : Game {
 
     public SoundEngine soundEngine;
 
-    private GameScreen _gameScreen;
+    private MapScreen _mapScreen;
 
     public RopeGame() {
         _graphics = new GraphicsDeviceManager(this);
@@ -40,8 +40,8 @@ public class RopeGame : Game {
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
 
-        _gameScreen = new GameScreen(this);
-        _gameScreen.Initialize();
+        _mapScreen = new MapScreen(this);
+        _mapScreen.Initialize();
 
         soundEngine = new SoundEngine(this); //Create the sound engine
     }
@@ -61,7 +61,7 @@ public class RopeGame : Game {
 
         base.Update(gameTime);
 
-        _gameScreen.Update(gameTime);
+        _mapScreen.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime) {
@@ -69,6 +69,6 @@ public class RopeGame : Game {
 
         base.Draw(gameTime);
 
-        _gameScreen.Draw(gameTime);
+        _mapScreen.Draw(gameTime);
     }
 }
