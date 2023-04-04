@@ -14,7 +14,7 @@ namespace Meridian2 {
         
         public Camera(GraphicsDevice graphicsDevice) {
             _graphicsDevice = graphicsDevice;
-            _scale = 1.0f;
+            _scale = 60.0f;
             Pos = Vector2.Zero;
         }
 
@@ -33,8 +33,10 @@ namespace Meridian2 {
                 h /= 2;
             }
             
-            return new Rectangle((int)(Pos.X - _scale * x), (int)(Pos.Y  -_scale * y / 2), (int)w, (int)h);
+            return new Rectangle((int)((Pos.X - x) * _scale), (int)((Pos.Y - y) * _scale/2), (int)w, (int)h);
         } 
+
+
         
         public void Move(Vector2 amount) {
             Pos += amount;
