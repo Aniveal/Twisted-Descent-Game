@@ -43,10 +43,9 @@ namespace Meridian2.Theseus
             rope.Update(gameTime);
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch batch)
-        {
-            rope.Draw(gameTime, batch);
-            player.Draw(gameTime, batch);
+        public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+            rope.Draw(gameTime, batch, camera);
+            player.Draw(gameTime, batch, camera);
         }
     }
 }

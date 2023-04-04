@@ -12,6 +12,7 @@ public class GameScreen : Screen {
     public RopeGame Game;
     private SpriteBatch _batch;
     public World World;
+    public Camera Camera;
 
     private Map _map;
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
@@ -22,7 +23,8 @@ public class GameScreen : Screen {
 
     public GameScreen(RopeGame game) : base(game) {
         Game = getGame();
-        
+        Camera = new Camera(Game.GraphicsDevice);
+
         _batch = new SpriteBatch(Game.GraphicsDevice);
         _map = new Map(game);
         World = new World(Vector2.Zero);
@@ -90,12 +92,12 @@ public class GameScreen : Screen {
 
         _batch.Begin();
 
-        _map.Draw(gameTime, _batch);
-        columnsManager.DrawFirst(gameTime, _batch);
+        _map.Draw(gameTime, _batch, Camera);
+        columnsManager.DrawFirst(gameTime, _batch, Camera);
 
-        theseusManager.Draw(gameTime, _batch);
+        theseusManager.Draw(gameTime, _batch, Camera);
 
-        columnsManager.DrawSecond(gameTime, _batch);
+        columnsManager.DrawSecond(gameTime, _batch, Camera);
 
         //foreach (DummyRectangle rec in walls)
         //{
@@ -103,7 +105,5 @@ public class GameScreen : Screen {
         //}
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10,10), Color.Red);
         _batch.End();
-
-        
     }
 }

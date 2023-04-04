@@ -35,19 +35,19 @@ namespace Meridian2.Columns
             columns.Remove(column);
         }
 
-        public void DrawFirst(GameTime gameTime, SpriteBatch batch)
+        public void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             foreach (TwoPhaseGameElement element in columns)
             {
-                element.DrawFirst(gameTime, batch);
+                element.DrawFirst(gameTime, batch, camera);
             }
         }
 
-        public void DrawSecond(GameTime gameTime, SpriteBatch batch)
+        public void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             foreach (TwoPhaseGameElement element in columns)
             {
-                element.DrawSecond(gameTime, batch);
+                element.DrawSecond(gameTime, batch, camera);
             }
         }
 

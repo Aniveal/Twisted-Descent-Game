@@ -85,7 +85,7 @@ namespace Meridian2 {
             // Do nothing
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch batch) {
+        public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
             // Point a = MapToScreen(new(10, 10));  // Debug code for ScreenToMap, MapToScreen
             // Point b = ScreenToMap(a);
             // Debug.WriteLine(a + " -- " + b);
@@ -124,8 +124,6 @@ namespace Meridian2 {
                     batch.Draw(t.finalPrototype.texture, tilePos, Color.White);
                 }
             }
-
-            
         }
 
         public Map(RopeGame game) {

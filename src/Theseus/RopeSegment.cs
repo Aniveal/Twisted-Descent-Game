@@ -121,23 +121,15 @@ public class RopeSegment : DrawableGameElement
         // Nothing to update
     }
 
-    public override void Draw(GameTime gameTime, SpriteBatch batch)
-    {
-        if (elecIntensity > 0)
-        {
-
-            batch.Draw(_rope.BaseTexture, sourceRectangle: null, position: Body.Position, scale: 1f, rotation: Body.Rotation,
-            color: Color.Black, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
-            return;
+    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+        Color ropeColor = Color.White;
+        if (elecIntensity > 0) {
+            ropeColor = Color.Black;
         }
-        //if (_black)
-        //    {
-        //    batch.Draw(_rope.BaseTexture, sourceRectangle: null, position: Body.Position, scale: 1f, rotation: Body.Rotation,
-        //    color: Color.Black, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
-        //    return;
-        //    }
-        batch.Draw(_rope.BaseTexture, sourceRectangle: null, position: Body.Position, scale: 1f, rotation: Body.Rotation,
-            color: Color.White, origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
+
+        Rectangle dstRectangle = camera.getScreenRectangle(Body.Position.X, Body.Position.Y, _size.X, _size.Y);
+        batch.Draw(_rope.BaseTexture, dstRectangle, sourceRectangle: null, color: ropeColor, rotation: Body.Rotation,
+            origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
     }
 
     /**

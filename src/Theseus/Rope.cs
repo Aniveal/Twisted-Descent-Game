@@ -31,8 +31,7 @@ public class Rope : DrawableGameElement
     // 1 second cooldown between column breaks
     public TimeSpan breakCoolDown = new TimeSpan(0, 0, 1);
 
-    public Rope(RopeGame game, World world, Vector2 pos, int segmentCount)
-    {
+    public Rope(RopeGame game, World world, Vector2 pos, int segmentCount) {
         _game = game;
         _world = world;
         _pos = pos;
@@ -103,7 +102,7 @@ public class Rope : DrawableGameElement
 
     private void CreateBaseTexture()
     {
-        BaseTexture = new Texture2D(_game.GraphicsDevice, TextureWidth, TextureHeight);
+        BaseTexture = new Texture2D(_game.GraphicsDevice, 1, 2);
         Color[] data = new Color[BaseTexture.Width * BaseTexture.Height];
         for (int i = 0; i < data.Length; i++)
         {
@@ -144,11 +143,11 @@ public class Rope : DrawableGameElement
         // }
     }
 
-    public override void Draw(GameTime gameTime, SpriteBatch batch)
+    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
     {
         foreach (RopeSegment segment in _segments)
         {
-            segment.Draw(gameTime, batch);
+            segment.Draw(gameTime, batch, camera);
         }
     }
 }

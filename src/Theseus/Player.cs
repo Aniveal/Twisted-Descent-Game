@@ -186,7 +186,7 @@ namespace Meridian2.Theseus
 
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch batch)
+        public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             var playerSpriteX = Body.Position.X - (float)_playerSize.X / 2;
             var playerSpriteY = Body.Position.Y - _playerSize.Y;

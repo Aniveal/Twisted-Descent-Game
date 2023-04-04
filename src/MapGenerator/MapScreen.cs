@@ -81,7 +81,7 @@ namespace Meridian2
 
             _batch.Begin();
 
-            _map.Draw(gameTime, _batch);
+            _map.Draw(gameTime, _batch, null);
 
             //foreach (DummyRectangle rec in walls)
             //{

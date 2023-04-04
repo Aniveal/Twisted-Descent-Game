@@ -19,7 +19,7 @@ namespace Meridian2.Columns
 
         }
 
-        public override void DrawFirst(GameTime gameTime, SpriteBatch batch)
+        public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             if (_broken)
             {
@@ -32,7 +32,7 @@ namespace Meridian2.Columns
             }
         }
 
-        public override void DrawSecond(GameTime gameTime, SpriteBatch batch)
+        public override void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             //TODO: update once sprites are available
         }
