@@ -23,8 +23,8 @@ public class Rope : DrawableGameElement
     private List<RopeSegment> _segments;
 
     public Texture2D BaseTexture;
-    private const int TextureHeight = 4;
-    private const int TextureWidth = 2;
+    private const float TextureHeight = 0.1f;
+    private const float TextureWidth = 0.05f;
 
     public List<FragileColumn> _fragiles = new List<FragileColumn>();
     public TimeSpan lastBreak = TimeSpan.Zero;

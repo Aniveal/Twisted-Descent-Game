@@ -1,21 +1,26 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Reflection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2 {
     public class Camera {
         private readonly GraphicsDevice _graphicsDevice;
         private float _scale;
-        private Matrix _transform;
-        public Vector2 Pos { get; set; }
+        private Vector2 _position;
 
         // private readonly Matrix IsometricToEuclidean = Matrix.CreateRotationX((float)-Math.PI / 4) *
         //                                                Matrix.CreateRotationY((float)-Math.PI / 4) *
         //                                                Matrix.CreateScale(1, 0.5f, 1);
-        
+
         public Camera(GraphicsDevice graphicsDevice) {
             _graphicsDevice = graphicsDevice;
             _scale = 60.0f;
-            Pos = Vector2.Zero;
+            _position = Vector2.Zero;
+        }
+
+        public Vector2 Pos {
+            get { return _position; }
+            set { _position = value; }
         }
 
         public float Scale {
@@ -32,14 +37,13 @@ namespace Meridian2 {
             if (scaleIsometric) {
                 h /= 2;
             }
-            
-            return new Rectangle((int)((Pos.X - x) * _scale), (int)((Pos.Y - y) * _scale/2), (int)w, (int)h);
-        } 
+
+            return new Rectangle((int)((_position.X - x) * _scale) + _graphicsDevice.Viewport.Width / 2, (int)((_position.Y - y) * _scale / 2) + _graphicsDevice.Viewport.Height / 2, (int)w, (int)h);
+        }
 
 
-        
         public void Move(Vector2 amount) {
-            Pos += amount;
+            _position += amount;
         }
     }
 }
