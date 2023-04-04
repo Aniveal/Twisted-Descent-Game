@@ -46,24 +46,16 @@ public class GameScreen : Screen {
         int h = Game.GraphicsDevice.Viewport.Height;
         //int thick = w / 40;
 
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(2 * w / 10, 0), thick, 6 * h / 10, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(0, 6 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), 3 * w / 10, thick, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(3 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(8 * w / 10, 8 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(9 * w / 10, 1 * h / 10), 7 * w / 10, thick, Game.rectangleTexture));
-
         //TODO: move columns addition into a world generation class
-        columnsManager.Add(new Column(Game, World, new Vector2(8 * w / 10, 2 * h/10), 10, Game.ColumnTexture));
-        columnsManager.Add(new Column(Game, World, new Vector2(1 * w / 10, 2 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new Column(Game, World, new Vector2(1 * w / 10, 3 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new FragileColumn(Game, World, new Vector2(4 * w / 10, 6 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 9 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 4 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new FragileColumn(Game, World, new Vector2(8 * w / 10, 3 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 50, 420), 10));
-        columnsManager.Add(new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 100, 270), 10));
+        columnsManager.Add(new Column(Game, World, new Vector2(2, 2), 0.8f, Game.ColumnTexture));
+        columnsManager.Add(new Column(Game, World, new Vector2(1, 2), 0.8f, Game.ColumnTexture));
+        columnsManager.Add(new Column(Game, World, new Vector2(1, 3), 0.8f, Game.ColumnTexture));
+        columnsManager.Add(new FragileColumn(Game, World, new Vector2(4, 6), 0.8f, Game.ColumnTexture));
+        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6, 9), 0.8f, Game.ColumnTexture));
+        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6, 4), 0.8f, Game.ColumnTexture));
+        columnsManager.Add(new FragileColumn(Game, World, new Vector2(8, 3), 0.8f, Game.ColumnTexture));
+        columnsManager.Add(new Amphora(Game, World, new Vector2(2, 4), 0.4f));
+        columnsManager.Add(new Amphora(Game, World, new Vector2(2, 9), 0.4f));
 
         _map.LoadContent();
        
