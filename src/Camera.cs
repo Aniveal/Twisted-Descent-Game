@@ -41,6 +41,12 @@ namespace Meridian2 {
             return new Rectangle((int)((x - _position.X) * _scale) + _graphicsDevice.Viewport.Width / 2, (int)((y - _position.Y) * _scale / 2) + _graphicsDevice.Viewport.Height / 2, (int)w, (int)h);
         }
 
+        public Vector2 getScreenPoint(Vector2 v) {
+            v.X = (v.X - _position.X) * _scale + _graphicsDevice.Viewport.Width / 2;
+            v.Y = (v.Y - _position.Y) * _scale / 2 + _graphicsDevice.Viewport.Height / 2;
+            return v;
+        }
+
 
         public void Move(Vector2 amount) {
             _position += amount;
