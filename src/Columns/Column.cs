@@ -35,7 +35,7 @@ namespace Meridian2.Columns
 
         public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
-            Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2);
+            Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
             batch.Draw(_columnTexture, dstRec, Color.Gray);
         }
 

@@ -37,7 +37,7 @@ public class Amphora : TwoPhaseGameElement
 
     public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
     {
-        Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - _radius, _body.Position.Y - _radius, _radius * 2, _radius*2);
+        Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - _radius, _body.Position.Y - _radius, _radius * 2, _radius*2, true);
         batch.Draw(_game.ColumnTexture, dstRec, Color.Red);
     }
 
