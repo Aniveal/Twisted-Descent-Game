@@ -69,8 +69,9 @@ namespace Meridian2.Columns
         {
             if (_activated)
             {
+                Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2);
                 //draw activated column
-                batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.Yellow);
+                batch.Draw(_columnTexture, dstRec, Color.Yellow);
             }
             else
             {

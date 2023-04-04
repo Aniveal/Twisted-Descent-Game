@@ -21,14 +21,15 @@ namespace Meridian2.Columns
 
         public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
+            Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2);
             if (_broken)
             {
                 //TODO: broken texture
-                batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.Orange);
+                batch.Draw(_columnTexture, dstRec, Color.Orange);
             }
             else
             {
-                batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.White);
+                batch.Draw(_columnTexture, dstRec, Color.White);
             }
         }
 
