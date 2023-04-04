@@ -38,7 +38,7 @@ namespace Meridian2 {
                 h /= 2;
             }
 
-            return new Rectangle((int)((_position.X - x) * _scale) + _graphicsDevice.Viewport.Width / 2, (int)((_position.Y - y) * _scale / 2) + _graphicsDevice.Viewport.Height / 2, (int)w, (int)h);
+            return new Rectangle((int)((x - _position.X) * _scale) + _graphicsDevice.Viewport.Width / 2, (int)((y - _position.Y) * _scale / 2) + _graphicsDevice.Viewport.Height / 2, (int)w, (int)h);
         }
 
 
