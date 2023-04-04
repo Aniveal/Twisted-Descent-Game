@@ -47,15 +47,15 @@ public class GameScreen : Screen {
         //int thick = w / 40;
 
         //TODO: move columns addition into a world generation class
-        columnsManager.Add(new Column(Game, World, new Vector2(2, 2), 0.8f, Game.ColumnTexture));
-        columnsManager.Add(new Column(Game, World, new Vector2(1, 2), 0.8f, Game.ColumnTexture));
-        columnsManager.Add(new Column(Game, World, new Vector2(1, 3), 0.8f, Game.ColumnTexture));
-        columnsManager.Add(new FragileColumn(Game, World, new Vector2(4, 6), 0.8f, Game.ColumnTexture));
-        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6, 9), 0.8f, Game.ColumnTexture));
-        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6, 4), 0.8f, Game.ColumnTexture));
-        columnsManager.Add(new FragileColumn(Game, World, new Vector2(8, 3), 0.8f, Game.ColumnTexture));
-        columnsManager.Add(new Amphora(Game, World, new Vector2(2, 4), 0.4f));
-        columnsManager.Add(new Amphora(Game, World, new Vector2(2, 9), 0.4f));
+        columnsManager.Add(new Column(Game, World, new Vector2(2, 2), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new Column(Game, World, new Vector2(1, 2), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new Column(Game, World, new Vector2(1, 3), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new FragileColumn(Game, World, new Vector2(4, 6), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6, 9), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6, 4), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new FragileColumn(Game, World, new Vector2(8, 3), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new Amphora(Game, World, new Vector2(2, 4), 0.2f));
+        columnsManager.Add(new Amphora(Game, World, new Vector2(2, 9), 0.2f));
 
         _map.LoadContent();
        
