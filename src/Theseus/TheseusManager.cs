@@ -21,7 +21,7 @@ namespace Meridian2.Theseus
         {
             _game = game;
             _world = world;
-            rope = new Rope(_game, _world, new Vector2(_game.GraphicsDevice.Viewport.Width / 2f, 20), 150);
+            rope = new Rope(_game, _world, new Vector2(0, 0), 150);
             player = new Player(_game, _world, rope);
         }
 
