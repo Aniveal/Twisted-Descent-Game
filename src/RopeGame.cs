@@ -25,6 +25,8 @@ public class RopeGame : Game {
 
     private Screen currentScreen;
 
+    public GameData gameData;
+
     public RopeGame() {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
@@ -43,6 +45,8 @@ public class RopeGame : Game {
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
 
+        gameData = new GameData();
+
         _gameScreen = new GameScreen(this);
         _gameScreen.Initialize();
 
@@ -52,6 +56,7 @@ public class RopeGame : Game {
         currentScreen = _gameScreen;
 
         soundEngine = new SoundEngine(this); //Create the sound engine
+
     }
 
     protected override void LoadContent() {

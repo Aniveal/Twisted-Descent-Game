@@ -1,5 +1,6 @@
 ﻿using Meridian2.Columns;
 using Meridian2.Theseus;
+using Meridian2.Gui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ public class GameScreen : Screen {
     public TheseusManager theseusManager;
     public ColumnsManager columnsManager;
 
+    public GuiManager guiManager;
+
 
     public GameScreen(RopeGame game) : base(game) {
         Game = getGame();
@@ -31,7 +34,7 @@ public class GameScreen : Screen {
         
         columnsManager = new ColumnsManager();
         theseusManager = new TheseusManager(Game, World);
-
+        guiManager = new GuiManager(game);
     }
 
     public override void Initialize() {
@@ -40,6 +43,8 @@ public class GameScreen : Screen {
         _map.Initialize();
         
         theseusManager.Initialize();
+
+        guiManager.Initialize();
 
         //Create dummy walls
         int w = Game.GraphicsDevice.Viewport.Width;
@@ -60,6 +65,7 @@ public class GameScreen : Screen {
         _map.LoadContent();
        
         theseusManager.LoadContent();
+        guiManager.LoadContent();
     }
 
     public override void Update(GameTime gameTime) {
@@ -75,8 +81,9 @@ public class GameScreen : Screen {
         theseusManager.Update(gameTime);
         Diagnostics.Instance.Update(gameTime, theseusManager.player);
 
-        //putting it here cuz otherwise we'll forget about it the day when columns actually need updating
+        //putting it here cuz otherwise we'll forget about it the day when columns actually need updating. same for gui
         //columnsManager.Update(gameTime);
+        //guiManager.Update(gameTime);
     }
 
     public override void Draw(GameTime gameTime) {
@@ -95,6 +102,8 @@ public class GameScreen : Screen {
         //{
         //    rec.Draw(_batch);
         //}
+        guiManager.Draw(gameTime, _batch, Camera);
+
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10,10), Color.Red);
         _batch.End();
     }
