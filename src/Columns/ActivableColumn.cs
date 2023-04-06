@@ -65,21 +65,22 @@ namespace Meridian2.Columns
             }
         }
 
-        public override void DrawFirst(GameTime gameTime, SpriteBatch batch)
+        public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             if (_activated)
             {
+                Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
                 //draw activated column
-                batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.Yellow);
+                batch.Draw(_columnTexture, dstRec, Color.Yellow);
             }
             else
             {
                 //draw noraml column
-                base.DrawFirst(gameTime, batch);
+                base.DrawFirst(gameTime, batch, camera);
             }
         }
 
-        public override void DrawSecond(GameTime gameTime, SpriteBatch batch)
+        public override void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             //TODO: update once sprites are available
         }

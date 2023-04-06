@@ -21,8 +21,8 @@ namespace Meridian2.Theseus
         private Texture2D running_r;
         private Texture2D running_f;
         private Texture2D running_b;
-        private readonly Point _playerSize = new(60, 120);
-        private int PlayerForce = 5000;
+        private readonly Point _playerSize = new(1, 2);
+        private float PlayerForce = 0.05f;
 
         //How many milliseconds between footsteps
         private float footstepSoundDelayMax = 400f;
@@ -104,12 +104,12 @@ namespace Meridian2.Theseus
             {
                 Dash = true;
                 DashTimer = 0;
-                PlayerForce = 50000;
+                PlayerForce = 0.4f;
             }
             if (Dash & DashTimer >= DashUsageTime)
             {
                 Dash = false;
-                PlayerForce = 5000;
+                PlayerForce = 0.1f;
                 DashTimer = 0;
             }
             if (keyboard.IsKeyDown(Keys.Right))
@@ -152,8 +152,6 @@ namespace Meridian2.Theseus
                 _rope.Pull(gameTime);
             }
 
-            input = ScreenToIsometric(input);
-
             if (input.LengthSquared() > 1)
             {
                 input.Normalize();
@@ -162,37 +160,11 @@ namespace Meridian2.Theseus
             Vector2 movement = input * (float)gameTime.ElapsedGameTime.TotalMilliseconds * PlayerForce;
 
             Body.ApplyForce(movement);
-
-            // TODO: Camera movement was temporarily disabled and should be handled in a separate class
-            // If the player is within a rectangle of the center of the screen, move the player, else move the camera:
-            // int fraction = 3; // rectangle in the center makes up 1/3 of the width and 1/3 of the width
-            //
-            // Vector2 updatedPosition = _playerSpritePosition + movement;
-            // Vector2 updatedFeetpos = FeetPosition(updatedPosition);
-            //
-            // float lowerX = (fraction - 1) * (Globals.Graphics.PreferredBackBufferWidth / 2) / fraction;
-            // float upperX = (fraction + 1) * (Globals.Graphics.PreferredBackBufferWidth / 2) / fraction;
-            // float lowerY = (fraction - 1) * (Globals.Graphics.PreferredBackBufferHeight / 2) / fraction;
-            // float upperY = (fraction + 1) * (Globals.Graphics.PreferredBackBufferHeight / 2) / fraction;
-            //
-            // if (updatedPosition.X < lowerX || updatedFeetpos.X > upperX || updatedPosition.Y < lowerY ||
-            //     updatedFeetpos.Y > upperY) {
-            //     Vector2 updatedCamera = Globals.CameraPosition - movement; // move the camera
-            //     Globals.UpdateCamera(updatedCamera);
-            // } else {
-            //     _playerSpritePosition = updatedPosition; // move the player
-            //     _playerPosition = FeetPosition(_playerSpritePosition);
-            // }
-
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch batch)
-        {
-            var playerSpriteX = Body.Position.X - (float)_playerSize.X / 2;
-            var playerSpriteY = Body.Position.Y - _playerSize.Y;
-
-            Rectangle spritePos = new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y);
-
+        public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+            camera.Pos = Body.Position;
+            Rectangle spritePos = camera.getScreenRectangle(Body.Position.X, Body.Position.Y, _playerSize.X, _playerSize.Y);
 
             float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
 
@@ -219,7 +191,7 @@ namespace Meridian2.Theseus
 
                 batch.Draw(
                 running_sprite,
-                new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y),
+                spritePos,
                 new Rectangle(run_frame_idx * 512, 0, 512, 768),
                 Color.White
             );
@@ -231,7 +203,7 @@ namespace Meridian2.Theseus
 
                 batch.Draw(
                     idle,
-                    new Rectangle((int)playerSpriteX, (int)playerSpriteY, _playerSize.X, _playerSize.Y),
+                    spritePos,
                     new Rectangle(idle_frame_idx * 512, 0, 512, 768),
                     Color.White
                 );

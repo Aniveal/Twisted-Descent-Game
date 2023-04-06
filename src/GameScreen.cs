@@ -12,6 +12,7 @@ public class GameScreen : Screen {
     public RopeGame Game;
     private SpriteBatch _batch;
     public World World;
+    public Camera Camera;
 
     private Map _map;
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
@@ -22,7 +23,8 @@ public class GameScreen : Screen {
 
     public GameScreen(RopeGame game) : base(game) {
         Game = getGame();
-        
+        Camera = new Camera(Game.GraphicsDevice);
+
         _batch = new SpriteBatch(Game.GraphicsDevice);
         _map = new Map(game);
         World = new World(Vector2.Zero);
@@ -44,24 +46,16 @@ public class GameScreen : Screen {
         int h = Game.GraphicsDevice.Viewport.Height;
         //int thick = w / 40;
 
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(2 * w / 10, 0), thick, 6 * h / 10, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(0, 6 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), 3 * w / 10, thick, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(3 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(8 * w / 10, 8 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
-        //walls.Add(new DummyRectangle(Game, World, new Vector2(9 * w / 10, 1 * h / 10), 7 * w / 10, thick, Game.rectangleTexture));
-
         //TODO: move columns addition into a world generation class
-        columnsManager.Add(new Column(Game, World, new Vector2(8 * w / 10, 2 * h/10), 10, Game.ColumnTexture));
-        columnsManager.Add(new Column(Game, World, new Vector2(1 * w / 10, 2 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new Column(Game, World, new Vector2(1 * w / 10, 3 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new FragileColumn(Game, World, new Vector2(4 * w / 10, 6 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 9 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6 * w / 10, 4 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new FragileColumn(Game, World, new Vector2(8 * w / 10, 3 * h / 10), 10, Game.ColumnTexture));
-        columnsManager.Add(new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f + 50, 420), 10));
-        columnsManager.Add(new Amphora(Game, World, new Vector2(Game.GraphicsDevice.Viewport.Width / 2f - 100, 270), 10));
+        columnsManager.Add(new Column(Game, World, new Vector2(2, 2), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new Column(Game, World, new Vector2(1, 2), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new Column(Game, World, new Vector2(1, 3), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new FragileColumn(Game, World, new Vector2(4, 6), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6, 9), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new ElectricColumn(Game, World, new Vector2(6, 4), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new FragileColumn(Game, World, new Vector2(8, 3), 0.4f, Game.ColumnTexture));
+        columnsManager.Add(new Amphora(Game, World, new Vector2(2, 4), 0.2f));
+        columnsManager.Add(new Amphora(Game, World, new Vector2(2, 9), 0.2f));
 
         _map.LoadContent();
        
@@ -90,12 +84,12 @@ public class GameScreen : Screen {
 
         _batch.Begin();
 
-        _map.Draw(gameTime, _batch);
-        columnsManager.DrawFirst(gameTime, _batch);
+        _map.Draw(gameTime, _batch, Camera);
+        columnsManager.DrawFirst(gameTime, _batch, Camera);
 
-        theseusManager.Draw(gameTime, _batch);
+        theseusManager.Draw(gameTime, _batch, Camera);
 
-        columnsManager.DrawSecond(gameTime, _batch);
+        columnsManager.DrawSecond(gameTime, _batch, Camera);
 
         //foreach (DummyRectangle rec in walls)
         //{
@@ -103,7 +97,5 @@ public class GameScreen : Screen {
         //}
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10,10), Color.Red);
         _batch.End();
-
-        
     }
 }

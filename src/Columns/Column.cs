@@ -33,12 +33,13 @@ namespace Meridian2.Columns
             Body = _world.CreateCircle(_radius, 0, _center, BodyType.Static);
         }
 
-        public override void DrawFirst(GameTime gameTime, SpriteBatch batch)
+        public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
-            batch.Draw(_columnTexture, new Rectangle((int)(_center.X - _radius), (int)(_center.Y - _radius), (int)_radius * 2, (int)_radius * 2), Color.Gray);
+            Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
+            batch.Draw(_columnTexture, dstRec, Color.Gray);
         }
 
-        public override void DrawSecond(GameTime gameTime, SpriteBatch batch)
+        public override void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             //TODO: update once sprites are available
         }

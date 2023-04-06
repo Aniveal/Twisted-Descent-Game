@@ -16,7 +16,7 @@ namespace Meridian2.GameElements
 
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch batch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
 
         }
