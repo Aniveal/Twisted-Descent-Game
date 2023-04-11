@@ -65,19 +65,19 @@ namespace Meridian2 {
 
             
             _rockTextures = new List<Texture2D> {
-                _game.Content.Load<Texture2D>("wall_1b"), // 1
-                _game.Content.Load<Texture2D>("wall_1r"), // 2
-                _game.Content.Load<Texture2D>("wall_1f"), // 3 
-                _game.Content.Load<Texture2D>("wall_1l"), // 4
-                _game.Content.Load<Texture2D>("wall_2lf"), // 5
-                _game.Content.Load<Texture2D>("wall_2rf"), // 6 
-                _game.Content.Load<Texture2D>("wall_2rb"), // 7
-                _game.Content.Load<Texture2D>("wall_2lb"), // 8
-                _game.Content.Load<Texture2D>("wall_3b"), // 9
-                _game.Content.Load<Texture2D>("wall_3r"), // 10
-                _game.Content.Load<Texture2D>("wall_3f"), // 11
-                _game.Content.Load<Texture2D>("wall_3l"), // 12
-                _game.Content.Load<Texture2D>("wall_4") // 13
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1b"), // 1
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1r"), // 2
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1f"), // 3 
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1l"), // 4
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2lf"), // 5
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2rf"), // 6 
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2rb"), // 7
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2lb"), // 8
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3b"), // 9
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3r"), // 10
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3f"), // 11
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3l"), // 12
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_4") // 13
             };
         }
 

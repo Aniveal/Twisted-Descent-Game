@@ -53,19 +53,19 @@ namespace Meridian2
         {
             //Load the textures we want for the Prototypes
             rockTextures = new List<Texture2D> {
-                rg.Content.Load<Texture2D>("wall_1b"), // 0
-                rg.Content.Load<Texture2D>("wall_1r"), // 1
-                rg.Content.Load<Texture2D>("wall_1f"), // 2 
-                rg.Content.Load<Texture2D>("wall_1l"), // 3
-                rg.Content.Load<Texture2D>("wall_2lf"), // 4
-                rg.Content.Load<Texture2D>("wall_2rf"), // 5 
-                rg.Content.Load<Texture2D>("wall_2rb"), // 6
-                rg.Content.Load<Texture2D>("wall_2lb"), // 7
-                rg.Content.Load<Texture2D>("wall_3b"), // 8
-                rg.Content.Load<Texture2D>("wall_3r"), // 9
-                rg.Content.Load<Texture2D>("wall_3f"), // 10
-                rg.Content.Load<Texture2D>("wall_3l"), // 11
-                rg.Content.Load<Texture2D>("wall_4") // 12
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_1b"), // 0
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_1r"), // 1
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_1f"), // 2 
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_1l"), // 3
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_2lf"), // 4
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_2rf"), // 5 
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_2rb"), // 6
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_2lb"), // 7
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_3b"), // 8
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_3r"), // 9
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_3f"), // 10
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_3l"), // 11
+                rg.Content.Load<Texture2D>("Sprites/Rock/wall_4") // 12
             };
             Texture2D ground = rg.Content.Load<Texture2D>("ground");
 

@@ -78,7 +78,8 @@ public class RopeGame : Game {
     }
 
     protected override void Draw(GameTime gameTime) {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        Color background_color = new Color(82,84,81);
+        GraphicsDevice.Clear(background_color);
 
         base.Draw(gameTime);
 
