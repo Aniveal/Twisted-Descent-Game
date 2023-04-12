@@ -27,11 +27,21 @@ namespace Meridian2
 
         public Prototype finalPrototype;
 
+        //Instantiate a Tile with multiple possible prototypes
         public Tile(List<Prototype> protList)
         {
             superpositions = new List<Prototype>();
             superpositions.AddRange(protList);
             x = y = 0;
+        }
+
+        //Create a specific tile
+        public Tile(Prototype prot, int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+            finalPrototype = prot;
+            superpositions = new List<Prototype> { prot };
         }
 
         //Collapse the wave function where the socket on the direction dir is incompatible (dir is the direction from here to where to fit)

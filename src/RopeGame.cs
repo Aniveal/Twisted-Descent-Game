@@ -41,8 +41,8 @@ public class RopeGame : Game {
         TargetElapsedTime = new TimeSpan((long)temp);
 
         // Set resolution
-        _graphics.PreferredBackBufferWidth = 1280;
-        _graphics.PreferredBackBufferHeight = 720;
+        _graphics.PreferredBackBufferWidth = 2000;
+        _graphics.PreferredBackBufferHeight = 1200;
         _graphics.ApplyChanges();
 
         gameData = new GameData();
@@ -53,7 +53,7 @@ public class RopeGame : Game {
         _mapScreen = new MapScreen(this);
         _mapScreen.Initialize();
 
-        currentScreen = _gameScreen;
+        currentScreen = _mapScreen;
 
         soundEngine = new SoundEngine(this); //Create the sound engine
 

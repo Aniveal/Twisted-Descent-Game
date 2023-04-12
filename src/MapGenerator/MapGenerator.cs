@@ -16,15 +16,11 @@ namespace Meridian2
 
     public class MapGenerator
     {
+        
+
         private RopeGame rg;
 
         private List<Texture2D> rockTextures;
-
-        private int mapX;
-        private int mapY;
-
-        //The map, consisting of a 2d array of Tiles
-        private Tile[,] tilemap;
 
         //The list of all possible prototypes we want to use in the map generation
         private List<Prototype> prototypes = new List<Prototype>();
@@ -32,21 +28,41 @@ namespace Meridian2
         public MapGenerator(RopeGame ropeGame)
         {
             rg = ropeGame;
+            createPrototypeList();
         }
 
         public Tile[,] createMap(int mapX, int mapY)
         {
-            this.mapX = mapX;
-            this.mapY = mapY;
-            tilemap = new Tile[mapX, mapY];
+            Tile[,] tilemap = new Tile[mapX, mapY];
             
 
-            createPrototypeList();
-
-            runWaveFunctionCollapse();
+            runWaveFunctionCollapse(tilemap);
 
             return tilemap;
 
+        }
+
+        //Creates the tilemap for a fully enclosed room 
+        public Tile[,] createRoom(int mapX, int mapY)
+        {
+            Room room = new Room(this, mapX, mapY);
+
+            room.createOpening(0, 4, 3);
+            room.createOpening(mapX - 1, mapY - 5, 4);
+            room.createOpening(6, 0, 6);
+
+            runWaveFunctionCollapse(room.tileMap);
+
+            return room.tileMap;
+        }
+
+        //Gets the prototype by name
+        public Prototype getPrototype(string s)
+        {
+            foreach (Prototype prototype in prototypes)
+                if (prototype.name == s)
+                    return prototype;
+            return null;
         }
 
         private void createPrototypeList()
@@ -76,41 +92,48 @@ namespace Meridian2
             prototypes.Add(new Prototype(rockTextures[2], "Wall1lu", new int[] { 2, 0, 1, 0 }, 5));
             prototypes.Add(new Prototype(rockTextures[3], "Wall1ld", new int[] { 0, 2, 2, 0 }, 5));
             
-            prototypes.Add(new Prototype(rockTextures[4], "Wall2l", new int[] { 2, 2, 3, 0 }, 8));
-            prototypes.Add(new Prototype(rockTextures[5], "Wall2u", new int[] { 3, 0, 1, 1 }, 8));
-            prototypes.Add(new Prototype(rockTextures[6], "Wall2r", new int[] { 1, 1, 0, 3 },8));
-            prototypes.Add(new Prototype(rockTextures[7], "Wall2d", new int[] { 0, 3, 2, 2 }, 8));
+            prototypes.Add(new Prototype(rockTextures[4], "Wall2l", new int[] { 2, 2, 3, 0 }, 5));
+            prototypes.Add(new Prototype(rockTextures[5], "Wall2u", new int[] { 3, 0, 1, 1 }, 5));
+            prototypes.Add(new Prototype(rockTextures[6], "Wall2r", new int[] { 1, 1, 0, 3 },5));
+            prototypes.Add(new Prototype(rockTextures[7], "Wall2d", new int[] { 0, 3, 2, 2 }, 5));
             prototypes.Add(new Prototype(rockTextures[8], "Wall3ul", new int[] { 1, 3, 2, 3 }, 5));
             prototypes.Add(new Prototype(rockTextures[11], "Wall3ur", new int[] { 2, 3, 3, 2 }, 5));
             prototypes.Add(new Prototype(rockTextures[9], "Wall3dl", new int[] { 3, 1, 1, 3 }, 5));
             prototypes.Add(new Prototype(rockTextures[10], "Wall3dr", new int[] { 3, 2, 3, 1 }, 5));
-            prototypes.Add(new Prototype(rockTextures[12], "FullWall", new int[] { 3, 3, 3, 3 }, 10));
+            prototypes.Add(new Prototype(rockTextures[12], "FullWall", new int[] { 3, 3, 3, 3 }, 5));
 
-            prototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 20));
+            prototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 1000));
 
 
 
         }
 
-        private void runWaveFunctionCollapse()
+        private void runWaveFunctionCollapse(Tile[,] tileMap)
         {
-            Debug.WriteLine("Started Wave function collapse!");
+            int mapX = tileMap.GetLength(0);
+            int mapY = tileMap.GetLength(1);
+
+            Debug.WriteLine("Started Wave function collapse! Map x = " + mapX + ", mapY = " + mapY);
+
+            //All tiles that were set before generation need to be collapsed before starting generation!
+            List<Tile> toCollapse = new List<Tile>();
 
             //Create all tiles
             for(int x = 0; x < mapX; x++)
             {
                 for(int y = 0; y < mapY; y++)
                 {
-                    tilemap[x, y] = new Tile(prototypes);
-                    tilemap[x, y].x = x;
-                    tilemap[x,y].y = y;
+                    if (tileMap[x,y] == null)
+                        tileMap[x, y] = new Tile(prototypes);
+                    else toCollapse.Add(tileMap[x,y]);
+                    tileMap[x, y].x = x;
+                    tileMap[x,y].y = y;
                 }
             }
 
-            //Check constraints before starting to account for pre placed tiles
-            foreach (Tile t in tilemap)
+            foreach(Tile t in toCollapse)
             {
-
+                collapseTile(t, tileMap, mapX, mapY);
             }
 
             int counter = 0;
@@ -119,7 +142,8 @@ namespace Meridian2
                 //Find lowest amount of superpositions
                 Tile t;
                 int n = 100000;
-                foreach (Tile tile in tilemap)
+
+                foreach (Tile tile in tileMap)
                 {
                     if (tile.superpositions.Count > 1 && tile.superpositions.Count < n)
                         n = tile.superpositions.Count;
@@ -129,7 +153,7 @@ namespace Meridian2
                 List<Tile> list = new List<Tile>();
                 //weights all summed up
                 int totalWeights = 0;
-                foreach (Tile tile in tilemap)
+                foreach (Tile tile in tileMap)
                 {
                     if (tile.superpositions.Count == n)
                     {
@@ -148,7 +172,7 @@ namespace Meridian2
 
                 Debug.WriteLine("Starting collapsing round " + counter);
                 //Collapse the wave function:
-                collapseTile(chosen);
+                collapseTile(chosen, tileMap, mapX, mapY);
                 
 
                 counter++;
@@ -161,28 +185,27 @@ namespace Meridian2
 
             }
 
-
         }
 
         //Collapse a tile and recursively collapse all neighbours
-        public void collapseTile(Tile tile)
+        public void collapseTile(Tile tile, Tile[,] tilemap, int mapX, int mapY)
         {
             if ((tile.x - 1) >= 0)
                 if (tilemap[tile.x - 1, tile.y].collapseFunction(tile, "right"))
-                    collapseTile(tilemap[tile.x - 1, tile.y]); //if there was a change in this tile, recurse
+                    collapseTile(tilemap[tile.x - 1, tile.y], tilemap, mapX, mapY); //if there was a change in this tile, recurse
                     
 
             if ((tile.x + 1) < mapX)
                 if (tilemap[tile.x + 1, tile.y].collapseFunction(tile, "left"))
-                    collapseTile(tilemap[tile.x + 1, tile.y]);
+                    collapseTile(tilemap[tile.x + 1, tile.y], tilemap, mapX, mapY);
 
             if ((tile.y - 1) >= 0)
                 if(tilemap[tile.x, tile.y - 1].collapseFunction(tile, "down"))
-                    collapseTile(tilemap[tile.x, tile.y - 1]);
+                    collapseTile(tilemap[tile.x, tile.y - 1], tilemap, mapX, mapY);
 
             if ((tile.y + 1) < mapY)
                 if(tilemap[tile.x, tile.y + 1].collapseFunction(tile, "up"))
-                    collapseTile(tilemap[tile.x, tile.y + 1]);
+                    collapseTile(tilemap[tile.x, tile.y + 1], tilemap, mapX, mapY);
         }
 
 

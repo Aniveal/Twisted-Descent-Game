@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 using Microsoft.Xna.Framework.Input;
-
+using System.Diagnostics;
 
 namespace Meridian2
 {
@@ -18,6 +18,9 @@ namespace Meridian2
         public RopeGame Game;
         private SpriteBatch _batch;
         public World World;
+        public Camera Camera;
+
+        float camMovementSpeed = 200;
 
         private Map _map;
         //public List<DummyRectangle> walls = new List<DummyRectangle>();
@@ -26,6 +29,9 @@ namespace Meridian2
         public MapScreen(RopeGame game) : base(game)
         {
             Game = getGame();
+
+            Camera = new Camera(Game.GraphicsDevice);
+            Camera.Scale = 20.0f;
 
             _batch = new SpriteBatch(Game.GraphicsDevice);
            
@@ -39,20 +45,9 @@ namespace Meridian2
             base.Initialize();
 
             _map.Initialize();
-
-
             //Create dummy walls
             int w = Game.GraphicsDevice.Viewport.Width;
             int h = Game.GraphicsDevice.Viewport.Height;
-            //int thick = w / 40;
-
-            //walls.Add(new DummyRectangle(Game, World, new Vector2(2 * w / 10, 0), thick, 6 * h / 10, Game.rectangleTexture));
-            //walls.Add(new DummyRectangle(Game, World, new Vector2(0, 6 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
-            //walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), 3 * w / 10, thick, Game.rectangleTexture));
-            //walls.Add(new DummyRectangle(Game, World, new Vector2(7 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
-            //walls.Add(new DummyRectangle(Game, World, new Vector2(3 * w / 10, 5 * h / 10), thick, 6 * h / 10, Game.rectangleTexture));
-            //walls.Add(new DummyRectangle(Game, World, new Vector2(8 * w / 10, 8 * h / 10), 2 * w / 10, thick, Game.rectangleTexture));
-            //walls.Add(new DummyRectangle(Game, World, new Vector2(9 * w / 10, 1 * h / 10), 7 * w / 10, thick, Game.rectangleTexture));
 
             
             _map.LoadContent();
@@ -82,7 +77,7 @@ namespace Meridian2
 
             _batch.Begin();
 
-            _map.Draw(gameTime, _batch, null);
+            _map.Draw(gameTime, _batch, Camera);
 
             //foreach (DummyRectangle rec in walls)
             //{
@@ -96,7 +91,27 @@ namespace Meridian2
 
         private void processInput(GameTime gameTime)
         {
-            
+            Vector2 camMove = Vector2.Zero;
+            KeyboardState keyboard = Keyboard.GetState();
+
+            if (keyboard.IsKeyDown(Keys.W))
+            {
+                camMove.Y -= camMovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (keyboard.IsKeyDown(Keys.S))
+            {
+                camMove.Y += camMovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (keyboard.IsKeyDown(Keys.A))
+            {
+                camMove.X -= camMovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (keyboard.IsKeyDown(Keys.D))
+            {
+                camMove.X += camMovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            Camera.Move(camMove);
         }
 
 

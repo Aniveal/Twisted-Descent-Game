@@ -59,6 +59,9 @@ namespace Meridian2 {
         }
 
         public void CreateMapBody(Tile tile) {
+            if (tile.finalPrototype == null)
+                return;
+
             Vector2 p = MapToWorld(tile.x, tile.y);
             //TODO: make computation of l dependent on map_scaling only, find adequate formula
             Vector2 pn = MapToWorld(tile.x, tile.y + 1);
@@ -84,7 +87,7 @@ namespace Meridian2 {
             Debug.WriteLine("Initializing Map");
 
             //The new Map generation
-            TileMap = mapGenerator.createMap(10, 10);
+            TileMap = mapGenerator.createRoom(20, 20);
 
             Debug.WriteLine(TileMap);
 
