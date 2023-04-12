@@ -31,6 +31,8 @@ namespace Meridian2.Theseus
 
         public Body Body;
 
+        public Vector2 orientation;
+
         public double DashTimer = 0;
         private const int DashCoolDown = 5000;
         private const int DashUsageTime = 400;
@@ -83,6 +85,8 @@ namespace Meridian2.Theseus
             // Stretch to 2:1 ratio
             return new Vector2(isoX - isoY, (isoX + isoY) / 2);
         }
+
+    
 
         public override void Update(GameTime gameTime)
         {
@@ -160,6 +164,7 @@ namespace Meridian2.Theseus
             Vector2 movement = input * (float)gameTime.ElapsedGameTime.TotalMilliseconds * PlayerForce;
 
             Body.ApplyForce(movement);
+            orientation = input;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
