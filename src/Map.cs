@@ -4,16 +4,19 @@ using System.Diagnostics;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2 {
     public class Map : DrawableGameElement {
         private readonly RopeGame _game;
+        private World _world;
         private Texture2D _ground;
         private List<Texture2D> _column;
         private List<Texture2D> _rockTextures;
 
-        private const float map_scaling = 6;
+        private const float map_scaling = 2;
         private const int map_translation = -4;
+        private float wallWidth = (float) Math.Sqrt(map_scaling*2);
 
         public Point TileSize = new(160, 160); // pixels
         public Tile[,] TileMap; // contains a prototype object for each tile coordinate
@@ -32,9 +35,15 @@ namespace Meridian2 {
             return new(screenX + (int)Globals.CameraPosition.X, screenY + (int)Globals.CameraPosition.Y);
         }
 
+        //Returns the world coordinates of the left angle of the ground level of the tile
         public Vector2 MapToWorld(Point map_coordinates) {
             return new Vector2((map_coordinates.X -  map_coordinates.Y+map_translation)*map_scaling, 
                 (map_coordinates.X + map_coordinates.Y+map_translation)*map_scaling);
+        }
+
+        //Returns the world coordinates of the left angle of the ground level of the tile
+        public Vector2 MapToWorld(int x, int y) {
+            return new Vector2((x -  y +map_translation)*map_scaling, (x + y +map_translation)*map_scaling);
         }
 
         // ScreenToMap: takes pixel position, returns the index of the tile at this position.
@@ -49,6 +58,25 @@ namespace Meridian2 {
             return new(mapX, mapY);
         }
 
+        public void CreateMapBody(Tile tile) {
+            Vector2 p = MapToWorld(tile.x, tile.y);
+            //TODO: make computation of l dependent on map_scaling only, find adequate formula
+            Vector2 pn = MapToWorld(tile.x, tile.y + 1);
+            float l = (p-pn).Length();
+            switch ((tile.finalPrototype.sockets[0], tile.finalPrototype.sockets[1], tile.finalPrototype.sockets[2], tile.finalPrototype.sockets[3])) {
+                case (0, 0, 0, 0): //no walls at all
+                    break;
+                case (3,3,3,3): //fully walls tile
+                    tile.body = _world.CreateRectangle(l, l, 0, p + new Vector2(map_scaling, 0), (float) Math.PI/4);
+                    break;
+                case(2,2,3,0): //topleft straight wall
+                    tile.body = _world.CreateRectangle(l, 0.5f*l, 0, p + new Vector2(map_scaling*0.75f, -0.25f*map_scaling), (float) -Math.PI/4);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void Initialize() 
         {
             MapGenerator mapGenerator = new MapGenerator(_game);
@@ -59,7 +87,11 @@ namespace Meridian2 {
             TileMap = mapGenerator.createMap(10, 10);
 
             Debug.WriteLine(TileMap);
-                    
+
+            //create bodies for tiles
+            foreach (Tile t in TileMap) {
+                CreateMapBody(t);
+            }            
         }
 
         public void LoadContent() {
@@ -123,7 +155,7 @@ namespace Meridian2 {
                 Point screenPos = MapToScreen(new(t.x, t.y));
                 Vector2 pos = MapToWorld(new(t.x, t.y));
                 //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
-                Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y, 2*map_scaling, 2*map_scaling);
+                Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y-map_scaling*3f, 2*map_scaling, 2*map_scaling);
                 //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
                 batch.Draw(_ground, tilePos, Color.White);
 
@@ -135,8 +167,9 @@ namespace Meridian2 {
             }
         }
 
-        public Map(RopeGame game) {
+        public Map(RopeGame game, World world) {
             _game = game;
+            _world = world;
         }
     }
 }
