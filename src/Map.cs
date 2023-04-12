@@ -12,6 +12,9 @@ namespace Meridian2 {
         private List<Texture2D> _column;
         private List<Texture2D> _rockTextures;
 
+        private const float map_scaling = 6;
+        private const int map_translation = -4;
+
         public Point TileSize = new(160, 160); // pixels
         public Tile[,] TileMap; // contains a prototype object for each tile coordinate
 
@@ -27,6 +30,11 @@ namespace Meridian2 {
             var screenX = (int)((map_coordinates.X - map_coordinates.Y) * halfTile);
             var screenY = (int)((map_coordinates.X + map_coordinates.Y) * quaterTile);
             return new(screenX + (int)Globals.CameraPosition.X, screenY + (int)Globals.CameraPosition.Y);
+        }
+
+        public Vector2 MapToWorld(Point map_coordinates) {
+            return new Vector2((map_coordinates.X -  map_coordinates.Y+map_translation)*map_scaling, 
+                (map_coordinates.X + map_coordinates.Y+map_translation)*map_scaling);
         }
 
         // ScreenToMap: takes pixel position, returns the index of the tile at this position.
@@ -113,10 +121,11 @@ namespace Meridian2 {
             foreach (Tile t in TileMap)
             {
                 Point screenPos = MapToScreen(new(t.x, t.y));
-                Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
-
-                batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero,
-                        SpriteEffects.None, 0.9f);
+                Vector2 pos = MapToWorld(new(t.x, t.y));
+                //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
+                Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y, 2*map_scaling, 2*map_scaling);
+                //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+                batch.Draw(_ground, tilePos, Color.White);
 
                 if (t.finalPrototype != null)
                 {
