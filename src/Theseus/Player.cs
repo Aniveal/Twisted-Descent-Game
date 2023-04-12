@@ -31,6 +31,8 @@ namespace Meridian2.Theseus
 
         public Body Body;
 
+        public Vector2 orientation;
+
         public double DashTimer = 0;
         private const int DashCoolDown = 5000;
         private const int DashUsageTime = 400;
@@ -84,6 +86,8 @@ namespace Meridian2.Theseus
             return new Vector2(isoX - isoY, (isoX + isoY) / 2);
         }
 
+    
+
         public override void Update(GameTime gameTime)
         {
             input = Vector2.Zero;
@@ -112,25 +116,25 @@ namespace Meridian2.Theseus
                 PlayerForce = 0.1f;
                 DashTimer = 0;
             }
-            if (keyboard.IsKeyDown(Keys.Right))
+            if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))
             {
                 input.X += 1;
                 isWalking = true;
             }
 
-            if (keyboard.IsKeyDown(Keys.Left))
+            if (keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.A))
             {
                 input.X -= 1;
                 isWalking = true;
             }
 
-            if (keyboard.IsKeyDown(Keys.Down))
+            if (keyboard.IsKeyDown(Keys.Down) || keyboard.IsKeyDown(Keys.S))
             {
                 input.Y += 1;
                 isWalking = true;
             }
 
-            if (keyboard.IsKeyDown(Keys.Up))
+            if (keyboard.IsKeyDown(Keys.Up) || keyboard.IsKeyDown(Keys.W))
             {
                 input.Y -= 1;
                 isWalking = true;
@@ -160,6 +164,7 @@ namespace Meridian2.Theseus
             Vector2 movement = input * (float)gameTime.ElapsedGameTime.TotalMilliseconds * PlayerForce;
 
             Body.ApplyForce(movement);
+            orientation = input;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {

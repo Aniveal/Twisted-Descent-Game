@@ -20,7 +20,7 @@ public class RopeGame : Game {
 
     public SoundEngine soundEngine;
 
-    private GameScreen _gameScreen;
+    public GameScreen _gameScreen;
     private MapScreen _mapScreen;
 
     private Screen currentScreen;

@@ -22,6 +22,7 @@ public class GameScreen : Screen {
     public ColumnsManager columnsManager;
 
     public GuiManager guiManager;
+    public SpearsController spearsController;
 
 
     public GameScreen(RopeGame game) : base(game) {
@@ -35,6 +36,7 @@ public class GameScreen : Screen {
         columnsManager = new ColumnsManager();
         theseusManager = new TheseusManager(Game, World);
         guiManager = new GuiManager(game);
+        spearsController = new SpearsController(game, columnsManager, theseusManager.player);
     }
 
     public override void Initialize() {
@@ -66,6 +68,7 @@ public class GameScreen : Screen {
        
         theseusManager.LoadContent();
         guiManager.LoadContent();
+        spearsController.LoadContent();
     }
 
     public override void Update(GameTime gameTime) {
@@ -79,6 +82,7 @@ public class GameScreen : Screen {
         _map.Update(gameTime);
 
         theseusManager.Update(gameTime);
+        spearsController.Update(gameTime);
         Diagnostics.Instance.Update(gameTime, theseusManager.player);
 
         //putting it here cuz otherwise we'll forget about it the day when columns actually need updating. same for gui
