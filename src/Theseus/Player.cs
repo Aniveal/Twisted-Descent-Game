@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection.Metadata;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
@@ -23,7 +24,7 @@ namespace Meridian2.Theseus
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _playerSize = new(1, 2);
-        private float PlayerForce = 0.005f;
+        private float PlayerForce = 0.01f;
 
         //How many milliseconds between footsteps
         private float footstepSoundDelayMax = 400f;
@@ -61,12 +62,7 @@ namespace Meridian2.Theseus
                 fixture.CollisionGroup = -1;
             }
 
-            _ropeConnection = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
-                new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
-                new Vector2((float)_playerSize.X / 2, (float)_playerSize.X / 4));
-            _ropeConnection.Length = 0.001f;
-            _ropeConnection.Frequency = 15;
-            _ropeConnection.DampingRatio = 0.95f;
+            LinkToRope();
         }
 
         public void LoadContent()
@@ -98,7 +94,6 @@ namespace Meridian2.Theseus
             input = Vector2.Zero;
             DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             DashTimer = Math.Min(DashTimer, 5000);
-            Diagnostics.Instance.SetForce(_ropeConnection.GetReactionForce(1/(float)gameTime.ElapsedGameTime.TotalSeconds).Length());
 
             GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (gamePadCapabilities.IsConnected)
@@ -119,7 +114,7 @@ namespace Meridian2.Theseus
             if (Dash & DashTimer >= DashUsageTime)
             {
                 Dash = false;
-                PlayerForce = 0.005f;
+                PlayerForce = 0.01f;
                 DashTimer = 0;
             }
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))
@@ -171,6 +166,31 @@ namespace Meridian2.Theseus
 
             Body.ApplyForce(movement);
             orientation = input;
+
+            if (_ropeConnection != null) {
+                var ropeJointForce = _ropeConnection.GetReactionForce(1 / (float)gameTime.ElapsedGameTime.TotalSeconds)
+                    .Length();
+                Diagnostics.Instance.SetForce(ropeJointForce);
+                
+                // Extend rope if force on joint is too strong
+                if (ropeJointForce >= 0.02) {
+                    // Remove player joint
+                    _world.Remove(_ropeConnection);
+                    _ropeConnection = null;
+                    
+                    _rope.AppendSegment();
+                    LinkToRope();
+                }
+            }
+        }
+
+        private void LinkToRope() {
+            _ropeConnection = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
+                new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
+                new Vector2((float)_playerSize.X / 2, (float)_playerSize.X / 4));
+            _ropeConnection.Length = 0.001f;
+            _ropeConnection.Frequency = 15;
+            _ropeConnection.DampingRatio = 0.95f;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {

@@ -157,4 +157,26 @@ public class Rope : DrawableGameElement
             segment.Draw(gameTime, batch, camera);
         }
     }
+
+    public RopeSegment AppendSegment() {
+        RopeSegment last = _segments.Last();
+        
+        RopeSegment nextLast = new RopeSegment(this, _world,
+            new Vector2(_segments.Last().Body.Position.X, _segments.Last().Body.Position.Y),
+            new Vector2(TextureWidth, TextureHeight));
+        nextLast.Initialize();
+
+        var joint = JointFactory.CreateDistanceJoint(_world, last.Body, nextLast.Body, new Vector2(TextureWidth / 2, TextureHeight),
+            new Vector2(TextureWidth / 2, 0));
+        joint.Length = 0.001f;
+        joint.Frequency = 15;
+        joint.DampingRatio = 0.95f;
+
+        _segments.Add(nextLast);
+        
+        nextLast.SetPrevious(last);
+        last.SetNext(nextLast);
+
+        return nextLast;
+    }
 }
