@@ -102,6 +102,17 @@ namespace Meridian2
 
         }
 
+        public void setFinalPrototype(Prototype p)
+        {
+            if (superpositions.Contains(p))
+            {
+                finalPrototype = p;
+                superpositions = new List<Prototype> { p };
+            }
+            else Debug.WriteLine("Tried setting prototype not in superposition list!!!");
+        }
+            
+
         public void chooseRandomPrototype()
         {
             //Step 1: get sum of all weights
@@ -128,7 +139,7 @@ namespace Meridian2
             superpositions = new List<Prototype> { finalPrototype };
 
             
-            Debug.WriteLine("Chose prot: " + finalPrototype.name + "    WeightSum = " + weightSum + "   randomNumber == " + randomNumber + "       Total Weight: " + totalWeight);
+            //Debug.WriteLine("Chose prot: " + finalPrototype.name + "    WeightSum = " + weightSum + "   randomNumber == " + randomNumber + "       Total Weight: " + totalWeight);
         }
 
     }
