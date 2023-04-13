@@ -31,6 +31,15 @@ namespace Meridian2 {
             } // Negative zoom will flip image
         }
 
+        /// <summary>
+        /// Gets the screen rectangle for the given rectangle in world space.
+        /// </summary>
+        /// <param name="x">The world x coordinate</param>
+        /// <param name="y">The world y coordinate</param>
+        /// <param name="w">The width of the object inside the world</param>
+        /// <param name="h">The height of the object inside the world</param>
+        /// <param name="scaleIsometric">If the texture should be squeezed to fit the isometric projection. This basically halves the rectangle height and should only be used for objects being parallel to the floor.</param>
+        /// <returns>A rectangle in screen coordinates which can be directly fed into a draw call.</returns>
         public Rectangle getScreenRectangle(float x, float y, float w, float h, bool scaleIsometric = false) {
             w *= _scale;
             h *= _scale;
@@ -41,6 +50,11 @@ namespace Meridian2 {
             return new Rectangle((int)((x - _position.X) * _scale) + _graphicsDevice.Viewport.Width / 2, (int)((y - _position.Y) * _scale / 2) + _graphicsDevice.Viewport.Height / 2, (int)w, (int)h);
         }
 
+        /// <summary>
+        /// Calculates the point on the screen for the given world coordinates.
+        /// </summary>
+        /// <param name="v">The world coordinates</param>
+        /// <returns>The screen coordinates corresponding to the given world coordinates</returns>
         public Vector2 getScreenPoint(Vector2 v) {
             v.X = (v.X - _position.X) * _scale + _graphicsDevice.Viewport.Width / 2;
             v.Y = (v.Y - _position.Y) * _scale / 2 + _graphicsDevice.Viewport.Height / 2;
