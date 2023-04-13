@@ -44,7 +44,7 @@ namespace Meridian2
                 _last = _now;
             }
 
-            _forceMessage = "Force: " + _force;
+            _forceMessage = "Joint Force: " + $"{_force,6:##0.00}";
             _dashMessage = "Dash Cooldown: " + (5000 - Math.Round(player.DashTimer, 0));
         }
 

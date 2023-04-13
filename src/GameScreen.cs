@@ -109,7 +109,7 @@ public class GameScreen : Screen {
         //}
         guiManager.Draw(gameTime, _batch, Camera);
 
-        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10,10), Color.Red);
+        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), Color.Red);
         _batch.End();
     }
 }
