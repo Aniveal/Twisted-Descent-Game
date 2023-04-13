@@ -22,7 +22,7 @@ namespace Meridian2.Theseus
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _playerSize = new(1, 2);
-        private float PlayerForce = 0.05f;
+        private float PlayerForce = 0.02f;
 
         //How many milliseconds between footsteps
         private float footstepSoundDelayMax = 400f;
@@ -49,7 +49,7 @@ namespace Meridian2.Theseus
 
         public void Initialize()
         {
-            Body = _world.CreateEllipse((float)_playerSize.X / 2, (float)_playerSize.X / 4, 20, 0.1f,
+            Body = _world.CreateEllipse((float)_playerSize.X / 2, (float)_playerSize.X / 4, 20, 0.01f,
                 _rope.GetEndPosition(), 0f, BodyType.Dynamic);
             Body.FixedRotation = true;
             Body.LinearDamping = 1f;
@@ -108,12 +108,12 @@ namespace Meridian2.Theseus
             {
                 Dash = true;
                 DashTimer = 0;
-                PlayerForce = 0.4f;
+                PlayerForce = 0.05f;
             }
             if (Dash & DashTimer >= DashUsageTime)
             {
                 Dash = false;
-                PlayerForce = 0.1f;
+                PlayerForce = 0.02f;
                 DashTimer = 0;
             }
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))
