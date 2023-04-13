@@ -135,13 +135,13 @@ namespace Meridian2 {
 
             Debug.WriteLine("Initializing Map");
 
-            int mapX = 50;
-            int mapY = 50;
+            int mapX = 30;
+            int mapY = 30;
 
             List<Vector3> openings = new List<Vector3>{
-                new Vector3(0, 25, 4),
-                new Vector3(25, 0, 2),
-            new Vector3(mapY - 1, 20, 3)};
+                new Vector3(3, 0, 2),
+            new Vector3(mapX - 1, 20, 3),
+            new Vector3(10, mapY - 1, 3)};
 
             //The new Map generation
             TileMap = mapGenerator.createRoom(mapX, mapY, openings).tileMap;

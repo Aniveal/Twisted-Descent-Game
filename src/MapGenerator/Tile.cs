@@ -124,7 +124,7 @@ namespace Meridian2
 
             //Step 2: find element
             int weightSum = 0;
-            int randomNumber = new Random().Next(totalWeight);
+            int randomNumber = RNGsus.Instance.Next(totalWeight);
             for(int i = 0; i < superpositions.Count; i++)
             {
                 weightSum += superpositions[i].weight;

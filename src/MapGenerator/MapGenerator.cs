@@ -191,9 +191,7 @@ namespace Meridian2
                 if (list.Count <= 0)
                     break;
 
-                //Choose one tile at random:
-                Random random = new Random();
-                Tile chosen = list[random.Next(list.Count)];
+                Tile chosen = list[RNGsus.Instance.Next(list.Count)];
 
                 chosen.chooseRandomPrototype();
 

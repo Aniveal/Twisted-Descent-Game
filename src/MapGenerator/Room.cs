@@ -25,9 +25,6 @@ namespace Meridian2
         //Pointer to the mapGenerator
         private MapGenerator mg;
 
-        //Random class
-        private Random r;
-
         public Room(MapGenerator mg, int x, int y)
         {
             openings = new List<Vector2>();
@@ -35,7 +32,6 @@ namespace Meridian2
             sizeX = x; 
             sizeY = y;
             tileMap = new Tile[sizeX, sizeY];
-            r = new Random();
             initializeTileMap();
         }
 
@@ -135,7 +131,7 @@ namespace Meridian2
                 while (!(x == midX && y == midY))
                 {
                     Debug.WriteLine("In while loop!!!  x = " + x + ", y = " + y);
-                    double rand = r.NextDouble();
+                    double rand = RNGsus.Instance.NextDouble();
 
                     //Corner cases
                     if (x == midX)
