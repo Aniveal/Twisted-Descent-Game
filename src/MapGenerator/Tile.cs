@@ -10,12 +10,15 @@ using System.Xml.Linq;
 using System.Net.Sockets;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2
 {
     public class Tile
     {
         public int x, y;
+
+        public Body body;
 
         //Hello
 

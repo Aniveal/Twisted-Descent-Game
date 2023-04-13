@@ -28,8 +28,9 @@ namespace Meridian2
             Game = getGame();
 
             _batch = new SpriteBatch(Game.GraphicsDevice);
-            _map = new Map(game);
+           
             World = new World(Vector2.Zero);
+            _map = new Map(game, World);
 
         }
 
