@@ -14,6 +14,8 @@ public class GameScreen : Screen {
     private SpriteBatch _batch;
     public World World;
     public Camera Camera;
+    private double _fixedTickAccumulator;
+    private const float _fixedTimeStep = 1 / 60f;
 
     private Map _map;
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
@@ -30,10 +32,10 @@ public class GameScreen : Screen {
         Camera = new Camera(Game.GraphicsDevice);
 
         _batch = new SpriteBatch(Game.GraphicsDevice);
-        
+
         World = new World(Vector2.Zero);
         _map = new Map(game, World);
-        
+
         columnsManager = new ColumnsManager();
         theseusManager = new TheseusManager(Game, World);
         guiManager = new GuiManager(game);
@@ -44,7 +46,7 @@ public class GameScreen : Screen {
         base.Initialize();
 
         _map.Initialize();
-        
+
         theseusManager.Initialize();
 
         guiManager.Initialize();
@@ -66,10 +68,19 @@ public class GameScreen : Screen {
         // columnsManager.Add(new Amphora(Game, World, new Vector2(2, 9), 0.2f));
 
         _map.LoadContent();
-       
+
         theseusManager.LoadContent();
         guiManager.LoadContent();
         spearsController.LoadContent();
+    }
+
+    public void FixedUpdate(GameTime gameTime) {
+        _fixedTickAccumulator += gameTime.ElapsedGameTime.TotalSeconds;
+
+        while (_fixedTickAccumulator >= _fixedTimeStep) {
+            World.Step(_fixedTimeStep);
+            _fixedTickAccumulator -= _fixedTimeStep;
+        }
     }
 
     public override void Update(GameTime gameTime) {
