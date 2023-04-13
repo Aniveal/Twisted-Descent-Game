@@ -60,8 +60,12 @@ namespace Meridian2.Theseus
                 fixture.CollisionGroup = -1;
             }
 
-            JointFactory.CreateRevoluteJoint(_world, _rope.LastSegment().Body, Body,
-                Vector2.Zero);
+            var joint = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
+                new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
+                new Vector2((float)_playerSize.X / 2, (float)_playerSize.X / 4));
+            joint.Length = 0.001f;
+            joint.Frequency = 15;
+            joint.DampingRatio = 0.95f;
         }
 
         public void LoadContent()
@@ -169,7 +173,7 @@ namespace Meridian2.Theseus
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
             camera.Pos = Body.Position;
-            Rectangle spritePos = camera.getScreenRectangle(Body.Position.X, Body.Position.Y, _playerSize.X, _playerSize.Y);
+            Rectangle spritePos = camera.getScreenRectangle(Body.Position.X, Body.Position.Y - _playerSize.Y*2 + (float)_playerSize.X / 4, _playerSize.X, _playerSize.Y);
 
             float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
 
