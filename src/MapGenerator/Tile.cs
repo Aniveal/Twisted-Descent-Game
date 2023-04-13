@@ -27,11 +27,21 @@ namespace Meridian2
 
         public Prototype finalPrototype;
 
+        //Instantiate a Tile with multiple possible prototypes
         public Tile(List<Prototype> protList)
         {
             superpositions = new List<Prototype>();
             superpositions.AddRange(protList);
             x = y = 0;
+        }
+
+        //Create a specific tile
+        public Tile(Prototype prot, int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+            finalPrototype = prot;
+            superpositions = new List<Prototype> { prot };
         }
 
         //Collapse the wave function where the socket on the direction dir is incompatible (dir is the direction from here to where to fit)
@@ -92,6 +102,17 @@ namespace Meridian2
 
         }
 
+        public void setFinalPrototype(Prototype p)
+        {
+            if (superpositions.Contains(p))
+            {
+                finalPrototype = p;
+                superpositions = new List<Prototype> { p };
+            }
+            else Debug.WriteLine("Tried setting prototype not in superposition list!!!");
+        }
+            
+
         public void chooseRandomPrototype()
         {
             //Step 1: get sum of all weights
@@ -103,7 +124,7 @@ namespace Meridian2
 
             //Step 2: find element
             int weightSum = 0;
-            int randomNumber = new Random().Next(totalWeight);
+            int randomNumber = RNGsus.Instance.Next(totalWeight);
             for(int i = 0; i < superpositions.Count; i++)
             {
                 weightSum += superpositions[i].weight;
@@ -118,7 +139,7 @@ namespace Meridian2
             superpositions = new List<Prototype> { finalPrototype };
 
             
-            Debug.WriteLine("Chose prot: " + finalPrototype.name + "    WeightSum = " + weightSum + "   randomNumber == " + randomNumber + "       Total Weight: " + totalWeight);
+            //Debug.WriteLine("Chose prot: " + finalPrototype.name + "    WeightSum = " + weightSum + "   randomNumber == " + randomNumber + "       Total Weight: " + totalWeight);
         }
 
     }
