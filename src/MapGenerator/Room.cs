@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,37 +30,62 @@ namespace Meridian2
             openings = new List<Vector2>();
             this.mg = mg;
             neighbours = new Room[4];
-            sizeX = x; sizeY = y;
+            sizeX = x; 
+            sizeY = y;
             tileMap = new Tile[sizeX, sizeY];
             r = new Random();
+            initializeTileMap();
+        }
+
+        public void initializeTileMap()
+        {
+
+            //Create all tiles, initialize with full set of prototypes
+            for (int x = 0; x < sizeX; x++)
+            {
+                for (int y = 0; y < sizeY; y++)
+                {
+                    tileMap[x, y] = new Tile(mg.prototypes);
+                    tileMap[x, y].x = x;
+                    tileMap[x, y].y = y;
+                }
+            }
         }
 
         //Creates an opening to another room at x, y with length l. l goes from x,y into the positive direction. Has to be at least 3
         //Don't go too close to an edge, otherwise undefined behaviuor may happen
         public void createOpening(int x, int y, int l)
         {
+            
             openings.Add(new Vector2(x, y));
 
             if (x == 0 || x == sizeX - 1)
             {
-                for (int i = 1; i < l - 1; i++)
+                for (int i = 0; i < l; i++)
                 {
                     if (i > sizeY - 1)
+                    {
+                        Debug.WriteLine("Error, l was too large in createOpening()");
                         return;
+                    }
                     tileMap[x, y + i].setFinalPrototype(mg.getPrototype("ground"));
                     mg.collapseTile(tileMap[x, y + i], this.tileMap);
                 }
             }
             else if (y == 0 || y == sizeY - 1)
             {
-                for (int i = 1; i < l - 1; i++)
+                for (int i = 0; i < l; i++)
                 {
                     if (i > sizeX - 1)
+                    {
+                        Debug.WriteLine("Error, l was too large in createOpening()");
                         return;
+                    }
                     tileMap[x + i, y].setFinalPrototype(mg.getPrototype("ground"));
                     mg.collapseTile(tileMap[x + i, y], this.tileMap);
                 }
             }
+            else Debug.WriteLine("Error while creating opening: Point " + x + "," + y + " is not on the border!!! SizeX = " + sizeX + ", SizeY = "+sizeY);
         }
 
         //Creates a walkable paths between all openings to ensure that all exits are reachable
@@ -71,62 +97,84 @@ namespace Meridian2
             int midX = sizeX / 2;
             int midY = sizeY / 2;
 
+            Debug.WriteLine("Connecting the openings: midX = " + midX + "  And midY = " + midY);
+
             foreach(Vector2 opening in openings)
             {
-                int x, y;
+                
+                int x = (int)opening.X; int y = (int)opening.Y;
+
+                Debug.Write("Opening.... " + x + ", " + y +  " midX = " + midX + " , midY = " + midY);
+
                 //Handle case where opening is on left or right
-                if(opening.X == 0 || opening.X == sizeX - 1)
+                while (x <= 1 || x >= (sizeX - 2))
                 {
                     //First, do one step towards the middle
-                    x = (int)opening.X;
-                    y = (int)opening.Y + 1;
+                    if(opening.X <= 1)
+                        x = x + 1;
+                    else x = x - 1;
 
                     tileMap[x, y].setFinalPrototype(mg.getPrototype("ground"));
-                    mg.collapseTile(tileMap[x,y], this.tileMap);
+                    mg.collapseTile(tileMap[x, y], this.tileMap);
+                }
+                
+                //opening on top or bottom
+                while (y <= 1 || y >= (sizeX - 2))
+                {
+                    //First, do one step towards the middle
+                    if(opening.Y <= 1)
+                        y = y + 1;
+                    else y = y - 1;
 
-                    while(x != midX && y != midY)
+                    tileMap[x, y].setFinalPrototype(mg.getPrototype("ground"));
+                    mg.collapseTile(tileMap[x, y], this.tileMap);
+                }
+
+                while (!(x == midX && y == midY))
+                {
+                    Debug.WriteLine("In while loop!!!  x = " + x + ", y = " + y);
+                    double rand = r.NextDouble();
+
+                    //Corner cases
+                    if (x == midX)
                     {
-                        double rand = r.NextDouble();
-
-                        //Corner cases
-                        if (x == midX)
-                        {
-                            if (y < midY) y++;
-                            else y--;
-                            tileMap[x, y].setFinalPrototype(mg.getPrototype("ground"));
-                            mg.collapseTile(tileMap[x, y], this.tileMap);
-                            continue;
-                        }
-                        if (y == midY)
-                        {
-                            if (x < midX) x++;
-                            else x--;
-                            tileMap[x, y].setFinalPrototype(mg.getPrototype("ground"));
-                            mg.collapseTile(tileMap[x, y], this.tileMap);
-                            continue;
-                        }
-
-                        //Get distance from point to mid
-                        int distanceX = Math.Abs(midX - x);
-                        int distanceY = Math.Abs(midY - y);
-
-                        //Farther away increases weight
-                        double xWeight = distanceX / (double)(distanceX + distanceY);
-
-                        if(rand < xWeight)
-                        {
-                            if (x < midX) x++;
-                            else x--;
-                        }
-                        else
-                        {
-                            if(y < midY) y++;
-                            else y--;
-                        }
+                        if (y < midY) y++;
+                        else y--;
                         tileMap[x, y].setFinalPrototype(mg.getPrototype("ground"));
                         mg.collapseTile(tileMap[x, y], this.tileMap);
+                        continue;
                     }
+                    if (y == midY)
+                    {
+                        if (x < midX) x++;
+                        else x--;
+                        tileMap[x, y].setFinalPrototype(mg.getPrototype("ground"));
+                        mg.collapseTile(tileMap[x, y], this.tileMap);
+                        continue;
+                    }
+
+                    //Get distance from point to mid
+                    int distanceX = Math.Abs(midX - x);
+                    int distanceY = Math.Abs(midY - y);
+
+                    //Farther away increases weight
+                    double xWeight = distanceX / (double)(distanceX + distanceY);
+
+                    if(rand < xWeight)
+                    {
+                        if (x < midX) x++;
+                        else x--;
+                    }
+                    else
+                    {
+                        if(y < midY) y++;
+                        else y--;
+                    }
+                    tileMap[x, y].setFinalPrototype(mg.getPrototype("ground"));
+                    mg.collapseTile(tileMap[x, y], this.tileMap);
                 }
+                Debug.Write("Complete!\n");
+                
             }
         }
 

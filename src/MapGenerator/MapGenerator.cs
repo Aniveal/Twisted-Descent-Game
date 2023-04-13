@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Meridian2
 {
@@ -21,7 +22,7 @@ namespace Meridian2
         private List<Texture2D> rockTextures;
 
         //The list of all possible prototypes we want to use in the map generation
-        private List<Prototype> prototypes = new List<Prototype>();
+        public List<Prototype> prototypes = new List<Prototype>();
 
         public MapGenerator(RopeGame ropeGame)
         {
@@ -41,25 +42,46 @@ namespace Meridian2
         }
 
         //Creates the tilemap for a fully enclosed room 
-        public Tile[,] createRoom(int mapX, int mapY)
+        public Room createRoom(int mapX, int mapY)
         {
             Room room = new Room(this, mapX, mapY);
 
             initializeWaveFunction(room.tileMap);
 
-            
-            
-            room.createOpening(0, 4, 3);
-            room.createOpening(mapX - 1, mapY - 5, 4);
-            room.createOpening(6, 0, 6);
+            room.createOpening(0, 2, 1);
+            room.createOpening(mapX - 1, 3, 1);
 
+            room.createBorder();
+
+            
+
+            room.connectOpenings();
+
+            runWaveFunctionCollapse(room.tileMap);
+
+            return room;
+        }
+
+        public Room createRoom(int mapX, int mapY, List<Vector3> openings)
+        {
+            Room room = new Room(this, mapX, mapY);
+
+            initializeWaveFunction(room.tileMap);
+
+            foreach(Vector3 o in openings)
+            {
+                room.createOpening(0, 4, 3);
+                room.createOpening(mapX - 1, mapY - 5, 4);
+                room.createOpening(6, 0, 6);
+            }
+            
             room.createBorder();
 
             room.connectOpenings();
 
             runWaveFunctionCollapse(room.tileMap);
 
-            return room.tileMap;
+            return room;
         }
 
         //Fills out entire grid with all prototypes

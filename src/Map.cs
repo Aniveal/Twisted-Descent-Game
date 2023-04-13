@@ -87,7 +87,7 @@ namespace Meridian2 {
             Debug.WriteLine("Initializing Map");
 
             //The new Map generation
-            TileMap = mapGenerator.createRoom(20, 20);
+            TileMap = mapGenerator.createRoom(30, 15).tileMap;
 
             Debug.WriteLine(TileMap);
 

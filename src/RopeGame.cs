@@ -47,8 +47,8 @@ public class RopeGame : Game {
 
         gameData = new GameData();
 
-        _gameScreen = new GameScreen(this);
-        _gameScreen.Initialize();
+        //_gameScreen = new GameScreen(this);
+        //_gameScreen.Initialize();
 
         _mapScreen = new MapScreen(this);
         _mapScreen.Initialize();
