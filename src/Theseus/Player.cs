@@ -15,6 +15,7 @@ namespace Meridian2.Theseus
         private readonly RopeGame _game;
         private Rope _rope;
         private World _world;
+        private DistanceJoint _ropeConnection;
 
         private Texture2D idle;
         private Texture2D running_l;
@@ -22,7 +23,7 @@ namespace Meridian2.Theseus
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _playerSize = new(1, 2);
-        private float PlayerForce = 0.02f;
+        private float PlayerForce = 0.005f;
 
         //How many milliseconds between footsteps
         private float footstepSoundDelayMax = 400f;
@@ -60,12 +61,12 @@ namespace Meridian2.Theseus
                 fixture.CollisionGroup = -1;
             }
 
-            var joint = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
+            _ropeConnection = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
                 new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
                 new Vector2((float)_playerSize.X / 2, (float)_playerSize.X / 4));
-            joint.Length = 0.001f;
-            joint.Frequency = 15;
-            joint.DampingRatio = 0.95f;
+            _ropeConnection.Length = 0.001f;
+            _ropeConnection.Frequency = 15;
+            _ropeConnection.DampingRatio = 0.95f;
         }
 
         public void LoadContent()
@@ -97,6 +98,7 @@ namespace Meridian2.Theseus
             input = Vector2.Zero;
             DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             DashTimer = Math.Min(DashTimer, 5000);
+            Diagnostics.Instance.SetForce(_ropeConnection.GetReactionForce(1/(float)gameTime.ElapsedGameTime.TotalSeconds).Length());
 
             GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (gamePadCapabilities.IsConnected)
@@ -117,7 +119,7 @@ namespace Meridian2.Theseus
             if (Dash & DashTimer >= DashUsageTime)
             {
                 Dash = false;
-                PlayerForce = 0.02f;
+                PlayerForce = 0.005f;
                 DashTimer = 0;
             }
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))
