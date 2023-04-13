@@ -42,14 +42,18 @@ namespace Meridian2
         }
 
         //Creates the tilemap for a fully enclosed room 
+        //DO NOT USE THIS, INSTEAD USE THE ONE WHICH TAKES OPENINGS AS PARAMETER!!!
         public Room createRoom(int mapX, int mapY)
         {
             Room room = new Room(this, mapX, mapY);
 
             initializeWaveFunction(room.tileMap);
 
+            //TODO: Remove this hardcoded shit!!
             room.createOpening(0, 2, 1);
-            room.createOpening(mapX - 1, 3, 1);
+            room.createOpening(mapX - 1, 10, 1);
+            room.createOpening(20, mapY - 1, 5);
+            room.createOpening(30, 0, 2);
 
             room.createBorder();
 
@@ -70,9 +74,7 @@ namespace Meridian2
 
             foreach(Vector3 o in openings)
             {
-                room.createOpening(0, 4, 3);
-                room.createOpening(mapX - 1, mapY - 5, 4);
-                room.createOpening(6, 0, 6);
+                room.createOpening((int)o.X, (int)o.Y, (int)o.Z);
             }
             
             room.createBorder();
@@ -133,22 +135,22 @@ namespace Meridian2
 
             //Create prototypes for each texture; Look from bottom or from right side!!!
             //0: nothing; 1: right wall; 2: left wall; 3: all wall
-            prototypes.Add(new Prototype(rockTextures[0], "Wall1rd", new int[] { 0, 1, 0, 2 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[1], "Wall1ru", new int[] { 1, 0, 0, 1 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[2], "Wall1lu", new int[] { 2, 0, 1, 0 }, 5,false));
-            prototypes.Add(new Prototype(rockTextures[3], "Wall1ld", new int[] { 0, 2, 2, 0 }, 5, false));
+            prototypes.Add(new Prototype(rockTextures[0], "Wall1rd", new int[] { 0, 1, 0, 2 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[1], "Wall1ru", new int[] { 1, 0, 0, 1 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[2], "Wall1lu", new int[] { 2, 0, 1, 0 }, 1,false));
+            prototypes.Add(new Prototype(rockTextures[3], "Wall1ld", new int[] { 0, 2, 2, 0 }, 1, false));
             
-            prototypes.Add(new Prototype(rockTextures[4], "Wall2l", new int[] { 2, 2, 3, 0 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[5], "Wall2u", new int[] { 3, 0, 1, 1 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[6], "Wall2r", new int[] { 1, 1, 0, 3 },5, false));
-            prototypes.Add(new Prototype(rockTextures[7], "Wall2d", new int[] { 0, 3, 2, 2 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[8], "Wall3ul", new int[] { 1, 3, 2, 3 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[11], "Wall3ur", new int[] { 2, 3, 3, 2 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[9], "Wall3dl", new int[] { 3, 1, 1, 3 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[10], "Wall3dr", new int[] { 3, 2, 3, 1 }, 5, false));
-            prototypes.Add(new Prototype(rockTextures[12], "FullWall", new int[] { 3, 3, 3, 3 }, 5, false));
+            prototypes.Add(new Prototype(rockTextures[4], "Wall2l", new int[] { 2, 2, 3, 0 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[5], "Wall2u", new int[] { 3, 0, 1, 1 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[6], "Wall2r", new int[] { 1, 1, 0, 3 },1, false));
+            prototypes.Add(new Prototype(rockTextures[7], "Wall2d", new int[] { 0, 3, 2, 2 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[8], "Wall3ul", new int[] { 1, 3, 2, 3 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[11], "Wall3ur", new int[] { 2, 3, 3, 2 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[9], "Wall3dl", new int[] { 3, 1, 1, 3 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[10], "Wall3dr", new int[] { 3, 2, 3, 1 }, 1, false));
+            prototypes.Add(new Prototype(rockTextures[12], "FullWall", new int[] { 3, 3, 3, 3 }, 100, false));
 
-            prototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 100, true));
+            prototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 200, true));
 
 
 

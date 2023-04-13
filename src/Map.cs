@@ -86,8 +86,16 @@ namespace Meridian2 {
 
             Debug.WriteLine("Initializing Map");
 
+            int mapX = 50;
+            int mapY = 50;
+
+            List<Vector3> openings = new List<Vector3>{
+                new Vector3(0, 25, 4),
+                new Vector3(25, 0, 2),
+            new Vector3(mapY - 1, 20, 3)};
+
             //The new Map generation
-            TileMap = mapGenerator.createRoom(30, 15).tileMap;
+            TileMap = mapGenerator.createRoom(mapX, mapY, openings).tileMap;
 
             Debug.WriteLine(TileMap);
 

@@ -31,7 +31,7 @@ namespace Meridian2
             Game = getGame();
 
             Camera = new Camera(Game.GraphicsDevice);
-            Camera.Scale = 20.0f;
+            Camera.Scale = 10.0f;
 
             _batch = new SpriteBatch(Game.GraphicsDevice);
            
@@ -109,6 +109,14 @@ namespace Meridian2
             if (keyboard.IsKeyDown(Keys.D))
             {
                 camMove.X += camMovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (keyboard.IsKeyDown(Keys.Add))
+            {
+                Camera.Scale += 5 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (keyboard.IsKeyDown(Keys.Subtract))
+            {
+                Camera.Scale -= 5 * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
             Camera.Move(camMove);

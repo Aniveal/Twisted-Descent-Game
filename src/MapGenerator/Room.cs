@@ -17,19 +17,21 @@ namespace Meridian2
         List<Vector2> openings;
 
         //All neighbouring rooms, up-down-left-right, null means none
-        Room[] neighbours;
+        List<Room> neighbours = new List<Room>();
 
+        //The map of this room
         public Tile[,] tileMap;
 
+        //Pointer to the mapGenerator
         private MapGenerator mg;
 
+        //Random class
         private Random r;
 
         public Room(MapGenerator mg, int x, int y)
         {
             openings = new List<Vector2>();
             this.mg = mg;
-            neighbours = new Room[4];
             sizeX = x; 
             sizeY = y;
             tileMap = new Tile[sizeX, sizeY];
