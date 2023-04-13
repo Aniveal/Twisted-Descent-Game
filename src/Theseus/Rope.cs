@@ -72,21 +72,28 @@ public class Rope : DrawableGameElement
 
             if (i > 0)
             {
-                JointFactory.CreateRevoluteJoint(_world, _segments[i - 1].Body, _segments[i].Body,
-                    Vector2.Zero);
+                var joint = JointFactory.CreateDistanceJoint(_world, _segments[i - 1].Body, _segments[i].Body, new Vector2(TextureWidth / 2, TextureHeight),
+                    new Vector2(TextureWidth / 2, 0));
+                joint.Length = 0.001f;
+                joint.Frequency = 15;
+                joint.DampingRatio = 0.95f;
+
                 segment.SetPrevious(_segments[i - 1]);
                 _segments[i - 1].SetNext(segment);
             }
             else
             {
-                JointFactory.CreateRevoluteJoint(_world, _anchor, _segments[0].Body, Vector2.Zero);
+                var joint = JointFactory.CreateDistanceJoint(_world, _anchor, _segments[0].Body, Vector2.Zero,
+                    new Vector2(TextureWidth / 2, 0));
+                joint.Length = 0.001f;
+                joint.Frequency = 15;
+                joint.DampingRatio = 0.95f;
             }
         }
     }
 
     public void Pull(GameTime gameTime)
     {
-
         if (_fragiles.Count > 0)
         {
             if (gameTime.TotalGameTime - lastBreak > breakCoolDown)

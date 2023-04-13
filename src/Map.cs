@@ -5,6 +5,7 @@ using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
+using tainicom.Aether.Physics2D.Common;
 
 namespace Meridian2 {
     public class Map : DrawableGameElement {
@@ -58,6 +59,20 @@ namespace Meridian2 {
             return new(mapX, mapY);
         }
 
+        //building a polygon of the shape of wall_3f
+        private Vertices buildWall3Polygon(float scaling) {
+            List<Vector2> v = new List<Vector2>();
+            v.Add(new Vector2(-scaling, 0)); //left corner
+            v.Add(new Vector2(-scaling*0.5f, scaling*0.5f)); //left end of hole
+            v.Add(new Vector2(-scaling*0.25f, scaling*0.25f));
+            v.Add(new Vector2(scaling*0.25f, scaling*0.25f));
+            v.Add(new Vector2(scaling*0.5f, scaling*0.5f)); //right end of hole
+            v.Add(new Vector2(scaling, 0)); //right corner
+            v.Add(new Vector2(0, -scaling)); //top corner
+
+            return new Vertices(v);
+        }
+
         public void CreateMapBody(Tile tile) {
             if (tile.finalPrototype == null)
                 return;
@@ -70,10 +85,44 @@ namespace Meridian2 {
                 case (0, 0, 0, 0): //no walls at all
                     break;
                 case (3,3,3,3): //fully walls tile
+                    
                     tile.body = _world.CreateRectangle(l, l, 0, p + new Vector2(map_scaling, 0), (float) Math.PI/4);
                     break;
                 case(2,2,3,0): //topleft straight wall
                     tile.body = _world.CreateRectangle(l, 0.5f*l, 0, p + new Vector2(map_scaling*0.75f, -0.25f*map_scaling), (float) -Math.PI/4);
+                    break;
+                case(3,0,1,1): //topright straight wall
+                    tile.body = _world.CreateRectangle(l, 0.5f*l, 0, p + new Vector2(map_scaling*1.25f, -0.25f*map_scaling), (float) Math.PI/4);
+                    break;
+                case(1,1,0,3): //bottom right straight wall
+                    tile.body = _world.CreateRectangle(l, 0.5f*l, 0, p + new Vector2(map_scaling*1.25f, 0.25f*map_scaling), (float) -Math.PI/4);
+                    break;
+                case(0,3,2,2): //bottom left wall
+                    tile.body = _world.CreateRectangle(l, 0.5f*l, 0, p + new Vector2(map_scaling*0.75f, 0.25f*map_scaling), (float) Math.PI/4);
+                    break;
+                case(0,1,0,2): //bottom corner
+                    tile.body = _world.CreateCircle(l*0.5f, 0, p + new Vector2(map_scaling, map_scaling));
+                    break;
+                case(1,0,0,1): //right corner
+                    tile.body = _world.CreateCircle(l*0.5f, 0, p + new Vector2(map_scaling*2, 0));
+                    break;
+                case(2,0,1,0): //top corner
+                    tile.body = _world.CreateCircle(l*0.5f, 0, p + new Vector2(map_scaling, -map_scaling));
+                    break;
+                case(0,2,2,0): //left corner
+                    tile.body = _world.CreateCircle(l*0.5f, 0, p);
+                    break;
+                case(3,2,3,1): //wall 3 open bot
+                    tile.body = _world.CreatePolygon(buildWall3Polygon(map_scaling), 0, p + new Vector2(map_scaling, 0));
+                    break;
+                case(3,1,1,3): //wall 3 open left
+                    tile.body = _world.CreatePolygon(buildWall3Polygon(map_scaling), 0, p + new Vector2(map_scaling, 0), (float) Math.PI/2);
+                    break;
+                case(2,3,3,2): //wall 3 open right
+                    tile.body = _world.CreatePolygon(buildWall3Polygon(map_scaling), 0, p + new Vector2(map_scaling, 0), (float) -Math.PI/2);
+                    break;
+                case(1,3,2,3): //wall 3 open top
+                    tile.body = _world.CreatePolygon(buildWall3Polygon(map_scaling), 0, p + new Vector2(map_scaling, 0), (float) Math.PI);
                     break;
                 default:
                     break;
