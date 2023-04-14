@@ -92,7 +92,7 @@ public class GameScreen : Screen {
 
         base.Update(gameTime);
         _map.Update(gameTime);
-
+        
         theseusManager.Update(gameTime);
         spearsController.Update(gameTime);
         Diagnostics.Instance.Update(gameTime, theseusManager.player);
