@@ -14,8 +14,6 @@ namespace Meridian2
         private static readonly RNGsus instance = new RNGsus();
         private Random random;
 
-        
-
         static RNGsus()
         {
             

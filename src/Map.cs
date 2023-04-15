@@ -144,7 +144,7 @@ namespace Meridian2 {
             new Vector3(10, mapY - 1, 3)};
 
             //The new Map generation
-            TileMap = mapGenerator.createRoom(mapX, mapY, openings).tileMap;
+            TileMap = mapGenerator.createSingleRoom().tileMap;
 
             Debug.WriteLine(TileMap);
 

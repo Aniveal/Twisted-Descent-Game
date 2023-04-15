@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Meridian2
 {
-    public class RoomPrototype
+    internal class Node
     {
-        string name;
+        //What type this room is, for example: 
+        public string type;
     }
 }

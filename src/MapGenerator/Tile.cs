@@ -20,8 +20,6 @@ namespace Meridian2
 
         public Body body;
 
-        //Hello
-
         //The superposition list of this tile
         public List<Prototype> superpositions;
 
