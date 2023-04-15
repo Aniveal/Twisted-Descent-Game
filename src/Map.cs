@@ -144,7 +144,7 @@ namespace Meridian2 {
             new Vector3(10, mapY - 1, 3)};
 
             //The new Map generation
-            TileMap = mapGenerator.createSingleRoom().tileMap;
+            TileMap = mapGenerator.createSingleExampleRoom().tileMap;
 
             Debug.WriteLine(TileMap);
 
@@ -212,6 +212,9 @@ namespace Meridian2 {
             
             foreach (Tile t in TileMap)
             {
+                //Only draw what is on the screen
+                if(t.x < xMin || t.x > xMax || t.y < yMin || t.y > yMax) continue;
+
                 Point screenPos = MapToScreen(new(t.x, t.y));
                 Vector2 pos = MapToWorld(new(t.x, t.y));
                 //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);

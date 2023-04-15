@@ -35,7 +35,8 @@ namespace Meridian2
             createPrototypeLists();
         }
 
-        public Room createSingleRoom()
+        //This is only until better generation is aviable
+        public Room createSingleExampleRoom()
         {
             RoomSettings rs = new RoomSettings("StarterRoom", rockPrototypes);
             Room room = new Room(this, rs, 30, 30);
@@ -47,6 +48,8 @@ namespace Meridian2
             return room;
         }
         
+        
+
         //Initializes the prototypes
         private void createPrototypeLists()
         {
