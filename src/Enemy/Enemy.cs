@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Joints;
+using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
 namespace Meridian2.Enemy
 {
@@ -48,6 +49,9 @@ namespace Meridian2.Enemy
                 initpos, 0f, BodyType.Dynamic);
             Body.FixedRotation = true;
             Body.LinearDamping = 1f;
+            Body.Tag = this;
+            Body.OnCollision += OnCollision;
+
             _difficultyLevel = difficultyLevel;
         }
 
@@ -59,6 +63,36 @@ namespace Meridian2.Enemy
             running_f = _game.Content.Load<Texture2D>("Enemy");
             running_b = _game.Content.Load<Texture2D>("Enemy");
         }
+
+        public void Electrify() {
+            //TODO: play animation (change color to yellow?), take damage
+        }
+
+        protected bool OnCollision(Fixture sender, Fixture other, Contact contact) {
+            Body collider;
+            if (sender.Body.Tag == this) {
+                collider = other.Body;
+            } else {
+                collider = sender.Body;
+            }
+            if (collider.Tag == null) {
+                return true;
+            }
+            ///player collision
+            if (collider.Tag is Player) {
+                _game.gameData.health -= 1; //TODO: do stuff when health reaches 0
+            }
+            // If colliding with rope, and rope electrified
+            if (collider.Tag is RopeSegment) {
+                if (((RopeSegment) collider.Tag).elecIntensity > 0) {
+                    Electrify();
+                }
+                
+            }
+
+            return true;
+        }
+        
 
         public override void Update(GameTime gameTime)
         {
