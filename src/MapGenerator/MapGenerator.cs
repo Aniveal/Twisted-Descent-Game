@@ -42,7 +42,7 @@ namespace Meridian2
             Room r1 = new Room(this, rs, 0, -3, 10, 10); //(-5, -5), (5, 5)
             Room r2 = new Room(this, rs, 10, -3, 20, 15);  //(5, -5), (15, 10)
             Room r3 = new Room(this, rs, -30, 7, 40, 50);   //(-5, 5), (2, 55)
-            Room r4 = new Room(this, rs, 10, 12, 10, 45); //(15, 10), (25, 55)
+            Room r4 = new Room(this, rs, 20, 12, 10, 45); //(15, 10), (25, 55)
 
             r1.createOpening(0, 1, 3);
             r1.createOpening(1, 0, 3);
