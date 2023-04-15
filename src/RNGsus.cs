@@ -10,7 +10,7 @@ namespace Meridian2
     public sealed class RNGsus
     {
         //Set seed to 0 to get a random one
-        private const int seed = 69;
+        private const int seed = 0;
         private static readonly RNGsus instance = new RNGsus();
         private Random random;
 

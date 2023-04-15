@@ -16,9 +16,12 @@ namespace Meridian2
 {
     public class Tile
     {
+        //Index in parents tileMap
         public int x, y;
 
         public Body body;
+
+        public Room parentRoom;
 
         //The superposition list of this tile
         public List<Prototype> superpositions;
@@ -26,21 +29,26 @@ namespace Meridian2
         public Prototype finalPrototype;
 
         //Instantiate a Tile with multiple possible prototypes
-        public Tile(List<Prototype> protList)
+        public Tile(List<Prototype> protList, Room parentRoom)
         {
             superpositions = new List<Prototype>();
             superpositions.AddRange(protList);
             x = y = 0;
+            this.parentRoom = parentRoom;
         }
 
         //Create a specific tile
-        public Tile(Prototype prot, int x, int y)
+        public Tile(Prototype prot, int x, int y, Room parentRoom)
         {
             this.x = x;
             this.y = y;
             finalPrototype = prot;
             superpositions = new List<Prototype> { prot };
+            this.parentRoom = parentRoom;
         }
+
+        public int getX() { return x + parentRoom.posX; }
+        public int getY() { return y + parentRoom.posY; }
 
         //Collapse the wave function where the socket on the direction dir is incompatible (dir is the direction from here to where to fit)
         //Return value is if the superposition has changed or not, i.e. if we have to propagate
@@ -100,13 +108,14 @@ namespace Meridian2
 
         }
 
-        public void setFinalPrototype(Prototype p)
+        public void setFinalPrototype(Prototype p, bool force = false)
         {
-            if (superpositions.Contains(p))
+            if (force || superpositions.Contains(p))
             {
                 finalPrototype = p;
                 superpositions = new List<Prototype> { p };
             }
+
             else Debug.WriteLine("Tried setting prototype not in superposition list!!!");
         }
             

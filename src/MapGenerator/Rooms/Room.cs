@@ -14,7 +14,10 @@ namespace Meridian2
         protected RoomSettings rs;
 
         //Tile size of the room
-        protected int sizeX, sizeY;
+        public int sizeX, sizeY;
+
+        //Top left edge of the room,
+        public int posX, posY;
 
         //Stores the points where there is an opening
         protected List<Vector2> openings;
@@ -31,35 +34,38 @@ namespace Meridian2
         //If all tiles have been initialized
         protected bool initialized = false;
 
-        public Room(MapGenerator mg, RoomSettings rs, int x, int y)
+        public Room(MapGenerator mg, RoomSettings rs, int x, int y, int sizeX, int sizeY)
         {
             openings = new List<Vector2>();
             this.mg = mg;
-            sizeX = x; 
-            sizeY = y;
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+            this.posX = x;
+            this.posY = y;
             tileMap = new Tile[sizeX, sizeY];
             this.rs = rs;
             initializeTileMap();
+            
         }
 
         //Finishes the room generation, results in a workable tileMap
         public void generateRoom()
         {
+            connectOpenings();
             createBorder();
-            if(!initialized)
-                initializeTileMap();
             runWaveFunctionCollapse();
         }
 
         //Fill out the whole tilemap with new Tiles
         protected void initializeTileMap()
         {
+            Debug.WriteLine("Initializing Room Map");
             //Create all tiles, initialize with full set of prototypes
             for (int x = 0; x < sizeX; x++)
             {
                 for (int y = 0; y < sizeY; y++)
                 {
-                    tileMap[x, y] = new Tile(rs.possiblePrototypes);
+                    tileMap[x, y] = new Tile(rs.possiblePrototypes, this);
                     tileMap[x, y].x = x;
                     tileMap[x, y].y = y;
                 }
@@ -147,7 +153,7 @@ namespace Meridian2
 
                 while (!(x == midX && y == midY))
                 {
-                    Debug.WriteLine("In while loop!!!  x = " + x + ", y = " + y);
+                    Debug.WriteLine("Setting tile to walkable!!!  x = " + x + ", y = " + y);
                     double rand = RNGsus.Instance.NextDouble();
 
                     //Corner cases
@@ -208,16 +214,18 @@ namespace Meridian2
         //Do this after setting openings!
         public void createBorder()
         {
+            Debug.WriteLine("Creating Borders");
+
             for (int x = 0; x < sizeX; x++)
             {
                 if(tileMap[x, 0].superpositions.Contains(getPrototype("FullWall")))
                 {
-                    tileMap[x, 0] = new Tile(getPrototype("FullWall"), x, 0);
+                    tileMap[x, 0] = new Tile(getPrototype("FullWall"), x, 0, this);
                     collapseTile(tileMap[x, 0]);
                 }
                 if (tileMap[x, sizeY - 1].superpositions.Contains(getPrototype("FullWall")))
                 {
-                    tileMap[x, sizeY - 1] = new Tile(getPrototype("FullWall"), x, sizeY - 1);
+                    tileMap[x, sizeY - 1] = new Tile(getPrototype("FullWall"), x, sizeY - 1, this);
                     collapseTile(tileMap[x, sizeY - 1]);
                 }
 
@@ -226,13 +234,13 @@ namespace Meridian2
             {
                 if (tileMap[0, y].superpositions.Contains(getPrototype("FullWall")))
                 {
-                    tileMap[0, y] = new Tile(getPrototype("FullWall"), 0, y);
+                    tileMap[0, y] = new Tile(getPrototype("FullWall"), 0, y, this);
                     collapseTile(tileMap[0, y]);
                 }
 
                 if (tileMap[sizeX - 1, y].superpositions.Contains(getPrototype("FullWall")))
                 {
-                    tileMap[sizeX - 1, y] = new Tile(getPrototype("FullWall"), sizeX - 1, y);
+                    tileMap[sizeX - 1, y] = new Tile(getPrototype("FullWall"), sizeX - 1, y, this);
                     collapseTile(tileMap[sizeX - 1, y]);
                 }
                     
@@ -279,7 +287,6 @@ namespace Meridian2
 
                 chosen.chooseRandomPrototype();
 
-                Debug.WriteLine("Starting collapsing round " + counter);
                 //Collapse the wave function:
                 collapseTile(chosen);
 

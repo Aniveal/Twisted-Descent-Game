@@ -20,7 +20,9 @@ namespace Meridian2 {
         private float wallWidth = (float) Math.Sqrt(map_scaling*2);
 
         public Point TileSize = new(160, 160); // pixels
-        public Tile[,] TileMap; // contains a prototype object for each tile coordinate
+
+        //The list of rooms to draw
+        public List<Room> roomList = new List<Room>();
 
         /* Helper Functions */
         // Isometric Math: https://clintbellanger.net/articles/isometric_math/
@@ -77,9 +79,9 @@ namespace Meridian2 {
             if (tile.finalPrototype == null)
                 return;
 
-            Vector2 p = MapToWorld(tile.x, tile.y);
+            Vector2 p = MapToWorld(tile.getX(), tile.getY());
             //TODO: make computation of l dependent on map_scaling only, find adequate formula
-            Vector2 pn = MapToWorld(tile.x, tile.y + 1);
+            Vector2 pn = MapToWorld(tile.getX(), tile.getY() + 1);
             float l = (p-pn).Length();
             switch ((tile.finalPrototype.sockets[0], tile.finalPrototype.sockets[1], tile.finalPrototype.sockets[2], tile.finalPrototype.sockets[3])) {
                 case (0, 0, 0, 0): //no walls at all
@@ -135,23 +137,18 @@ namespace Meridian2 {
 
             Debug.WriteLine("Initializing Map");
 
-            int mapX = 30;
-            int mapY = 30;
 
-            List<Vector3> openings = new List<Vector3>{
-                new Vector3(3, 0, 2),
-            new Vector3(mapX - 1, 20, 3),
-            new Vector3(10, mapY - 1, 3)};
+            roomList = mapGenerator.hardcodedMap();
 
-            //The new Map generation
-            TileMap = mapGenerator.createSingleExampleRoom().tileMap;
-
-            Debug.WriteLine(TileMap);
 
             //create bodies for tiles
-            foreach (Tile t in TileMap) {
-                CreateMapBody(t);
-            }            
+            foreach (Room r in roomList)
+                foreach (Tile t in r.tileMap)
+                {
+                    CreateMapBody(t);
+                }
+
+
         }
 
         public void LoadContent() {
@@ -186,9 +183,6 @@ namespace Meridian2 {
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            // Point a = MapToScreen(new(10, 10));  // Debug code for ScreenToMap, MapToScreen
-            // Point b = ScreenToMap(a);
-            // Debug.WriteLine(a + " -- " + b);
 
             int c = 0;
 
@@ -203,31 +197,41 @@ namespace Meridian2 {
             int yMin = ScreenToMap(new(w, 0)).Y - addonTiles;
             int yMax = ScreenToMap(new(0, h)).Y + addonTiles;
 
+            /*
             xMin = (xMin < 0) ? 0 : xMin;
             xMax = (xMax >= TileMap.GetLength(0)) ? TileMap.GetLength(0) - 1 : xMax;
             yMin = (yMin < 0) ? 0 : yMin;
             yMax = (yMax >= TileMap.GetLength(1)) ? TileMap.GetLength(0) - 1 : yMax;
+            */
 
-
-            
-            foreach (Tile t in TileMap)
+            foreach(Room r in roomList)
             {
-                //Only draw what is on the screen
-                if(t.x < xMin || t.x > xMax || t.y < yMin || t.y > yMax) continue;
+                //if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
+                    //continue;
 
-                Point screenPos = MapToScreen(new(t.x, t.y));
-                Vector2 pos = MapToWorld(new(t.x, t.y));
-                //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
-                Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y-map_scaling*3f, 2*map_scaling, 2*map_scaling);
-                //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
-                batch.Draw(_ground, tilePos, Color.White);
-
-                if (t.finalPrototype != null)
+                foreach (Tile t in r.tileMap)
                 {
-                    c++;
-                    batch.Draw(t.finalPrototype.texture, tilePos, Color.White);
+
+                    //Only draw what is on the screen, NOT WORKING
+                    //if (t.x < xMin || t.x > xMax || t.y < yMin || t.y > yMax) continue;
+
+                    Point screenPos = MapToScreen(new(t.x + r.posX, t.y + r.posY));
+                    Vector2 pos = MapToWorld(new(t.x + r.posX, t.y + r.posY));
+                    //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
+                    Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y - map_scaling * 3f, 2 * map_scaling, 2 * map_scaling);
+                    //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+                    batch.Draw(_ground, tilePos, Color.White);
+
+                    if (t.finalPrototype != null)
+                    {
+                        c++;
+                        batch.Draw(t.finalPrototype.texture, tilePos, Color.White);
+                    }
                 }
+                    
             }
+            
+            
         }
 
         public Map(RopeGame game, World world) {

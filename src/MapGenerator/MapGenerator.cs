@@ -35,11 +35,63 @@ namespace Meridian2
             createPrototypeLists();
         }
 
-        //This is only until better generation is aviable
-        public Room createSingleExampleRoom()
+        //Creates a map with 3 rooms
+        public List<Room> hardcodedMap()
         {
             RoomSettings rs = new RoomSettings("StarterRoom", rockPrototypes);
-            Room room = new Room(this, rs, 30, 30);
+            Room r1 = new Room(this, rs, 0, -3, 10, 10); //(-5, -5), (5, 5)
+            Room r2 = new Room(this, rs, 10, -3, 20, 15);  //(5, -5), (15, 10)
+            Room r3 = new Room(this, rs, -30, 7, 40, 50);   //(-5, 5), (2, 55)
+            Room r4 = new Room(this, rs, 10, 12, 10, 45); //(15, 10), (25, 55)
+
+            r1.createOpening(0, 1, 3);
+            r1.createOpening(1, 0, 3);
+
+            r1.createOpening(2, r1.sizeY - 1, 1);
+            r3.createOpening(r3.sizeX - 8, 0, 1);
+
+            r1.createOpening(r1.sizeX - 1, 2, 1);
+            r2.createOpening(0, 2, 1);
+
+            r2.createOpening(15, r2.sizeY - 1, 1);
+            r4.createOpening(5, 0, 1);
+
+            r4.createOpening(2, r4.sizeY - 1, 1);
+
+
+
+            r1.generateRoom();
+            r2.generateRoom();
+            r3.generateRoom();
+            r4.generateRoom();
+
+            return new List<Room> { r1, r2, r3, r4 };
+        }
+
+        //DONT USE, WIP
+        public Room createRoom(int x, int y, int sizeX, int sizeY, List<Vector2> openings, RoomSettings rs = null)
+        {
+            if(rs == null)
+                rs = new RoomSettings("StarterRoom", rockPrototypes);
+            Room room = new Room(this, rs, x, y, sizeX, sizeY);
+
+            foreach(Vector2 v in openings)
+            {
+                int oX = (int)v.X;
+                int oY = (int)v.Y;
+
+                room.createOpening(oX, oY, 1);
+            }
+            room.connectOpenings();
+            room.generateRoom();
+            return room;
+        }
+
+        //DONT USE, WIP
+        public Room createRoom()
+        {
+            RoomSettings rs = new RoomSettings("StarterRoom", rockPrototypes);
+            Room room = new Room(this, rs, 0, 0, 30, 30);
 
             room.createOpening(29, 15, 5);
             room.createOpening(2, 0, 5);
@@ -88,7 +140,7 @@ namespace Meridian2
             rockPrototypes.Add(new Prototype(rockTextures[10], "Wall3dr", new int[] { 3, 2, 3, 1 }, 1, false));
             rockPrototypes.Add(new Prototype(rockTextures[12], "FullWall", new int[] { 3, 3, 3, 3 }, 100, false));
 
-            rockPrototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 200, true));
+            rockPrototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 300, true));
         }
 
         
