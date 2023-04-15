@@ -55,6 +55,7 @@ namespace Meridian2.Theseus
                 _rope.GetEndPosition(), 0f, BodyType.Dynamic);
             Body.FixedRotation = true;
             Body.LinearDamping = 1f;
+            Body.Tag = this;
 
             // Disable rope collision
             foreach (Fixture fixture in Body.FixtureList)
