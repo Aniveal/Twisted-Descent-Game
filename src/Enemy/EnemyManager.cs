@@ -16,7 +16,6 @@ namespace Meridian2.Enemy
         private RopeGame _game;
         private World _world;
         private Player _player;
-        public Enemy enemy;
         public List<Enemy> enemies = new List<Enemy>();
         private int _numOfEnemies;
 
@@ -32,7 +31,7 @@ namespace Meridian2.Enemy
         {
             for (int i = 0; i < _numOfEnemies ; i++)
             {
-                enemy = new Enemy(_game, _world, _player);
+                Enemy enemy = new Enemy(_game, _world, _player);
                 Vector2 initpos = new Vector2(-5, -5);
                 int difficultyLevel = 2; // TODO change difficulty to random when initialize
                 enemy.Initialize(initpos, difficultyLevel);
@@ -43,16 +42,26 @@ namespace Meridian2.Enemy
 
         public void LoadContent()
         {
-            enemy.LoadContent();
+            for (int i = 0; i < _numOfEnemies; i++)
+            {
+                enemies[i].LoadContent();
+            }
         }
 
         public void Update(GameTime gameTime)
         {
-            enemy.Update(gameTime);
+            for (int i = 0; i < _numOfEnemies; i++)
+            {
+                enemies[i].Update(gameTime);
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            enemy.Draw(gameTime, batch, camera);
+            for (int i = 0; i < _numOfEnemies; i++)
+            {
+                enemies[i].Draw(gameTime, batch, camera);
+            }
+            
         }
     }
 }
