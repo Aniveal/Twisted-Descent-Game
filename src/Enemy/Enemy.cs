@@ -56,11 +56,11 @@ namespace Meridian2.Enemy
 
         public void LoadContent()
         {
-            idle = _game.Content.Load<Texture2D>("Enemy");
-            running_l = _game.Content.Load<Texture2D>("Enemy");
-            running_r = _game.Content.Load<Texture2D>("Enemy");
-            running_f = _game.Content.Load<Texture2D>("Enemy");
-            running_b = _game.Content.Load<Texture2D>("Enemy");
+            idle = _game.Content.Load<Texture2D>("idle_enemy");
+            running_l = _game.Content.Load<Texture2D>("enemy");
+            running_r = _game.Content.Load<Texture2D>("enemy");
+            running_f = _game.Content.Load<Texture2D>("enemy");
+            running_b = _game.Content.Load<Texture2D>("enemy");
         }
 
         public void Electrify() {
@@ -183,7 +183,6 @@ namespace Meridian2.Enemy
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            camera.Pos = Body.Position;
             Rectangle spritePos = camera.getScreenRectangle(Body.Position.X, Body.Position.Y - _enemySize.Y*2 + (float)_enemySize.X / 4, _enemySize.X, _enemySize.Y);
 
             float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
