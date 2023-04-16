@@ -42,6 +42,10 @@ namespace Meridian2.Theseus
         private bool isWalking = false;
         private Vector2 input = Vector2.Zero;
 
+        public Boolean isImmune = false;
+        private double immuneTimer = 0;
+        private double immuneCooldown = 3000;
+
         public Player(RopeGame game, World world, Rope rope)
         { 
             _rope = rope;
@@ -95,6 +99,16 @@ namespace Meridian2.Theseus
             input = Vector2.Zero;
             DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             DashTimer = Math.Min(DashTimer, 5000);
+
+            if(isImmune)
+            {
+                immuneTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if(immuneTimer > immuneCooldown)
+                {
+                    isImmune = false;
+                    immuneTimer = 0;
+                }
+            }
 
             GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (gamePadCapabilities.IsConnected)

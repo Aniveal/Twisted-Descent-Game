@@ -25,9 +25,9 @@ namespace Meridian2.Enemy
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _enemySize = new(1, 2);
-        private float EnemyForce = 0.005f;
+        private float EnemyForce = 0.01f;
         private int _difficultyLevel;
-        private float FollowDistance = 100;
+        private float FollowDistance = 0.5f;
         private float AngerDistance = 200;
 
         public Body Body;
@@ -79,7 +79,12 @@ namespace Meridian2.Enemy
             }
             ///player collision
             if (collider.Tag is Player) {
-                _game.gameData.health -= 1; //TODO: do stuff when health reaches 0
+                if (_player.isImmune == false)
+                {
+                    _player.isImmune = true;
+                    _game.gameData.health -= 1; //TODO: do stuff when health reaches 0
+                }
+
             }
             // If colliding with rope, and rope electrified
             if (collider.Tag is RopeSegment) {
@@ -107,36 +112,37 @@ namespace Meridian2.Enemy
                 Random rnd = new Random();
                 int r = rnd.Next(0, 3);
                 if (r == 0)
-                    input.X += 1;
+                    input.X += 0.2f;
                 if (r == 1)
-                    input.X -= 1;
+                    input.X -= 0.2f;
                 if (r == 2)
-                    input.Y += 1;
+                    input.Y += 0.2f;
                 if (r == 3)
-                    input.Y -= 1;
+                    input.Y -= 0.2f;
             }
 
             if (_difficultyLevel == 2) // enemies chase you
             {
  
                 var currentDistance = Vector2.Distance(this.Body.Position, _player.Body.Position);
+                
                 if (currentDistance > FollowDistance)
                 {
                     if (this.Body.Position.X < _player.Body.Position.X)
                     {
-                        input.X += 1;
+                        input.X += 0.2f;
                     }
                     if (this.Body.Position.X > _player.Body.Position.X)
                     {
-                        input.X -= 1;
+                        input.X -= 0.2f;
                     }
                     if (this.Body.Position.Y < _player.Body.Position.Y)
                     {
-                        input.Y += 1;
+                        input.Y += 0.2f;
                     }
                     if (this.Body.Position.Y > _player.Body.Position.Y)
                     {
-                        input.Y -= 1;
+                        input.Y -= 0.2f;
                     }
                 }
             }
@@ -152,19 +158,19 @@ namespace Meridian2.Enemy
                 {
                     if (this.Body.Position.X < _player.Body.Position.X)
                     {
-                        input.X += 1;
+                        input.X += 0.1f;
                     }
                     if (this.Body.Position.X > _player.Body.Position.X)
                     {
-                        input.X -= 1;
+                        input.X -= 0.1f;
                     }
                     if (this.Body.Position.Y < _player.Body.Position.Y)
                     {
-                        input.Y += 1;
+                        input.Y += 0.1f;
                     }
                     if (this.Body.Position.Y > _player.Body.Position.Y)
                     {
-                        input.Y -= 1;
+                        input.Y -= 0.1f;
                     }
                 }
             }
