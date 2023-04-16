@@ -165,12 +165,11 @@ namespace Meridian2.Theseus
             Body.ApplyForce(movement);
             orientation = input;
 
-            var ropeJointForce = _ropeConnection.GetReactionForce(1 / (float)gameTime.ElapsedGameTime.TotalSeconds)
-                .Length();
-            
+            var ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
+
             if (_ropeConnection != null) {
                 // Extend rope if force on joint is too strong
-                if ((isPulling && ropeJointForce >= 0.5) || (!isPulling && ropeJointForce >= 0.1)) {
+                if (ropeJointDistance > Rope.TextureHeight) {
                     // Remove player joint
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
@@ -185,11 +184,11 @@ namespace Meridian2.Theseus
                 }
             }
             
-            var ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
+            ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
             Diagnostics.Instance.SetForce(ropeJointDistance);
             if (keyboard.IsKeyDown(Keys.P)) {
                 isPulling = true;
-                if (ropeJointDistance < 0.1f) {
+                if (ropeJointDistance < Rope.TextureHeight*2) {
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
                     _rope.RemoveSegment();
@@ -207,7 +206,7 @@ namespace Meridian2.Theseus
                 new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
                 new Vector2((float)_playerSize.X / 2, (float)_playerSize.X / 4));
             _ropeConnection.Length = Rope.RopeJointLength;
-            _ropeConnection.Frequency = Rope.RopeJointFrequency;
+            _ropeConnection.Frequency = 15;
             _ropeConnection.DampingRatio = Rope.RopeJointDampingRatio;
         }
 
