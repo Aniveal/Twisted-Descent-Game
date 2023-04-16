@@ -24,7 +24,7 @@ namespace Meridian2.Theseus
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _playerSize = new(1, 2);
-        private float PlayerForce = 0.01f;
+        private float PlayerForce = 10f;
 
         //How many milliseconds between footsteps
         private float footstepSoundDelayMax = 400f;
@@ -57,6 +57,7 @@ namespace Meridian2.Theseus
             Body.LinearDamping = 1f;
             Body.Tag = this;
 
+            Body.Mass = 10;
             // Disable rope collision
             foreach (Fixture fixture in Body.FixtureList)
             {
@@ -110,12 +111,12 @@ namespace Meridian2.Theseus
             {
                 Dash = true;
                 DashTimer = 0;
-                PlayerForce = 0.05f;
+                PlayerForce = 30f;
             }
             if (Dash & DashTimer >= DashUsageTime)
             {
                 Dash = false;
-                PlayerForce = 0.01f;
+                PlayerForce = 10f;
                 DashTimer = 0;
             }
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))
@@ -155,6 +156,11 @@ namespace Meridian2.Theseus
 
             if (keyboard.IsKeyDown(Keys.P))
             {
+                _world.Remove(_ropeConnection);
+                _ropeConnection = null;
+                _rope.RemoveSegment();
+                LinkToRope();
+                
                 _rope.Pull(gameTime);
             }
 
@@ -174,13 +180,18 @@ namespace Meridian2.Theseus
                 Diagnostics.Instance.SetForce(ropeJointForce);
                 
                 // Extend rope if force on joint is too strong
-                if (ropeJointForce >= 0.02) {
+                if (ropeJointForce >= 0.025) {
                     // Remove player joint
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
                     
                     _rope.AppendSegment();
                     LinkToRope();
+                } else if (movement == Vector2.Zero) {
+                    _world.Remove(_ropeConnection);
+                _ropeConnection = null;
+                _rope.RemoveSegment();
+                LinkToRope();
                 }
             }
         }

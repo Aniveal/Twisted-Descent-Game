@@ -179,4 +179,17 @@ public class Rope : DrawableGameElement
 
         return nextLast;
     }
+
+    public bool RemoveSegment() {
+        if (_segments.Count< 5) {
+            return false;
+        }
+        RopeSegment last = _segments.Last();
+        RopeSegment penultimate = last.previous;
+
+        penultimate.SetNext(null);
+        _segments.Remove(last);
+        last.Destroy();
+        return true;
+    }
 }

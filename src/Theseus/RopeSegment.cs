@@ -121,6 +121,12 @@ public class RopeSegment : DrawableGameElement
         // Nothing to update
     }
 
+    public void Destroy() {
+        _world.Remove(Body);
+
+        //TODO: there probably is something else to do to destroy this object
+    }
+
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         Color ropeColor = Color.White;
         if (elecIntensity > 0) {
