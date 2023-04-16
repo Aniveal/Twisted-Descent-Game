@@ -51,6 +51,24 @@ namespace Meridian2.Columns {
                 _columnsManager.Add(new Column(_game, _game._gameScreen.World, sPos, SpearWidth, baseSpearTexture));
                 spearTimer = 0;
             }
+            //electric column
+            if (keyboard.IsKeyDown(Keys.D2)) {
+                Vector2 pPos = _player.Body.Position;
+                Vector2 pOr = _player.orientation;
+                Vector2 sPos = pPos + pOr;
+
+                _columnsManager.Add(new ElectricColumn(_game, _game._gameScreen.World, sPos, SpearWidth, baseSpearTexture));
+                spearTimer = 0;
+            }
+            //fragile column
+            if (keyboard.IsKeyDown(Keys.D3)) {
+                Vector2 pPos = _player.Body.Position;
+                Vector2 pOr = _player.orientation;
+                Vector2 sPos = pPos + pOr;
+
+                _columnsManager.Add(new FragileColumn(_game, _game._gameScreen.World, sPos, SpearWidth, baseSpearTexture));
+                spearTimer = 0;
+            }
         }
     }
 }
