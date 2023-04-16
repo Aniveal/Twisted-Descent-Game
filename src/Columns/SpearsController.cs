@@ -18,6 +18,7 @@ namespace Meridian2.Columns {
         public double spearTimer;
 
         private Texture2D baseSpearTexture;
+        private bool placing = false;
 
 
         public SpearsController(RopeGame game, ColumnsManager columnsManager, Player player) {
@@ -44,31 +45,47 @@ namespace Meridian2.Columns {
             KeyboardState keyboard = Keyboard.GetState();
             //basic column
             if (keyboard.IsKeyDown(Keys.D1)) {
+                if (placing) {
+                    return;
+                }
                 Vector2 pPos = _player.Body.Position;
                 Vector2 pOr = _player.orientation;
-                Vector2 sPos = pPos + pOr;
+                Vector2 sPos = pPos + pOr * 2;
 
                 _columnsManager.Add(new Column(_game, _game._gameScreen.World, sPos, SpearWidth, baseSpearTexture));
                 spearTimer = 0;
+                placing = true;
+                return;
             }
             //electric column
             if (keyboard.IsKeyDown(Keys.D2)) {
+                if (placing) {
+                    return;
+                }
                 Vector2 pPos = _player.Body.Position;
                 Vector2 pOr = _player.orientation;
                 Vector2 sPos = pPos + pOr;
 
                 _columnsManager.Add(new ElectricColumn(_game, _game._gameScreen.World, sPos, SpearWidth, baseSpearTexture));
                 spearTimer = 0;
+                placing = true;
+                return;
             }
             //fragile column
             if (keyboard.IsKeyDown(Keys.D3)) {
+                if (placing) {
+                    return;
+                }
                 Vector2 pPos = _player.Body.Position;
                 Vector2 pOr = _player.orientation;
                 Vector2 sPos = pPos + pOr;
 
                 _columnsManager.Add(new FragileColumn(_game, _game._gameScreen.World, sPos, SpearWidth, baseSpearTexture));
                 spearTimer = 0;
+                placing = true;
+                return;
             }
+            placing = false;
         }
     }
 }
