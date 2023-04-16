@@ -34,7 +34,7 @@ namespace Meridian2.Enemy
             {
                 enemy = new Enemy(_game, _world, _player);
                 Vector2 initpos = new Vector2(-5, -5);
-                int difficultyLevel = 3; // TODO change difficulty to random when initialize
+                int difficultyLevel = 2; // TODO change difficulty to random when initialize
                 enemy.Initialize(initpos, difficultyLevel);
                 enemies.Add(enemy);
             }

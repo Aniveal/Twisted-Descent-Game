@@ -27,8 +27,8 @@ namespace Meridian2.Enemy
         private readonly Point _enemySize = new(1, 2);
         private float EnemyForce = 0.01f;
         private int _difficultyLevel;
-        private float FollowDistance = 0.5f;
-        private float AngerDistance = 200;
+        private float FollowDistance = 3f;
+        private float AngerDistance = 6f;
 
         public Body Body;
         public Vector2 orientation;
@@ -112,13 +112,13 @@ namespace Meridian2.Enemy
                 Random rnd = new Random();
                 int r = rnd.Next(0, 3);
                 if (r == 0)
-                    input.X += 0.2f;
+                    input.X += 0.1f;
                 if (r == 1)
-                    input.X -= 0.2f;
+                    input.X -= 0.1f;
                 if (r == 2)
-                    input.Y += 0.2f;
+                    input.Y += 0.1f;
                 if (r == 3)
-                    input.Y -= 0.2f;
+                    input.Y -= 0.1f;
             }
 
             if (_difficultyLevel == 2) // enemies chase you
@@ -126,23 +126,23 @@ namespace Meridian2.Enemy
  
                 var currentDistance = Vector2.Distance(this.Body.Position, _player.Body.Position);
                 
-                if (currentDistance > FollowDistance)
+                if (currentDistance < AngerDistance)
                 {
                     if (this.Body.Position.X < _player.Body.Position.X)
                     {
-                        input.X += 0.2f;
+                        input.X += 0.1f;
                     }
                     if (this.Body.Position.X > _player.Body.Position.X)
                     {
-                        input.X -= 0.2f;
+                        input.X -= 0.1f;
                     }
                     if (this.Body.Position.Y < _player.Body.Position.Y)
                     {
-                        input.Y += 0.2f;
+                        input.Y += 0.1f;
                     }
                     if (this.Body.Position.Y > _player.Body.Position.Y)
                     {
-                        input.Y -= 0.2f;
+                        input.Y -= 0.1f;
                     }
                 }
             }
@@ -150,11 +150,7 @@ namespace Meridian2.Enemy
             if (_difficultyLevel == 3) // enemies chase you for a while
             {
                 var currentDistance = Vector2.Distance(this.Body.Position, _player.Body.Position);
-                if (currentDistance > AngerDistance)
-                {
-                    return;
-                }
-                if (currentDistance > FollowDistance)
+                if (currentDistance > FollowDistance & currentDistance < AngerDistance)
                 {
                     if (this.Body.Position.X < _player.Body.Position.X)
                     {
