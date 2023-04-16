@@ -27,7 +27,7 @@ public class Rope : DrawableGameElement
     public const float TextureWidth = 0.05f;
 
     private const int decayRate = 3; //a segment decays every decayRate ticks.
-    private const int decayRange = 200; //the last decayRange segments can decay
+    private const int decayRange = 0; //the last decayRange segments can decay
     private int decayCount = 0;
 
     private Random decayRNG;
@@ -35,6 +35,10 @@ public class Rope : DrawableGameElement
     public TimeSpan lastBreak = TimeSpan.Zero;
     // 1 second cooldown between column breaks
     public TimeSpan breakCoolDown = new TimeSpan(0, 0, 1);
+
+    public const float RopeJointLength = 0.001f;
+    public const float RopeJointFrequency = 20;
+    public const float RopeJointDampingRatio = 0.5f;
 
     public Rope(RopeGame game, World world, Vector2 pos, int segmentCount) {
         _game = game;
@@ -80,9 +84,9 @@ public class Rope : DrawableGameElement
             {
                 var joint = JointFactory.CreateDistanceJoint(_world, _segments[i - 1].Body, _segments[i].Body, new Vector2(TextureWidth / 2, TextureHeight),
                     new Vector2(TextureWidth / 2, 0));
-                joint.Length = 0.001f;
-                joint.Frequency = 15;
-                joint.DampingRatio = 0.95f;
+                joint.Length = RopeJointLength;
+                joint.Frequency = RopeJointFrequency;
+                joint.DampingRatio = RopeJointDampingRatio;
 
                 segment.SetPrevious(_segments[i - 1]);
                 _segments[i - 1].SetNext(segment);
@@ -91,9 +95,9 @@ public class Rope : DrawableGameElement
             {
                 var joint = JointFactory.CreateDistanceJoint(_world, _anchor, _segments[0].Body, Vector2.Zero,
                     new Vector2(TextureWidth / 2, 0));
-                joint.Length = 0.001f;
-                joint.Frequency = 15;
-                joint.DampingRatio = 0.95f;
+                joint.Length = RopeJointLength;
+                joint.Frequency = RopeJointFrequency;
+                joint.DampingRatio = RopeJointDampingRatio;
             }
         }
     }
@@ -155,17 +159,17 @@ public class Rope : DrawableGameElement
         //     _endAnchor.ApplyForce(mouseDirection, _endAnchor.GetWorldPoint(new Vector2(1, 3)));
         // }
         
-        //natural shortening
-        if (decayCount >= decayRate) {
-            int r = decayRNG.Next(decayRange);
-            int c = _segments.Count;
-            if (c - 2 - r > 0) { //only decay if chosen segment exists; - 2 because we never remove last segment
-                RemoveSegment(c - 2 -r);
-            }
-
-            decayCount = 0;
-        }
-        decayCount ++;
+        // //natural shortening
+        // if (decayCount >= decayRate) {
+        //     int r = decayRNG.Next(decayRange);
+        //     int c = _segments.Count;
+        //     if (c - 2 - r > 0) { //only decay if chosen segment exists; - 2 because we never remove last segment
+        //         RemoveSegment(c - 2 -r);
+        //     }
+        //
+        //     decayCount = 0;
+        // }
+        // decayCount ++;
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
@@ -186,9 +190,9 @@ public class Rope : DrawableGameElement
 
         var joint = JointFactory.CreateDistanceJoint(_world, last.Body, nextLast.Body, new Vector2(TextureWidth / 2, TextureHeight),
             new Vector2(TextureWidth / 2, 0));
-        joint.Length = 0.001f;
-        joint.Frequency = 15;
-        joint.DampingRatio = 0.95f;
+        joint.Length = RopeJointLength;
+        joint.Frequency = RopeJointFrequency;
+        joint.DampingRatio = RopeJointDampingRatio;
 
         _segments.Add(nextLast);
         

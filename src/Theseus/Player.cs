@@ -40,6 +40,7 @@ namespace Meridian2.Theseus
         private const int DashUsageTime = 400;
         private bool Dash = false;
         private bool isWalking = false;
+        private bool isPulling = false;
         private Vector2 input = Vector2.Zero;
 
         public Player(RopeGame game, World world, Rope rope)
@@ -154,16 +155,6 @@ namespace Meridian2.Theseus
                 footstepSoundDelayCurrent = footstepSoundDelayMax;
             }
 
-            if (keyboard.IsKeyDown(Keys.P))
-            {
-                _world.Remove(_ropeConnection);
-                _ropeConnection = null;
-                _rope.RemoveSegment();
-                LinkToRope();
-                
-                _rope.Pull(gameTime);
-            }
-
             if (input.LengthSquared() > 1)
             {
                 input.Normalize();
@@ -174,13 +165,12 @@ namespace Meridian2.Theseus
             Body.ApplyForce(movement);
             orientation = input;
 
+            var ropeJointForce = _ropeConnection.GetReactionForce(1 / (float)gameTime.ElapsedGameTime.TotalSeconds)
+                .Length();
+            
             if (_ropeConnection != null) {
-                var ropeJointForce = _ropeConnection.GetReactionForce(1 / (float)gameTime.ElapsedGameTime.TotalSeconds)
-                    .Length();
-                Diagnostics.Instance.SetForce(ropeJointForce);
-                
                 // Extend rope if force on joint is too strong
-                if (ropeJointForce >= 0.025) {
+                if ((isPulling && ropeJointForce >= 0.5) || (!isPulling && ropeJointForce >= 0.1)) {
                     // Remove player joint
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
@@ -194,15 +184,31 @@ namespace Meridian2.Theseus
                     // LinkToRope();
                 }
             }
+            
+            var ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
+            Diagnostics.Instance.SetForce(ropeJointDistance);
+            if (keyboard.IsKeyDown(Keys.P)) {
+                isPulling = true;
+                if (ropeJointDistance < 0.1f) {
+                    _world.Remove(_ropeConnection);
+                    _ropeConnection = null;
+                    _rope.RemoveSegment();
+                    LinkToRope();
+                }
+
+                _rope.Pull(gameTime);
+            } else {
+                isPulling = false;
+            }
         }
 
         private void LinkToRope() {
             _ropeConnection = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
                 new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
                 new Vector2((float)_playerSize.X / 2, (float)_playerSize.X / 4));
-            _ropeConnection.Length = 0.001f;
-            _ropeConnection.Frequency = 15;
-            _ropeConnection.DampingRatio = 0.95f;
+            _ropeConnection.Length = Rope.RopeJointLength;
+            _ropeConnection.Frequency = Rope.RopeJointFrequency;
+            _ropeConnection.DampingRatio = Rope.RopeJointDampingRatio;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {

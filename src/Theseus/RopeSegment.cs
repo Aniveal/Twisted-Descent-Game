@@ -20,7 +20,7 @@ public class RopeSegment : DrawableGameElement
 
     public Body Body;
 
-    private const float RopeDensity = 0.08f;
+    private const float RopeDensity = 0.1f;
 
     private bool _black;
 
@@ -42,7 +42,7 @@ public class RopeSegment : DrawableGameElement
     public void Initialize()
     {
         Body = _world.CreateRectangle(_size.X, _size.Y, RopeDensity, _position, bodyType: BodyType.Dynamic);
-        Body.LinearDamping = 0.5f;
+        Body.LinearDamping = 0.2f;
         Body.AngularDamping = 0.5f;
         Body.Tag = this;
         _black = false;

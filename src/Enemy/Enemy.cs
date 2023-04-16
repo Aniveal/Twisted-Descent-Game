@@ -45,10 +45,10 @@ namespace Meridian2.Enemy
 
         public void Initialize(Vector2 initpos, int difficultyLevel)
         {
-            Body = _world.CreateEllipse((float)_enemySize.X / 2, (float)_enemySize.X / 4, 20, 0.01f,
+            Body = _world.CreateEllipse((float)_enemySize.X / 2, (float)_enemySize.X / 4, 20, 0.005f,
                 initpos, 0f, BodyType.Dynamic);
             Body.FixedRotation = true;
-            Body.LinearDamping = 1f;
+            Body.LinearDamping = 0.5f;
             Body.Tag = this;
             Body.OnCollision += OnCollision;
             _difficultyLevel = difficultyLevel;
