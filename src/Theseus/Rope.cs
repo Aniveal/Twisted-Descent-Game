@@ -26,6 +26,11 @@ public class Rope : DrawableGameElement
     public const float TextureHeight = 0.1f;
     public const float TextureWidth = 0.05f;
 
+    private const int decayRate = 3; //a segment decays every decayRate ticks.
+    private const int decayRange = 200; //the last decayRange segments can decay
+    private int decayCount = 0;
+
+    private Random decayRNG;
     public List<FragileColumn> _fragiles = new List<FragileColumn>();
     public TimeSpan lastBreak = TimeSpan.Zero;
     // 1 second cooldown between column breaks
@@ -36,6 +41,7 @@ public class Rope : DrawableGameElement
         _world = world;
         _pos = pos;
         _segmentCount = segmentCount;
+        decayRNG = new Random();
     }
 
     public Vector2 GetEndPosition()
@@ -148,6 +154,18 @@ public class Rope : DrawableGameElement
         //
         //     _endAnchor.ApplyForce(mouseDirection, _endAnchor.GetWorldPoint(new Vector2(1, 3)));
         // }
+        
+        //natural shortening
+        if (decayCount >= decayRate) {
+            int r = decayRNG.Next(decayRange);
+            int c = _segments.Count;
+            if (c - 2 - r > 0) { //only decay if chosen segment exists; - 2 because we never remove last segment
+                RemoveSegment(c - 2 -r);
+            }
+
+            decayCount = 0;
+        }
+        decayCount ++;
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
@@ -180,6 +198,9 @@ public class Rope : DrawableGameElement
         return nextLast;
     }
 
+    //Remove last segment
+    // !!! WARNING !!!
+    // Does not update the player rope connection, needs to be done separately
     public bool RemoveSegment() {
         if (_segments.Count< 5) {
             return false;
@@ -190,6 +211,51 @@ public class Rope : DrawableGameElement
         penultimate.SetNext(null);
         _segments.Remove(last);
         last.Destroy();
+        return true;
+    }
+
+    //remove any rope segment
+    public bool RemoveSegment(RopeSegment segment) {
+        if (segment == _segments.Last()) {
+            return false; //removing last segment has to be called axplicitely ba player in order to adjust player joint
+        }
+        if (segment == _segments.First()) {
+            return false; //cannot remove first segment
+        }
+        
+        RopeSegment prev = segment.previous;
+        RopeSegment next = segment.next;
+        prev.next = next;
+        next.previous = prev;
+        _segments.Remove(segment);
+        segment.Destroy();
+        var joint = JointFactory.CreateDistanceJoint(_world, prev.Body, next.Body, new Vector2(TextureWidth / 2, TextureHeight),
+            new Vector2(TextureWidth / 2, 0));
+        joint.Length = 0.001f;
+        joint.Frequency = 15;
+        joint.DampingRatio = 0.95f;
+        return true;
+    }
+
+    //remove rope segment at given index, not first or last
+    //If possible, use this instead of above
+    public bool RemoveSegment(int index) {
+        if (index < 1 || index >= _segments.Count - 1) {
+            return false;
+        }
+        RopeSegment segment = _segments[index];
+        
+        RopeSegment prev = segment.previous;
+        RopeSegment next = segment.next;
+        prev.next = next;
+        next.previous = prev;
+        _segments.RemoveAt(index);
+        segment.Destroy();
+        var joint = JointFactory.CreateDistanceJoint(_world, prev.Body, next.Body, new Vector2(TextureWidth / 2, TextureHeight),
+            new Vector2(TextureWidth / 2, 0));
+        joint.Length = 0.001f;
+        joint.Frequency = 15;
+        joint.DampingRatio = 0.95f;
         return true;
     }
 }

@@ -188,10 +188,10 @@ namespace Meridian2.Theseus
                     _rope.AppendSegment();
                     LinkToRope();
                 } else if (movement == Vector2.Zero) {
-                    _world.Remove(_ropeConnection);
-                _ropeConnection = null;
-                _rope.RemoveSegment();
-                LinkToRope();
+                    // _world.Remove(_ropeConnection);
+                    // _ropeConnection = null;
+                    // _rope.RemoveSegment();
+                    // LinkToRope();
                 }
             }
         }

@@ -123,7 +123,7 @@ public class RopeSegment : DrawableGameElement
 
     public void Destroy() {
         _world.Remove(Body);
-
+        //TODO: update electrification of neighbors
         //TODO: there probably is something else to do to destroy this object
     }
 
