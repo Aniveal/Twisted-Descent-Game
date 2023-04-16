@@ -25,7 +25,7 @@ namespace Meridian2.Enemy
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _enemySize = new(1, 2);
-        private float EnemyForce = 0.01f;
+        private float EnemyForce = 0.005f;
         private int _difficultyLevel;
         private float FollowDistance = 100;
         private float AngerDistance = 200;
@@ -51,7 +51,6 @@ namespace Meridian2.Enemy
             Body.LinearDamping = 1f;
             Body.Tag = this;
             Body.OnCollision += OnCollision;
-
             _difficultyLevel = difficultyLevel;
         }
 

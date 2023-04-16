@@ -15,18 +15,30 @@ namespace Meridian2.Enemy
     {
         private RopeGame _game;
         private World _world;
+        private Player _player;
         public Enemy enemy;
+        public List<Enemy> enemies = new List<Enemy>();
+        private int _numOfEnemies;
 
-        public EnemyManager(RopeGame game, World world, Player player)
+        public EnemyManager(RopeGame game, World world, Player player, int numOfEnemies)
         {
             _game = game;
             _world = world;
-            enemy = new Enemy(_game, _world, player);
+            _player = player;
+            _numOfEnemies = numOfEnemies;
         }
 
-        public void Initialize(Vector2 initpos, int difficultyLevel)
+        public void Initialize()
         {
-            enemy.Initialize(initpos, difficultyLevel);
+            for (int i = 0; i < _numOfEnemies ; i++)
+            {
+                enemy = new Enemy(_game, _world, _player);
+                Vector2 initpos = new Vector2(0, 0);
+                int difficultyLevel = 1; // TODO change difficulty to random when initialize
+                enemy.Initialize(initpos, difficultyLevel);
+                enemies.Add(enemy);
+            }
+            
         }
 
         public void LoadContent()

@@ -1,11 +1,13 @@
 ﻿using Meridian2.Columns;
 using Meridian2.Theseus;
+using Meridian2.Enemy;
 using Meridian2.Gui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using tainicom.Aether.Physics2D;
 using tainicom.Aether.Physics2D.Dynamics;
+using System;
 
 namespace Meridian2;
 
@@ -21,6 +23,7 @@ public class GameScreen : Screen {
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
 
     public TheseusManager theseusManager;
+    public EnemyManager enemyManager;
     public ColumnsManager columnsManager;
 
     public GuiManager guiManager;
@@ -38,6 +41,7 @@ public class GameScreen : Screen {
 
         columnsManager = new ColumnsManager();
         theseusManager = new TheseusManager(Game, World);
+        enemyManager = new EnemyManager(Game, World, theseusManager.player, 1);
         guiManager = new GuiManager(game);
         spearsController = new SpearsController(game, columnsManager, theseusManager.player);
     }
@@ -48,6 +52,7 @@ public class GameScreen : Screen {
         _map.Initialize();
 
         theseusManager.Initialize();
+        enemyManager.Initialize();
 
         guiManager.Initialize();
 
@@ -70,6 +75,7 @@ public class GameScreen : Screen {
         _map.LoadContent();
 
         theseusManager.LoadContent();
+        enemyManager.LoadContent();
         guiManager.LoadContent();
         spearsController.LoadContent();
     }
@@ -94,6 +100,7 @@ public class GameScreen : Screen {
         _map.Update(gameTime);
         
         theseusManager.Update(gameTime);
+        enemyManager.Update(gameTime);
         spearsController.Update(gameTime);
         Diagnostics.Instance.Update(gameTime, theseusManager.player);
 
@@ -111,6 +118,7 @@ public class GameScreen : Screen {
         columnsManager.DrawFirst(gameTime, _batch, Camera);
 
         theseusManager.Draw(gameTime, _batch, Camera);
+        enemyManager.Draw(gameTime, _batch, Camera);
 
         columnsManager.DrawSecond(gameTime, _batch, Camera);
 
