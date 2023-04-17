@@ -15,5 +15,13 @@ namespace Meridian2.Columns
         {
 
         }
+
+        //TODO: remove this override once we have separate sprite for elec column
+        public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
+        {
+            Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
+            
+            batch.Draw(_columnTexture, dstRec, Color.Yellow);
+        }
     }
 }
