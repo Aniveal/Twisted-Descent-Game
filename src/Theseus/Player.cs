@@ -183,10 +183,9 @@ namespace Meridian2.Theseus
             orientation = input;
 
             var ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
-
             if (_ropeConnection != null) {
                 // Extend rope if force on joint is too strong
-                if (ropeJointDistance > Rope.TextureHeight) {
+                if (ropeJointDistance > Rope.TextureHeight*1.5) {
                     // Remove player joint
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
@@ -205,7 +204,7 @@ namespace Meridian2.Theseus
             Diagnostics.Instance.SetForce(ropeJointDistance);
             if (keyboard.IsKeyDown(Keys.P)) {
                 isPulling = true;
-                if (ropeJointDistance < Rope.TextureHeight*2) {
+                if (ropeJointDistance < Rope.TextureHeight*1.5) {
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
                     _rope.RemoveSegment();
