@@ -51,6 +51,22 @@ namespace Meridian2 {
         }
 
         /// <summary>
+        /// Gets the screen rectangle for the given rectangle in world space.
+        /// </summary>
+        /// <param name="x">The world x coordinate of the bottom left corner</param>
+        /// <param name="y">The world y coordinate of the bottom left corner</param>
+        /// <param name="w">The width of the object inside the world</param>
+        /// <param name="h">The height of the object in the world</param>
+        /// <returns>A rectangle in screen coordinates which can be directly fed into a draw call.</returns>
+        public Rectangle getSpriteRectangle(float x, float y, float w, float h, bool scaleIsometric = false) {
+            y = y - 2*h;
+            w *= _scale;
+            h *= _scale;
+
+            return new Rectangle((int)((x - _position.X) * _scale) + _graphicsDevice.Viewport.Width / 2, (int)((y - _position.Y) * _scale / 2) + _graphicsDevice.Viewport.Height / 2, (int)w, (int)h);
+        }
+
+        /// <summary>
         /// Calculates the point on the screen for the given world coordinates.
         /// </summary>
         /// <param name="v">The world coordinates</param>

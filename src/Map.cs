@@ -168,6 +168,14 @@ namespace Meridian2 {
 
         public void transferDataToManagers()
         {
+            //TODO: move column textures loading to adequate location? 
+            Texture2D columnLower = _game.Content.Load<Texture2D>("Sprites/Columns/column_lower");
+            Texture2D columnUpper = _game.Content.Load<Texture2D>("Sprites/Columns/column_upper");
+            ColumnTextures columnTexture = new ColumnTextures(columnLower, columnUpper);
+            Texture2D elecLower = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column_lower");
+            Texture2D elecUpper = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column_upper");
+            ColumnTextures elecTexture = new ColumnTextures(elecLower, elecUpper);
+
             foreach(Room r in roomList)
             {
                 Debug.WriteLine("Sending coords to ColumnsManager: " + r.columns.Count);
@@ -180,10 +188,10 @@ namespace Meridian2 {
                             cm.Add(new FragileColumn(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
                             break;
                         case(3):
-                            cm.Add(new ElectricColumn(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
+                            cm.Add(new ElectricColumn(_game, _world, worldCoords, 0.4f, elecTexture));
                             break;
                         default:
-                            cm.Add(new Column(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
+                            cm.Add(new Column(_game, _world, worldCoords, 0.4f, columnTexture));
                             break;
                     }
                     typeCtr++;                    

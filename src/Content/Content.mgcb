@@ -356,7 +356,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/amphora.png
 
-#begin Sprites/column.png
+#begin Sprites/Columns/column_lower.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -366,9 +366,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/column.png
+/build:Sprites/Columns/column_lower.png
 
-#begin Sprites/electrical_column.png
+#begin Sprites/Columns/column_upper.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -378,9 +378,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/electrical_column.png
+/build:Sprites/Columns/column_upper.png
 
-#begin Sprites/fragile_column_broken.png
+#begin Sprites/Columns/lightning_column_lower.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -390,9 +390,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/fragile_column_broken.png
+/build:Sprites/Columns/lightning_column_lower.png
 
-#begin Sprites/fragile_column.png
+#begin Sprites/Columns/lightning_column_upper.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -402,7 +402,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/fragile_column.png
+/build:Sprites/Columns/lightning_column_upper.png
 
 #begin Sprites/ground.png
 /importer:TextureImporter
