@@ -19,6 +19,7 @@ namespace Meridian2
         private SpriteBatch _batch;
         public World World;
         public Camera Camera;
+        public ColumnsManager columnsManager;
 
         float camMovementSpeed = 200;
 
@@ -36,7 +37,8 @@ namespace Meridian2
             _batch = new SpriteBatch(Game.GraphicsDevice);
            
             World = new World(Vector2.Zero);
-            _map = new Map(game, World);
+            columnsManager = new ColumnsManager();
+            _map = new Map(game, World, columnsManager);
 
         }
 

@@ -37,9 +37,10 @@ public class GameScreen : Screen {
         _batch = new SpriteBatch(Game.GraphicsDevice);
 
         World = new World(Vector2.Zero);
-        _map = new Map(game, World);
-
         columnsManager = new ColumnsManager();
+        _map = new Map(game, World, columnsManager);
+
+        
         theseusManager = new TheseusManager(Game, World);
         enemyManager = new EnemyManager(Game, World, theseusManager.player, 1);
         guiManager = new GuiManager(game);

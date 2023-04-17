@@ -23,6 +23,12 @@ namespace Meridian2
         //Graph of the rooms of this map, a graph consisting of rooms
         private DungeonGraph graph;
 
+        //Room List
+        public List<Room> roomList;
+
+        //List of column positions
+        public List<Vector2> columnPositions;
+
         //All rock textures
         private List<Texture2D> rockTextures;
 
@@ -36,7 +42,7 @@ namespace Meridian2
         }
 
         //Creates a map with 3 rooms
-        public List<Room> hardcodedMap()
+        public bool hardcodedMap()
         {
             RoomSettings rs = new RoomSettings("StarterRoom", rockPrototypes);
             Room r1 = new Room(this, rs, 0, -3, 10, 10); //(-5, -5), (5, 5)
@@ -58,14 +64,16 @@ namespace Meridian2
 
             r4.createOpening(2, r4.sizeY - 1, 1);
 
+            roomList = new List<Room> { r1, r2, r3, r4 };
+
+            foreach(Room room in roomList)
+            {
+                room.generateRoom();
+                room.placeColumns(10);
+            }
 
 
-            r1.generateRoom();
-            r2.generateRoom();
-            r3.generateRoom();
-            r4.generateRoom();
-
-            return new List<Room> { r1, r2, r3, r4 };
+            return true;
         }
 
         //DONT USE, WIP

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Common;
+using Meridian2.Columns;
 
 namespace Meridian2 {
     public class Map : DrawableGameElement {
@@ -15,6 +16,7 @@ namespace Meridian2 {
         private List<Texture2D> _column;
         private List<Texture2D> _rockTextures;
 
+
         private const float map_scaling = 2;
         private const int map_translation = -4;
         private float wallWidth = (float) Math.Sqrt(map_scaling*2);
@@ -23,6 +25,10 @@ namespace Meridian2 {
 
         //The list of rooms to draw
         public List<Room> roomList = new List<Room>();
+
+        //WIP, remove this as soon as possible
+        public ColumnsManager cm;
+
 
         /* Helper Functions */
         // Isometric Math: https://clintbellanger.net/articles/isometric_math/
@@ -138,8 +144,11 @@ namespace Meridian2 {
             Debug.WriteLine("Initializing Map");
 
 
-            roomList = mapGenerator.hardcodedMap();
+            mapGenerator.hardcodedMap();
 
+            roomList = mapGenerator.roomList;
+
+            transferColumnsToColumnsManager();
 
             //create bodies for tiles
             foreach (Room r in roomList)
@@ -148,7 +157,23 @@ namespace Meridian2 {
                     CreateMapBody(t);
                 }
 
+        }
 
+        public void transferColumnsToColumnsManager()
+        {
+            foreach(Room r in roomList)
+            {
+                Debug.WriteLine("Sending coords to ColumnsManager: " + r.columns.Count);
+                foreach (Vector2 v in r.columns)
+                { 
+
+                    Vector2 worldCoords = MapToWorld(new Point((int)v.X + r.posX, (int)v.Y + r.posY));
+                    Column c = new Column(_game, _world, worldCoords, 0.2f, _game.ColumnTexture);
+
+                    cm.Add(c);
+                }
+                
+            }
         }
 
         public void LoadContent() {
@@ -234,9 +259,11 @@ namespace Meridian2 {
             
         }
 
-        public Map(RopeGame game, World world) {
+        public Map(RopeGame game, World world, ColumnsManager cm) {
             _game = game;
             _world = world;
+            this.cm = cm;
+
         }
     }
 }

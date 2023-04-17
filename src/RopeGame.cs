@@ -47,14 +47,27 @@ public class RopeGame : Game {
 
         gameData = new GameData();
 
-        _gameScreen = new GameScreen(this);
-        _gameScreen.Initialize();
+        
 
-        //_mapScreen = new MapScreen(this);
-        //_mapScreen.Initialize();
+        bool gameScreen = true;
 
-        //currentScreen = _mapScreen;
-        currentScreen = _gameScreen;
+        if(gameScreen)
+        {
+            _gameScreen = new GameScreen(this);
+            _gameScreen.Initialize();
+            currentScreen = _gameScreen;
+        }
+        else
+        {
+            _mapScreen = new MapScreen(this);
+            _mapScreen.Initialize();
+
+            currentScreen = _mapScreen;
+        }
+
+
+
+
 
         soundEngine = new SoundEngine(this); //Create the sound engine
 

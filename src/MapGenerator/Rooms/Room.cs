@@ -28,6 +28,9 @@ namespace Meridian2
         //The map of this room
         public Tile[,] tileMap;
 
+        //Column Positions
+        public List<Vector2> columns = new List<Vector2>();
+
         //Pointer to the mapGenerator this room is part of
         protected MapGenerator mg;
 
@@ -54,6 +57,33 @@ namespace Meridian2
             connectOpenings();
             createBorder();
             runWaveFunctionCollapse();
+        }
+
+        public void placeColumns(int n)
+        {
+            columns.Clear();
+
+            int i = 0;
+            int j = 0;
+
+            while(i < n)
+            {
+                float x = (float)RNGsus.Instance.NextDouble() * sizeX;
+                float y = (float)RNGsus.Instance.NextDouble() * sizeY;
+
+                if (tileMap[(int)Math.Floor(x), (int)Math.Floor(y)].finalPrototype.walkable)
+                {
+                    columns.Add(new Vector2(x, y));
+                    i++;
+                }
+                else j++;
+
+                if(j > 1000)
+                {
+                    Debug.WriteLine("Didnt find walkable space!!!");
+                    return;
+                }
+            }
         }
 
         //Fill out the whole tilemap with new Tiles
