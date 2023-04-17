@@ -69,7 +69,10 @@ namespace Meridian2
             foreach(Room room in roomList)
             {
                 room.generateRoom();
-                room.placeColumns(10);
+
+                int nColumns = room.sizeX * room.sizeY / 10;
+
+                room.placeColumns(nColumns);
             }
 
 
