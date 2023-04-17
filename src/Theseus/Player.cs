@@ -24,7 +24,7 @@ namespace Meridian2.Theseus
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _playerSize = new(1, 2);
-        private float PlayerForce = 10f;
+        private float PlayerForce = 15f;
 
         //How many milliseconds between footsteps
         private float footstepSoundDelayMax = 400f;
@@ -126,12 +126,12 @@ namespace Meridian2.Theseus
             {
                 Dash = true;
                 DashTimer = 0;
-                PlayerForce = 30f;
+                PlayerForce = 50f;
             }
             if (Dash & DashTimer >= DashUsageTime)
             {
                 Dash = false;
-                PlayerForce = 10f;
+                PlayerForce = 15f;
                 DashTimer = 0;
             }
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))

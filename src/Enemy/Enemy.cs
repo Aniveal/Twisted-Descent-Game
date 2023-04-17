@@ -25,7 +25,7 @@ namespace Meridian2.Enemy
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _enemySize = new(1, 2);
-        private float EnemyForce = 0.01f;
+        private float EnemyForce = 0.005f;
         private int _difficultyLevel;
         private float FollowDistance = 3f;
         private float AngerDistance = 6f;
