@@ -58,10 +58,10 @@ namespace Meridian2.Enemy
         public void LoadContent()
         {
             idle = _game.Content.Load<Texture2D>("idle_enemy");
-            running_l = _game.Content.Load<Texture2D>("enemy");
-            running_r = _game.Content.Load<Texture2D>("enemy");
-            running_f = _game.Content.Load<Texture2D>("enemy");
-            running_b = _game.Content.Load<Texture2D>("enemy");
+            running_l = _game.Content.Load<Texture2D>("idle_enemy");
+            running_r = _game.Content.Load<Texture2D>("idle_enemy");
+            running_f = _game.Content.Load<Texture2D>("idle_enemy");
+            running_b = _game.Content.Load<Texture2D>("idle_enemy");
         }
 
         public void Electrify() {
