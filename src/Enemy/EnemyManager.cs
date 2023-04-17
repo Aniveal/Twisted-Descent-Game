@@ -42,24 +42,36 @@ namespace Meridian2.Enemy
 
         public void LoadContent()
         {
-            for (int i = 0; i < _numOfEnemies; i++)
+            foreach (Enemy enemy in enemies)
             {
-                enemies[i].LoadContent();
+                if (enemy.isAlive == false)
+                {
+                    continue;
+                }
+                enemy.LoadContent();
             }
         }
 
         public void Update(GameTime gameTime)
         {
-            for (int i = 0; i < _numOfEnemies; i++)
+            foreach (Enemy enemy in enemies.ToList())
             {
-                enemies[i].Update(gameTime);
+                if (enemy.isAlive == false)
+                {
+                    enemies.Remove(enemy);
+                }
+                enemy.Update(gameTime);
             }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            for (int i = 0; i < _numOfEnemies; i++)
+            foreach (Enemy enemy in enemies)
             {
-                enemies[i].Draw(gameTime, batch, camera);
+                if (enemy.isAlive == false)
+                {
+                    continue;
+                }
+                enemy.Draw(gameTime, batch, camera);
             }
             
         }

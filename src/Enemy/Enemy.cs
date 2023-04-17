@@ -34,6 +34,7 @@ namespace Meridian2.Enemy
         public Vector2 orientation;
 
         private bool isWalking = false;
+        public bool isAlive = true;
         private Vector2 input = Vector2.Zero;
 
         public Enemy(RopeGame game, World world, Player player)
@@ -89,6 +90,8 @@ namespace Meridian2.Enemy
             // If colliding with rope, and rope electrified
             if (collider.Tag is RopeSegment) {
                 if (((RopeSegment) collider.Tag).elecIntensity > 0) {
+                    this.isAlive = false;
+                    _game.gameData.score += 1000;
                     Electrify();
                 }
                 
@@ -112,13 +115,25 @@ namespace Meridian2.Enemy
                 Random rnd = new Random();
                 int r = rnd.Next(0, 3);
                 if (r == 0)
+                {
                     input.X += 0.1f;
+                    isWalking = true;
+                }
                 if (r == 1)
+                {
                     input.X -= 0.1f;
+                    isWalking = true;
+                }
                 if (r == 2)
+                {
                     input.Y += 0.1f;
+                    isWalking = true;
+                }
                 if (r == 3)
+                {
                     input.Y -= 0.1f;
+                    isWalking = true;
+                }
             }
 
             if (_difficultyLevel == 2) // enemies chase you
@@ -131,18 +146,22 @@ namespace Meridian2.Enemy
                     if (this.Body.Position.X < _player.Body.Position.X)
                     {
                         input.X += 0.1f;
+                        isWalking = true;
                     }
                     if (this.Body.Position.X > _player.Body.Position.X)
                     {
                         input.X -= 0.1f;
+                        isWalking = true;
                     }
                     if (this.Body.Position.Y < _player.Body.Position.Y)
                     {
                         input.Y += 0.1f;
+                        isWalking = true;
                     }
                     if (this.Body.Position.Y > _player.Body.Position.Y)
                     {
                         input.Y -= 0.1f;
+                        isWalking = true;
                     }
                 }
             }
@@ -155,18 +174,22 @@ namespace Meridian2.Enemy
                     if (this.Body.Position.X < _player.Body.Position.X)
                     {
                         input.X += 0.1f;
+                        isWalking = true;
                     }
                     if (this.Body.Position.X > _player.Body.Position.X)
                     {
                         input.X -= 0.1f;
+                        isWalking = true;
                     }
                     if (this.Body.Position.Y < _player.Body.Position.Y)
                     {
                         input.Y += 0.1f;
+                        isWalking = true;
                     }
                     if (this.Body.Position.Y > _player.Body.Position.Y)
                     {
                         input.Y -= 0.1f;
+                        isWalking = true;
                     }
                 }
             }

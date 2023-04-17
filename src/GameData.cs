@@ -6,6 +6,7 @@ namespace Meridian2 {
          private const int startMaxHealth = 3;
          public int maxHealth;
          public int health;
+         public int score = 0;
          
 
          public GameData() {
