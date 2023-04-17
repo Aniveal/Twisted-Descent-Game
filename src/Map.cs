@@ -171,7 +171,7 @@ namespace Meridian2 {
                 foreach (Vector2 v in r.columns)
                 { 
 
-                    Vector2 worldCoords = MapToWorld(new Point((int)v.X + r.posX, (int)v.Y + r.posY));
+                    Vector2 worldCoords = MapToWorld(v.X + r.posX, v.Y + r.posY);
                     Column c = new Column(_game, _world, worldCoords, 0.2f, _game.ColumnTexture);
 
                     cm.Add(c);
