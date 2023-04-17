@@ -19,7 +19,10 @@ namespace Meridian2.Columns
 
         public Body Body;
         protected Texture2D _columnTexture;
+        protected Texture2D _lowerTexture;
+        protected Texture2D _upperTexture;
         protected SpriteBatch _spriteBatch;
+        protected bool multiTexture;
 
         public Column(RopeGame game, World world, Vector2 center, float radius, Texture2D texture)
         {
@@ -28,19 +31,40 @@ namespace Meridian2.Columns
             _center = center;
             _radius = radius;
             _columnTexture = texture;
+            multiTexture = false;
+            Body = _world.CreateCircle(_radius, 0, _center, BodyType.Static);
+        }
 
-
+        public Column(RopeGame game, World world, Vector2 center, float radius, ColumnTextures texture) {
+            _game = game;
+            _world = world;
+            _center = center;
+            _radius = radius;
+            _lowerTexture = texture.lower;
+            _upperTexture = texture.upper;
+            multiTexture = true;
             Body = _world.CreateCircle(_radius, 0, _center, BodyType.Static);
         }
 
         public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
-            Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
-            batch.Draw(_columnTexture, dstRec, Color.Gray);
+            // sprite is double the width of the columns
+            if (multiTexture) {
+                Rectangle dstRec = camera.getSpriteRectangle(_center.X - 2*_radius, _center.Y + _radius, _radius * 4, _radius * 8);
+                batch.Draw(_lowerTexture, dstRec, Color.White);
+            } else {
+                Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
+                batch.Draw(_columnTexture, dstRec, Color.Gray);
+            }
+            
         }
 
         public override void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
+            if (multiTexture) {
+                Rectangle dstRec = camera.getSpriteRectangle(_center.X - 2*_radius, _center.Y + _radius, _radius * 4, _radius * 8);
+                batch.Draw(_upperTexture, dstRec, Color.White);
+            }
             //TODO: update once sprites are available
         }
     }

@@ -42,7 +42,6 @@ namespace Meridian2.Columns
         {
             _broken = true;
             Body.Enabled = false;
-
         }
     }
 }
