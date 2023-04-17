@@ -22,13 +22,14 @@ namespace Meridian2.Gui
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             if (_data.gameOver) {
-                batch.DrawString(_game.Font, "GAME  OVER", new Vector2(300, 300), Color.Red);
+                Color rope_red = new Color(170, 54, 54);
+                batch.DrawString(_game.Font, "GAME  OVER", new Vector2(300, 300), rope_red);
                 return;
             }
 
             for (int i = 0; i < _data.Health; i++) {
                 Rectangle pos = new Rectangle(70+i*40, 10, 30, 30);
-                batch.Draw(heartTexture, pos, Color.Red);
+                batch.Draw(heartTexture, pos, Color.White);
             }
         }
     }
