@@ -46,7 +46,7 @@ namespace Meridian2.Enemy
 
         public void Initialize(Vector2 initpos, int difficultyLevel)
         {
-            Body = _world.CreateEllipse((float)_enemySize.X / 2, (float)_enemySize.X / 4, 20, 0.005f,
+            Body = _world.CreateEllipse((float)_enemySize.X / 4, (float)_enemySize.X / 8, 20, 0.01f,
                 initpos, 0f, BodyType.Dynamic);
             Body.FixedRotation = true;
             Body.LinearDamping = 0.5f;
@@ -209,39 +209,39 @@ namespace Meridian2.Enemy
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            Rectangle spritePos = camera.getScreenRectangle(Body.Position.X, Body.Position.Y - _enemySize.Y*2 + (float)_enemySize.X / 4, _enemySize.X, _enemySize.Y);
+            Rectangle spritePos = camera.getScreenRectangle(Body.Position.X - (float)_enemySize.X/2, Body.Position.Y - _enemySize.Y*2 + (float)_enemySize.X / 4, _enemySize.X, _enemySize.Y);
 
             float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
 
-            if (isWalking)
-            {
-                float run_duration = 200f;
-                int run_frame_idx = (int)(totalTime / run_duration) % 4;
-
-                Texture2D running_sprite = running_f;
-
-                if (input.X > 0 && input.X >= input.Y)
-                {
-                    running_sprite = running_r;
-                }
-                else if (input.X < 0 && input.X <= input.Y)
-                {
-                    running_sprite = running_l;
-                }
-                else if (input.Y < 0)
-                {
-                    running_sprite = running_b;
-                }
-                //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
-
-                batch.Draw(
-                running_sprite,
-                spritePos,
-                new Rectangle(run_frame_idx * 512, 0, 512, 768),
-                Color.White
-            );
-            }
-            else
+            // if (isWalking)
+            // {
+            //     float run_duration = 200f;
+            //     int run_frame_idx = (int)(totalTime / run_duration) % 4;
+            //
+            //     Texture2D running_sprite = running_f;
+            //
+            //     if (input.X > 0 && input.X >= input.Y)
+            //     {
+            //         running_sprite = running_r;
+            //     }
+            //     else if (input.X < 0 && input.X <= input.Y)
+            //     {
+            //         running_sprite = running_l;
+            //     }
+            //     else if (input.Y < 0)
+            //     {
+            //         running_sprite = running_b;
+            //     }
+            //     //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
+            //
+            //     batch.Draw(
+            //     running_sprite,
+            //     spritePos,
+            //     new Rectangle(run_frame_idx * 512, 0, 512, 768),
+            //     Color.White
+            // );
+            // }
+            // else
             {
                 float idle_duration = 400f; //ms
                 int idle_frame_idx = (int)(totalTime / idle_duration) % 2;
