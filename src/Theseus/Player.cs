@@ -228,7 +228,7 @@ namespace Meridian2.Theseus
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            camera.Pos = Body.Position;
+            //camera.Pos = Body.Position;
             Rectangle spritePos = camera.getScreenRectangle(Body.Position.X, Body.Position.Y - _playerSize.Y*2 + (float)_playerSize.X / 4, _playerSize.X, _playerSize.Y);
 
             float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
