@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using Meridian2.Enemy;
 
 namespace Meridian2
 {
@@ -38,7 +39,7 @@ namespace Meridian2
            
             World = new World(Vector2.Zero);
             columnsManager = new ColumnsManager();
-            _map = new Map(game, World, columnsManager);
+            _map = new Map(game, World, columnsManager, new EnemyManager(game, World, null, 0));
 
         }
 

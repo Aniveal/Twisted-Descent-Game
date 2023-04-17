@@ -31,6 +31,9 @@ namespace Meridian2
         //Column Positions
         public List<Vector2> columns = new List<Vector2>();
 
+        //Enemies
+        public List<Vector2> enemyPositions = new List<Vector2>();
+
         //Pointer to the mapGenerator this room is part of
         protected MapGenerator mg;
 
@@ -79,6 +82,33 @@ namespace Meridian2
                 else j++;
 
                 if(j > 1000)
+                {
+                    Debug.WriteLine("Didnt find walkable space!!!");
+                    return;
+                }
+            }
+        }
+
+        public void placeEnemies(int n)
+        {
+            enemyPositions.Clear();
+
+            int i = 0;
+            int j = 0;
+
+            while (i < n)
+            {
+                float x = (float)RNGsus.Instance.NextDouble() * sizeX;
+                float y = (float)RNGsus.Instance.NextDouble() * sizeY;
+
+                if (tileMap[(int)x, (int)y].finalPrototype.walkable)
+                {
+                    enemyPositions.Add(new Vector2((int)x, (int)y));
+                    i++;
+                }
+                else j++;
+
+                if (j > 1000)
                 {
                     Debug.WriteLine("Didnt find walkable space!!!");
                     return;

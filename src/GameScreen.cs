@@ -38,13 +38,15 @@ public class GameScreen : Screen {
 
         World = new World(Vector2.Zero);
         columnsManager = new ColumnsManager();
-        _map = new Map(game, World, columnsManager);
+        
 
         
         theseusManager = new TheseusManager(Game, World);
         enemyManager = new EnemyManager(Game, World, theseusManager.player, 1);
         guiManager = new GuiManager(game);
         spearsController = new SpearsController(game, columnsManager, theseusManager.player);
+
+        _map = new Map(game, World, columnsManager, enemyManager);
     }
 
     public override void Initialize() {

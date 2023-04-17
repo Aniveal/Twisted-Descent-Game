@@ -26,9 +26,6 @@ namespace Meridian2
         //Room List
         public List<Room> roomList;
 
-        //List of column positions
-        public List<Vector2> columnPositions;
-
         //All rock textures
         private List<Texture2D> rockTextures;
 
@@ -73,44 +70,12 @@ namespace Meridian2
                 int nColumns = room.sizeX * room.sizeY / 10;
 
                 room.placeColumns(nColumns);
+                room.placeEnemies(nColumns / 4);
             }
 
 
             return true;
         }
-
-        //DONT USE, WIP
-        public Room createRoom(int x, int y, int sizeX, int sizeY, List<Vector2> openings, RoomSettings rs = null)
-        {
-            if(rs == null)
-                rs = new RoomSettings("StarterRoom", rockPrototypes);
-            Room room = new Room(this, rs, x, y, sizeX, sizeY);
-
-            foreach(Vector2 v in openings)
-            {
-                int oX = (int)v.X;
-                int oY = (int)v.Y;
-
-                room.createOpening(oX, oY, 1);
-            }
-            room.connectOpenings();
-            room.generateRoom();
-            return room;
-        }
-
-        //DONT USE, WIP
-        public Room createRoom()
-        {
-            RoomSettings rs = new RoomSettings("StarterRoom", rockPrototypes);
-            Room room = new Room(this, rs, 0, 0, 30, 30);
-
-            room.createOpening(29, 15, 5);
-            room.createOpening(2, 0, 5);
-            room.connectOpenings();
-            room.generateRoom();
-            return room;
-        }
-        
         
 
         //Initializes the prototypes

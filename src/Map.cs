@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Common;
 using Meridian2.Columns;
+using Meridian2.Enemy;
 
 namespace Meridian2 {
     public class Map : DrawableGameElement {
@@ -28,6 +29,8 @@ namespace Meridian2 {
 
         //WIP, remove this as soon as possible
         public ColumnsManager cm;
+
+        public EnemyManager em;
 
 
         /* Helper Functions */
@@ -152,7 +155,7 @@ namespace Meridian2 {
 
             roomList = mapGenerator.roomList;
 
-            transferColumnsToColumnsManager();
+            transferDataToManagers();
 
             //create bodies for tiles
             foreach (Room r in roomList)
@@ -163,7 +166,7 @@ namespace Meridian2 {
 
         }
 
-        public void transferColumnsToColumnsManager()
+        public void transferDataToManagers()
         {
             foreach(Room r in roomList)
             {
@@ -184,6 +187,12 @@ namespace Meridian2 {
                             break;
                     }
                     typeCtr++;                    
+                }
+
+                foreach(Vector2 v in r.enemyPositions)
+                {
+
+                    em.AddEnemy(MapToWorld(v.X + r.posX, v.Y + r.posY), RNGsus.Instance.Next(3) + 1);
                 }
                 
             }
@@ -272,10 +281,11 @@ namespace Meridian2 {
             
         }
 
-        public Map(RopeGame game, World world, ColumnsManager cm) {
+        public Map(RopeGame game, World world, ColumnsManager cm, EnemyManager em) {
             _game = game;
             _world = world;
             this.cm = cm;
+            this.em = em;
 
         }
     }
