@@ -26,7 +26,7 @@ public class RopeSegment : DrawableGameElement
 
     public bool isElecSrc = false;
     public RopeSegment elecSrcSegment = null;
-    private const int _elecRange = 10; //range in segments
+    private const int _elecRange = 30; //range in segments
     public int elecIntensity = 0;
     public bool elecFromPrev = false;
     public bool elecFromNext = false;

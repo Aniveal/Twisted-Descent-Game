@@ -65,6 +65,7 @@ namespace Meridian2.Enemy
         }
 
         public void Electrify() {
+            isAlive = false;
             //TODO: play animation (change color to yellow?), take damage
         }
 
