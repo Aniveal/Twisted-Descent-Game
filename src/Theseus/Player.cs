@@ -24,7 +24,7 @@ namespace Meridian2.Theseus
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _playerSize = new(1, 2);
-        private float PlayerForce = 0.01f;
+        private float PlayerForce = 10f;
 
         //How many milliseconds between footsteps
         private float footstepSoundDelayMax = 400f;
@@ -40,6 +40,7 @@ namespace Meridian2.Theseus
         private const int DashUsageTime = 400;
         private bool Dash = false;
         private bool isWalking = false;
+        private bool isPulling = false;
         private Vector2 input = Vector2.Zero;
 
         public Boolean isImmune = false;
@@ -61,6 +62,7 @@ namespace Meridian2.Theseus
             Body.LinearDamping = 1f;
             Body.Tag = this;
 
+            Body.Mass = 10;
             // Disable rope collision
             foreach (Fixture fixture in Body.FixtureList)
             {
@@ -124,12 +126,12 @@ namespace Meridian2.Theseus
             {
                 Dash = true;
                 DashTimer = 0;
-                PlayerForce = 0.05f;
+                PlayerForce = 30f;
             }
             if (Dash & DashTimer >= DashUsageTime)
             {
                 Dash = false;
-                PlayerForce = 0.01f;
+                PlayerForce = 10f;
                 DashTimer = 0;
             }
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))
@@ -167,11 +169,6 @@ namespace Meridian2.Theseus
                 footstepSoundDelayCurrent = footstepSoundDelayMax;
             }
 
-            if (keyboard.IsKeyDown(Keys.P))
-            {
-                _rope.Pull(gameTime);
-            }
-
             if (input.LengthSquared() > 1)
             {
                 input.Normalize();
@@ -182,20 +179,39 @@ namespace Meridian2.Theseus
             Body.ApplyForce(movement);
             orientation = input;
 
+            var ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
+
             if (_ropeConnection != null) {
-                var ropeJointForce = _ropeConnection.GetReactionForce(1 / (float)gameTime.ElapsedGameTime.TotalSeconds)
-                    .Length();
-                Diagnostics.Instance.SetForce(ropeJointForce);
-                
                 // Extend rope if force on joint is too strong
-                if (ropeJointForce >= 0.02) {
+                if (ropeJointDistance > Rope.TextureHeight) {
                     // Remove player joint
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
                     
                     _rope.AppendSegment();
                     LinkToRope();
+                } else if (movement == Vector2.Zero) {
+                    // _world.Remove(_ropeConnection);
+                    // _ropeConnection = null;
+                    // _rope.RemoveSegment();
+                    // LinkToRope();
                 }
+            }
+            
+            ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
+            Diagnostics.Instance.SetForce(ropeJointDistance);
+            if (keyboard.IsKeyDown(Keys.P)) {
+                isPulling = true;
+                if (ropeJointDistance < Rope.TextureHeight*2) {
+                    _world.Remove(_ropeConnection);
+                    _ropeConnection = null;
+                    _rope.RemoveSegment();
+                    LinkToRope();
+                }
+
+                _rope.Pull(gameTime);
+            } else {
+                isPulling = false;
             }
         }
 
@@ -203,9 +219,9 @@ namespace Meridian2.Theseus
             _ropeConnection = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
                 new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
                 new Vector2((float)_playerSize.X / 2, (float)_playerSize.X / 4));
-            _ropeConnection.Length = 0.001f;
+            _ropeConnection.Length = Rope.RopeJointLength;
             _ropeConnection.Frequency = 15;
-            _ropeConnection.DampingRatio = 0.95f;
+            _ropeConnection.DampingRatio = Rope.RopeJointDampingRatio;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
