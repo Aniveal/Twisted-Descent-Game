@@ -172,7 +172,7 @@ namespace Meridian2 {
                 foreach (Vector2 v in r.columns)
                 { 
                     Vector2 worldCoords = MapToWorld(v.X + r.posX, v.Y + r.posY);
-                    switch(typeCtr % 4) {
+                    switch(typeCtr % 8) {
                         case(2):
                             cm.Add(new FragileColumn(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
                             break;
