@@ -26,8 +26,8 @@ public class Rope : DrawableGameElement
     public const float TextureHeight = 0.1f;
     public const float TextureWidth = 0.05f;
 
-    private const int decayRate = 3; //a segment decays every decayRate ticks.
-    private const int decayRange = 0; //the last decayRange segments can decay
+    private const int decayRate = 60; //a segment decays every decayRate ticks.
+    private const int decayRange = 100; //the last decayRange segments can decay
     private int decayCount = 0;
 
     private Random decayRNG;
@@ -146,30 +146,17 @@ public class Rope : DrawableGameElement
 
     public override void Update(GameTime gameTime)
     {
-        // Diagnostics.Instance.SetForce(_endAnchor.LinearVelocity.LengthSquared());
-        //
-        // MouseState mouse = Mouse.GetState();
-        // if (mouse.LeftButton == ButtonState.Pressed) {
-        //     Vector2 mouseDirection = (new Vector2(mouse.X, mouse.Y) - _endAnchor.Position) * 3;
-        //     if (mouseDirection.LengthSquared() > 3000) {
-        //         mouseDirection.Normalize();
-        //         mouseDirection *= 3000;
-        //     }
-        //
-        //     _endAnchor.ApplyForce(mouseDirection, _endAnchor.GetWorldPoint(new Vector2(1, 3)));
-        // }
+        //natural shortening
+        if (decayCount >= decayRate) {
+            int r = decayRNG.Next(decayRange);
+            int c = _segments.Count;
+            if (c - 2 - r > 0) { //only decay if chosen segment exists; - 2 because we never remove last segment
+                RemoveSegment(c - 2 -r);
+            }
         
-        // //natural shortening
-        // if (decayCount >= decayRate) {
-        //     int r = decayRNG.Next(decayRange);
-        //     int c = _segments.Count;
-        //     if (c - 2 - r > 0) { //only decay if chosen segment exists; - 2 because we never remove last segment
-        //         RemoveSegment(c - 2 -r);
-        //     }
-        //
-        //     decayCount = 0;
-        // }
-        // decayCount ++;
+            decayCount = 0;
+        }
+        decayCount ++;
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
