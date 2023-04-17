@@ -98,6 +98,9 @@ namespace Meridian2.Theseus
 
         public override void Update(GameTime gameTime)
         {
+            if (_game.gameData.gameOver) {
+                return;
+            }
             input = Vector2.Zero;
             DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             DashTimer = Math.Min(DashTimer, 5000);

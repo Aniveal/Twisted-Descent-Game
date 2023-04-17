@@ -45,7 +45,7 @@ public class RopeGame : Game {
         _graphics.PreferredBackBufferHeight = 1200;
         _graphics.ApplyChanges();
 
-        gameData = new GameData();
+        gameData = new GameData(this);
 
         
 

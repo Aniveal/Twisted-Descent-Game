@@ -21,7 +21,12 @@ namespace Meridian2.Gui
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
-            for (int i = 0; i < _data.health; i++) {
+            if (_data.gameOver) {
+                batch.DrawString(_game.Font, "GAME  OVER", new Vector2(300, 300), Color.Red);
+                return;
+            }
+
+            for (int i = 0; i < _data.Health; i++) {
                 Rectangle pos = new Rectangle(70+i*40, 10, 30, 30);
                 batch.Draw(heartTexture, pos, Color.Red);
             }
