@@ -40,6 +40,13 @@ namespace Meridian2.Enemy
             
         }
 
+        public void AddEnemy(Vector2 pos, int diff) {
+            Enemy enemy = new Enemy(_game, _world, _player);
+            enemy.Initialize(pos, diff);
+            enemy.LoadContent();
+            enemies.Add(enemy);
+        }
+
         public void LoadContent()
         {
             foreach (Enemy enemy in enemies)
