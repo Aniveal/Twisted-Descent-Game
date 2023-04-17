@@ -55,6 +55,10 @@ namespace Meridian2 {
             return new Vector2((x -  y +map_translation)*map_scaling, (x + y +map_translation)*map_scaling);
         }
 
+        public Vector2 MapToWorld(float x, float y) {
+            return new Vector2((x -  y +map_translation)*map_scaling, (x + y +map_translation)*map_scaling);
+        }
+
         // ScreenToMap: takes pixel position, returns the index of the tile at this position.
         public Point ScreenToMap(Point screenPos) {
             screenPos.X -= (int)Globals.CameraPosition.X;
