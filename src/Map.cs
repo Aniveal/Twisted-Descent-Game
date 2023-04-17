@@ -168,13 +168,22 @@ namespace Meridian2 {
             foreach(Room r in roomList)
             {
                 Debug.WriteLine("Sending coords to ColumnsManager: " + r.columns.Count);
+                int typeCtr = 0;
                 foreach (Vector2 v in r.columns)
                 { 
-
                     Vector2 worldCoords = MapToWorld(v.X + r.posX, v.Y + r.posY);
-                    Column c = new Column(_game, _world, worldCoords, 0.2f, _game.ColumnTexture);
-
-                    cm.Add(c);
+                    switch(typeCtr % 4) {
+                        case(2):
+                            cm.Add(new FragileColumn(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
+                            break;
+                        case(3):
+                            cm.Add(new ElectricColumn(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
+                            break;
+                        default:
+                            cm.Add(new Column(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
+                            break;
+                    }
+                    typeCtr++;                    
                 }
                 
             }
