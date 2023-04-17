@@ -84,7 +84,7 @@ namespace Meridian2.Enemy
                 if (_player.isImmune == false)
                 {
                     _player.isImmune = true;
-                    _game.gameData.health -= 1; //TODO: do stuff when health reaches 0
+                    _game.gameData.RemoveHealth(1); //TODO: do stuff when health reaches 0
                 }
 
             }
