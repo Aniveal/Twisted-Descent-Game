@@ -191,7 +191,8 @@ namespace Meridian2 {
 
                 foreach(Vector2 v in r.enemyPositions)
                 {
-                    em.AddEnemy(MapToWorld(v.X + r.posX, v.Y + r.posY), 1);
+
+                    em.AddEnemy(MapToWorld(v.X + r.posX, v.Y + r.posY), RNGsus.Instance.Next(3) + 1);
                 }
                 
             }
