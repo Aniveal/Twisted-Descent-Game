@@ -13,6 +13,8 @@ namespace Meridian2
         //The settings for this room
         protected RoomSettings rs;
 
+        public int index;
+
         //Tile size of the room
         public int sizeX, sizeY;
 
@@ -21,9 +23,6 @@ namespace Meridian2
 
         //Stores the points where there is an opening
         protected List<Vector2> openings;
-
-        //All neighbouring rooms
-        protected List<Room> neighbours = new List<Room>();
 
         //The map of this room
         public Tile[,] tileMap;
@@ -40,8 +39,9 @@ namespace Meridian2
         //If all tiles have been initialized
         protected bool initialized = false;
 
-        public Room(MapGenerator mg, RoomSettings rs, int x, int y, int sizeX, int sizeY)
+        public Room(MapGenerator mg, RoomSettings rs, int x, int y, int sizeX, int sizeY, int index)
         {
+            this.index = index;
             openings = new List<Vector2>();
             this.mg = mg;
             this.sizeX = sizeX;
@@ -51,7 +51,6 @@ namespace Meridian2
             tileMap = new Tile[sizeX, sizeY];
             this.rs = rs;
             initializeTileMap();
-            
         }
 
         //Finishes the room generation, results in a workable tileMap
@@ -60,6 +59,7 @@ namespace Meridian2
             connectOpenings();
             createBorder();
             runWaveFunctionCollapse();
+            
         }
 
         public void placeColumns(int n)
@@ -117,7 +117,7 @@ namespace Meridian2
         }
 
         //Fill out the whole tilemap with new Tiles
-        protected void initializeTileMap()
+        public void initializeTileMap()
         {
             Debug.WriteLine("Initializing Room Map");
             //Create all tiles, initialize with full set of prototypes

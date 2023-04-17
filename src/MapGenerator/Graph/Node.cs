@@ -8,7 +8,20 @@ namespace Meridian2
 {
     internal class Node
     {
-        //What type this room is, for example: 
-        public string type;
+        //The room that is associated with this node: 
+        public Room room;
+
+        //Coordinates
+        public int x, y;
+
+        //A list of all neighbours (adjacency list)
+        public List<Node> neighbours;
+
+        public Node(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
     }
 }

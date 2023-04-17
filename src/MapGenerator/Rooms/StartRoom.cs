@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Meridian2
 {
-    internal class StartRoom
+    internal class StartRoom 
     {
-        //public StartRoom(MapGenerator mg, int x, int y) : base(mg, x, y)
-        //{
-
-        //}
+        
     }
 }

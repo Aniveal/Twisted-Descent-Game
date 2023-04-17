@@ -38,14 +38,31 @@ namespace Meridian2
             createPrototypeLists();
         }
 
+        public void createProceduralMap(int size, int maxRoomSize)
+        {
+            DungeonGraph graph = new DungeonGraph(this);
+
+            graph.createDungeonMap(size, maxRoomSize);
+            roomList = graph.rooms;
+            foreach (Room room in roomList)
+            {
+                room.generateRoom();
+
+                int nColumns = room.sizeX * room.sizeY / 20;
+
+                //room.placeColumns(nColumns);
+                //room.placeEnemies(nColumns / 4);
+            }
+        }
+
         //Creates a map with 3 rooms
         public bool hardcodedMap()
         {
             RoomSettings rs = new RoomSettings("StarterRoom", rockPrototypes);
-            Room r1 = new Room(this, rs, 0, -3, 10, 10); //(-5, -5), (5, 5)
-            Room r2 = new Room(this, rs, 10, -3, 20, 15);  //(5, -5), (15, 10)
-            Room r3 = new Room(this, rs, -30, 7, 40, 50);   //(-5, 5), (2, 55)
-            Room r4 = new Room(this, rs, 20, 12, 10, 45); //(15, 10), (25, 55)
+            Room r1 = new Room(this, rs, 0, -3, 10, 10, 0); //(-5, -5), (5, 5)
+            Room r2 = new Room(this, rs, 10, -3, 20, 15, 1);  //(5, -5), (15, 10)
+            Room r3 = new Room(this, rs, -30, 7, 40, 50, 2);   //(-5, 5), (2, 55)
+            Room r4 = new Room(this, rs, 20, 12, 10, 45, 3); //(15, 10), (25, 55)
 
             r1.createOpening(0, 1, 3);
             r1.createOpening(1, 0, 3);
@@ -118,12 +135,6 @@ namespace Meridian2
 
             rockPrototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 300, true));
         }
-
-        
-
-        
-
-
 
     }
 }
