@@ -183,10 +183,9 @@ namespace Meridian2.Theseus
             orientation = input;
 
             var ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
-
             if (_ropeConnection != null) {
                 // Extend rope if force on joint is too strong
-                if (ropeJointDistance > Rope.TextureHeight) {
+                if (ropeJointDistance > Rope.TextureHeight*1.5) {
                     // Remove player joint
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
@@ -205,7 +204,7 @@ namespace Meridian2.Theseus
             Diagnostics.Instance.SetForce(ropeJointDistance);
             if (keyboard.IsKeyDown(Keys.P)) {
                 isPulling = true;
-                if (ropeJointDistance < Rope.TextureHeight*2) {
+                if (ropeJointDistance < Rope.TextureHeight*1.5) {
                     _world.Remove(_ropeConnection);
                     _ropeConnection = null;
                     _rope.RemoveSegment();
@@ -221,15 +220,15 @@ namespace Meridian2.Theseus
         private void LinkToRope() {
             _ropeConnection = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
                 new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
-                new Vector2((float)_playerSize.X / 2, (float)_playerSize.X / 4));
+                new Vector2(0, (float)_playerSize.X / 4));
             _ropeConnection.Length = Rope.RopeJointLength;
             _ropeConnection.Frequency = 15;
             _ropeConnection.DampingRatio = Rope.RopeJointDampingRatio;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            //camera.Pos = Body.Position;
-            Rectangle spritePos = camera.getScreenRectangle(Body.Position.X, Body.Position.Y - _playerSize.Y*2 + (float)_playerSize.X / 4, _playerSize.X, _playerSize.Y);
+            camera.Pos = Body.Position;
+            Rectangle spritePos = camera.getScreenRectangle(Body.Position.X - (float)_playerSize.X/2, Body.Position.Y - _playerSize.Y*2 + (float)_playerSize.X / 4, _playerSize.X, _playerSize.Y);
 
             float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
 
