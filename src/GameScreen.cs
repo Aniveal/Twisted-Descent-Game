@@ -132,7 +132,8 @@ public class GameScreen : Screen {
         //}
         guiManager.Draw(gameTime, _batch, Camera);
 
-        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), Color.Red);
+        Color rope_red = new Color(170, 54, 54);
+        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), rope_red);
         _batch.End();
     }
 }

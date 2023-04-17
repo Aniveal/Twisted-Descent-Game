@@ -123,9 +123,10 @@ public class Rope : DrawableGameElement
     {
         BaseTexture = new Texture2D(_game.GraphicsDevice, 1, 2);
         Color[] data = new Color[BaseTexture.Width * BaseTexture.Height];
+        Color rope_color = new Color(170, 54, 54);
         for (int i = 0; i < data.Length; i++)
         {
-            data[i] = Color.Red;
+            data[i] = rope_color;
         }
 
         BaseTexture.SetData(data);
