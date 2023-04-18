@@ -84,7 +84,7 @@ namespace Meridian2
             {
                 room.generateRoom();
 
-                int nColumns = room.sizeX * room.sizeY / 10;
+                int nColumns = room.sizeX * room.sizeY / 30;
 
                 room.placeColumns(nColumns);
                 room.placeEnemies(nColumns / 4);
