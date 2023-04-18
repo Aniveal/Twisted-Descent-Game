@@ -115,17 +115,18 @@ namespace Meridian2.Theseus
                 }
             }
 
+            isWalking = false;
+            
             GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
             if (gamePadCapabilities.IsConnected)
             {
                 input = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
                 input.Y *= -1;
+                isWalking = true;
             }
 
-            isWalking = false;
-
             KeyboardState keyboard = Keyboard.GetState();
-            if (keyboard.IsKeyDown(Keys.Space) & DashTimer >= DashCoolDown)
+            if ((keyboard.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) && DashTimer >= DashCoolDown)
             {
                 Dash = true;
                 DashTimer = 0;
@@ -202,7 +203,7 @@ namespace Meridian2.Theseus
             
             ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
             Diagnostics.Instance.SetForce(ropeJointDistance);
-            if (keyboard.IsKeyDown(Keys.P)) {
+            if (keyboard.IsKeyDown(Keys.P) || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0.5f) {
                 isPulling = true;
                 if (ropeJointDistance < Rope.TextureHeight*1.5) {
                     _world.Remove(_ropeConnection);
