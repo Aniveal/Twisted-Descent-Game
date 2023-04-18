@@ -207,14 +207,7 @@ namespace Meridian2 {
         }
 
         public void LoadContent() {
-            _ground = _game.Content.Load<Texture2D>("ground");
-
-            _column = new List<Texture2D> {
-                _game.Content.Load<Texture2D>("column"),
-                _game.Content.Load<Texture2D>("column_lower"),
-                _game.Content.Load<Texture2D>("column_upper")
-            };
-
+            _ground = _game.Content.Load<Texture2D>("Sprites/ground");
             
             _rockTextures = new List<Texture2D> {
                 _game.Content.Load<Texture2D>("Sprites/Rock/wall_1b"), // 1

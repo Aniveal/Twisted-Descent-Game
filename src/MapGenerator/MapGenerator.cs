@@ -114,7 +114,7 @@ namespace Meridian2
                 rg.Content.Load<Texture2D>("Sprites/Rock/wall_3l"), // 11
                 rg.Content.Load<Texture2D>("Sprites/Rock/wall_4") // 12
             };
-            Texture2D ground = rg.Content.Load<Texture2D>("ground");
+            Texture2D ground = rg.Content.Load<Texture2D>("Sprites/ground");
 
             //Create prototypes for each texture; Look from bottom or from right side!!!
             //0: nothing; 1: right wall; 2: left wall; 3: all wall

@@ -74,11 +74,11 @@ namespace Meridian2.Theseus
 
         public void LoadContent()
         {
-            idle = _game.Content.Load<Texture2D>("idle");
-            running_l = _game.Content.Load<Texture2D>("running");
-            running_r = _game.Content.Load<Texture2D>("running_r");
-            running_f = _game.Content.Load<Texture2D>("running_f");
-            running_b = _game.Content.Load<Texture2D>("running_b");
+            idle = _game.Content.Load<Texture2D>("Sprites/Theseus/idle");
+            running_l = _game.Content.Load<Texture2D>("Sprites/Theseus/running");
+            running_r = _game.Content.Load<Texture2D>("Sprites/Theseus/running_r");
+            running_f = _game.Content.Load<Texture2D>("Sprites/Theseus/running_f");
+            running_b = _game.Content.Load<Texture2D>("Sprites/Theseus/running_b");
         }
 
         private Vector2 ScreenToIsometric(Vector2 vector)

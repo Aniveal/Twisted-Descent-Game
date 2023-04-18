@@ -16,7 +16,7 @@ namespace Meridian2.Gui
         }
 
         public void LoadContent() {
-            heartTexture = _game.Content.Load<Texture2D>("heart");
+            heartTexture = _game.Content.Load<Texture2D>("Sprites/UI/heart");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)

@@ -12,3 +12,6 @@ src/.vs
 # Ignore built content files
 *.mgcontent
 *.xnb
+
+# Ignore Mac OS folder attribute file (.DS_Store)
+**/.DS_Store
