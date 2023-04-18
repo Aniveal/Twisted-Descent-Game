@@ -114,7 +114,7 @@ namespace Meridian2.Enemy
             if (_difficultyLevel == 1) // enemies moves random
             {
                 Random rnd = new Random();
-                int r = rnd.Next(0, 3);
+                int r = rnd.Next(0, 4);
                 if (r == 0)
                 {
                     input.X += 0.1f;
