@@ -91,7 +91,6 @@ namespace Meridian2.Enemy
             // If colliding with rope, and rope electrified
             if (collider.Tag is RopeSegment) {
                 if (((RopeSegment) collider.Tag).elecIntensity > 0) {
-                    this.isAlive = false;
                     _game.gameData.score += 1000;
                     Electrify();
                 }
@@ -99,6 +98,11 @@ namespace Meridian2.Enemy
             }
 
             return true;
+        }
+
+        //DO NOT CALL DURING ONCOLLISION!!!
+        public void Destroy() {
+            _world.Remove(Body);
         }
         
 
