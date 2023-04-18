@@ -20,7 +20,7 @@ public class RopeSegment : DrawableGameElement
 
     public Body Body;
 
-    private const float RopeDensity = 0.1f;
+    private const float RopeDensity = 0.2f;
 
     private bool _black;
 
@@ -89,13 +89,11 @@ public class RopeSegment : DrawableGameElement
     {
         if (elecSrcSegment != null && elecSrcSegment.isElecSrc)
         {
-            if (fromPrev)
-            {
-                previous.Electrify(elecSrcSegment, elecIntensity - 1, false);
+            if (fromPrev) {
+                previous?.Electrify(elecSrcSegment, elecIntensity - 1, false);
             }
-            else
-            {
-                next.Electrify(elecSrcSegment, elecIntensity - 1, true);
+            else {
+                next?.Electrify(elecSrcSegment, elecIntensity - 1, true);
             }
             return;
         }
