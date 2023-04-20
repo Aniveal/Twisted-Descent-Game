@@ -56,8 +56,8 @@ namespace Meridian2
         //Finishes the room generation, results in a workable tileMap
         public void generateRoom()
         {
-            connectOpenings();
             createBorder();
+            connectOpenings();
             runWaveFunctionCollapse();
             
         }
@@ -76,8 +76,12 @@ namespace Meridian2
 
                 if (tileMap[(int)Math.Floor(x), (int)Math.Floor(y)].finalPrototype.walkable)
                 {
-                    columns.Add(new Vector2(x, y));
-                    i++;
+                    if (noColumnsNear(x, y))
+                    {
+                        columns.Add(new Vector2(x, y));
+                        i++;
+                    }
+                    else j++;
                 }
                 else j++;
 
@@ -87,6 +91,17 @@ namespace Meridian2
                     return;
                 }
             }
+        }
+
+        bool noColumnsNear(float x, float y)
+        {
+            foreach (Vector2 col in columns)
+            {
+                if (Math.Abs(col.X - x) < 1 && Math.Abs(col.Y - y) < 1)
+                    return false;
+            }
+
+                return true;
         }
 
         public void placeEnemies(int n)
@@ -119,7 +134,6 @@ namespace Meridian2
         //Fill out the whole tilemap with new Tiles
         public void initializeTileMap()
         {
-            Debug.WriteLine("Initializing Room Map");
             //Create all tiles, initialize with full set of prototypes
             for (int x = 0; x < sizeX; x++)
             {
@@ -137,7 +151,14 @@ namespace Meridian2
         //Don't go too close to an edge, otherwise undefined behaviuor may happen
         public void createOpening(int x, int y, int l)
         {
+            Debug.WriteLine("Create Opening");
+
+            if(!(x == 0 || x == sizeX - 1 || y == 0 || y == sizeY - 1))
+            {
+                Debug.WriteLine("Error, opening cant be created, wrong values");
+            }
             
+
             openings.Add(new Vector2(x, y));
 
             if (x == 0 || x == sizeX - 1)
@@ -169,6 +190,16 @@ namespace Meridian2
             else Debug.WriteLine("Error while creating opening: Point " + x + "," + y + " is not on the border!!! SizeX = " + sizeX + ", SizeY = "+sizeY);
         }
 
+        public void setTile(int x, int y, Prototype p)
+        {
+            tileMap[x, y].setFinalPrototype(p);
+        }
+
+        public void setWalkable(int x, int y)
+        {
+            tileMap[x, y].makeWalkable();
+        }
+
         //Creates a walkable paths between all openings to ensure that all exits are reachable
         //Call this after all createOpening calls were made!
         //Makes a path to the midpoint of the room
@@ -185,27 +216,47 @@ namespace Meridian2
                 
                 int x = (int)opening.X; int y = (int)opening.Y;
 
-                Debug.Write("Opening.... " + x + ", " + y +  " midX = " + midX + " , midY = " + midY);
+                Debug.Write("Opening.... " + x + ", " + y);
 
                 //Handle case where opening is on left or right
-                while (x <= 1 || x >= (sizeX - 2))
+                if (x <= 1 || x >= (sizeX - 2))
                 {
                     //First, do one step towards the middle
-                    if(opening.X <= 1)
+                    while(x <= 1)
+                    {
+                        tileMap[x, y].setFinalPrototype(getPrototype("ground"));
+                        collapseTile(tileMap[x, y]);
                         x = x + 1;
-                    else x = x - 1;
+                    }
+                        
+                    while (x >= (sizeX - 2))
+                    {
+                        tileMap[x, y].setFinalPrototype(getPrototype("ground"));
+                        collapseTile(tileMap[x, y]);
+                        x = x - 1;
+                    } 
 
                     tileMap[x, y].setFinalPrototype(getPrototype("ground"));
                     collapseTile(tileMap[x, y]);
                 }
                 
                 //opening on top or bottom
-                while (y <= 1 || y >= (sizeX - 2))
+                if (y <= 1 || y >= (sizeX - 2))
                 {
                     //First, do one step towards the middle
-                    if(opening.Y <= 1)
+                    while (y <= 1)
+                    {
+                        tileMap[x, y].setFinalPrototype(getPrototype("ground"));
+                        collapseTile(tileMap[x, y]);
                         y = y + 1;
-                    else y = y - 1;
+                    }
+
+                    while (y >= (sizeY - 2))
+                    {
+                        tileMap[x, y].setFinalPrototype(getPrototype("ground"));
+                        collapseTile(tileMap[x, y]);
+                        y = y - 1;
+                    }
 
                     tileMap[x, y].setFinalPrototype(getPrototype("ground"));
                     collapseTile(tileMap[x, y]);
@@ -280,12 +331,12 @@ namespace Meridian2
             {
                 if(tileMap[x, 0].superpositions.Contains(getPrototype("FullWall")))
                 {
-                    tileMap[x, 0] = new Tile(getPrototype("FullWall"), x, 0, this);
+                    tileMap[x, 0].setFinalPrototype(getPrototype("FullWall"));
                     collapseTile(tileMap[x, 0]);
                 }
                 if (tileMap[x, sizeY - 1].superpositions.Contains(getPrototype("FullWall")))
                 {
-                    tileMap[x, sizeY - 1] = new Tile(getPrototype("FullWall"), x, sizeY - 1, this);
+                    tileMap[x, sizeY - 1].setFinalPrototype(getPrototype("FullWall")); ;
                     collapseTile(tileMap[x, sizeY - 1]);
                 }
 
@@ -294,13 +345,13 @@ namespace Meridian2
             {
                 if (tileMap[0, y].superpositions.Contains(getPrototype("FullWall")))
                 {
-                    tileMap[0, y] = new Tile(getPrototype("FullWall"), 0, y, this);
+                    tileMap[0, y].setFinalPrototype(getPrototype("FullWall")); ;
                     collapseTile(tileMap[0, y]);
                 }
 
                 if (tileMap[sizeX - 1, y].superpositions.Contains(getPrototype("FullWall")))
                 {
-                    tileMap[sizeX - 1, y] = new Tile(getPrototype("FullWall"), sizeX - 1, y, this);
+                    tileMap[sizeX - 1, y].setFinalPrototype(getPrototype("FullWall")); ;
                     collapseTile(tileMap[sizeX - 1, y]);
                 }
                     

@@ -151,9 +151,11 @@ namespace Meridian2 {
             Debug.WriteLine("Initializing Map");
 
 
-            mapGenerator.hardcodedMap();
+            //mapGenerator.hardcodedMap();
+            mapGenerator.createProceduralMap(100, 40);
 
             roomList = mapGenerator.roomList;
+
 
             transferDataToManagers();
 

@@ -44,14 +44,15 @@ namespace Meridian2
 
             graph.createDungeonMap(size, maxRoomSize);
             roomList = graph.rooms;
+
             foreach (Room room in roomList)
             {
                 room.generateRoom();
 
-                int nColumns = room.sizeX * room.sizeY / 20;
+                int nColumns = room.sizeX * room.sizeY / 30;
 
-                //room.placeColumns(nColumns);
-                //room.placeEnemies(nColumns / 4);
+                room.placeColumns(nColumns);
+                room.placeEnemies(nColumns / 2);
             }
         }
 

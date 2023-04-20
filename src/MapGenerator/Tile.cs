@@ -47,6 +47,31 @@ namespace Meridian2
             this.parentRoom = parentRoom;
         }
 
+        public void makeWalkable()
+        {
+            List<Prototype> protList = new List<Prototype>();
+
+            foreach(Prototype p in superpositions)
+            {
+                if(p.walkable)
+                    protList.Add(p);
+            }
+
+            setFinalPrototype(protList[RNGsus.Instance.Next(protList.Count)]);
+            parentRoom.collapseTile(this); 
+        }
+
+        public void removePrototype(string name)
+        {
+            foreach(Prototype proto in superpositions)
+            {
+                if (proto.name == name)
+                {
+                    superpositions.Remove(proto);
+                }
+            }
+        }
+
         public int getX() { return x + parentRoom.posX; }
         public int getY() { return y + parentRoom.posY; }
 
@@ -113,6 +138,7 @@ namespace Meridian2
             if (force || superpositions.Contains(p))
             {
                 finalPrototype = p;
+                superpositions.Clear();
                 superpositions = new List<Prototype> { p };
             }
 
