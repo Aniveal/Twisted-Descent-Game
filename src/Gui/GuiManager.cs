@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Meridian2.Columns;
 
 
 namespace Meridian2.Gui {
@@ -7,9 +8,11 @@ namespace Meridian2.Gui {
 
         private RopeGame _game;
         private HealthGui _healthGui;
-        public GuiManager(RopeGame game) {
+        private SpearsGui _spearsGui;
+        public GuiManager(RopeGame game, SpearsController spearsController) {
             _game = game;
             _healthGui = new HealthGui(_game, _game.gameData);
+            _spearsGui = new SpearsGui(_game, _game.gameData, spearsController);
         }
 
         public void Initialize() {
@@ -18,6 +21,7 @@ namespace Meridian2.Gui {
 
         public void LoadContent() {
             _healthGui.LoadContent();
+            _spearsGui.LoadContent();
         }
 
         /**
@@ -26,10 +30,12 @@ namespace Meridian2.Gui {
         */
         public void Update(GameTime gameTime) {
             _healthGui.Update(gameTime);
+            _spearsGui.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
             _healthGui.Draw(gameTime, batch, camera);
+            _spearsGui.Draw(gameTime, batch, camera);
         }
     }
 }

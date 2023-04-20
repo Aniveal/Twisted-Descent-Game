@@ -7,6 +7,10 @@ namespace Meridian2 {
          private const int startMaxHealth = 3;
          public int maxHealth;
          public int Health { private set; get;}
+
+         //Spears data
+         public int[] spears;//basic, electric, fragile spears
+
          public int score = 0;
 
          public bool gameOver {private set; get;}
@@ -17,6 +21,7 @@ namespace Meridian2 {
             resetHealth();
             gameOver = false;
             _game = game;
+            spears = new int[3] {10, 5, 5}; //define initial spears amount, basic/electric/fragile
          }
 
          public void resetHealth() {

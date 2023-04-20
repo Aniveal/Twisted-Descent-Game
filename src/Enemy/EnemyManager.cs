@@ -66,6 +66,7 @@ namespace Meridian2.Enemy
                 if (enemy.isAlive == false)
                 {
                     enemies.Remove(enemy);
+                    enemy.Destroy();
                 }
                 enemy.Update(gameTime);
             }

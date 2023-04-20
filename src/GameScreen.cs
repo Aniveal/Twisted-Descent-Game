@@ -43,8 +43,9 @@ public class GameScreen : Screen {
         
         theseusManager = new TheseusManager(Game, World);
         enemyManager = new EnemyManager(Game, World, theseusManager.player, 1);
-        guiManager = new GuiManager(game);
         spearsController = new SpearsController(game, columnsManager, theseusManager.player);
+        guiManager = new GuiManager(game, spearsController);
+        
 
         _map = new Map(game, World, columnsManager, enemyManager);
     }
