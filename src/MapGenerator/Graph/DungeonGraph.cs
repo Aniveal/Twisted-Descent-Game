@@ -390,6 +390,8 @@ namespace Meridian2
                 for (int j = 2; j < 5; j++)
                     room.setWalkable(i, j);
 
+            room.innerOpening(2, 2);
+
             return room;
         }
 

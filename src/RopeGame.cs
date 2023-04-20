@@ -49,7 +49,7 @@ public class RopeGame : Game {
 
         
 
-        bool gameScreen = true;
+        bool gameScreen = false;
 
         if(gameScreen)
         {

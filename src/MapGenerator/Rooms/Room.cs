@@ -62,6 +62,13 @@ namespace Meridian2
             
         }
 
+        //Adds an inner opening, i.e. a guaranteed connected tile
+        public void innerOpening(int x, int y)
+        {
+            openings.Add(new Vector2(x, y));
+
+        }
+
         public void placeColumns(int n)
         {
             columns.Clear();
