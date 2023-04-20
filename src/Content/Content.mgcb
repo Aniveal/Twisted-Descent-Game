@@ -39,11 +39,6 @@
 /processorParam:TextureFormat=Compressed
 /build:damn.spritefont
 
-#begin damn.ttf
-/importer:
-/processor:
-/build:damn.ttf
-
 #begin rectangle.png
 /importer:TextureImporter
 /processor:TextureProcessor
