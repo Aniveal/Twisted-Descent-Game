@@ -1,24 +1,38 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2;
+namespace Meridian2
+{
+    public abstract class State
+    {
+        #region Fields
 
-public abstract class Screen {
-    private RopeGame game;
+        protected ContentManager _content;
 
-    public Screen(RopeGame game) {
-        this.game = game;
-    }
+        protected GraphicsDevice _graphicsDevice;
 
-    virtual public void Initialize() {
-    }
+        protected RopeGame _game;
 
-    virtual public void Update(GameTime gameTime) {
-    }
+        #endregion
 
-    virtual public void Draw(GameTime gameTime) {
-    }
+        #region Methods
 
-    protected RopeGame getGame() {
-        return game;
+        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+
+        public abstract void PostUpdate(GameTime gameTime);
+
+        public State(RopeGame game, GraphicsDevice graphicsDevice, ContentManager content)
+        {
+            _game = game;
+
+            _graphicsDevice = graphicsDevice;
+
+            _content = content;
+        }
+
+        public abstract void Update(GameTime gameTime);
+
+        #endregion
     }
 }

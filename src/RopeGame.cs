@@ -26,6 +26,14 @@ public class RopeGame : Game {
     private Screen currentScreen;
 
     public GameData gameData;
+    private State _currentState;
+
+    private int _state = 0;
+
+    public void ChangeState(int state)
+    {
+        _state = state;
+    }
 
     public RopeGame() {
         _graphics = new GraphicsDeviceManager(this);
@@ -45,13 +53,12 @@ public class RopeGame : Game {
         _graphics.PreferredBackBufferHeight = 900;
         _graphics.ApplyChanges();
 
+        _currentState = new MenuState(this, GraphicsDevice, Content);
         gameData = new GameData(this);
-
-        
 
         bool gameScreen = true;
 
-        if(gameScreen)
+        if (gameScreen)
         {
             _gameScreen = new GameScreen(this);
             _gameScreen.Initialize();
@@ -65,12 +72,7 @@ public class RopeGame : Game {
             currentScreen = _mapScreen;
         }
 
-
-
-
-
         soundEngine = new SoundEngine(this); //Create the sound engine
-
     }
 
     protected override void LoadContent() {
@@ -79,24 +81,36 @@ public class RopeGame : Game {
         Font = Content.Load<SpriteFont>("Arial");
         ColumnTexture = Content.Load<Texture2D>("circle");
         rectangleTexture = Content.Load<Texture2D>("rectangle");
+
+        
     }
 
     protected override void Update(GameTime gameTime) {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
+            _state = 0;
+
+        if (_state == 0)
+            _currentState.Update(gameTime);
+        else
+            currentScreen.Update(gameTime);
 
         base.Update(gameTime);
 
-        currentScreen.Update(gameTime);
+        
     }
 
     protected override void Draw(GameTime gameTime) {
         Color background_color = new Color(82,84,81);
         GraphicsDevice.Clear(background_color);
 
+        if (_state == 0)
+            _currentState.Draw(gameTime, _spriteBatch);
+        else
+            currentScreen.Draw(gameTime);
+
         base.Draw(gameTime);
 
-        currentScreen.Draw(gameTime);
+        
     }
 }

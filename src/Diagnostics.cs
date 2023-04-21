@@ -30,6 +30,7 @@ namespace Meridian2
         private string _forceMessage = "";
         private string _dashMessage = "";
         
+        
         public void SetForce(double force) {
             _force = force;
         }
