@@ -16,6 +16,8 @@ namespace Meridian2 {
         private Texture2D _ground;
         private List<Texture2D> _column;
         private List<Texture2D> _rockTextures;
+        private List<Texture2D> _wallTextures;
+        private List<Texture2D> _cliffTextures;
 
 
         private const float map_scaling = 2;
@@ -44,7 +46,7 @@ namespace Meridian2 {
 
             var screenX = (int)((map_coordinates.X - map_coordinates.Y) * halfTile);
             var screenY = (int)((map_coordinates.X + map_coordinates.Y) * quaterTile);
-            return new(screenX + (int)Globals.CameraPosition.X, screenY + (int)Globals.CameraPosition.Y);
+            return new(screenX + (int)_game.currentScreen.Camera.Pos.X, screenY + (int)_game.currentScreen.Camera.Pos.Y);
         }
 
         //Returns the world coordinates of the left angle of the ground level of the tile
@@ -64,8 +66,8 @@ namespace Meridian2 {
 
         // ScreenToMap: takes pixel position, returns the index of the tile at this position.
         public Point ScreenToMap(Point screenPos) {
-            screenPos.X -= (int)Globals.CameraPosition.X;
-            screenPos.Y -= (int)Globals.CameraPosition.Y;
+            screenPos.X -= (int)_game.currentScreen.Camera.Pos.X;
+            screenPos.Y -= (int)_game.currentScreen.Camera.Pos.Y;
 
             int halfTile = TileSize.X / 2;
             int quaterTile = TileSize.X / 4;
@@ -212,19 +214,45 @@ namespace Meridian2 {
             _ground = _game.Content.Load<Texture2D>("Sprites/ground");
             
             _rockTextures = new List<Texture2D> {
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1b"), // 1
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1r"), // 2
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1f"), // 3 
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1l"), // 4
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2lf"), // 5
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2rf"), // 6 
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2rb"), // 7
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2lb"), // 8
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3b"), // 9
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3r"), // 10
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3f"), // 11
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3l"), // 12
-                _game.Content.Load<Texture2D>("Sprites/Rock/wall_4") // 13
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1b"), // 0
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1r"), // 1
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1f"), // 2 
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_1l"), // 3
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2lf"), // 4
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2rf"), // 5 
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2rb"), // 6
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_2lb"), // 7
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3b"), // 8
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3r"), // 9
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3f"), // 10
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_3l"), // 11
+                _game.Content.Load<Texture2D>("Sprites/Rock/wall_4") // 12
+            };
+
+            _wallTextures = new List<Texture2D>
+            {
+                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_01"), //0
+                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_02"), //1
+                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_03"), //2
+                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_04"), //3
+                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_05"), //4
+                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_06") //5
+            };
+
+            _wallTextures = new List<Texture2D>
+            {
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_1b"), //0
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_1f"), //1
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_1l"), //2
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_1r"), //3
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_2lb"), //4
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_2lf"), //5
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_2rb"), //6
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_3l"), //7
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_3f"), //8
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_3r"), //9
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_3b"), //10
+                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_4") //11
             };
         }
 
@@ -242,10 +270,12 @@ namespace Meridian2 {
 
             int addonTiles = 4;
 
-            int xMin = ScreenToMap(new(0, 0)).X - addonTiles;
-            int xMax = ScreenToMap(new(h, w)).X + addonTiles;
-            int yMin = ScreenToMap(new(w, 0)).Y - addonTiles;
-            int yMax = ScreenToMap(new(0, h)).Y + addonTiles;
+            int xMin = ScreenToMap(new(0 - addonTiles, 0 - addonTiles)).X;
+            int xMax = ScreenToMap(new(h + addonTiles, w + addonTiles)).X;
+            int yMin = ScreenToMap(new(w - addonTiles, 0 - addonTiles)).Y;
+            int yMax = ScreenToMap(new(0 + addonTiles, h + addonTiles)).Y;
+
+            Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
 
             /*
             xMin = (xMin < 0) ? 0 : xMin;
@@ -256,14 +286,14 @@ namespace Meridian2 {
 
             foreach(Room r in roomList)
             {
-                //if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
-                    //continue;
+                if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
+                    continue;
 
                 foreach (Tile t in r.tileMap)
                 {
 
                     //Only draw what is on the screen, NOT WORKING
-                    //if (t.x < xMin || t.x > xMax || t.y < yMin || t.y > yMax) continue;
+                    //if (t.x + r.posX < xMin || t.x + r.posX > xMax || t.y + r.posY < yMin || t.y + r.posY > yMax) continue;
 
                     Point screenPos = MapToScreen(new(t.x + r.posX, t.y + r.posY));
                     Vector2 pos = MapToWorld(new(t.x + r.posX, t.y + r.posY));

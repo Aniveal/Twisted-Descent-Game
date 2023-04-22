@@ -15,7 +15,6 @@ public class GameScreen : Screen {
     public RopeGame Game;
     private SpriteBatch _batch;
     public World World;
-    public Camera Camera;
     private double _fixedTickAccumulator;
     private const float _fixedTimeStep = 1 / 60f;
 

@@ -19,7 +19,6 @@ namespace Meridian2
         public RopeGame Game;
         private SpriteBatch _batch;
         public World World;
-        public Camera Camera;
         public ColumnsManager columnsManager;
 
         float camMovementSpeed = 200;

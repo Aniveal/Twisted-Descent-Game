@@ -17,13 +17,14 @@ public class RopeGame : Game {
     public SpriteFont Font;
     public Texture2D ColumnTexture;
     public Texture2D rectangleTexture;
+    public Camera Camera;
 
     public SoundEngine soundEngine;
 
     public GameScreen _gameScreen;
     private MapScreen _mapScreen;
 
-    private Screen currentScreen;
+    public Screen currentScreen;
 
     public GameData gameData;
     private State _currentState;

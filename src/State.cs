@@ -4,6 +4,7 @@ namespace Meridian2;
 
 public abstract class Screen {
     private RopeGame game;
+    public Camera Camera;
 
     public Screen(RopeGame game) {
         this.game = game;
