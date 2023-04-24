@@ -52,7 +52,7 @@ namespace Meridian2
             this.posY = y;
             tileMap = new Tile[sizeX, sizeY];
             this.rs = rs;
-            nInnerOpenings = (int)Math.Sqrt(sizeX * sizeY) / 2;
+            nInnerOpenings = (int)Math.Sqrt(sizeX * sizeY) / 4;
             initializeTileMap();
         }
 

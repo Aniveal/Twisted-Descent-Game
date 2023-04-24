@@ -45,6 +45,7 @@ namespace Meridian2
             List<List<Prototype>> allPrototypes = new List<List<Prototype>>();
             allPrototypes.Add(mg.rockPrototypes);
             allPrototypes.Add(mg.wallPrototypes);
+            allPrototypes.Add(mg.cliffPrototypes);
 
             RoomSettings standardRoomSettings = new RoomSettings("RockRoom", allPrototypes);
 

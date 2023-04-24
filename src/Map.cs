@@ -270,7 +270,7 @@ namespace Meridian2 {
                     //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
                     Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y - map_scaling * 3f, 2 * map_scaling, 2 * map_scaling);
                     //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
-                    batch.Draw(_ground, tilePos, Color.White);
+                    //batch.Draw(_ground, tilePos, Color.White);
 
                     if (t.finalPrototype != null)
                     {

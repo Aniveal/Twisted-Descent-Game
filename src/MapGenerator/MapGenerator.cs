@@ -132,10 +132,10 @@ namespace Meridian2
             rockPrototypes.Add(new Prototype(rockTextures[2], "Wall1lu", new int[] { 2, 0, 1, 0 }, 1,false));
             rockPrototypes.Add(new Prototype(rockTextures[3], "Wall1ld", new int[] { 0, 2, 2, 0 }, 1, false));
 
-            rockPrototypes.Add(new Prototype(rockTextures[4], "Wall2l", new int[] { 2, 2, 3, 0 }, 1, false));
-            rockPrototypes.Add(new Prototype(rockTextures[5], "Wall2u", new int[] { 3, 0, 1, 1 }, 1, false));
-            rockPrototypes.Add(new Prototype(rockTextures[6], "Wall2r", new int[] { 1, 1, 0, 3 },1, false));
-            rockPrototypes.Add(new Prototype(rockTextures[7], "Wall2d", new int[] { 0, 3, 2, 2 }, 1, false));
+            rockPrototypes.Add(new Prototype(rockTextures[4], "Wall2l", new int[] { 2, 2, 3, 0 }, 5, false));
+            rockPrototypes.Add(new Prototype(rockTextures[5], "Wall2u", new int[] { 3, 0, 1, 1 }, 5, false));
+            rockPrototypes.Add(new Prototype(rockTextures[6], "Wall2r", new int[] { 1, 1, 0, 3 }, 5, false));
+            rockPrototypes.Add(new Prototype(rockTextures[7], "Wall2d", new int[] { 0, 3, 2, 2 }, 5, false));
             rockPrototypes.Add(new Prototype(rockTextures[8], "Wall3ul", new int[] { 1, 3, 2, 3 }, 1, false));
             rockPrototypes.Add(new Prototype(rockTextures[11], "Wall3ur", new int[] { 2, 3, 3, 2 }, 1, false));
             rockPrototypes.Add(new Prototype(rockTextures[9], "Wall3dl", new int[] { 3, 1, 1, 3 }, 1, false));
@@ -192,15 +192,21 @@ namespace Meridian2
                 rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_4") //12
             };
 
+            //Create prototypes for each texture; Look from bottom or from right side!!!
             //New slots: 6: cliff left, ground right    7: cliff right, ground left        8: full Cliff
-            cliffPrototypes.Add(new Prototype(cliffTextures[0], "Cliff_1rd", new int[] { 0, 7, 0, 6 }, 5, false));
-            cliffPrototypes.Add(new Prototype(cliffTextures[1], "Cliff_1ul", new int[] { 7, 0, 7, 0 }, 5, false));
-            cliffPrototypes.Add(new Prototype(cliffTextures[2], "Cliff_1dl", new int[] { 0, 6, 7, 0 }, 5, false));
-            cliffPrototypes.Add(new Prototype(cliffTextures[3], "Cliff_1dr", new int[] { 6, 0, 0, 7 }, 5, false));
-            cliffPrototypes.Add(new Prototype(cliffTextures[4], "Cliff_2d", new int[] { 8, 0, 7, 6 }, 5, false));
-            cliffPrototypes.Add(new Prototype(cliffTextures[5], "Cliff_2l", new int[] { 7, 6, 0, 8 }, 5, false));
-            cliffPrototypes.Add(new Prototype(cliffTextures[6], "Cliff_2r", new int[] { 6, 7, 8, 0 }, 5, false));
-            cliffPrototypes.Add(new Prototype(cliffTextures[7], "Cliff_1rd", new int[] { 0, 7, 0, 6 }, 5, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[0], "Cliff_1rd", new int[] { 8, 6, 8, 7 }, 2000, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[1], "Cliff_1ul", new int[] { 7, 8, 6, 8 }, 2000, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[2], "Cliff_1dl", new int[] { 8, 7, 7, 8 }, 2000, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[3], "Cliff_1dr", new int[] { 6, 8, 8, 6 }, 2000, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[4], "Cliff_2u", new int[] { 8, 0, 7, 7 }, 2000, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[5], "Cliff_2r", new int[] { 7, 7, 0, 8 }, 2000, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[6], "Cliff_2l", new int[] { 6, 6, 8, 0 }, 2000, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[7], "Cliff_2d", new int[] { 0, 8, 7, 7 }, 2000, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[8], "Cliff_3ur", new int[] { 7, 0, 0, 7 }, 500, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[9], "Cliff_3dr", new int[] { 0, 7, 0, 6 }, 500, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[10], "Cliff_3dl", new int[] { 0, 6, 6, 0 }, 500, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[11], "Cliff_3ul", new int[] { 6, 0, 7, 0 }, 500, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[12], "FullCliff", new int[] { 8, 8, 8, 8 }, 40000, false));
 
 
 
