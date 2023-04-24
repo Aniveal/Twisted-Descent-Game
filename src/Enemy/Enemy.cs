@@ -42,6 +42,7 @@ namespace Meridian2.Enemy
         public int crushed = 0;
         private const int crushDuration = 16;
         private const int crushThreshold = 4;
+        private const float wallKillVelocity = 1f;
 
         public Enemy(RopeGame game, World world, Player player)
         { 
@@ -106,7 +107,13 @@ namespace Meridian2.Enemy
                     _game.gameData.score += 1000;
                     Electrify();
                 }
-                
+            }
+
+            if (collider.Tag is Tile) {
+                Vector2 v = Body.LinearVelocity;
+                if (v.Length() > wallKillVelocity) {
+                    Kill();
+                }
             }
 
             return true;
