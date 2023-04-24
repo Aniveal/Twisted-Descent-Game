@@ -153,6 +153,7 @@ namespace Meridian2
                 rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_05"), //4
                 rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_06") //5
             };
+
             //New slots: 5: Rock Wall
             wallPrototypes.Add(new Prototype(wallTextures[0], "RockWall_ud", new int[] { 5, 5, 0, 0 }, 30, false)); //base
             wallPrototypes.Add(new Prototype(wallTextures[0], "RockWall_ud", new int[] { 5, 0, 0, 0 }, 5, false)); //end piece
@@ -173,11 +174,8 @@ namespace Meridian2
             wallPrototypes.Add(new Prototype(wallTextures[5], "RockWall_dr", new int[] { 0, 0, 0, 5 }, 5, false));
             wallPrototypes.Add(new Prototype(wallTextures[5], "RockWall_dr", new int[] { 0, 5, 0, 0 }, 5, false));
 
-
-
-
-
-            wallTextures = new List<Texture2D>
+            
+            cliffTextures = new List<Texture2D>
             {
                 rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_1b"), //0
                 rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_1f"), //1
@@ -186,12 +184,27 @@ namespace Meridian2
                 rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_2lb"), //4
                 rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_2lf"), //5
                 rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_2rb"), //6
-                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3l"), //7
-                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3f"), //8
-                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3r"), //9
-                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3b"), //10
-                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_4") //11
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_2rf"), //7
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3l"), //8
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3f"), //9
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3r"), //10
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3b"), //11
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_4") //12
             };
+
+            //New slots: 6: cliff left, ground right    7: cliff right, ground left        8: full Cliff
+            cliffPrototypes.Add(new Prototype(cliffTextures[0], "Cliff_1rd", new int[] { 0, 7, 0, 6 }, 5, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[1], "Cliff_1ul", new int[] { 7, 0, 7, 0 }, 5, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[2], "Cliff_1dl", new int[] { 0, 6, 7, 0 }, 5, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[3], "Cliff_1dr", new int[] { 6, 0, 0, 7 }, 5, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[4], "Cliff_2d", new int[] { 8, 0, 7, 6 }, 5, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[5], "Cliff_2l", new int[] { 7, 6, 0, 8 }, 5, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[6], "Cliff_2r", new int[] { 6, 7, 8, 0 }, 5, false));
+            cliffPrototypes.Add(new Prototype(cliffTextures[7], "Cliff_1rd", new int[] { 0, 7, 0, 6 }, 5, false));
+
+
+
+
         }
 
     }

@@ -251,13 +251,6 @@ namespace Meridian2 {
 
             Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
 
-            /*
-            xMin = (xMin < 0) ? 0 : xMin;
-            xMax = (xMax >= TileMap.GetLength(0)) ? TileMap.GetLength(0) - 1 : xMax;
-            yMin = (yMin < 0) ? 0 : yMin;
-            yMax = (yMax >= TileMap.GetLength(1)) ? TileMap.GetLength(0) - 1 : yMax;
-            */
-
             foreach(Room r in roomList)
             {
                 //if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
