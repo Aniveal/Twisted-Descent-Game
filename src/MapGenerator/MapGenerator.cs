@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using System.Xml.Linq;
 
 namespace Meridian2
 {
@@ -29,8 +30,15 @@ namespace Meridian2
         //All rock textures
         private List<Texture2D> rockTextures;
 
+        private List<Texture2D> wallTextures;
+
+        private List<Texture2D> cliffTextures;
+
         //The list of all possible prototypes we want to use in the map generation
         public List<Prototype> rockPrototypes = new List<Prototype>();
+
+        public List<Prototype> wallPrototypes = new List<Prototype>();
+        public List<Prototype> cliffPrototypes = new List<Prototype>();
 
         public MapGenerator(RopeGame ropeGame)
         {
@@ -59,7 +67,7 @@ namespace Meridian2
         //Creates a map with 3 rooms
         public bool hardcodedMap()
         {
-            RoomSettings rs = new RoomSettings("StarterRoom", rockPrototypes);
+            RoomSettings rs = new RoomSettings("StarterRoom", new List<List<Prototype>>() { rockPrototypes });
             Room r1 = new Room(this, rs, 0, -3, 10, 10, 0); //(-5, -5), (5, 5)
             Room r2 = new Room(this, rs, 10, -3, 20, 15, 1);  //(5, -5), (15, 10)
             Room r3 = new Room(this, rs, -30, 7, 40, 50, 2);   //(-5, 5), (2, 55)
@@ -134,7 +142,56 @@ namespace Meridian2
             rockPrototypes.Add(new Prototype(rockTextures[10], "Wall3dr", new int[] { 3, 2, 3, 1 }, 1, false));
             rockPrototypes.Add(new Prototype(rockTextures[12], "FullWall", new int[] { 3, 3, 3, 3 }, 100, false));
 
-            rockPrototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 300, true));
+            rockPrototypes.Add(new Prototype(ground, "ground", new int[] { 0, 0, 0, 0 }, 600, true));
+
+            wallTextures = new List<Texture2D>
+            {
+                rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_01"), //0
+                rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_02"), //1
+                rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_03"), //2
+                rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_04"), //3
+                rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_05"), //4
+                rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_06") //5
+            };
+            //New slots: 5: Rock Wall
+            wallPrototypes.Add(new Prototype(wallTextures[0], "RockWall_ud", new int[] { 5, 5, 0, 0 }, 30, false)); //base
+            wallPrototypes.Add(new Prototype(wallTextures[0], "RockWall_ud", new int[] { 5, 0, 0, 0 }, 5, false)); //end piece
+            wallPrototypes.Add(new Prototype(wallTextures[0], "RockWall_ud", new int[] { 0, 5, 0, 0 }, 5, false)); //end piece
+            wallPrototypes.Add(new Prototype(wallTextures[1], "RockWall_lr", new int[] { 0, 0, 5, 5 }, 30, false)); //base
+            wallPrototypes.Add(new Prototype(wallTextures[1], "RockWall_lr", new int[] { 0, 0, 0, 5 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[1], "RockWall_lr", new int[] { 0, 0, 5, 0 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[2], "RockWall_ur", new int[] { 5, 0, 0, 5 }, 30, false)); //base
+            wallPrototypes.Add(new Prototype(wallTextures[2], "RockWall_ur", new int[] { 5, 0, 0, 0 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[2], "RockWall_ur", new int[] { 0, 0, 0, 5 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[3], "RockWall_bl", new int[] { 0, 5, 5, 0 }, 30, false)); //base
+            wallPrototypes.Add(new Prototype(wallTextures[3], "RockWall_bl", new int[] { 0, 0, 5, 0 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[3], "RockWall_bl", new int[] { 0, 5, 0, 0 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[4], "RockWall_ul", new int[] { 5, 0, 5, 0 }, 30, false)); //base
+            wallPrototypes.Add(new Prototype(wallTextures[4], "RockWall_ul", new int[] { 0, 0, 5, 0 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[4], "RockWall_ul", new int[] { 5, 0, 0, 0 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[5], "RockWall_dr", new int[] { 0, 5, 0, 5 }, 30, false));
+            wallPrototypes.Add(new Prototype(wallTextures[5], "RockWall_dr", new int[] { 0, 0, 0, 5 }, 5, false));
+            wallPrototypes.Add(new Prototype(wallTextures[5], "RockWall_dr", new int[] { 0, 5, 0, 0 }, 5, false));
+
+
+
+
+
+            wallTextures = new List<Texture2D>
+            {
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_1b"), //0
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_1f"), //1
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_1l"), //2
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_1r"), //3
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_2lb"), //4
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_2lf"), //5
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_2rb"), //6
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3l"), //7
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3f"), //8
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3r"), //9
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_3b"), //10
+                rg.Content.Load<Texture2D>("Sprites/Cliff/cliff_4") //11
+            };
         }
 
     }
