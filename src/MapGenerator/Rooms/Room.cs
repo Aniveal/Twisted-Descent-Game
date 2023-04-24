@@ -13,6 +13,8 @@ namespace Meridian2
         //The settings for this room
         protected RoomSettings rs;
 
+        public int nInnerOpenings;
+
         public int index;
 
         //Tile size of the room
@@ -50,6 +52,7 @@ namespace Meridian2
             this.posY = y;
             tileMap = new Tile[sizeX, sizeY];
             this.rs = rs;
+            nInnerOpenings = (int)Math.Sqrt(sizeX * sizeY) / 2;
             initializeTileMap();
         }
 
@@ -57,6 +60,7 @@ namespace Meridian2
         public void generateRoom()
         {
             createBorder();
+            addMoreFloor();
             connectOpenings();
             runWaveFunctionCollapse();
             
@@ -66,7 +70,6 @@ namespace Meridian2
         public void innerOpening(int x, int y)
         {
             openings.Add(new Vector2(x, y));
-
         }
 
         public void placeColumns(int n)
@@ -152,6 +155,14 @@ namespace Meridian2
                 }
             }
             initialized = true;
+        }
+
+        private void addMoreFloor()
+        {
+            for(int i = 0; i < nInnerOpenings; i++)
+            {
+                innerOpening(RNGsus.Instance.Next(sizeX - 4) + 2, RNGsus.Instance.Next(sizeY - 4) + 2);
+            }
         }
 
         //Creates an opening to another room at x, y with length l. l goes from x,y into the positive direction. Has to be at least 3
@@ -248,7 +259,7 @@ namespace Meridian2
                 }
                 
                 //opening on top or bottom
-                if (y <= 1 || y >= (sizeX - 2))
+                if (y <= 1 || y >= (sizeY - 2))
                 {
                     //First, do one step towards the middle
                     while (y <= 1)

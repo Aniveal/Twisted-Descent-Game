@@ -21,7 +21,9 @@ namespace Meridian2
 
         private MapGenerator mg;
 
-        const int minRoomSize = 7;
+        const int minRoomSize = 15;
+
+        List<RoomSettings> roomTypes = new List<RoomSettings>();
 
         public DungeonGraph(MapGenerator mg)
         {
@@ -40,10 +42,14 @@ namespace Meridian2
         {
             occupationMap = new int[maxSize, maxSize];
 
-            RoomSettings standardRoomSettings = new RoomSettings("Standard Room", mg.rockPrototypes);
+            List<List<Prototype>> allPrototypes = new List<List<Prototype>>();
+            allPrototypes.Add(mg.rockPrototypes);
+            allPrototypes.Add(mg.wallPrototypes);
+
+            RoomSettings standardRoomSettings = new RoomSettings("RockRoom", allPrototypes);
 
             //Place random first room
-            Room startRoom = createStartRoom(maxSize, maxRoomSize);
+            Room startRoom = createStartRoom(minRoomSize + 2);
             occupy(startRoom);
             rooms.Add(startRoom);
 
@@ -374,10 +380,10 @@ namespace Meridian2
             }
         }
 
-        public Room createStartRoom(int maxSize, int maxRoomSize)
+        public Room createStartRoom(int maxRoomSize)
         {
             //Settings of the start room
-            RoomSettings startRoomSettings = new RoomSettings("StartRoom", mg.rockPrototypes);
+            RoomSettings startRoomSettings = new RoomSettings("StartRoom", new List<List<Prototype>> () { mg.rockPrototypes });
 
             int x = 0;
             int y = 0;

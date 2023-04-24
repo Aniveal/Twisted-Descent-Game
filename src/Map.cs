@@ -154,7 +154,7 @@ namespace Meridian2 {
 
 
             //mapGenerator.hardcodedMap();
-            mapGenerator.createProceduralMap(100, 40);
+            mapGenerator.createProceduralMap(100, 60);
 
             roomList = mapGenerator.roomList;
 
@@ -228,32 +228,6 @@ namespace Meridian2 {
                 _game.Content.Load<Texture2D>("Sprites/Rock/wall_3l"), // 11
                 _game.Content.Load<Texture2D>("Sprites/Rock/wall_4") // 12
             };
-
-            _wallTextures = new List<Texture2D>
-            {
-                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_01"), //0
-                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_02"), //1
-                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_03"), //2
-                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_04"), //3
-                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_05"), //4
-                _game.Content.Load<Texture2D>("Sprites/Wall/rockwall_06") //5
-            };
-
-            _wallTextures = new List<Texture2D>
-            {
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_1b"), //0
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_1f"), //1
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_1l"), //2
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_1r"), //3
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_2lb"), //4
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_2lf"), //5
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_2rb"), //6
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_3l"), //7
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_3f"), //8
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_3r"), //9
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_3b"), //10
-                _game.Content.Load<Texture2D>("Sprites/Cliff/cliff_4") //11
-            };
         }
 
         public override void Update(GameTime gameTime) {
@@ -286,8 +260,8 @@ namespace Meridian2 {
 
             foreach(Room r in roomList)
             {
-                if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
-                    continue;
+                //if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
+                    //continue;
 
                 foreach (Tile t in r.tileMap)
                 {

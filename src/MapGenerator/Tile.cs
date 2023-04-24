@@ -47,7 +47,7 @@ namespace Meridian2
             this.parentRoom = parentRoom;
         }
 
-        public void makeWalkable()
+        public bool makeWalkable()
         {
             List<Prototype> protList = new List<Prototype>();
 
@@ -57,8 +57,12 @@ namespace Meridian2
                     protList.Add(p);
             }
 
+            if (protList.Count() == 0)
+                return false;
+
             setFinalPrototype(protList[RNGsus.Instance.Next(protList.Count)]);
-            parentRoom.collapseTile(this); 
+            parentRoom.collapseTile(this);
+            return true;
         }
 
         public void removePrototype(string name)
@@ -101,10 +105,18 @@ namespace Meridian2
                     //Add all possible neighbour prototypes
                     switch (dir)
                     {
-                        case "up": if(thisPrototype.sockets[0] == otherPrototype.sockets[1]) protList.Add(thisPrototype); break;
-                        case "down": if (thisPrototype.sockets[1] == otherPrototype.sockets[0]) protList.Add(thisPrototype); break;
-                        case "left": if (thisPrototype.sockets[2] == otherPrototype.sockets[3]) protList.Add(thisPrototype); break;
-                        case "right": if (thisPrototype.sockets[3] == otherPrototype.sockets[2]) protList.Add(thisPrototype); break;
+                        case "up": if(thisPrototype.sockets[0] == -1 || 
+                                    otherPrototype.sockets[1] == -1 || 
+                                    thisPrototype.sockets[0] == otherPrototype.sockets[1]) protList.Add(thisPrototype); break;
+                        case "down": if (thisPrototype.sockets[1] == -1 ||
+                                    otherPrototype.sockets[0] == -1 || 
+                                    thisPrototype.sockets[1] == otherPrototype.sockets[0]) protList.Add(thisPrototype); break;
+                        case "left": if (thisPrototype.sockets[2] == -1 ||
+                                    otherPrototype.sockets[3] == -1 || 
+                                    thisPrototype.sockets[2] == otherPrototype.sockets[3]) protList.Add(thisPrototype); break;
+                        case "right": if (thisPrototype.sockets[2] == -1 ||
+                                    otherPrototype.sockets[3] == -1 || 
+                                    thisPrototype.sockets[3] == otherPrototype.sockets[2]) protList.Add(thisPrototype); break;
                         default: break;
                     }
                 }

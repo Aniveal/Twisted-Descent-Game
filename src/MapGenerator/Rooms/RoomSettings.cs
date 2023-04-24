@@ -20,11 +20,15 @@ namespace Meridian2
         public List<Tile> tiles;
 
         //What prototypes can be used, eg the biome
-        public List<Prototype> possiblePrototypes;
+        public List<Prototype> possiblePrototypes = new List<Prototype>();
 
-        public RoomSettings(string name, List<Prototype> protList, float walkablePercentage = 0.7f, List<Tile> tiles = null) {
+        public RoomSettings(string name, List<List<Prototype>> protLists, float walkablePercentage = 0.7f, List<Tile> tiles = null) {
             this.name = name;
-            this.possiblePrototypes = protList;
+            foreach(List<Prototype> prot in protLists)
+            {
+                foreach(Prototype p in prot)
+                    possiblePrototypes.Add(p);
+            }
             this.walkablePercentage = walkablePercentage;
             this.tiles = tiles;
         }
