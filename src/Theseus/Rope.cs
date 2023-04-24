@@ -230,8 +230,6 @@ public class Rope : DrawableGameElement
         
         RopeSegment prev = segment.previous;
         RopeSegment next = segment.next;
-        prev.next = next;
-        next.previous = prev;
         _segments.Remove(segment);
         segment.Destroy();
         var joint = JointFactory.CreateDistanceJoint(_world, prev.Body, next.Body, new Vector2(TextureWidth / 2, TextureHeight),
@@ -252,8 +250,6 @@ public class Rope : DrawableGameElement
 
         RopeSegment prev = segment.previous;
         RopeSegment next = segment.next;
-        prev.next = next;
-        next.previous = prev;
         _segments.RemoveAt(index);
         segment.Destroy();
         var joint = JointFactory.CreateDistanceJoint(_world, prev.Body, next.Body, new Vector2(TextureWidth / 2, TextureHeight),

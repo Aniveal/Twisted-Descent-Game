@@ -120,7 +120,30 @@ public class RopeSegment : DrawableGameElement
     }
 
     public void Destroy() {
+        if (previous == null | next == null ) {
+            return; //cannot destroy frist/last segment
+        }
+        previous.next = next;
+        next.previous = previous;
         _world.Remove(Body);
+        if (elecIntensity > 0) {
+            if (isElecSrc) {
+                if (next.isElecSrc) {
+                    previous.Electrify(next, next.elecIntensity, false);
+                } else if (previous.isElecSrc) {
+                    previous.Electrify(previous, previous.elecIntensity, true);
+                } else {
+                    previous.DeElectrify(false);
+                    next.DeElectrify(true);
+                }
+            } else {
+                if (next.elecIntensity > previous.elecIntensity) {
+                    previous.Electrify(next.elecSrcSegment, next.elecIntensity-1, false);
+                } else if (next.elecIntensity < previous.elecIntensity) {
+                    next.Electrify(previous.elecSrcSegment, previous.elecIntensity - 1, true);
+                }
+            }
+        }
         //TODO: update electrification of neighbors
         //TODO: there probably is something else to do to destroy this object
     }
@@ -128,6 +151,9 @@ public class RopeSegment : DrawableGameElement
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         Color ropeColor = Color.White;
         if (elecIntensity > 0) {
+            ropeColor = Color.Blue;
+        }
+        if (isElecSrc) {
             ropeColor = Color.Black;
         }
 

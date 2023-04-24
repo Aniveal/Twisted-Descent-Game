@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -25,7 +26,7 @@ namespace Meridian2.Enemy
         private Texture2D running_f;
         private Texture2D running_b;
         private readonly Point _enemySize = new(1, 2);
-        private float EnemyForce = 0.005f;
+        private float EnemyForce = 0.001f;
         private int _difficultyLevel;
         private float FollowDistance = 3f;
         private float AngerDistance = 6f;
@@ -36,6 +37,12 @@ namespace Meridian2.Enemy
         private bool isWalking = false;
         public bool isAlive = true;
         private Vector2 input = Vector2.Zero;
+        public int collidingSegments = 0;
+        public int colliding;
+        public int crushed = 0;
+        private const int crushDuration = 16;
+        private const int crushThreshold = 4;
+        private const float wallKillVelocity = 1f;
 
         public Enemy(RopeGame game, World world, Player player)
         { 
@@ -52,6 +59,7 @@ namespace Meridian2.Enemy
             Body.LinearDamping = 0.5f;
             Body.Tag = this;
             Body.OnCollision += OnCollision;
+            Body.OnSeparation += OnSeparation;
             _difficultyLevel = difficultyLevel;
         }
 
@@ -65,8 +73,12 @@ namespace Meridian2.Enemy
         }
 
         public void Electrify() {
-            isAlive = false;
+            Kill();
             //TODO: play animation (change color to yellow?), take damage
+        }
+
+        public void Kill() {
+            isAlive = false;
         }
 
         protected bool OnCollision(Fixture sender, Fixture other, Contact contact) {
@@ -90,14 +102,30 @@ namespace Meridian2.Enemy
             }
             // If colliding with rope, and rope electrified
             if (collider.Tag is RopeSegment) {
+                collidingSegments++;
                 if (((RopeSegment) collider.Tag).elecIntensity > 0) {
                     _game.gameData.score += 1000;
                     Electrify();
                 }
-                
+            }
+
+            if (collider.Tag is Tile) {
+                Vector2 v = Body.LinearVelocity;
+                if (v.Length() > wallKillVelocity) {
+                    Kill();
+                }
             }
 
             return true;
+        }
+
+        protected void OnSeparation(Fixture sender, Fixture other, Contact contact) {
+            Body collider = sender.Body.Tag == this ? other.Body : sender.Body;
+
+            
+            if (collider.Tag is RopeSegment) {
+                collidingSegments--;
+            }
         }
 
         //DO NOT CALL DURING ONCOLLISION!!!
@@ -108,6 +136,15 @@ namespace Meridian2.Enemy
 
         public override void Update(GameTime gameTime)
         {
+            if (collidingSegments > crushThreshold) {
+                crushed++;
+                if (crushed > crushDuration) {
+                    Kill();
+                }
+            } else {
+                crushed = 0;
+            }
+
             input = Vector2.Zero;
             isWalking = false;
             if(_difficultyLevel == 0) // enemies does not move

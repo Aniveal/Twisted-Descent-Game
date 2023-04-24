@@ -144,6 +144,9 @@ namespace Meridian2 {
                 default:
                     break;
             }
+            if (tile.body != null) {
+                tile.body.Tag = tile;
+            }
         }
 
         public void Initialize() 

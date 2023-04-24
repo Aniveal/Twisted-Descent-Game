@@ -6,6 +6,7 @@ namespace Meridian2 {
     public class Camera {
         private readonly GraphicsDevice _graphicsDevice;
         private float _scale;
+        private float _inverseScale; //let's multiply instead of dividing
         private Vector2 _position;
 
         // private readonly Matrix IsometricToEuclidean = Matrix.CreateRotationX((float)-Math.PI / 4) *
@@ -15,6 +16,7 @@ namespace Meridian2 {
         public Camera(GraphicsDevice graphicsDevice) {
             _graphicsDevice = graphicsDevice;
             _scale = 60.0f;
+            _inverseScale = 1 / _scale;
             _position = Vector2.Zero;
         }
 
@@ -72,9 +74,16 @@ namespace Meridian2 {
         /// <param name="v">The world coordinates</param>
         /// <returns>The screen coordinates corresponding to the given world coordinates</returns>
         public Vector2 getScreenPoint(Vector2 v) {
-            v.X = (v.X - _position.X) * _scale + _graphicsDevice.Viewport.Width / 2;
-            v.Y = (v.Y - _position.Y) * _scale / 2 + _graphicsDevice.Viewport.Height / 2;
+            v.X = (v.X - _position.X) * _scale + _graphicsDevice.Viewport.Width * 0.5f;
+            v.Y = (v.Y - _position.Y) * _scale * 0.5f + _graphicsDevice.Viewport.Height * 0.5f;
             return v;
+        }
+
+        public Vector2 getWorldPixel(Vector2 p) {
+            Vector2 r = new Vector2();
+            r.X = (p.X - _graphicsDevice.Viewport.Width * 0.5f) * _inverseScale + _position.X;
+            r.Y = (p.Y - _graphicsDevice.Viewport.Height * 0.5f) * _inverseScale * 2 - _position.Y;
+            return r;
         }
 
 
