@@ -26,6 +26,7 @@ namespace Meridian2
         public string name;
 
         public bool walkable;
+        public bool isCliff;
 
         //The higher, the more likely this prototype is picked
         public int weight;
@@ -34,13 +35,14 @@ namespace Meridian2
         public readonly Texture2D texture;
 
 
-        public Prototype(Texture2D t, string n, int[] sockets, int w, bool wal)
+        public Prototype(Texture2D t, string n, int[] sockets, int w, bool wal, bool isCliff = false)
         {
             texture = t;
             name = n;
             this.sockets = sockets;
             weight = w;
             walkable = wal;
+            this.isCliff = isCliff;
 
         }
 

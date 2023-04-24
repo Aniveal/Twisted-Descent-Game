@@ -265,15 +265,27 @@ namespace Meridian2 {
                     //Only draw what is on the screen, NOT WORKING
                     //if (t.x + r.posX < xMin || t.x + r.posX > xMax || t.y + r.posY < yMin || t.y + r.posY > yMax) continue;
 
-                    Point screenPos = MapToScreen(new(t.x + r.posX, t.y + r.posY));
-                    Vector2 pos = MapToWorld(new(t.x + r.posX, t.y + r.posY));
+                    Point screenPos;
+                    Vector2 pos;
                     //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
-                    Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y - map_scaling * 3f, 2 * map_scaling, 2 * map_scaling);
+                    
                     //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
                     //batch.Draw(_ground, tilePos, Color.White);
 
                     if (t.finalPrototype != null)
                     {
+                        if(t.finalPrototype.isCliff)
+                        {
+                            screenPos = MapToScreen(new(t.x + 1 + r.posX, t.y + 1 + r.posY));
+                            pos = MapToWorld(new(t.x + 1 + r.posX, t.y + 1 + r.posY));
+                        }
+                        else
+                        {
+                            screenPos = MapToScreen(new(t.x + r.posX, t.y + r.posY));
+                            pos = MapToWorld(new(t.x + r.posX, t.y + r.posY));
+                        }
+
+                        Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y - map_scaling * 3f, 2 * map_scaling, 2 * map_scaling);
                         c++;
                         batch.Draw(t.finalPrototype.texture, tilePos, Color.White);
                     }
