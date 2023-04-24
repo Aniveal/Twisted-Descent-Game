@@ -102,7 +102,8 @@ public class RopeGame : Game {
     }
 
     protected override void Draw(GameTime gameTime) {
-        Color background_color = new Color(82,84,81);
+        //Color background_color = new Color(82,84,81);
+        Color background_color = new Color(33, 34, 34);
         GraphicsDevice.Clear(background_color);
 
         if (_state == 0)
