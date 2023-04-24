@@ -14,8 +14,8 @@ namespace Meridian2.Treasures {
         protected World _world;
         protected Texture2D textureClosed;
         protected Texture2D textureOpen;
-        protected int width = 2; //default width
-        protected int height = 1; //default height
+        protected int width = 2; //default width, sprite size hardcoded based on this
+        protected int height = 1; //default height, sprite size hardcoded based on this
         public Vector2 pos;
 
         public bool open = false;
@@ -59,7 +59,7 @@ namespace Meridian2.Treasures {
         public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             Rectangle dstRec = new Rectangle();
-            dstRec = camera.getScreenRectangle(pos.X - width, pos.Y - height, width, height);
+            dstRec = camera.getScreenRectangle(pos.X - 0.7071f, pos.Y - 1.4142f, 2.1213f, 1.0607f);
             if (open) {
                 batch.Draw(textureOpen, dstRec, Color.White);
             } else {
