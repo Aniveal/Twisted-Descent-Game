@@ -19,7 +19,7 @@ namespace Meridian2.Columns
 
         }
 
-        public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
+        public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
             Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
             if (_broken)
@@ -31,11 +31,6 @@ namespace Meridian2.Columns
             {
                 batch.Draw(_columnTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             }
-        }
-
-        public override void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
-        {
-            //TODO: update once sprites are available
         }
 
         public void Break()

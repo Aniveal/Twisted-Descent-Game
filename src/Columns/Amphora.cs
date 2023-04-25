@@ -5,7 +5,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Columns;
 
-public class Amphora : TwoPhaseGameElement
+public class Amphora : DrawableGameElement
 {
     private World _world;
     private RopeGame _game;
@@ -26,23 +26,17 @@ public class Amphora : TwoPhaseGameElement
         Initialize();
     }
 
-    public override void Initialize()
+    public void Initialize()
     {
         _body = _world.CreateCircle(_radius, Density, _position, BodyType.Dynamic);
         _body.FixedRotation = true;
         _body.LinearDamping = 0.1f;
 
-        base.Initialize();
     }
 
-    public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
+    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
     {
         Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - _radius, _body.Position.Y - _radius, _radius * 2, _radius*2, true);
         batch.Draw(_game.ColumnTexture, dstRec, Color.Red);
-    }
-
-    public override void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
-    {
-        //TODO: update once sprites are available
     }
 }

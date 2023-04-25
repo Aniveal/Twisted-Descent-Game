@@ -10,7 +10,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Columns
 {
-    public class Column : TwoPhaseGameElement
+    public class Column : DrawableGameElement
     {
         protected RopeGame _game;
         protected World _world;
@@ -46,26 +46,16 @@ namespace Meridian2.Columns
             Body = _world.CreateCircle(_radius, 0, _center, BodyType.Static);
         }
 
-        public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
+        public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
         {
-            // sprite is double the width of the columns
             if (multiTexture) {
                 Rectangle dstRec = camera.getSpriteRectangle(_center.X - 2*_radius, _center.Y + _radius, _radius * 4, _radius * 8);
                 batch.Draw(_lowerTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
+                batch.Draw(_upperTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             } else {
                 Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
                 batch.Draw(_columnTexture, dstRec, null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             }
-            
-        }
-
-        public override void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
-        {
-            if (multiTexture) {
-                Rectangle dstRec = camera.getSpriteRectangle(_center.X - 2*_radius, _center.Y + _radius, _radius * 4, _radius * 8);
-                batch.Draw(_upperTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
-            }
-            //TODO: update once sprites are available
         }
     }
 }

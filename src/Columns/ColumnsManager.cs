@@ -17,43 +17,34 @@ namespace Meridian2.Columns
      */
     public class ColumnsManager
     {
-        private List<TwoPhaseGameElement> columns;
+        private List<DrawableGameElement> columns;
 
         public ColumnsManager()
         {
-            columns = new List<TwoPhaseGameElement>();
+            columns = new List<DrawableGameElement>();
             
         }
 
-        public void Add(TwoPhaseGameElement column)
+        public void Add(DrawableGameElement column)
         {
             columns.Add(column);
         }
 
-        public void Remove(TwoPhaseGameElement column)
+        public void Remove(DrawableGameElement column)
         {
             columns.Remove(column);
         }
 
-        public void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
-        {
-            foreach (TwoPhaseGameElement element in columns)
+        public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+            foreach (DrawableGameElement element in columns)
             {
-                element.DrawFirst(gameTime, batch, camera);
-            }
-        }
-
-        public void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
-        {
-            foreach (TwoPhaseGameElement element in columns)
-            {
-                element.DrawSecond(gameTime, batch, camera);
+                element.Draw(gameTime, batch, camera);
             }
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach (TwoPhaseGameElement element in columns)
+            foreach (DrawableGameElement element in columns)
             {
                 element.Update(gameTime);
             }

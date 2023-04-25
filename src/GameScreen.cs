@@ -119,12 +119,10 @@ public class GameScreen : Screen {
         _batch.Begin(SpriteSortMode.FrontToBack);
 
         _map.Draw(gameTime, _batch, Camera);
-        columnsManager.DrawFirst(gameTime, _batch, Camera);
+        columnsManager.Draw(gameTime, _batch, Camera);
 
         theseusManager.Draw(gameTime, _batch, Camera);
         enemyManager.Draw(gameTime, _batch, Camera);
-
-        columnsManager.DrawSecond(gameTime, _batch, Camera);
 
         //foreach (DummyRectangle rec in walls)
         //{
