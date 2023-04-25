@@ -10,7 +10,7 @@ namespace Meridian2
     public sealed class RNGsus
     {
         //Set seed to 0 to get a random one
-        private const int seed = 0;
+        public int seed = 0;
         private static readonly RNGsus instance = new RNGsus();
         private Random random;
 
@@ -24,8 +24,9 @@ namespace Meridian2
             if(seed == 0)
             {
                 random = new Random();
+                seed = random.Next();
             }
-            else random = new Random(seed);
+            random = new Random(seed);
         }
 
         public static RNGsus Instance
