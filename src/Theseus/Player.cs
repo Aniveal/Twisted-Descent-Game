@@ -257,7 +257,11 @@ namespace Meridian2.Theseus
                 running_sprite,
                 spritePos,
                 new Rectangle(run_frame_idx * 512, 0, 512, 768),
-                Color.White
+                Color.White,
+                0f,
+                Vector2.Zero,
+                SpriteEffects.None,
+                camera.getLayerDepth(spritePos.Y + spritePos.Height)
             );
             }
             else
@@ -269,7 +273,11 @@ namespace Meridian2.Theseus
                     idle,
                     spritePos,
                     new Rectangle(idle_frame_idx * 512, 0, 512, 768),
-                    Color.White
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(spritePos.Y + spritePos.Height)
                 );
             }
         }

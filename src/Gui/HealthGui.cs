@@ -23,13 +23,13 @@ namespace Meridian2.Gui
         {
             if (_data.gameOver) {
                 Color rope_red = new Color(170, 54, 54);
-                batch.DrawString(_game.Font, "GAME  OVER", new Vector2(300, 300), rope_red);
+                batch.DrawString(_game.Font, "GAME  OVER", new Vector2(300, 300), rope_red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
                 return;
             }
 
             for (int i = 0; i < _data.Health; i++) {
                 Rectangle pos = new Rectangle(70+i*40, 10, 30, 30);
-                batch.Draw(heartTexture, pos, Color.White);
+                batch.Draw(heartTexture, pos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             }
         }
     }

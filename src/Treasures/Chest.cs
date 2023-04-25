@@ -61,9 +61,9 @@ namespace Meridian2.Treasures {
             Rectangle dstRec = new Rectangle();
             dstRec = camera.getScreenRectangle(pos.X - 0.3536f, pos.Y - 0.0701f, 2.0607f, 1.5303f);
             if (open) {
-                batch.Draw(textureOpen, dstRec, Color.White);
+                batch.Draw(textureOpen, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             } else {
-                batch.Draw(textureClosed, dstRec, Color.Red);
+                batch.Draw(textureClosed, dstRec, null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             }
         }
     }

@@ -25,11 +25,11 @@ namespace Meridian2.Columns
             if (_broken)
             {
                 //TODO: broken texture
-                batch.Draw(_columnTexture, dstRec, Color.Orange);
+                batch.Draw(_columnTexture, dstRec, null, Color.Orange, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             }
             else
             {
-                batch.Draw(_columnTexture, dstRec, Color.White);
+                batch.Draw(_columnTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             }
         }
 

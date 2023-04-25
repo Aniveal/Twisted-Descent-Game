@@ -159,7 +159,7 @@ public class RopeSegment : DrawableGameElement
 
         Rectangle dstRectangle = camera.getScreenRectangle(Body.Position.X, Body.Position.Y, _size.X, _size.Y);
         batch.Draw(_rope.BaseTexture, dstRectangle, sourceRectangle: null, color: ropeColor, rotation: Body.Rotation,
-            origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
+            origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: camera.getLayerDepth(dstRectangle.Y));
     }
 
     /**

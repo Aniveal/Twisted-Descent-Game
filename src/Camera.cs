@@ -33,6 +33,16 @@ namespace Meridian2 {
             } // Negative zoom will flip image
         }
 
+        public float getLayerDepth(float yScreen) {
+            float screenFrac = (yScreen / _graphicsDevice.Viewport.Height) + float.Epsilon;
+
+            if (screenFrac >= 1) {
+                screenFrac = 1.0f - float.Epsilon;
+            }
+
+            return screenFrac;
+        }
+        
         /// <summary>
         /// Gets the screen rectangle for the given rectangle in world space.
         /// </summary>

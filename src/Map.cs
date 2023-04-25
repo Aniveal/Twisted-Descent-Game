@@ -287,7 +287,8 @@ namespace Meridian2 {
 
                         Rectangle tilePos = camera.getScreenRectangle(pos.X, pos.Y - map_scaling * 3f, 2 * map_scaling, 2 * map_scaling);
                         c++;
-                        batch.Draw(t.finalPrototype.texture, tilePos, Color.White);
+                        
+                        batch.Draw(t.finalPrototype.texture, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
                     }
                 }
                     

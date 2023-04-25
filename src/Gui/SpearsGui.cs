@@ -40,34 +40,34 @@ namespace Meridian2.Gui {
             //Rectangle rec = new Rectangle((width-size)/2-size, height-2*size, size, size);
             Rectangle rec = new Rectangle((width-size)/2-size, height-size, size, size);
             if (_controler.selected == 0) {
-                batch.Draw(boxTexture, rec, Color.Red);
+                batch.Draw(boxTexture, rec, null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             } else {
-                batch.Draw(boxTexture, rec, Color.Black);
+                batch.Draw(boxTexture, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             }
-            batch.Draw(icon_basic, rec, Color.Black);
+            batch.Draw(icon_basic, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
             //electric
             rec = new Rectangle((width-size)/2, height-size, size, size);
             if (_controler.selected == 1) {
-                batch.Draw(boxTexture, rec, Color.Red);
+                batch.Draw(boxTexture, rec, null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             } else {
-                batch.Draw(boxTexture, rec, Color.Black);
+                batch.Draw(boxTexture, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             }
-            batch.Draw(icon_electric, rec, Color.White);
+            batch.Draw(icon_electric, rec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
             //fragile
             rec = new Rectangle((width-size)/2+size, height-size, size, size);
             if (_controler.selected == 2) {
-                batch.Draw(boxTexture, rec, Color.Red);
+                batch.Draw(boxTexture, rec, null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             } else {
-                batch.Draw(boxTexture, rec, Color.Black);
+                batch.Draw(boxTexture, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             }
-            batch.Draw(icon_fragile, rec, Color.Black);
+            batch.Draw(icon_fragile, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             
             //numbers
-            batch.DrawString(_game.Font, _data.spears[0].ToString(), new Vector2((width)/2-size, height-size-20), Color.Yellow);
-            batch.DrawString(_game.Font, _data.spears[1].ToString(), new Vector2((width)/2, height-size-20), Color.Yellow);
-            batch.DrawString(_game.Font, _data.spears[2].ToString(), new Vector2((width)/2+size, height-size-20), Color.Yellow);
+            batch.DrawString(_game.Font, _data.spears[0].ToString(), new Vector2((width)/2-size, height-size-20), Color.Yellow, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+            batch.DrawString(_game.Font, _data.spears[1].ToString(), new Vector2((width)/2, height-size-20), Color.Yellow, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+            batch.DrawString(_game.Font, _data.spears[2].ToString(), new Vector2((width)/2+size, height-size-20), Color.Yellow, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
         }
 
 
