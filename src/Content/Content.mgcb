@@ -387,6 +387,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Columns/column_upper.png
 
+#begin Sprites/Columns/column.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Columns/column.png
+
 #begin Sprites/Columns/lightning_column_lower.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -410,6 +422,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Columns/lightning_column_upper.png
+
+#begin Sprites/Columns/lightning_column.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Columns/lightning_column.png
 
 #begin Sprites/Enemies/enemy.png
 /importer:TextureImporter
