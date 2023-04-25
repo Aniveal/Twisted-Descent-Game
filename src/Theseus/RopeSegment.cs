@@ -66,7 +66,14 @@ public class RopeSegment : DrawableGameElement
 
     public void Electrify(RopeSegment src, int intensity, bool fromPrev)
     {
-        if (intensity == 0) { return; }
+        if (intensity == 0) {
+            if (fromPrev) {
+                next?.DeElectrify(true);
+            } else {
+                previous?.DeElectrify(false);
+            }
+            return; 
+        }
 
         if (elecSrcSegment != null && elecSrcSegment.isElecSrc && intensity < elecIntensity)
         {
@@ -150,6 +157,7 @@ public class RopeSegment : DrawableGameElement
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         Color ropeColor = Color.White;
+        //TODO: do better visuals of electric
         if (elecIntensity > 0) {
             ropeColor = Color.Blue;
         }
