@@ -156,6 +156,53 @@ public class Map : DrawableGameElement {
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)Math.PI);
                 break;
+            //cliffs
+            case (8,8,8,8): //full cliff
+                tile.Body = _world.CreateRectangle(l, l, 0, p + new Vector2(MapScaling, 0), (float)Math.PI / 4);
+                break;
+            case (8,6,8,7): //bottom NOT cliff
+                tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0));
+                break;
+            case (7,8,6,8): //top NOT cliff
+                tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
+                    (float)Math.PI);
+                break;
+            case (8,7,7,8): //left NOT cliff
+                tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
+                    (float)Math.PI / 2);
+                break;
+            case (6,8,8,6): //right NOT cliff
+                tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
+                    (float)-Math.PI / 2);
+                break;
+            case (8,0,7,7): //top right cliff
+                tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
+                    p + new Vector2(MapScaling * 1.25f, -0.25f * MapScaling), (float)Math.PI / 4);
+                break;
+            case (7,7,0,8): //bottom right cliff
+                tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
+                    p + new Vector2(MapScaling * 1.25f, 0.25f * MapScaling), (float)-Math.PI / 4);
+                break;
+            case (6,6,8,0): //top left cliff
+                tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
+                    p + new Vector2(MapScaling * 0.75f, -0.25f * MapScaling), (float)-Math.PI / 4);
+                break;
+            case (0,8,7,7): //bottom left cliff
+                tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
+                    p + new Vector2(MapScaling * 0.75f, 0.25f * MapScaling), (float)Math.PI / 4);
+                break;
+            case (7,0,0,7): //right quarter cliff
+                tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling * 2, 0));
+                break;
+            case (0,7,0,6): //bottom quarter cliff
+                tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling, MapScaling));
+                break;
+            case (0,6,6,0): //left quarter cliff
+                tile.Body = _world.CreateCircle(l * 0.5f, 0, p);
+                break;
+            case (6,0,7,0): //top quarter cliff
+                tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling, -MapScaling));
+                break;
         }
 
         if (tile.Body != null) tile.Body.Tag = tile;
