@@ -61,7 +61,7 @@ public class MapScreen : Screen {
         //columnsManager.Update(gameTime);
     }
 
-    public override void Draw(GameTime gameTime) {
+    public override void Draw(GameTime gameTime, SpriteBatch spriteBatch = null) {
         base.Draw(gameTime);
 
         _batch.Begin();

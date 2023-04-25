@@ -52,8 +52,8 @@ public class Map : DrawableGameElement {
 
         var screenX = (mapCoordinates.X - mapCoordinates.Y) * halfTile;
         var screenY = (mapCoordinates.X + mapCoordinates.Y) * quaterTile;
-        return new Point(screenX + (int)_game.CurrentScreen.Camera.Pos.X,
-            screenY + (int)_game.CurrentScreen.Camera.Pos.Y);
+        return new Point(screenX + (int)_game._currentScreen.Camera.Pos.X,
+            screenY + (int)_game._currentScreen.Camera.Pos.Y);
     }
 
     //Returns the world coordinates of the left angle of the ground level of the tile
@@ -73,8 +73,8 @@ public class Map : DrawableGameElement {
 
     // ScreenToMap: takes pixel position, returns the index of the tile at this position.
     public Point ScreenToMap(Point screenPos) {
-        screenPos.X -= (int)_game.CurrentScreen.Camera.Pos.X;
-        screenPos.Y -= (int)_game.CurrentScreen.Camera.Pos.Y;
+        screenPos.X -= (int)_game._currentScreen.Camera.Pos.X;
+        screenPos.Y -= (int)_game._currentScreen.Camera.Pos.Y;
 
         var halfTile = TileSize.X / 2;
         var quaterTile = TileSize.X / 4;

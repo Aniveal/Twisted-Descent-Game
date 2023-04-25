@@ -7,22 +7,26 @@ namespace Meridian2;
 
 public class RopeGame : Game {
     private const int TargetFrameRate = 144;
-    private State _currentState;
+
     private MapScreen _mapScreen;
+    public GameScreen _gameScreen;
+    private Screen _menuScreen;
+    public Screen _currentScreen;
+
     private SpriteBatch _spriteBatch;
 
     private int _state;
     public Camera Camera;
     public Texture2D ColumnTexture;
 
-    public Screen CurrentScreen;
+    
 
     //TODO: move textures somewhere else?
     public SpriteFont Font;
 
     public GameData GameData;
 
-    public GameScreen GameScreen;
+    
     public GraphicsDeviceManager Graphics;
     public Texture2D RectangleTexture;
 
@@ -35,7 +39,18 @@ public class RopeGame : Game {
     }
 
     public void ChangeState(int state) {
-        _state = state;
+        if (state == 0)
+        {
+            _currentScreen = _menuScreen;
+        }
+        else if (state == 1)
+        {
+            var gameScreen = true;
+            if (gameScreen)
+                _currentScreen = _gameScreen;
+            else
+                _currentScreen = _mapScreen;
+        }
     }
 
     protected override void Initialize() {
@@ -50,21 +65,16 @@ public class RopeGame : Game {
         Graphics.PreferredBackBufferHeight = 900;
         Graphics.ApplyChanges();
 
-        _currentState = new MenuState(this, GraphicsDevice, Content);
         GameData = new GameData(this);
 
-        var gameScreen = true;
+        _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
+        _menuScreen.Initialize();
+        _gameScreen = new GameScreen(this);
+        _gameScreen.Initialize();
+        _mapScreen = new MapScreen(this);
+        _mapScreen.Initialize();
 
-        if (gameScreen) {
-            GameScreen = new GameScreen(this);
-            GameScreen.Initialize();
-            CurrentScreen = GameScreen;
-        } else {
-            _mapScreen = new MapScreen(this);
-            _mapScreen.Initialize();
-
-            CurrentScreen = _mapScreen;
-        }
+        _currentScreen = _menuScreen;
 
         SoundEngine = new SoundEngine(this); //Create the sound engine
     }
@@ -80,13 +90,9 @@ public class RopeGame : Game {
     protected override void Update(GameTime gameTime) {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
-            _state = 0;
+            this.ChangeState(0);
 
-        if (_state == 0)
-            _currentState.Update(gameTime);
-        else
-            CurrentScreen.Update(gameTime);
-
+        _currentScreen.Update(gameTime);
         base.Update(gameTime);
     }
 
@@ -95,11 +101,7 @@ public class RopeGame : Game {
         var backgroundColor = new Color(33, 34, 34);
         GraphicsDevice.Clear(backgroundColor);
 
-        if (_state == 0)
-            _currentState.Draw(gameTime, _spriteBatch);
-        else
-            CurrentScreen.Draw(gameTime);
-
+        _currentScreen.Draw(gameTime, _spriteBatch);
         base.Draw(gameTime);
     }
 }

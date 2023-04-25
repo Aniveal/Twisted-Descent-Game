@@ -6,13 +6,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2; 
 
-public class MenuState : State {
+public class MenuScreen : Screen {
     private readonly List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
 
-    public MenuState(RopeGame game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice,
-        content) {
+    public MenuScreen(RopeGame game, GraphicsDevice graphicsDevice, ContentManager content) : base(game) {
+        
         var buttonTexture = content.Load<Texture2D>("Button");
         var buttonFont = content.Load<SpriteFont>("Arial");
 
@@ -58,7 +58,7 @@ public class MenuState : State {
     }
 
     private void NewGameButton_Click(object sender, EventArgs e) {
-        Game.ChangeState(1);
+        base.getGame().ChangeState(1);
     }
 
     public override void Update(GameTime gameTime) {
@@ -67,8 +67,6 @@ public class MenuState : State {
     }
 
     private void QuitGameButton_Click(object sender, EventArgs e) {
-        Game.Exit();
+        base.getGame().Exit();
     }
-
-    public override void PostUpdate(GameTime gameTime) { }
 }

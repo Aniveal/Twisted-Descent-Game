@@ -109,7 +109,8 @@ public class GameScreen : Screen {
         //guiManager.Update(gameTime);
     }
 
-    public override void Draw(GameTime gameTime) {
+    public override void Draw(GameTime gameTime, SpriteBatch spriteBatch = null)
+    {
         Camera.Pos = TheseusManager.Player.Body.Position;
         base.Draw(gameTime);
 
