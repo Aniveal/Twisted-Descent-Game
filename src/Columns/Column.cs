@@ -50,7 +50,7 @@ namespace Meridian2.Columns
         {
             if (multiTexture) {
                 Rectangle dstRec = camera.getSpriteRectangle(_center.X - 2*_radius, _center.Y + _radius, _radius * 4, _radius * 8);
-                batch.Draw(_lowerTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
+                //batch.Draw(_lowerTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
                 batch.Draw(_upperTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             } else {
                 Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);

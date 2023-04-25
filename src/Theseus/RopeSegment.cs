@@ -108,11 +108,17 @@ public class RopeSegment : DrawableGameElement
         elecIntensity = 0;
         if (fromPrev)
         {
-            next?.DeElectrify(true);
+            if (next == null || next.elecIntensity == 0) {
+                return;
+            }
+            next.DeElectrify(true);
         }
         else
         {
-            previous?.DeElectrify(false);
+            if (previous == null || previous.elecIntensity == 0) {
+                return;
+            }
+            previous.DeElectrify(false);
         }
     }
 

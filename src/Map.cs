@@ -176,11 +176,12 @@ namespace Meridian2 {
         public void transferDataToManagers()
         {
             //TODO: move column textures loading to adequate location? 
+            //TODO: replace column_lower by column_base once the sprite is available AND modify Column.Draw() accordingly
             Texture2D columnLower = _game.Content.Load<Texture2D>("Sprites/Columns/column_lower");
-            Texture2D columnUpper = _game.Content.Load<Texture2D>("Sprites/Columns/column_upper");
+            Texture2D columnUpper = _game.Content.Load<Texture2D>("Sprites/Columns/column");
             ColumnTextures columnTexture = new ColumnTextures(columnLower, columnUpper);
             Texture2D elecLower = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column_lower");
-            Texture2D elecUpper = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column_upper");
+            Texture2D elecUpper = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column");
             ColumnTextures elecTexture = new ColumnTextures(elecLower, elecUpper);
 
             foreach(Room r in roomList)
