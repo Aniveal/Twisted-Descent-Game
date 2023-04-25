@@ -1,36 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Meridian2
-{
+namespace Meridian2; 
 
-    //This class holds settings for different kind of rooms
-    public class RoomSettings
-    {
-        //Name of this room setting
-        public string name;
+//This class holds settings for different kind of rooms
+public class RoomSettings {
+    //Name of this room setting
+    public string Name;
 
-        //How much should be walkable vs how mach walls, will tend more to walls though
-        public float walkablePercentage = 0.5f;
+    //What prototypes can be used, eg the biome
+    public List<Prototype> PossiblePrototypes = new();
 
-        //Pre-Defined tiles that have to be in the room
-        public List<Tile> tiles;
+    //Pre-Defined tiles that have to be in the room
+    public List<Tile> Tiles;
 
-        //What prototypes can be used, eg the biome
-        public List<Prototype> possiblePrototypes = new List<Prototype>();
+    //How much should be walkable vs how mach walls, will tend more to walls though
+    public float WalkablePercentage = 0.5f;
 
-        public RoomSettings(string name, List<List<Prototype>> protLists, float walkablePercentage = 0.7f, List<Tile> tiles = null) {
-            this.name = name;
-            foreach(List<Prototype> prot in protLists)
-            {
-                foreach(Prototype p in prot)
-                    possiblePrototypes.Add(p);
-            }
-            this.walkablePercentage = walkablePercentage;
-            this.tiles = tiles;
-        }
+    public RoomSettings(string name, List<List<Prototype>> protLists, float walkablePercentage = 0.7f,
+        List<Tile> tiles = null) {
+        Name = name;
+        foreach (var prot in protLists)
+        foreach (var p in prot)
+            PossiblePrototypes.Add(p);
+        WalkablePercentage = walkablePercentage;
+        Tiles = tiles;
     }
 }

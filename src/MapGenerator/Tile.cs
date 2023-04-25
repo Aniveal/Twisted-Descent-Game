@@ -1,191 +1,153 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using tainicom.Aether.Physics2D.Dynamics;
-using Microsoft.Xna.Framework;
-using System.Xml.Linq;
-using System.Net.Sockets;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2
-{
-    public class Tile
-    {
-        //Index in parents tileMap
-        public int x, y;
+namespace Meridian2; 
 
-        public Body body;
+public class Tile {
+    public Body Body;
 
-        public Room parentRoom;
+    public Prototype FinalPrototype;
 
-        //The superposition list of this tile
-        public List<Prototype> superpositions;
+    public Room ParentRoom;
 
-        public Prototype finalPrototype;
+    //The superposition list of this tile
+    public List<Prototype> Superpositions;
 
-        //Instantiate a Tile with multiple possible prototypes
-        public Tile(List<Prototype> protList, Room parentRoom)
-        {
-            superpositions = new List<Prototype>();
-            superpositions.AddRange(protList);
-            x = y = 0;
-            this.parentRoom = parentRoom;
-        }
+    //Index in parents tileMap
+    public int X, Y;
 
-        //Create a specific tile
-        public Tile(Prototype prot, int x, int y, Room parentRoom)
-        {
-            this.x = x;
-            this.y = y;
-            finalPrototype = prot;
-            superpositions = new List<Prototype> { prot };
-            this.parentRoom = parentRoom;
-        }
+    //Instantiate a Tile with multiple possible prototypes
+    public Tile(List<Prototype> protList, Room parentRoom) {
+        Superpositions = new List<Prototype>();
+        Superpositions.AddRange(protList);
+        X = Y = 0;
+        ParentRoom = parentRoom;
+    }
 
-        public bool makeWalkable()
-        {
-            List<Prototype> protList = new List<Prototype>();
+    //Create a specific tile
+    public Tile(Prototype prot, int x, int y, Room parentRoom) {
+        X = x;
+        Y = y;
+        FinalPrototype = prot;
+        Superpositions = new List<Prototype> { prot };
+        ParentRoom = parentRoom;
+    }
 
-            foreach(Prototype p in superpositions)
-            {
-                if(p.walkable)
-                    protList.Add(p);
-            }
+    public bool makeWalkable() {
+        var protList = new List<Prototype>();
 
-            if (protList.Count() == 0)
-                return false;
+        foreach (var p in Superpositions)
+            if (p.Walkable)
+                protList.Add(p);
 
-            setFinalPrototype(protList[RNGsus.Instance.Next(protList.Count)]);
-            parentRoom.collapseTile(this);
-            return true;
-        }
+        if (protList.Count() == 0)
+            return false;
 
-        public void removePrototype(string name)
-        {
-            foreach(Prototype proto in superpositions)
-            {
-                if (proto.name == name)
-                {
-                    superpositions.Remove(proto);
-                }
-            }
-        }
+        setFinalPrototype(protList[RnGsus.Instance.Next(protList.Count)]);
+        ParentRoom.collapseTile(this);
+        return true;
+    }
 
-        public int getX() { return x + parentRoom.posX; }
-        public int getY() { return y + parentRoom.posY; }
+    public void removePrototype(string name) {
+        foreach (var proto in Superpositions)
+            if (proto.Name == name)
+                Superpositions.Remove(proto);
+    }
 
-        //Collapse the wave function where the socket on the direction dir is incompatible (dir is the direction from here to where to fit)
-        //Return value is if the superposition has changed or not, i.e. if we have to propagate
-        public bool collapseFunction(Tile other, string dir)
-        {
+    public int getX() {
+        return X + ParentRoom.PosX;
+    }
 
-            //Allready finished!
-            if (superpositions.Count <= 1)
-            {
-                return false;
-            }
-                
+    public int getY() {
+        return Y + ParentRoom.PosY;
+    }
 
-            bool changed = true;
-            int n = superpositions.Count;
+    //Collapse the wave function where the socket on the direction dir is incompatible (dir is the direction from here to where to fit)
+    //Return value is if the superposition has changed or not, i.e. if we have to propagate
+    public bool collapseFunction(Tile other, string dir) {
+        //Allready finished!
+        if (Superpositions.Count <= 1) return false;
 
-            //new list of superpositions
-            List<Prototype> protList = new List<Prototype>();
 
-            //Iterate over all prototypes in sup and only keep the ones which are compatible
-            foreach (Prototype otherPrototype in other.superpositions)
-            {
-                foreach (Prototype thisPrototype in this.superpositions)
-                {
-                    //Add all possible neighbour prototypes
-                    switch (dir)
-                    {
-                        case "up": if(thisPrototype.sockets[0] == -1 || 
-                                    otherPrototype.sockets[1] == -1 || 
-                                    thisPrototype.sockets[0] == otherPrototype.sockets[1]) protList.Add(thisPrototype); break;
-                        case "down": if (thisPrototype.sockets[1] == -1 ||
-                                    otherPrototype.sockets[0] == -1 || 
-                                    thisPrototype.sockets[1] == otherPrototype.sockets[0]) protList.Add(thisPrototype); break;
-                        case "left": if (thisPrototype.sockets[2] == -1 ||
-                                    otherPrototype.sockets[3] == -1 || 
-                                    thisPrototype.sockets[2] == otherPrototype.sockets[3]) protList.Add(thisPrototype); break;
-                        case "right": if (thisPrototype.sockets[2] == -1 ||
-                                    otherPrototype.sockets[3] == -1 || 
-                                    thisPrototype.sockets[3] == otherPrototype.sockets[2]) protList.Add(thisPrototype); break;
-                        default: break;
-                    }
-                }
-            }
-            protList = protList.Distinct().ToList();
-            superpositions.Clear();
-            superpositions.AddRange(protList);
+        var changed = true;
+        var n = Superpositions.Count;
 
-            if (superpositions.Count == n)
-            {
-                changed = false;
-            }
+        //new list of superpositions
+        var protList = new List<Prototype>();
 
-            
-
-            //Finished!!
-            if (superpositions.Count == 1)
-            {
-                finalPrototype = superpositions[0];
-            }
-            if(superpositions.Count == 0) {
-                Debug.WriteLine("There are no possible blueprints for this cell!!!");
-            }
-
-            return changed;
-
-        }
-
-        public void setFinalPrototype(Prototype p, bool force = false)
-        {
-            if (force || superpositions.Contains(p))
-            {
-                finalPrototype = p;
-                superpositions.Clear();
-                superpositions = new List<Prototype> { p };
-            }
-
-            else Debug.WriteLine("Tried setting prototype not in superposition list!!!");
-        }
-            
-
-        public void chooseRandomPrototype()
-        {
-            //Step 1: get sum of all weights
-            int totalWeight = 0;
-            foreach (Prototype p in superpositions)
-            {
-                totalWeight += p.weight;
-            }
-
-            //Step 2: find element
-            int weightSum = 0;
-            int randomNumber = RNGsus.Instance.Next(totalWeight);
-            for(int i = 0; i < superpositions.Count; i++)
-            {
-                weightSum += superpositions[i].weight;
-                if (weightSum > randomNumber)
-                {
-                    finalPrototype = superpositions[i];
+        //Iterate over all prototypes in sup and only keep the ones which are compatible
+        foreach (var otherPrototype in other.Superpositions)
+        foreach (var thisPrototype in Superpositions)
+            //Add all possible neighbour prototypes
+            switch (dir) {
+                case "up":
+                    if (thisPrototype.Sockets[0] == -1 ||
+                        otherPrototype.Sockets[1] == -1 ||
+                        thisPrototype.Sockets[0] == otherPrototype.Sockets[1]) protList.Add(thisPrototype);
                     break;
-                }
-
+                case "down":
+                    if (thisPrototype.Sockets[1] == -1 ||
+                        otherPrototype.Sockets[0] == -1 ||
+                        thisPrototype.Sockets[1] == otherPrototype.Sockets[0]) protList.Add(thisPrototype);
+                    break;
+                case "left":
+                    if (thisPrototype.Sockets[2] == -1 ||
+                        otherPrototype.Sockets[3] == -1 ||
+                        thisPrototype.Sockets[2] == otherPrototype.Sockets[3]) protList.Add(thisPrototype);
+                    break;
+                case "right":
+                    if (thisPrototype.Sockets[2] == -1 ||
+                        otherPrototype.Sockets[3] == -1 ||
+                        thisPrototype.Sockets[3] == otherPrototype.Sockets[2]) protList.Add(thisPrototype);
+                    break;
             }
 
-            superpositions = new List<Prototype> { finalPrototype };
+        protList = protList.Distinct().ToList();
+        Superpositions.Clear();
+        Superpositions.AddRange(protList);
 
-            
-            //Debug.WriteLine("Chose prot: " + finalPrototype.name + "    WeightSum = " + weightSum + "   randomNumber == " + randomNumber + "       Total Weight: " + totalWeight);
+        if (Superpositions.Count == n) changed = false;
+
+
+        //Finished!!
+        if (Superpositions.Count == 1) FinalPrototype = Superpositions[0];
+        if (Superpositions.Count == 0) Debug.WriteLine("There are no possible blueprints for this cell!!!");
+
+        return changed;
+    }
+
+    public void setFinalPrototype(Prototype p, bool force = false) {
+        if (force || Superpositions.Contains(p)) {
+            FinalPrototype = p;
+            Superpositions.Clear();
+            Superpositions = new List<Prototype> { p };
+        } else {
+            Debug.WriteLine("Tried setting prototype not in superposition list!!!");
+        }
+    }
+
+
+    public void chooseRandomPrototype() {
+        //Step 1: get sum of all weights
+        var totalWeight = 0;
+        foreach (var p in Superpositions) totalWeight += p.Weight;
+
+        //Step 2: find element
+        var weightSum = 0;
+        var randomNumber = RnGsus.Instance.Next(totalWeight);
+        for (var i = 0; i < Superpositions.Count; i++) {
+            weightSum += Superpositions[i].Weight;
+            if (weightSum > randomNumber) {
+                FinalPrototype = Superpositions[i];
+                break;
+            }
         }
 
+        Superpositions = new List<Prototype> { FinalPrototype };
+
+
+        //Debug.WriteLine("Chose prot: " + finalPrototype.name + "    WeightSum = " + weightSum + "   randomNumber == " + randomNumber + "       Total Weight: " + totalWeight);
     }
 }

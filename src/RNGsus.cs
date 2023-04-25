@@ -1,56 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Meridian2
-{
-    //Use this class only for random numbers!!!
-    public sealed class RNGsus
-    {
-        //Set seed to 0 to get a random one
-        private const int seed = 0;
-        private static readonly RNGsus instance = new RNGsus();
-        private Random random;
+namespace Meridian2; 
 
-        static RNGsus()
-        {
-            
-        }
+//Use this class only for random numbers!!!
+public sealed class RnGsus {
+    //Set seed to 0 to get a random one
+    private const int Seed = 0;
+    private readonly Random _random;
 
-        private RNGsus()
-        {
-            if(seed == 0)
-            {
-                random = new Random();
-            }
-            else random = new Random(seed);
-        }
+    static RnGsus() { }
 
-        public static RNGsus Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+    private RnGsus() {
+        if (Seed == 0)
+            _random = new Random();
+        else _random = new Random(Seed);
+    }
 
-        //Returns a random number between 0 and 1 (Same as Random.NextDouble)
-        public double NextDouble()
-        {
-            return random.NextDouble();
-        }
+    public static RnGsus Instance { get; } = new();
 
-        //Same as Random.Next()
-        public int Next()
-        {
-            return random.Next();
-        }
-        public int Next(int i)
-        {
-            return random.Next(i);
-        }
+    //Returns a random number between 0 and 1 (Same as Random.NextDouble)
+    public double NextDouble() {
+        return _random.NextDouble();
+    }
 
+    //Same as Random.Next()
+    public int Next() {
+        return _random.Next();
+    }
+
+    public int Next(int i) {
+        return _random.Next(i);
     }
 }

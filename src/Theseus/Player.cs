@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection.Metadata;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,277 +6,247 @@ using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Joints;
 
-namespace Meridian2.Theseus
-{
-    public class Player : DrawableGameElement
-    {
-        private readonly RopeGame _game;
-        private Rope _rope;
-        private World _world;
-        private DistanceJoint _ropeConnection;
+namespace Meridian2.Theseus; 
 
-        private Texture2D idle;
-        private Texture2D running_l;
-        private Texture2D running_r;
-        private Texture2D running_f;
-        private Texture2D running_b;
-        private readonly Point _playerSize = new(1, 2);
-        private float PlayerForce = 15f;
+public class Player : DrawableGameElement {
+    private const int DashCoolDown = 5000;
+    private const int DashUsageTime = 400;
+    private readonly RopeGame _game;
+    private readonly Point _playerSize = new(1, 2);
 
-        //How many milliseconds between footsteps
-        private float footstepSoundDelayMax = 400f;
-        //Current value of delay
-        private float footstepSoundDelayCurrent = 0f;
+    private bool _dash;
 
-        public Body Body;
+    //Current value of delay
+    private float _footstepSoundDelayCurrent;
 
-        public Vector2 orientation;
+    //How many milliseconds between footsteps
+    private readonly float _footstepSoundDelayMax = 400f;
 
-        public double DashTimer = 0;
-        private const int DashCoolDown = 5000;
-        private const int DashUsageTime = 400;
-        private bool Dash = false;
-        private bool isWalking = false;
-        private bool isPulling = false;
-        private Vector2 input = Vector2.Zero;
+    private Texture2D _idle;
+    private readonly double _immuneCooldown = 3000;
+    private double _immuneTimer;
+    private Vector2 _input = Vector2.Zero;
+    private bool _isPulling;
+    private bool _isWalking;
+    private float _playerForce = 15f;
+    private readonly Rope _rope;
+    private DistanceJoint _ropeConnection;
+    private Texture2D _runningB;
+    private Texture2D _runningF;
+    private Texture2D _runningL;
+    private Texture2D _runningR;
+    private readonly World _world;
 
-        public Boolean isImmune = false;
-        private double immuneTimer = 0;
-        private double immuneCooldown = 3000;
+    public Body Body;
 
-        public Player(RopeGame game, World world, Rope rope)
-        { 
-            _rope = rope;
-            _game = game;
-            _world = world;
-        }
+    public double DashTimer;
 
-        public void Initialize()
-        {
-            Body = _world.CreateEllipse((float)_playerSize.X / 2, (float)_playerSize.X / 4, 20, 0.01f,
-                _rope.GetEndPosition(), 0f, BodyType.Dynamic);
-            Body.FixedRotation = true;
-            Body.LinearDamping = 1f;
-            Body.Tag = this;
+    public bool IsImmune;
 
-            Body.Mass = 10;
-            // Disable rope collision
-            foreach (Fixture fixture in Body.FixtureList)
-            {
-                fixture.CollisionGroup = -1;
-            }
+    public Vector2 Orientation;
 
-            LinkToRope();
-        }
+    public Player(RopeGame game, World world, Rope rope) {
+        _rope = rope;
+        _game = game;
+        _world = world;
+    }
 
-        public void LoadContent()
-        {
-            idle = _game.Content.Load<Texture2D>("Sprites/Theseus/idle");
-            running_l = _game.Content.Load<Texture2D>("Sprites/Theseus/running");
-            running_r = _game.Content.Load<Texture2D>("Sprites/Theseus/running_r");
-            running_f = _game.Content.Load<Texture2D>("Sprites/Theseus/running_f");
-            running_b = _game.Content.Load<Texture2D>("Sprites/Theseus/running_b");
-        }
+    public void Initialize() {
+        Body = _world.CreateEllipse((float)_playerSize.X / 2, (float)_playerSize.X / 4, 20, 0.01f,
+            _rope.GetEndPosition(), 0f, BodyType.Dynamic);
+        Body.FixedRotation = true;
+        Body.LinearDamping = 1f;
+        Body.Tag = this;
 
-        private Vector2 ScreenToIsometric(Vector2 vector)
-        {
-            var rotSin = Math.Sin(-Math.PI / 4);
-            var rotCos = Math.Cos(-Math.PI / 4);
+        Body.Mass = 10;
+        // Disable rope collision
+        foreach (var fixture in Body.FixtureList) fixture.CollisionGroup = -1;
 
-            // Rotate by 45 degrees
-            var isoX = (float)(rotCos * vector.X - rotSin * vector.Y);
-            var isoY = (float)(rotSin * vector.X + rotCos * vector.Y);
+        LinkToRope();
+    }
 
-            // Stretch to 2:1 ratio
-            return new Vector2(isoX - isoY, (isoX + isoY) / 2);
-        }
+    public void LoadContent() {
+        _idle = _game.Content.Load<Texture2D>("Sprites/Theseus/idle");
+        _runningL = _game.Content.Load<Texture2D>("Sprites/Theseus/running");
+        _runningR = _game.Content.Load<Texture2D>("Sprites/Theseus/running_r");
+        _runningF = _game.Content.Load<Texture2D>("Sprites/Theseus/running_f");
+        _runningB = _game.Content.Load<Texture2D>("Sprites/Theseus/running_b");
+    }
 
-    
+    private Vector2 ScreenToIsometric(Vector2 vector) {
+        var rotSin = Math.Sin(-Math.PI / 4);
+        var rotCos = Math.Cos(-Math.PI / 4);
 
-        public override void Update(GameTime gameTime)
-        {
-            if (_game.gameData.gameOver) {
-                return;
-            }
-            input = Vector2.Zero;
-            DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            DashTimer = Math.Min(DashTimer, 5000);
+        // Rotate by 45 degrees
+        var isoX = (float)(rotCos * vector.X - rotSin * vector.Y);
+        var isoY = (float)(rotSin * vector.X + rotCos * vector.Y);
 
-            if(isImmune)
-            {
-                immuneTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if(immuneTimer > immuneCooldown)
-                {
-                    isImmune = false;
-                    immuneTimer = 0;
-                }
-            }
-
-            isWalking = false;
-            
-            GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
-            if (gamePadCapabilities.IsConnected)
-            {
-                input = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
-                input.Y *= -1;
-                isWalking = true;
-            }
-
-            KeyboardState keyboard = Keyboard.GetState();
-            if ((keyboard.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) && DashTimer >= DashCoolDown)
-            {
-                Dash = true;
-                DashTimer = 0;
-                PlayerForce = 50f;
-            }
-            if (Dash & DashTimer >= DashUsageTime)
-            {
-                Dash = false;
-                PlayerForce = 15f;
-                DashTimer = 0;
-            }
-            if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))
-            {
-                input.X += 1;
-                isWalking = true;
-            }
-
-            if (keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.A))
-            {
-                input.X -= 1;
-                isWalking = true;
-            }
-
-            if (keyboard.IsKeyDown(Keys.Down) || keyboard.IsKeyDown(Keys.S))
-            {
-                input.Y += 1;
-                isWalking = true;
-            }
-
-            if (keyboard.IsKeyDown(Keys.Up) || keyboard.IsKeyDown(Keys.W))
-            {
-                input.Y -= 1;
-                isWalking = true;
-            }
+        // Stretch to 2:1 ratio
+        return new Vector2(isoX - isoY, (isoX + isoY) / 2);
+    }
 
 
-            //Footstep Sound:
-            if (footstepSoundDelayCurrent >= 0)
-                footstepSoundDelayCurrent -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+    public override void Update(GameTime gameTime) {
+        if (_game.GameData.GameOver) return;
+        _input = Vector2.Zero;
+        DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+        DashTimer = Math.Min(DashTimer, 5000);
 
-            if (isWalking && footstepSoundDelayCurrent < 0)
-            {
-                _game.soundEngine.playGravelFootstep();
-                footstepSoundDelayCurrent = footstepSoundDelayMax;
-            }
-
-            if (input.LengthSquared() > 1)
-            {
-                input.Normalize();
-            }
-
-            Vector2 movement = input * (float)gameTime.ElapsedGameTime.TotalMilliseconds * PlayerForce;
-
-            Body.ApplyForce(movement);
-            orientation = input;
-
-            var ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
-            if (_ropeConnection != null) {
-                // Extend rope if force on joint is too strong
-                if (ropeJointDistance > Rope.TextureHeight*1.5) {
-                    // Remove player joint
-                    _world.Remove(_ropeConnection);
-                    _ropeConnection = null;
-                    
-                    _rope.AppendSegment();
-                    LinkToRope();
-                } else if (movement == Vector2.Zero) {
-                    // _world.Remove(_ropeConnection);
-                    // _ropeConnection = null;
-                    // _rope.RemoveSegment();
-                    // LinkToRope();
-                }
-            }
-            
-            ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
-            Diagnostics.Instance.SetForce(ropeJointDistance);
-            if (keyboard.IsKeyDown(Keys.P) || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0.5f) {
-                isPulling = true;
-                if (ropeJointDistance < Rope.TextureHeight*1.5) {
-                    _world.Remove(_ropeConnection);
-                    _ropeConnection = null;
-                    _rope.RemoveSegment();
-                    LinkToRope();
-                }
-
-                _rope.Pull(gameTime);
-            } else {
-                isPulling = false;
+        if (IsImmune) {
+            _immuneTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (_immuneTimer > _immuneCooldown) {
+                IsImmune = false;
+                _immuneTimer = 0;
             }
         }
 
-        private void LinkToRope() {
-            _ropeConnection = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body, 
-                new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
-                new Vector2(0, (float)_playerSize.X / 4));
-            _ropeConnection.Length = Rope.RopeJointLength;
-            _ropeConnection.Frequency = 15;
-            _ropeConnection.DampingRatio = Rope.RopeJointDampingRatio;
+        _isWalking = false;
+
+        var gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
+        if (gamePadCapabilities.IsConnected) {
+            _input = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
+            _input.Y *= -1;
+            _isWalking = true;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            Rectangle spritePos = camera.getScreenRectangle(Body.Position.X - (float)_playerSize.X/2, Body.Position.Y - _playerSize.Y*2 + (float)_playerSize.X / 4, _playerSize.X, _playerSize.Y);
+        var keyboard = Keyboard.GetState();
+        if ((keyboard.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) &&
+            DashTimer >= DashCoolDown) {
+            _dash = true;
+            DashTimer = 0;
+            _playerForce = 50f;
+        }
 
-            float totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
+        if (_dash & (DashTimer >= DashUsageTime)) {
+            _dash = false;
+            _playerForce = 15f;
+            DashTimer = 0;
+        }
 
-            if (isWalking)
-            {
-                float run_duration = 200f;
-                int run_frame_idx = (int)(totalTime / run_duration) % 4;
+        if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D)) {
+            _input.X += 1;
+            _isWalking = true;
+        }
 
-                Texture2D running_sprite = running_f;
+        if (keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.A)) {
+            _input.X -= 1;
+            _isWalking = true;
+        }
 
-                if (input.X > 0 && input.X >= input.Y)
-                {
-                    running_sprite = running_r;
-                }
-                else if (input.X < 0 && input.X <= input.Y)
-                {
-                    running_sprite = running_l;
-                }
-                else if (input.Y < 0)
-                {
-                    running_sprite = running_b;
-                }
-                //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
+        if (keyboard.IsKeyDown(Keys.Down) || keyboard.IsKeyDown(Keys.S)) {
+            _input.Y += 1;
+            _isWalking = true;
+        }
 
-                batch.Draw(
-                running_sprite,
+        if (keyboard.IsKeyDown(Keys.Up) || keyboard.IsKeyDown(Keys.W)) {
+            _input.Y -= 1;
+            _isWalking = true;
+        }
+
+
+        //Footstep Sound:
+        if (_footstepSoundDelayCurrent >= 0)
+            _footstepSoundDelayCurrent -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        if (_isWalking && _footstepSoundDelayCurrent < 0) {
+            _game.SoundEngine.playGravelFootstep();
+            _footstepSoundDelayCurrent = _footstepSoundDelayMax;
+        }
+
+        if (_input.LengthSquared() > 1) _input.Normalize();
+
+        var movement = _input * (float)gameTime.ElapsedGameTime.TotalMilliseconds * _playerForce;
+
+        Body.ApplyForce(movement);
+        Orientation = _input;
+
+        var ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
+        if (_ropeConnection != null) {
+            // Extend rope if force on joint is too strong
+            if (ropeJointDistance > Rope.TextureHeight * 1.5) {
+                // Remove player joint
+                _world.Remove(_ropeConnection);
+                _ropeConnection = null;
+
+                _rope.AppendSegment();
+                LinkToRope();
+            } else if (movement == Vector2.Zero) {
+                // _world.Remove(_ropeConnection);
+                // _ropeConnection = null;
+                // _rope.RemoveSegment();
+                // LinkToRope();
+            }
+        }
+
+        ropeJointDistance = (_ropeConnection.WorldAnchorB - _ropeConnection.WorldAnchorA).Length();
+        Diagnostics.Instance.SetForce(ropeJointDistance);
+        if (keyboard.IsKeyDown(Keys.P) || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0.5f) {
+            _isPulling = true;
+            if (ropeJointDistance < Rope.TextureHeight * 1.5) {
+                _world.Remove(_ropeConnection);
+                _ropeConnection = null;
+                _rope.RemoveSegment();
+                LinkToRope();
+            }
+
+            _rope.Pull(gameTime);
+        } else {
+            _isPulling = false;
+        }
+    }
+
+    private void LinkToRope() {
+        _ropeConnection = JointFactory.CreateDistanceJoint(_world, _rope.LastSegment().Body, Body,
+            new Vector2(Rope.TextureWidth / 2, Rope.TextureHeight),
+            new Vector2(0, (float)_playerSize.X / 4));
+        _ropeConnection.Length = Rope.RopeJointLength;
+        _ropeConnection.Frequency = 15;
+        _ropeConnection.DampingRatio = Rope.RopeJointDampingRatio;
+    }
+
+    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+        var spritePos = camera.getScreenRectangle(Body.Position.X - (float)_playerSize.X / 2,
+            Body.Position.Y - _playerSize.Y * 2 + (float)_playerSize.X / 4, _playerSize.X, _playerSize.Y);
+
+        var totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
+
+        if (_isWalking) {
+            var runDuration = 200f;
+            var runFrameIdx = (int)(totalTime / runDuration) % 4;
+
+            var runningSprite = _runningF;
+
+            if (_input.X > 0 && _input.X >= _input.Y)
+                runningSprite = _runningR;
+            else if (_input.X < 0 && _input.X <= _input.Y)
+                runningSprite = _runningL;
+            else if (_input.Y < 0) runningSprite = _runningB;
+            //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
+
+            batch.Draw(
+                runningSprite,
                 spritePos,
-                new Rectangle(run_frame_idx * 512, 0, 512, 768),
+                new Rectangle(runFrameIdx * 512, 0, 512, 768),
                 Color.White,
                 0f,
                 Vector2.Zero,
                 SpriteEffects.None,
                 camera.getLayerDepth(spritePos.Y + spritePos.Height)
             );
-            }
-            else
-            {
-                float idle_duration = 400f; //ms
-                int idle_frame_idx = (int)(totalTime / idle_duration) % 2;
+        } else {
+            var idleDuration = 400f; //ms
+            var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
 
-                batch.Draw(
-                    idle,
-                    spritePos,
-                    new Rectangle(idle_frame_idx * 512, 0, 512, 768),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    SpriteEffects.None,
-                    camera.getLayerDepth(spritePos.Y + spritePos.Height)
-                );
-            }
+            batch.Draw(
+                _idle,
+                spritePos,
+                new Rectangle(idleFrameIdx * 512, 0, 512, 768),
+                Color.White,
+                0f,
+                Vector2.Zero,
+                SpriteEffects.None,
+                camera.getLayerDepth(spritePos.Y + spritePos.Height)
+            );
         }
     }
 }

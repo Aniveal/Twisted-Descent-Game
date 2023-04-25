@@ -3,23 +3,20 @@
 namespace Meridian2;
 
 public abstract class Screen {
-    private RopeGame game;
+    private readonly RopeGame _game;
     public Camera Camera;
 
     public Screen(RopeGame game) {
-        this.game = game;
+        _game = game;
     }
 
-    virtual public void Initialize() {
-    }
+    public virtual void Initialize() { }
 
-    virtual public void Update(GameTime gameTime) {
-    }
+    public virtual void Update(GameTime gameTime) { }
 
-    virtual public void Draw(GameTime gameTime) {
-    }
+    public virtual void Draw(GameTime gameTime) { }
 
     protected RopeGame getGame() {
-        return game;
+        return _game;
     }
 }
