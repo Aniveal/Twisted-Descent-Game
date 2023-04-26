@@ -10,7 +10,7 @@ using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Meridian2; 
+namespace Meridian2;
 
 public class Map : DrawableGameElement {
     private const float MapScaling = 2;
@@ -137,50 +137,50 @@ public class Map : DrawableGameElement {
                     (float)Math.PI);
                 break;
             //cliffs
-            case (8,8,8,8): //full cliff
+            case (8, 8, 8, 8): //full cliff
                 tile.Body = _world.CreateRectangle(l, l, 0, p + new Vector2(MapScaling, 0), (float)Math.PI / 4);
                 break;
-            case (8,6,8,7): //bottom NOT cliff
+            case (8, 6, 8, 7): //bottom NOT cliff
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0));
                 break;
-            case (7,8,6,8): //top NOT cliff
+            case (7, 8, 6, 8): //top NOT cliff
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)Math.PI);
                 break;
-            case (8,7,7,8): //left NOT cliff
+            case (8, 7, 7, 8): //left NOT cliff
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)Math.PI / 2);
                 break;
-            case (6,8,8,6): //right NOT cliff
+            case (6, 8, 8, 6): //right NOT cliff
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)-Math.PI / 2);
                 break;
-            case (8,0,7,7): //top right cliff
+            case (8, 0, 7, 7): //top right cliff
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 1.25f, -0.25f * MapScaling), (float)Math.PI / 4);
                 break;
-            case (7,7,0,8): //bottom right cliff
+            case (7, 7, 0, 8): //bottom right cliff
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 1.25f, 0.25f * MapScaling), (float)-Math.PI / 4);
                 break;
-            case (6,6,8,0): //top left cliff
+            case (6, 6, 8, 0): //top left cliff
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 0.75f, -0.25f * MapScaling), (float)-Math.PI / 4);
                 break;
-            case (0,8,7,7): //bottom left cliff
+            case (0, 8, 7, 7): //bottom left cliff
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 0.75f, 0.25f * MapScaling), (float)Math.PI / 4);
                 break;
-            case (7,0,0,7): //right quarter cliff
+            case (7, 0, 0, 7): //right quarter cliff
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling * 2, 0));
                 break;
-            case (0,7,0,6): //bottom quarter cliff
+            case (0, 7, 0, 6): //bottom quarter cliff
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling, MapScaling));
                 break;
-            case (0,6,6,0): //left quarter cliff
+            case (0, 6, 6, 0): //left quarter cliff
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p);
                 break;
-            case (6,0,7,0): //top quarter cliff
+            case (6, 0, 7, 0): //top quarter cliff
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling, -MapScaling));
                 break;
         }
@@ -244,7 +244,6 @@ public class Map : DrawableGameElement {
     }
 
     public void LoadContent() {
-        
     }
 
     public override void Update(GameTime gameTime) {
@@ -267,11 +266,10 @@ public class Map : DrawableGameElement {
 
         //Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
 
-        foreach (var r in RoomList) { 
+        foreach (var r in RoomList) {
             //if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
             //continue;
-            foreach (var t in r.TileMap)
-            {
+            foreach (var t in r.TileMap) {
                 //Only draw what is on the screen, NOT WORKING
 
                 Vector2 screenPos;
@@ -280,16 +278,12 @@ public class Map : DrawableGameElement {
                 //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
                 //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
                 //batch.Draw(_ground, tilePos, Color.White);
-                if (t.FinalPrototype != null)
-                {
+                if (t.FinalPrototype != null) {
                     //Shift the prototype up by one if it is a cliff
-                    if (t.FinalPrototype.IsCliff)
-                    {
+                    if (t.FinalPrototype.IsCliff) {
                         pos = MapToWorld(new Point(t.X + 1 + r.PosX, t.Y + 1 + r.PosY));
                         screenPos = camera.getScreenPoint(new Vector2(pos.X, pos.Y));
-                    }
-                    else
-                    {
+                    } else {
                         pos = MapToWorld(new Point(t.X + r.PosX, t.Y + r.PosY));
                         screenPos = camera.getScreenPoint(new Vector2(pos.X, pos.Y));
                     }
@@ -297,18 +291,24 @@ public class Map : DrawableGameElement {
                     float layerDepthWalls = camera.getLayerDepth(screenPos.Y);
                     float layerDepthFloor = 0.24f;
 
-                    var tilePos = camera.getScreenRectangle(pos.X, pos.Y - MapScaling * 3f, 2 * MapScaling, 2 * MapScaling);
+                    var tilePos =
+                        camera.getScreenRectangle(pos.X, pos.Y - MapScaling * 3f, 2 * MapScaling, 2 * MapScaling);
                     c++;
 
+                    if (t.FinalPrototype.WallTex != null) {
+                        if (t.FinalPrototype.Name == "Wall2l" || t.FinalPrototype.Name == "Wall2u") {
+                            layerDepthWalls = camera.getLayerDepth(tilePos.Y + tilePos.Height * 0.625f);
+                        } else if (t.FinalPrototype.Name == "Wall2r" || t.FinalPrototype.Name == "Wall2d" || t.FinalPrototype.Name == "Wall1rd") {
+                            layerDepthWalls = camera.getLayerDepth(tilePos.Y + tilePos.Height * 0.875f);
+                        }
 
-
-                    if (t.FinalPrototype.WallTex != null)
-                    {
-                        batch.Draw(t.FinalPrototype.WallTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepthWalls);
+                        batch.Draw(t.FinalPrototype.WallTex, tilePos, null, Color.White, 0f, Vector2.Zero,
+                            SpriteEffects.None, layerDepthWalls);
                     }
-                    if (t.FinalPrototype.GroundTex != null)
-                    {
-                        batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepthFloor);
+
+                    if (t.FinalPrototype.GroundTex != null) {
+                        batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero,
+                            SpriteEffects.None, layerDepthFloor);
                     }
                 }
             }
