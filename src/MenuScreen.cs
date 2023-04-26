@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,55 +11,85 @@ public class MenuScreen : Screen {
     private readonly List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
+    private Texture2D _playerModel;
+    private Texture2D _enemyModel;
+    private Texture2D _bg;
 
     public MenuScreen(RopeGame game, GraphicsDevice graphicsDevice, ContentManager content) : base(game) {
-        
+
         var buttonTexture = content.Load<Texture2D>("Button");
-        var buttonFont = content.Load<SpriteFont>("Arial");
+        var buttonFont = content.Load<SpriteFont>("Arial40");
+        _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
+        _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+        _bg = content.Load<Texture2D>("Sprites/bg");
+
+        var continueButton = new Button(buttonTexture, buttonFont)
+        {
+            Position = new Vector2(80, 50),
+            Text = "Continue",
+        };
+
+        continueButton.Click += ContinueButton_Click;
 
         var newGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(700, 200),
+            Position = new Vector2(80, 250),
             Text = "New Game"
         };
 
         newGameButton.Click += NewGameButton_Click;
 
         var loadGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(700, 250),
+            Position = new Vector2(80, 450),
             Text = "HighScore"
         };
 
         loadGameButton.Click += HighScoreButton_Click;
 
         var quitGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(700, 300),
+            Position = new Vector2(80, 650),
             Text = "Quit Game"
         };
 
         quitGameButton.Click += QuitGameButton_Click;
 
         _components = new List<Component> {
+            continueButton,
             newGameButton,
             loadGameButton,
             quitGameButton
         };
     }
 
-    public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
-        spriteBatch.Begin();
+    private void ContinueButton_Click(object sender, EventArgs e)
+    {
+        //
+    }
 
+    private void NewGameButton_Click(object sender, EventArgs e)
+    {
+        base.getGame().ChangeState(1);
+    }
+
+    private void HighScoreButton_Click(object sender, EventArgs e) {
+        //
+    }
+
+    private void QuitGameButton_Click(object sender, EventArgs e)
+    {
+        base.getGame().Exit();
+    }
+
+    public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+    {
+        spriteBatch.Begin();
+        spriteBatch.Draw(_bg, new Rectangle(0, 0, 1600, 900), Color.White);
+        spriteBatch.Draw(_playerModel, new Rectangle(1150, 100, 400, 700), Color.White);
+        spriteBatch.Draw(_enemyModel, new Rectangle(800, 100, 400, 700), Color.White);
+        
         foreach (var component in _components)
             component.Draw(gameTime, spriteBatch);
 
         spriteBatch.End();
-    }
-
-    private void HighScoreButton_Click(object sender, EventArgs e) {
-        //Console.WriteLine("Load Game");
-    }
-
-    private void NewGameButton_Click(object sender, EventArgs e) {
-        base.getGame().ChangeState(1);
     }
 
     public override void Update(GameTime gameTime) {
@@ -66,7 +97,5 @@ public class MenuScreen : Screen {
             component.Update(gameTime);
     }
 
-    private void QuitGameButton_Click(object sender, EventArgs e) {
-        base.getGame().Exit();
-    }
+    
 }
