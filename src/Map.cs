@@ -46,16 +46,6 @@ public class Map : DrawableGameElement {
     // Isometric Math: https://clintbellanger.net/articles/isometric_math/
     // Note: our tiles have slightly different shape, (they're twice as high: take 1/4 of the height instead of 1/2)
 
-    // MapToScreen: take index of a tile as an input (e.g. (2,1)) returns pixel position.
-    public Point MapToScreen(Point mapCoordinates) {
-        var halfTile = TileSize.X / 2;
-        var quaterTile = TileSize.X / 4;
-
-        var screenX = (mapCoordinates.X - mapCoordinates.Y) * halfTile;
-        var screenY = (mapCoordinates.X + mapCoordinates.Y) * quaterTile;
-        return new Point(screenX + (int)_game._currentScreen.Camera.Pos.X,
-            screenY + (int)_game._currentScreen.Camera.Pos.Y);
-    }
 
     //Returns the world coordinates of the left angle of the ground level of the tile
     public Vector2 MapToWorld(Point mapCoordinates) {
@@ -72,17 +62,6 @@ public class Map : DrawableGameElement {
         return new Vector2((x - y + MapTranslation) * MapScaling, (x + y + MapTranslation) * MapScaling);
     }
 
-    // ScreenToMap: takes pixel position, returns the index of the tile at this position.
-    public Point ScreenToMap(Point screenPos) {
-        screenPos.X -= (int)_game._currentScreen.Camera.Pos.X;
-        screenPos.Y -= (int)_game._currentScreen.Camera.Pos.Y;
-
-        var halfTile = TileSize.X / 2;
-        var quaterTile = TileSize.X / 4;
-        var mapX = (screenPos.X / halfTile + screenPos.Y / quaterTile) / 2;
-        var mapY = (screenPos.Y / quaterTile - screenPos.X / halfTile) / 2;
-        return new Point(mapX, mapY);
-    }
 
     //building a polygon of the shape of wall_3f
     private Vertices buildWall3Polygon(float scaling) {
@@ -279,22 +258,22 @@ public class Map : DrawableGameElement {
         var h = _game.Graphics.PreferredBackBufferHeight;
         var w = _game.Graphics.PreferredBackBufferWidth;
 
-        var addonTiles = 4;
+        //var addonTiles = 4;
 
-        var xMin = ScreenToMap(new Point(0 - addonTiles, 0 - addonTiles)).X;
+        /*var xMin = ScreenToMap(new Point(0 - addonTiles, 0 - addonTiles)).X;
         var xMax = ScreenToMap(new Point(h + addonTiles, w + addonTiles)).X;
         var yMin = ScreenToMap(new Point(w - addonTiles, 0 - addonTiles)).Y;
-        var yMax = ScreenToMap(new Point(0 + addonTiles, h + addonTiles)).Y;
+        var yMax = ScreenToMap(new Point(0 + addonTiles, h + addonTiles)).Y;*/
 
-        Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
+        //Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
 
         foreach (var r in RoomList)
             //if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
             //continue;
         foreach (var t in r.TileMap) {
             //Only draw what is on the screen, NOT WORKING
-            //if (t.X + r.PosX < xMin || t.X + r.PosX > xMax || t.Y + r.PosY < yMin || t.Y + r.PosY > yMax) continue;
-            Point screenPos;
+            
+            Vector2 screenPos;
             Vector2 pos;
 
             //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
@@ -303,17 +282,23 @@ public class Map : DrawableGameElement {
             if (t.FinalPrototype != null) {
                 //Shift the prototype up by one if it is a cliff
                 if (t.FinalPrototype.IsCliff) {
-                    screenPos = MapToScreen(new Point(t.X + 1 + r.PosX, t.Y + 1 + r.PosY));
                     pos = MapToWorld(new Point(t.X + 1 + r.PosX, t.Y + 1 + r.PosY));
-                } else {
-                    screenPos = MapToScreen(new Point(t.X + r.PosX, t.Y + r.PosY));
+                    screenPos = camera.getScreenPoint(new Vector2 (pos.X, pos.Y));
+                    } else {
                     pos = MapToWorld(new Point(t.X + r.PosX, t.Y + r.PosY));
-                }
+                        screenPos = camera.getScreenPoint(new Vector2(pos.X, pos.Y));
+                    }
+
+                    //if (screenPos.X > h || screenPos.X < 0 || screenPos.Y < 0 || screenPos.Y > h)
+                        //continue;
 
                 var tilePos = camera.getScreenRectangle(pos.X, pos.Y - MapScaling * 3f, 2 * MapScaling, 2 * MapScaling);
                 c++;
 
                 float layerDepth = camera.getLayerDepth(screenPos.Y);
+
+
+
 
                     if (t.FinalPrototype.WallTex != null)
                     {
@@ -321,7 +306,7 @@ public class Map : DrawableGameElement {
                     }
                     if (t.FinalPrototype.GroundTex != null)
                     {
-                        batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.001f);
+                        batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0);
                     }
                 }
         }
