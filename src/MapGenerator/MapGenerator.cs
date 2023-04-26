@@ -105,25 +105,37 @@ public class MapGenerator {
             _rg.Content.Load<Texture2D>("Sprites/Rock/wall_3r"), // 9
             _rg.Content.Load<Texture2D>("Sprites/Rock/wall_3f"), // 10
             _rg.Content.Load<Texture2D>("Sprites/Rock/wall_3l"), // 11
-            _rg.Content.Load<Texture2D>("Sprites/Rock/wall_4") // 12
+            _rg.Content.Load<Texture2D>("Sprites/Rock/wall_4"), //12
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_1b"), //13
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_1r"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_1f"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_1l"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_2lf"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_2rf"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_2rb"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_2lb"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_3b"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_3r"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_3f"),
+            _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_3l")
         };
         var ground = _rg.Content.Load<Texture2D>("Sprites/ground");
 
         //Create prototypes for each texture; Look from bottom or from right side!!!
         //0: nothing; 1: right wall; 2: left wall; 3: all wall
-        RockPrototypes.Add(new Prototype(_rockTextures[0], "Wall1rd", new[] { 0, 1, 0, 2 }, 1, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[1], "Wall1ru", new[] { 1, 0, 0, 1 }, 1, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[2], "Wall1lu", new[] { 2, 0, 1, 0 }, 1, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[3], "Wall1ld", new[] { 0, 2, 2, 0 }, 1, false));
+        RockPrototypes.Add(new Prototype(_rockTextures[0], "Wall1rd", new[] { 0, 1, 0, 2 }, 1, false, false, new List<Texture2D>() { _rockTextures[13] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[1], "Wall1ru", new[] { 1, 0, 0, 1 }, 1, false, false, new List<Texture2D>() { _rockTextures[14] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[2], "Wall1lu", new[] { 2, 0, 1, 0 }, 1, false, false, new List<Texture2D>() { _rockTextures[15] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[3], "Wall1ld", new[] { 0, 2, 2, 0 }, 1, false, false, new List<Texture2D>() { _rockTextures[16] }));
 
-        RockPrototypes.Add(new Prototype(_rockTextures[4], "Wall2l", new[] { 2, 2, 3, 0 }, 5, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[5], "Wall2u", new[] { 3, 0, 1, 1 }, 5, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[6], "Wall2r", new[] { 1, 1, 0, 3 }, 5, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[7], "Wall2d", new[] { 0, 3, 2, 2 }, 5, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[8], "Wall3ul", new[] { 1, 3, 2, 3 }, 1, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[11], "Wall3ur", new[] { 2, 3, 3, 2 }, 1, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[9], "Wall3dl", new[] { 3, 1, 1, 3 }, 1, false));
-        RockPrototypes.Add(new Prototype(_rockTextures[10], "Wall3dr", new[] { 3, 2, 3, 1 }, 1, false));
+        RockPrototypes.Add(new Prototype(_rockTextures[4], "Wall2l", new[] { 2, 2, 3, 0 }, 5, false, false, new List<Texture2D>() { _rockTextures[17] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[5], "Wall2u", new[] { 3, 0, 1, 1 }, 5, false, false, new List<Texture2D>() { _rockTextures[18] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[6], "Wall2r", new[] { 1, 1, 0, 3 }, 5, false, false, new List<Texture2D>() { _rockTextures[19] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[7], "Wall2d", new[] { 0, 3, 2, 2 }, 5, false, false, new List<Texture2D>() { _rockTextures[20] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[8], "Wall3ul", new[] { 1, 3, 2, 3 }, 1, false, false, new List<Texture2D>() { _rockTextures[21] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[11], "Wall3ur", new[] { 2, 3, 3, 2 }, 1, false, false, new List<Texture2D>() { _rockTextures[22] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[9], "Wall3dl", new[] { 3, 1, 1, 3 }, 1, false, false, new List<Texture2D>() { _rockTextures[23] }));
+        RockPrototypes.Add(new Prototype(_rockTextures[10], "Wall3dr", new[] { 3, 2, 3, 1 }, 1, false, false, new List<Texture2D>() { _rockTextures[24] }));
         RockPrototypes.Add(new Prototype(_rockTextures[12], "FullWall", new[] { 3, 3, 3, 3 }, 100, false));
 
         RockPrototypes.Add(new Prototype(ground, "ground", new[] { 0, 0, 0, 0 }, 600, true));

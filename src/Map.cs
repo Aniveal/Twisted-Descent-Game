@@ -264,23 +264,7 @@ public class Map : DrawableGameElement {
     }
 
     public void LoadContent() {
-        _ground = _game.Content.Load<Texture2D>("Sprites/ground");
-
-        _rockTextures = new List<Texture2D> {
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_1b"), // 0
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_1r"), // 1
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_1f"), // 2 
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_1l"), // 3
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_2lf"), // 4
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_2rf"), // 5 
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_2rb"), // 6
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_2lb"), // 7
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_3b"), // 8
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_3r"), // 9
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_3f"), // 10
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_3l"), // 11
-            _game.Content.Load<Texture2D>("Sprites/Rock/wall_4") // 12
-        };
+        
     }
 
     public override void Update(GameTime gameTime) {
@@ -308,7 +292,7 @@ public class Map : DrawableGameElement {
             //continue;
         foreach (var t in r.TileMap) {
             //Only draw what is on the screen, NOT WORKING
-            //if (t.x + r.posX < xMin || t.x + r.posX > xMax || t.y + r.posY < yMin || t.y + r.posY > yMax) continue;
+            //if (t.X + r.PosX < xMin || t.X + r.PosX > xMax || t.Y + r.PosY < yMin || t.Y + r.PosY > yMax) continue;
             Point screenPos;
             Vector2 pos;
 
@@ -316,6 +300,7 @@ public class Map : DrawableGameElement {
             //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
             //batch.Draw(_ground, tilePos, Color.White);
             if (t.FinalPrototype != null) {
+                //Shift the prototype up by one if it is a cliff
                 if (t.FinalPrototype.IsCliff) {
                     screenPos = MapToScreen(new Point(t.X + 1 + r.PosX, t.Y + 1 + r.PosY));
                     pos = MapToWorld(new Point(t.X + 1 + r.PosX, t.Y + 1 + r.PosY));
