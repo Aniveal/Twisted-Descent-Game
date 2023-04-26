@@ -20,6 +20,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Arial.spritefont
 
+#begin Arial40.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Arial40.spritefont
+
 #begin Button.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -194,6 +201,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/amphora.png
+
+#begin Sprites/BG.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/BG.jpg
 
 #begin Sprites/Cliff/cliff_1b.png
 /importer:TextureImporter
@@ -842,6 +861,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Theseus/idle.png
+
+#begin Sprites/Theseus/model.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Theseus/model.png
 
 #begin Sprites/Theseus/running_b.png
 /importer:TextureImporter

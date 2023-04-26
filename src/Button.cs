@@ -30,7 +30,7 @@ public class Button : Component {
 
     public Vector2 Position { get; set; }
 
-    public Rectangle Rectangle => new((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height);
+    public Rectangle Rectangle => new((int)Position.X, (int)Position.Y, _texture.Width * 4, _texture.Height * 4);
 
     public string Text { get; set; }
 
@@ -57,7 +57,6 @@ public class Button : Component {
         if (!string.IsNullOrEmpty(Text)) {
             var x = Rectangle.X + Rectangle.Width / 2 - _font.MeasureString(Text).X / 2;
             var y = Rectangle.Y + Rectangle.Height / 2 - _font.MeasureString(Text).Y / 2;
-
             spriteBatch.DrawString(_font, Text, new Vector2(x, y), PenColour);
         }
     }
