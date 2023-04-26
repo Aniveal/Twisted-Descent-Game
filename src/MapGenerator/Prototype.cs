@@ -13,8 +13,8 @@ public class Prototype {
     public readonly int[] Sockets;
 
     //Name of prototype (i.e. "Wall1ur" for Wall1, up, right)
-    public readonly Texture2D Texture;
-    public List<Texture2D> additionalTextures;
+    public Texture2D GroundTex;
+    public Texture2D WallTex;
 
     public bool IsCliff;
 
@@ -26,13 +26,13 @@ public class Prototype {
     public int Weight;
 
 
-    public Prototype(Texture2D t, string n, int[] sockets, int w, bool wal, bool isCliff = false, List<Texture2D> additionalTextures = null) {
-        Texture = t;
+    public Prototype(Texture2D groundTex, Texture2D wallTex, string n, int[] sockets, int w, bool wal, bool isCliff = false) {
+        GroundTex = groundTex;
+        WallTex = wallTex;
         Name = n;
         Sockets = sockets;
         Weight = w;
         Walkable = wal;
         IsCliff = isCliff;
-        this.additionalTextures = additionalTextures;
     }
 }

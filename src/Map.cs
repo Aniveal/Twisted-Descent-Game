@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Meridian2; 
 
@@ -312,9 +313,17 @@ public class Map : DrawableGameElement {
                 var tilePos = camera.getScreenRectangle(pos.X, pos.Y - MapScaling * 3f, 2 * MapScaling, 2 * MapScaling);
                 c++;
 
-                batch.Draw(t.FinalPrototype.Texture, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
-                    0f);
-            }
+                float layerDepth = camera.getLayerDepth(screenPos.Y);
+
+                    if (t.FinalPrototype.WallTex != null)
+                    {
+                        batch.Draw(t.FinalPrototype.WallTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth);
+                    }
+                    if (t.FinalPrototype.GroundTex != null)
+                    {
+                        batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.001f);
+                    }
+                }
         }
     }
 }
