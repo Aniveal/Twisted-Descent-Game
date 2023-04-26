@@ -33,10 +33,16 @@ public class Camera {
         } // Negative zoom will flip image
     }
 
+
+    /// <summary>
+    ///     Returns layer depth between 0.25 and 0.75. This range is that there is space up and downwards (for example cliffs)
+    /// </summary>
     public float getLayerDepth(float yScreen) {
         var screenFrac = yScreen / _graphicsDevice.Viewport.Height + float.Epsilon;
 
         if (screenFrac >= 1) screenFrac = 1.0f - float.Epsilon;
+
+        screenFrac = screenFrac / 2.0f + 0.25f;
 
         return screenFrac;
     }

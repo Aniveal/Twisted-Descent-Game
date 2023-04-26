@@ -194,6 +194,22 @@ public class MapGenerator {
             
         };
 
+        /*Create prototypes for each texture; Look from bottom or from right side!!!
+        //New slots: 6: cliff left, ground right    7: cliff right, ground left        8: full Cliff
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[0], "Cliff_1rd", new[] { 8, 6, 8, 7 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[1], "Cliff_1ul", new[] { 7, 8, 6, 8 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[2], "Cliff_1dl", new[] { 8, 7, 7, 8 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[3],  "Cliff_1dr", new[] { 6, 8, 8, 6 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[4],"Cliff_2u", new[] { 8, 0, 7, 7 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[5], "Cliff_2r", new[] { 7, 7, 0, 8 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[6],  "Cliff_2l", new[] { 6, 6, 8, 0 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[7],  "Cliff_2d", new[] { 0, 8, 7, 7 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[8],  "Cliff_3ur", new[] { 7, 0, 0, 7 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[9], "Cliff_3dr", new[] { 0, 7, 0, 6 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[10], "Cliff_3dl", new[] { 0, 6, 6, 0 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype(null, _cliffTextures[11], "Cliff_3ul", new[] { 6, 0, 7, 0 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype(null, null , "FullCliff", new[] { 8, 8, 8, 8 }, 40000, false, true));*/
+        
         //Create prototypes for each texture; Look from bottom or from right side!!!
         //New slots: 6: cliff left, ground right    7: cliff right, ground left        8: full Cliff
         CliffPrototypes.Add(new Prototype(_cliffTextures[0], null, "Cliff_1rd", new[] { 8, 6, 8, 7 }, 2000, false, true));
@@ -202,12 +218,12 @@ public class MapGenerator {
         CliffPrototypes.Add(new Prototype(_cliffTextures[3], null, "Cliff_1dr", new[] { 6, 8, 8, 6 }, 2000, false, true));
         CliffPrototypes.Add(new Prototype(_cliffTextures[4], null, "Cliff_2u", new[] { 8, 0, 7, 7 }, 2000, false, true));
         CliffPrototypes.Add(new Prototype(_cliffTextures[5], null, "Cliff_2r", new[] { 7, 7, 0, 8 }, 2000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[6], null, "Cliff_2l", new[] { 6, 6, 8, 0 }, 2000, false, true));
+        CliffPrototypes.Add(new Prototype( _cliffTextures[6], null, "Cliff_2l", new[] { 6, 6, 8, 0 }, 2000, false, true));
         CliffPrototypes.Add(new Prototype(_cliffTextures[7], null, "Cliff_2d", new[] { 0, 8, 7, 7 }, 2000, false, true));
         CliffPrototypes.Add(new Prototype(_cliffTextures[8], null, "Cliff_3ur", new[] { 7, 0, 0, 7 }, 500, false, true));
         CliffPrototypes.Add(new Prototype(_cliffTextures[9], null, "Cliff_3dr", new[] { 0, 7, 0, 6 }, 500, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[10], null, "Cliff_3dl", new[] { 0, 6, 6, 0 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype( _cliffTextures[10], null, "Cliff_3dl", new[] { 0, 6, 6, 0 }, 500, false, true));
         CliffPrototypes.Add(new Prototype(_cliffTextures[11], null, "Cliff_3ul", new[] { 6, 0, 7, 0 }, 500, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[12], null, "FullCliff", new[] { 8, 8, 8, 8 }, 40000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[12], null , "FullCliff", new[] { 8, 8, 8, 8 }, 40000, false, true));
     }
 }

@@ -267,48 +267,51 @@ public class Map : DrawableGameElement {
 
         //Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
 
-        foreach (var r in RoomList)
+        foreach (var r in RoomList) { 
             //if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
             //continue;
-        foreach (var t in r.TileMap) {
-            //Only draw what is on the screen, NOT WORKING
-            
-            Vector2 screenPos;
-            Vector2 pos;
+            foreach (var t in r.TileMap)
+            {
+                //Only draw what is on the screen, NOT WORKING
 
-            //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
-            //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
-            //batch.Draw(_ground, tilePos, Color.White);
-            if (t.FinalPrototype != null) {
-                //Shift the prototype up by one if it is a cliff
-                if (t.FinalPrototype.IsCliff) {
-                    pos = MapToWorld(new Point(t.X + 1 + r.PosX, t.Y + 1 + r.PosY));
-                    screenPos = camera.getScreenPoint(new Vector2 (pos.X, pos.Y));
-                    } else {
-                    pos = MapToWorld(new Point(t.X + r.PosX, t.Y + r.PosY));
+                Vector2 screenPos;
+                Vector2 pos;
+
+                //Rectangle tilePos = new Rectangle(screenPos.X + _game._graphics.PreferredBackBufferWidth / 2 - TileSize.X, screenPos.Y, TileSize.X, TileSize.Y);
+                //batch.Draw(_ground, tilePos, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+                //batch.Draw(_ground, tilePos, Color.White);
+                if (t.FinalPrototype != null)
+                {
+                    //Shift the prototype up by one if it is a cliff
+                    if (t.FinalPrototype.IsCliff)
+                    {
+                        pos = MapToWorld(new Point(t.X + 1 + r.PosX, t.Y + 1 + r.PosY));
+                        screenPos = camera.getScreenPoint(new Vector2(pos.X, pos.Y));
+                    }
+                    else
+                    {
+                        pos = MapToWorld(new Point(t.X + r.PosX, t.Y + r.PosY));
                         screenPos = camera.getScreenPoint(new Vector2(pos.X, pos.Y));
                     }
 
-                    //if (screenPos.X > h || screenPos.X < 0 || screenPos.Y < 0 || screenPos.Y > h)
-                        //continue;
+                    float layerDepthWalls = camera.getLayerDepth(screenPos.Y);
+                    float layerDepthFloor = 0.24f;
 
-                var tilePos = camera.getScreenRectangle(pos.X, pos.Y - MapScaling * 3f, 2 * MapScaling, 2 * MapScaling);
-                c++;
-
-                float layerDepth = camera.getLayerDepth(screenPos.Y);
-
+                    var tilePos = camera.getScreenRectangle(pos.X, pos.Y - MapScaling * 3f, 2 * MapScaling, 2 * MapScaling);
+                    c++;
 
 
 
                     if (t.FinalPrototype.WallTex != null)
                     {
-                        batch.Draw(t.FinalPrototype.WallTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth);
+                        batch.Draw(t.FinalPrototype.WallTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepthWalls);
                     }
                     if (t.FinalPrototype.GroundTex != null)
                     {
-                        batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0);
+                        batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepthFloor);
                     }
                 }
+            }
         }
     }
 }
