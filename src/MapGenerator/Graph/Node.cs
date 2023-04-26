@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Meridian2
-{
-    internal class Node
-    {
-        //The room that is associated with this node: 
-        public Room room;
+namespace Meridian2; 
 
-        //Coordinates
-        public int x, y;
+internal class Node {
+    //A list of all neighbours (adjacency list)
+    public List<Node> Neighbours;
 
-        //A list of all neighbours (adjacency list)
-        public List<Node> neighbours;
+    //The room that is associated with this node: 
+    public Room Room;
 
-        public Node(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
+    //Coordinates
+    public int X, Y;
 
+    public Node(int x, int y) {
+        X = x;
+        Y = y;
     }
 }

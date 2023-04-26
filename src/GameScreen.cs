@@ -1,32 +1,30 @@
 ﻿using Meridian2.Columns;
-using Meridian2.Theseus;
 using Meridian2.Enemy;
 using Meridian2.Gui;
+using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using tainicom.Aether.Physics2D;
 using tainicom.Aether.Physics2D.Dynamics;
-using System;
 
 namespace Meridian2;
 
 public class GameScreen : Screen {
-    public RopeGame Game;
-    private SpriteBatch _batch;
-    public World World;
+    private const float FixedTimeStep = 1 / 60f;
+    private readonly SpriteBatch _batch;
     private double _fixedTickAccumulator;
-    private const float _fixedTimeStep = 1 / 60f;
 
-    private Map _map;
+    private readonly Map _map;
+    public ColumnsManager ColumnsManager;
+    public EnemyManager EnemyManager;
+    public RopeGame Game;
+
+    public GuiManager GuiManager;
+
+    public SpearsController SpearsController;
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
 
-    public TheseusManager theseusManager;
-    public EnemyManager enemyManager;
-    public ColumnsManager columnsManager;
-
-    public GuiManager guiManager;
-    public SpearsController spearsController;
+    public TheseusManager TheseusManager;
+    public World World;
 
 
     public GameScreen(RopeGame game) : base(game) {
@@ -36,17 +34,16 @@ public class GameScreen : Screen {
         _batch = new SpriteBatch(Game.GraphicsDevice);
 
         World = new World(Vector2.Zero);
-        columnsManager = new ColumnsManager();
-        
+        ColumnsManager = new ColumnsManager();
 
-        
-        theseusManager = new TheseusManager(Game, World);
-        enemyManager = new EnemyManager(Game, World, theseusManager.player, 1);
-        spearsController = new SpearsController(game, columnsManager, theseusManager.player);
-        guiManager = new GuiManager(game, spearsController);
-        
 
-        _map = new Map(game, World, columnsManager, enemyManager);
+        TheseusManager = new TheseusManager(Game, World);
+        EnemyManager = new EnemyManager(Game, World, TheseusManager.Player, 1);
+        SpearsController = new SpearsController(game, ColumnsManager, TheseusManager.Player);
+        GuiManager = new GuiManager(game, SpearsController);
+
+
+        _map = new Map(game, World, ColumnsManager, EnemyManager);
     }
 
     public override void Initialize() {
@@ -54,14 +51,14 @@ public class GameScreen : Screen {
 
         _map.Initialize();
 
-        theseusManager.Initialize();
-        enemyManager.Initialize();
+        TheseusManager.Initialize();
+        EnemyManager.Initialize();
 
-        guiManager.Initialize();
+        GuiManager.Initialize();
 
         //Create dummy walls
-        int w = Game.GraphicsDevice.Viewport.Width;
-        int h = Game.GraphicsDevice.Viewport.Height;
+        var w = Game.GraphicsDevice.Viewport.Width;
+        var h = Game.GraphicsDevice.Viewport.Height;
         //int thick = w / 40;
 
         //TODO: move columns addition into a world generation class
@@ -77,18 +74,18 @@ public class GameScreen : Screen {
 
         _map.LoadContent();
 
-        theseusManager.LoadContent();
-        enemyManager.LoadContent();
-        guiManager.LoadContent();
-        spearsController.LoadContent();
+        TheseusManager.LoadContent();
+        EnemyManager.LoadContent();
+        GuiManager.LoadContent();
+        SpearsController.LoadContent();
     }
 
     public void FixedUpdate(GameTime gameTime) {
         _fixedTickAccumulator += gameTime.ElapsedGameTime.TotalSeconds;
 
-        while (_fixedTickAccumulator >= _fixedTimeStep) {
-            World.Step(_fixedTimeStep);
-            _fixedTickAccumulator -= _fixedTimeStep;
+        while (_fixedTickAccumulator >= FixedTimeStep) {
+            World.Step(FixedTimeStep);
+            _fixedTickAccumulator -= FixedTimeStep;
         }
     }
 
@@ -101,39 +98,38 @@ public class GameScreen : Screen {
 
         base.Update(gameTime);
         _map.Update(gameTime);
-        
-        theseusManager.Update(gameTime);
-        enemyManager.Update(gameTime);
-        spearsController.Update(gameTime);
-        Diagnostics.Instance.Update(gameTime, theseusManager.player);
+
+        TheseusManager.Update(gameTime);
+        EnemyManager.Update(gameTime);
+        SpearsController.Update(gameTime);
+        Diagnostics.Instance.Update(gameTime, TheseusManager.Player);
 
         //putting it here cuz otherwise we'll forget about it the day when columns actually need updating. same for gui
         //columnsManager.Update(gameTime);
         //guiManager.Update(gameTime);
     }
 
-    public override void Draw(GameTime gameTime) {
-        Camera.Pos = theseusManager.player.Body.Position;
+    public override void Draw(GameTime gameTime, SpriteBatch spriteBatch = null)
+    {
+        Camera.Pos = TheseusManager.Player.Body.Position;
         base.Draw(gameTime);
 
-        _batch.Begin();
+        _batch.Begin(SpriteSortMode.FrontToBack);
 
         _map.Draw(gameTime, _batch, Camera);
-        columnsManager.DrawFirst(gameTime, _batch, Camera);
+        ColumnsManager.Draw(gameTime, _batch, Camera);
 
-        theseusManager.Draw(gameTime, _batch, Camera);
-        enemyManager.Draw(gameTime, _batch, Camera);
-
-        columnsManager.DrawSecond(gameTime, _batch, Camera);
+        TheseusManager.Draw(gameTime, _batch, Camera);
+        EnemyManager.Draw(gameTime, _batch, Camera);
 
         //foreach (DummyRectangle rec in walls)
         //{
         //    rec.Draw(_batch);
         //}
-        guiManager.Draw(gameTime, _batch, Camera);
+        GuiManager.Draw(gameTime, _batch, Camera);
 
-        Color rope_red = new Color(170, 54, 54);
-        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), rope_red);
+        var ropeRed = new Color(170, 54, 54);
+        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), ropeRed);
         _batch.End();
     }
 }

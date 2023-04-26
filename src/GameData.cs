@@ -1,43 +1,41 @@
 using System;
 
-namespace Meridian2 {
-    public class GameData {
-         
-         //health
-         private const int startMaxHealth = 3;
-         public int maxHealth;
-         public int Health { private set; get;}
+namespace Meridian2; 
 
-         //Spears data
-         public int[] spears;//basic, electric, fragile spears
+public class GameData {
+    //health
+    private const int StartMaxHealth = 3;
 
-         public int score = 0;
+    private RopeGame _game;
+    public int MaxHealth;
 
-         public bool gameOver {private set; get;}
+    public int Score = 0;
 
-         private RopeGame _game;
+    //Spears data
+    public int[] Spears; //basic, electric, fragile spears
 
-         public GameData(RopeGame game) {
-            resetHealth();
-            gameOver = false;
-            _game = game;
-            spears = new int[3] {10, 5, 5}; //define initial spears amount, basic/electric/fragile
-         }
+    public GameData(RopeGame game) {
+        resetHealth();
+        GameOver = false;
+        _game = game;
+        Spears = new int[3] { 10, 5, 5 }; //define initial spears amount, basic/electric/fragile
+    }
 
-         public void resetHealth() {
-            maxHealth = startMaxHealth;
-            Health = maxHealth;
-         }
+    public int Health { private set; get; }
 
-         public void RemoveHealth(int amount) {
-            Health -= 1;
-            if (Health <= 0) {
-               gameOver = true;
-            }
-         }
+    public bool GameOver { private set; get; }
 
-         public void AddHealth(int amount) {
-            Health = Math.Max(maxHealth, Health+amount);
-         }
+    public void resetHealth() {
+        MaxHealth = StartMaxHealth;
+        Health = MaxHealth;
+    }
+
+    public void RemoveHealth(int amount) {
+        Health -= 1;
+        if (Health <= 0) GameOver = true;
+    }
+
+    public void AddHealth(int amount) {
+        Health = Math.Max(MaxHealth, Health + amount);
     }
 }

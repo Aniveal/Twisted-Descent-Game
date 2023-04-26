@@ -2,45 +2,38 @@
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Data.Common;
-using System.Reflection.Metadata.Ecma335;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Theseus;
 
-public class RopeSegment : DrawableGameElement
-{
-    private readonly Rope _rope;
-    private readonly World _world;
-    private readonly Vector2 _position;
-    private readonly Vector2 _size;
-    public RopeSegment previous = null; //may be null if none
-    public RopeSegment next = null; //may be null if none
-
-    public Body Body;
-
+public class RopeSegment : DrawableGameElement {
     private const float RopeDensity = 0.2f;
+    private const int ElecRange = 30; //range in segments
+    private readonly Vector2 _position;
+    private readonly Rope _rope;
+    private readonly Vector2 _size;
+    private readonly World _world;
 
     private bool _black;
 
-    public bool isElecSrc = false;
-    public RopeSegment elecSrcSegment = null;
-    private const int _elecRange = 30; //range in segments
-    public int elecIntensity = 0;
-    public bool elecFromPrev = false;
-    public bool elecFromNext = false;
+    public Body Body;
+    public bool ElecFromNext = false;
+    public bool ElecFromPrev = false;
+    public int ElecIntensity;
+    public RopeSegment ElecSrcSegment;
 
-    public RopeSegment(Rope rope, World world, Vector2 position, Vector2 size)
-    {
+    public bool IsElecSrc;
+    public RopeSegment Next; //may be null if none
+    public RopeSegment Previous; //may be null if none
+
+    public RopeSegment(Rope rope, World world, Vector2 position, Vector2 size) {
         _rope = rope;
         _world = world;
         _position = position;
         _size = size;
     }
 
-    public void Initialize()
-    {
+    public void Initialize() {
         Body = _world.CreateRectangle(_size.X, _size.Y, RopeDensity, _position, bodyType: BodyType.Dynamic);
         Body.LinearDamping = 0.5f;
         Body.AngularDamping = 0.5f;
@@ -48,100 +41,83 @@ public class RopeSegment : DrawableGameElement
         _black = false;
 
         // Disable rope self collision
-        foreach (Fixture fixture in Body.FixtureList)
-        {
-            fixture.CollisionGroup = -1;
-        }
+        foreach (var fixture in Body.FixtureList) fixture.CollisionGroup = -1;
     }
 
-    public void SetPrevious(RopeSegment previous)
-    {
-        this.previous = previous;
+    public void SetPrevious(RopeSegment previous) {
+        Previous = previous;
     }
 
-    public void SetNext(RopeSegment next)
-    {
-        this.next = next;
+    public void SetNext(RopeSegment next) {
+        Next = next;
     }
 
-    public void Electrify(RopeSegment src, int intensity, bool fromPrev)
-    {
-        if (intensity == 0) { return; }
-
-        if (elecSrcSegment != null && elecSrcSegment.isElecSrc && intensity < elecIntensity)
-        {
+    public void Electrify(RopeSegment src, int intensity, bool fromPrev) {
+        if (intensity == 0) {
+            if (fromPrev)
+                Next?.DeElectrify(true);
+            else
+                Previous?.DeElectrify(false);
             return;
         }
-        elecSrcSegment = src;
-        elecIntensity = intensity;
-        if (fromPrev)
-        {
-            next?.Electrify(src, intensity - 1, true);
-        }
-        else
-        {
-            previous?.Electrify(src, intensity - 1, false);
-        }
 
+        if (ElecSrcSegment != null && ElecSrcSegment.IsElecSrc && intensity < ElecIntensity) return;
+        ElecSrcSegment = src;
+        ElecIntensity = intensity;
+        if (fromPrev)
+            Next?.Electrify(src, intensity - 1, true);
+        else
+            Previous?.Electrify(src, intensity - 1, false);
     }
 
-    public void DeElectrify(bool fromPrev)
-    {
-        if (elecSrcSegment != null && elecSrcSegment.isElecSrc)
-        {
-            if (fromPrev) {
-                previous?.Electrify(elecSrcSegment, elecIntensity - 1, false);
-            }
-            else {
-                next?.Electrify(elecSrcSegment, elecIntensity - 1, true);
-            }
+    public void DeElectrify(bool fromPrev) {
+        if (ElecSrcSegment != null && ElecSrcSegment.IsElecSrc) {
+            if (fromPrev)
+                Previous?.Electrify(ElecSrcSegment, ElecIntensity - 1, false);
+            else
+                Next?.Electrify(ElecSrcSegment, ElecIntensity - 1, true);
             return;
         }
-        elecSrcSegment = null;
-        elecIntensity = 0;
-        if (fromPrev)
-        {
-            next?.DeElectrify(true);
-        }
-        else
-        {
-            previous?.DeElectrify(false);
+
+        ElecSrcSegment = null;
+        ElecIntensity = 0;
+        if (fromPrev) {
+            if (Next == null || Next.ElecIntensity == 0) return;
+            Next.DeElectrify(true);
+        } else {
+            if (Previous == null || Previous.ElecIntensity == 0) return;
+            Previous.DeElectrify(false);
         }
     }
 
-    public void LoadContent()
-    {
+    public void LoadContent() {
         // Nothing to load
     }
 
-    public override void Update(GameTime gameTime)
-    {
+    public override void Update(GameTime gameTime) {
         // Nothing to update
     }
 
     public void Destroy() {
-        if (previous == null | next == null ) {
-            return; //cannot destroy frist/last segment
-        }
-        previous.next = next;
-        next.previous = previous;
+        if ((Previous == null) | (Next == null)) return; //cannot destroy frist/last segment
+        Previous.Next = Next;
+        Next.Previous = Previous;
         _world.Remove(Body);
-        if (elecIntensity > 0) {
-            if (isElecSrc) {
-                if (next.isElecSrc) {
-                    previous.Electrify(next, next.elecIntensity, false);
-                } else if (previous.isElecSrc) {
-                    previous.Electrify(previous, previous.elecIntensity, true);
+        if (ElecIntensity > 0) {
+            if (IsElecSrc) {
+                if (Next.IsElecSrc) {
+                    Previous.Electrify(Next, Next.ElecIntensity, false);
+                } else if (Previous.IsElecSrc) {
+                    Previous.Electrify(Previous, Previous.ElecIntensity, true);
                 } else {
-                    previous.DeElectrify(false);
-                    next.DeElectrify(true);
+                    Previous.DeElectrify(false);
+                    Next.DeElectrify(true);
                 }
             } else {
-                if (next.elecIntensity > previous.elecIntensity) {
-                    previous.Electrify(next.elecSrcSegment, next.elecIntensity-1, false);
-                } else if (next.elecIntensity < previous.elecIntensity) {
-                    next.Electrify(previous.elecSrcSegment, previous.elecIntensity - 1, true);
-                }
+                if (Next.ElecIntensity > Previous.ElecIntensity)
+                    Previous.Electrify(Next.ElecSrcSegment, Next.ElecIntensity - 1, false);
+                else if (Next.ElecIntensity < Previous.ElecIntensity)
+                    Next.Electrify(Previous.ElecSrcSegment, Previous.ElecIntensity - 1, true);
             }
         }
         //TODO: update electrification of neighbors
@@ -149,17 +125,14 @@ public class RopeSegment : DrawableGameElement
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-        Color ropeColor = Color.White;
-        if (elecIntensity > 0) {
-            ropeColor = Color.Blue;
-        }
-        if (isElecSrc) {
-            ropeColor = Color.Black;
-        }
+        var ropeColor = Color.White;
+        //TODO: do better visuals of electric
+        if (ElecIntensity > 0) ropeColor = Color.Blue;
+        if (IsElecSrc) ropeColor = Color.Black;
 
-        Rectangle dstRectangle = camera.getScreenRectangle(Body.Position.X, Body.Position.Y, _size.X, _size.Y);
-        batch.Draw(_rope.BaseTexture, dstRectangle, sourceRectangle: null, color: ropeColor, rotation: Body.Rotation,
-            origin: Vector2.Zero, effects: SpriteEffects.None, layerDepth: 0f);
+        var dstRectangle = camera.getScreenRectangle(Body.Position.X, Body.Position.Y, _size.X, _size.Y);
+        batch.Draw(_rope.BaseTexture, dstRectangle, null, ropeColor, Body.Rotation,
+            Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRectangle.Y));
     }
 
     /**
@@ -169,38 +142,28 @@ public class RopeSegment : DrawableGameElement
      * 
      * TODO: change unique to encompass situation where column is wrapped on two separate occasions, will currently not behave as expected by player
      */
-    public void ColumnCallback(ActivableColumn column, bool collision, bool unique)
-    {
+    public void ColumnCallback(ActivableColumn column, bool collision, bool unique) {
         _black = collision;
-        if (column is FragileColumn)
-        {
-            if (collision & unique)
-            {
-                _rope._fragiles.Add((FragileColumn)column);
-            }
+        if (column is FragileColumn) {
+            if (collision & unique) _rope.Fragiles.Add((FragileColumn)column);
             if (!collision & unique)
-            {
                 //TODO: change this when changing unique trigger
-                _rope._fragiles.RemoveAll(x => x == column);
-            }
+                _rope.Fragiles.RemoveAll(x => x == column);
         }
-        if (column is ElectricColumn)
-        {
-            if (collision)
-            {
-                isElecSrc = true;
-                elecIntensity = _elecRange;
-                elecSrcSegment = this;
-                next?.Electrify(this, elecIntensity - 1, true);
-                previous?.Electrify(this, elecIntensity - 1, false);
-            }
-            else
-            {
-                isElecSrc = false;
-                elecIntensity = 0;
-                elecSrcSegment = null;
-                next?.DeElectrify(true);
-                previous?.DeElectrify(false);
+
+        if (column is ElectricColumn) {
+            if (collision) {
+                IsElecSrc = true;
+                ElecIntensity = ElecRange;
+                ElecSrcSegment = this;
+                Next?.Electrify(this, ElecIntensity - 1, true);
+                Previous?.Electrify(this, ElecIntensity - 1, false);
+            } else {
+                IsElecSrc = false;
+                ElecIntensity = 0;
+                ElecSrcSegment = null;
+                Next?.DeElectrify(true);
+                Previous?.DeElectrify(false);
             }
         }
     }

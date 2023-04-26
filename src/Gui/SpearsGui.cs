@@ -1,75 +1,72 @@
+using Meridian2.Columns;
+using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Meridian2.GameElements;
-using Meridian2.Columns;
 
-namespace Meridian2.Gui {
-    public class SpearsGui : DrawableGameElement {
+namespace Meridian2.Gui; 
 
-        private RopeGame _game;
-        private GameData _data;
+public class SpearsGui : DrawableGameElement {
+    private const int Size = 100;
 
-        private SpearsController _controler;
+    private Texture2D _boxTexture;
 
-        private const int size = 100;
+    private readonly SpearsController _controler;
+    private readonly GameData _data;
 
-        private Texture2D boxTexture;
-        private Texture2D icon_basic;
-        private Texture2D icon_electric;
-        private Texture2D icon_fragile;
+    private readonly RopeGame _game;
+    private Texture2D _iconBasic;
+    private Texture2D _iconElectric;
+    private Texture2D _iconFragile;
 
-        public SpearsGui(RopeGame game, GameData data, SpearsController controler) {
-            _game = game;
-            _data = data;
-            _controler = controler;
-        } 
+    public SpearsGui(RopeGame game, GameData data, SpearsController controler) {
+        _game = game;
+        _data = data;
+        _controler = controler;
+    }
 
-        public void LoadContent() {
-            boxTexture = _game.Content.Load<Texture2D>("Sprites/UI/box");
-            icon_basic = _game.Content.Load<Texture2D>("Sprites/UI/letter_b");
-            icon_electric = _game.Content.Load<Texture2D>("Sprites/UI/letter_e");
-            icon_fragile = _game.Content.Load<Texture2D>("Sprites/UI/letter_f");
-        }
+    public void LoadContent() {
+        _boxTexture = _game.Content.Load<Texture2D>("Sprites/UI/box");
+        _iconBasic = _game.Content.Load<Texture2D>("Sprites/UI/letter_b");
+        _iconElectric = _game.Content.Load<Texture2D>("Sprites/UI/letter_e");
+        _iconFragile = _game.Content.Load<Texture2D>("Sprites/UI/letter_f");
+    }
 
-        public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            int width = _game.GraphicsDevice.Viewport.Width;
-            int height = _game.GraphicsDevice.Viewport.Height;
+    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+        var width = _game.GraphicsDevice.Viewport.Width;
+        var height = _game.GraphicsDevice.Viewport.Height;
 
-            //assuming 3 spears
-            //basic spear
-            //Rectangle rec = new Rectangle((width-size)/2-size, height-2*size, size, size);
-            Rectangle rec = new Rectangle((width-size)/2-size, height-size, size, size);
-            if (_controler.selected == 0) {
-                batch.Draw(boxTexture, rec, Color.Red);
-            } else {
-                batch.Draw(boxTexture, rec, Color.Black);
-            }
-            batch.Draw(icon_basic, rec, Color.Black);
+        //assuming 3 spears
+        //basic spear
+        //Rectangle rec = new Rectangle((width-size)/2-size, height-2*size, size, size);
+        var rec = new Rectangle((width - Size) / 2 - Size, height - Size, Size, Size);
+        if (_controler.Selected == 0)
+            batch.Draw(_boxTexture, rec, null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        else
+            batch.Draw(_boxTexture, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        batch.Draw(_iconBasic, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
-            //electric
-            rec = new Rectangle((width-size)/2, height-size, size, size);
-            if (_controler.selected == 1) {
-                batch.Draw(boxTexture, rec, Color.Red);
-            } else {
-                batch.Draw(boxTexture, rec, Color.Black);
-            }
-            batch.Draw(icon_electric, rec, Color.White);
+        //electric
+        rec = new Rectangle((width - Size) / 2, height - Size, Size, Size);
+        if (_controler.Selected == 1)
+            batch.Draw(_boxTexture, rec, null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        else
+            batch.Draw(_boxTexture, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        batch.Draw(_iconElectric, rec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
-            //fragile
-            rec = new Rectangle((width-size)/2+size, height-size, size, size);
-            if (_controler.selected == 2) {
-                batch.Draw(boxTexture, rec, Color.Red);
-            } else {
-                batch.Draw(boxTexture, rec, Color.Black);
-            }
-            batch.Draw(icon_fragile, rec, Color.Black);
-            
-            //numbers
-            batch.DrawString(_game.Font, _data.spears[0].ToString(), new Vector2((width)/2-size, height-size-20), Color.Yellow);
-            batch.DrawString(_game.Font, _data.spears[1].ToString(), new Vector2((width)/2, height-size-20), Color.Yellow);
-            batch.DrawString(_game.Font, _data.spears[2].ToString(), new Vector2((width)/2+size, height-size-20), Color.Yellow);
-        }
+        //fragile
+        rec = new Rectangle((width - Size) / 2 + Size, height - Size, Size, Size);
+        if (_controler.Selected == 2)
+            batch.Draw(_boxTexture, rec, null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        else
+            batch.Draw(_boxTexture, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        batch.Draw(_iconFragile, rec, null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
-
+        //numbers
+        batch.DrawString(_game.Font, _data.Spears[0].ToString(), new Vector2(width / 2 - Size, height - Size - 20),
+            Color.Yellow, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        batch.DrawString(_game.Font, _data.Spears[1].ToString(), new Vector2(width / 2, height - Size - 20),
+            Color.Yellow, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        batch.DrawString(_game.Font, _data.Spears[2].ToString(), new Vector2(width / 2 + Size, height - Size - 20),
+            Color.Yellow, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
     }
 }
