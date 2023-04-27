@@ -39,7 +39,8 @@ public class MenuScreen : Screen {
 
         var loadGameButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(80, 450),
-            Text = "HighScore"
+            Text = "HighScore",
+            Disabled = true
         };
 
         loadGameButton.Click += HighScoreButton_Click;
