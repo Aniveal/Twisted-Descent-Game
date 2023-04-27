@@ -34,9 +34,9 @@ public class Rope : DrawableGameElement {
     private readonly Random _decayRng;
     private List<RopeSegment> _segments;
 
-    public Texture2D BaseTexture;
-    private Texture2D Pixel;
-
+    private Texture2D _pixel;
+    private readonly Color _ropeColor = new(170, 54, 54);
+    
     // 1 second cooldown between column breaks
     public TimeSpan BreakCoolDown = new(0, 0, 1);
     public List<FragileColumn> Fragiles = new();
@@ -106,15 +106,8 @@ public class Rope : DrawableGameElement {
     }
 
     private void CreateBaseTexture() {
-        Pixel = new Texture2D(_game.GraphicsDevice, 1, 1);
-        Pixel.SetData(new[] { new Color(170, 54, 54) });
-
-        BaseTexture = new Texture2D(_game.GraphicsDevice, 1, 2);
-        var data = new Color[BaseTexture.Width * BaseTexture.Height];
-        var ropeColor = new Color(170, 54, 54);
-        for (var i = 0; i < data.Length; i++) data[i] = ropeColor;
-
-        BaseTexture.SetData(data);
+        _pixel = new Texture2D(_game.GraphicsDevice, 1, 1);
+        _pixel.SetData(new[] { Color.White });
     }
 
     public void Initialize() {
@@ -153,10 +146,14 @@ public class Rope : DrawableGameElement {
 
             float distance = Vector2.Distance(pos2, pos1);
             float angle = (float)Math.Atan2((double)pos1.Y - (double)pos2.Y, (double)pos1.X - (double)pos2.X);
-            batch.Draw(Pixel, pos2, null, Color.White, angle, Vector2.Zero, new Vector2(distance, 2),
-                SpriteEffects.None, camera.getLayerDepth(pos2.Y));
 
-            // segment.Draw(gameTime, batch, camera);
+            Color color = _ropeColor;
+            if (segment.ElecIntensity > 0) {
+                color = Color.Yellow;
+            }
+            
+            batch.Draw(_pixel, pos2, null, color, angle, Vector2.Zero, new Vector2(distance, 2),
+                SpriteEffects.None, camera.getLayerDepth(pos2.Y));
         }
     }
 

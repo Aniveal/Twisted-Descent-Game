@@ -1,4 +1,5 @@
-﻿using Meridian2.Columns;
+﻿using System;
+using Meridian2.Columns;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -125,14 +126,7 @@ public class RopeSegment : DrawableGameElement {
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-        var ropeColor = Color.White;
-        //TODO: do better visuals of electric
-        if (ElecIntensity > 0) ropeColor = Color.Blue;
-        if (IsElecSrc) ropeColor = Color.Black;
-
-        var dstRectangle = camera.getScreenRectangle(Body.Position.X, Body.Position.Y, _size.X, _size.Y);
-        batch.Draw(_rope.BaseTexture, dstRectangle, null, ropeColor, Body.Rotation,
-            Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRectangle.Y));
+        // Nothing to draw
     }
 
     /**
