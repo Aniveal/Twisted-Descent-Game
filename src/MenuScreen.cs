@@ -21,7 +21,7 @@ public class MenuScreen : Screen {
         var buttonFont = content.Load<SpriteFont>("Arial40");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
         _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
-        _bg = content.Load<Texture2D>("Sprites/bg");
+        _bg = content.Load<Texture2D>("Sprites/BG");
 
         var continueButton = new Button(buttonTexture, buttonFont)
         {
