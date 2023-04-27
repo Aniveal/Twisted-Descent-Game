@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2;
+namespace Meridian2.Screens; 
 
 public abstract class Screen {
     private readonly RopeGame _game;

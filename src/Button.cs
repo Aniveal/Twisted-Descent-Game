@@ -33,6 +33,8 @@ public class Button : Component {
     public Rectangle Rectangle => new((int)Position.X, (int)Position.Y, _texture.Width * 4, _texture.Height * 4);
 
     public string Text { get; set; }
+    
+    public bool Disabled { get; set; }
 
     #endregion
 
@@ -48,9 +50,13 @@ public class Button : Component {
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
         var colour = Color.White;
-
+        
         if (_isHovering)
             colour = Color.Gray;
+
+        if (Disabled) {
+            colour = new Color(Color.Gray, 0.5f);
+        }
 
         spriteBatch.Draw(_texture, Rectangle, colour);
 

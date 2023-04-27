@@ -1,4 +1,5 @@
 ﻿using System;
+using Meridian2.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,28 +10,30 @@ public class RopeGame : Game {
     private const int TargetFrameRate = 144;
 
     private MapScreen _mapScreen;
-    public GameScreen _gameScreen;
+    public GameScreen GameScreen;
     private Screen _menuScreen;
-    public Screen _currentScreen;
+    private Screen _currentScreen;
 
     private SpriteBatch _spriteBatch;
 
-    private int _state;
-    public Camera Camera;
     public Texture2D ColumnTexture;
-
-    
 
     //TODO: move textures somewhere else?
     public SpriteFont Font;
 
     public GameData GameData;
+    private bool _gameScreen = true;
 
-    
     public GraphicsDeviceManager Graphics;
     public Texture2D RectangleTexture;
 
     public SoundEngine SoundEngine;
+
+    public enum State {
+        Running,
+        Pause,
+        MainMenu
+    }
 
     public RopeGame() {
         Graphics = new GraphicsDeviceManager(this);
@@ -38,16 +41,21 @@ public class RopeGame : Game {
         IsMouseVisible = true;
     }
 
-    public void ChangeState(int state) {
-        if (state == 0)
-        {
+    public void ResetGame() {
+        GameScreen = null;
+    }
+
+    public void ChangeState(State state) {
+        if (state == State.MainMenu) {
             _currentScreen = _menuScreen;
-        }
-        else if (state == 1)
-        {
-            var gameScreen = true;
-            if (gameScreen)
-                _currentScreen = _gameScreen;
+        } else if (state == State.Running) {
+            if (GameScreen == null) {
+                GameScreen = new GameScreen(this);
+                GameScreen.Initialize();
+            }
+
+            if (_gameScreen)
+                _currentScreen = GameScreen;
             else
                 _currentScreen = _mapScreen;
         }
@@ -69,10 +77,11 @@ public class RopeGame : Game {
 
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
-        _gameScreen = new GameScreen(this);
-        _gameScreen.Initialize();
-        _mapScreen = new MapScreen(this);
-        _mapScreen.Initialize();
+
+        if (!_gameScreen) {
+            _mapScreen = new MapScreen(this);
+            _mapScreen.Initialize();
+        }
 
         _currentScreen = _menuScreen;
 
@@ -90,7 +99,7 @@ public class RopeGame : Game {
     protected override void Update(GameTime gameTime) {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
-            this.ChangeState(0);
+            this.ChangeState(State.MainMenu);
 
         _currentScreen.Update(gameTime);
         base.Update(gameTime);
