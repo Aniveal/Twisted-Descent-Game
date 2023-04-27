@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Meridian2.GameElements;
 using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
@@ -34,6 +35,10 @@ public class Enemy : DrawableGameElement {
     public int Colliding;
     public int CollidingSegments;
     public int Crushed;
+    public int overCliff = 0;
+    public Tile collidingCliff;
+    private const int fallSpeed = 100; //pixels per second
+    private float fallStart = 0;
     public bool IsAlive = true;
     public Vector2 Orientation;
 
@@ -95,10 +100,25 @@ public class Enemy : DrawableGameElement {
         }
 
         if (collider.Tag is Tile) {
-            var v = Body.LinearVelocity;
-            if (v.Length() > WallKillVelocity) Kill();
+            Vector2 v = Body.LinearVelocity;
+            Tile tile = (Tile) collider.Tag;
+            if (v.Length() > WallKillVelocity) {
+                if (tile.FinalPrototype.IsCliff) {
+                    collidingCliff = tile;
+                    return false;
+                }
+                Kill();
+            }
+            if (tile.FinalPrototype.IsCliff && collidingCliff != null) {
+                //
+                //collidingCliffs.Add((Tile) collider.Tag);
+                overCliff = 1;
+                return false;
+            }
+            if (overCliff == 1) {
+                return false;
+            }
         }
-
         return true;
     }
 
@@ -116,11 +136,25 @@ public class Enemy : DrawableGameElement {
 
 
     public override void Update(GameTime gameTime) {
+        if (fallStart > 0) {
+            if (gameTime.TotalGameTime.TotalSeconds - fallStart > 1) {
+                IsAlive = false;
+            }
+            return;
+        }
         if (CollidingSegments > CrushThreshold) {
             Crushed++;
-            if (Crushed > CrushDuration) Kill();
+            if (Crushed > CrushDuration) {
+                Kill();
+                return;
+            }
         } else {
             Crushed = 0;
+        }
+        if (overCliff > 0) {
+            fallStart = (float) gameTime.TotalGameTime.TotalSeconds;
+            Body.Enabled = false;
+            return;
         }
 
         _input = Vector2.Zero;
@@ -216,10 +250,15 @@ public class Enemy : DrawableGameElement {
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-        var spritePos = camera.getScreenRectangle(Body.Position.X - (float)_enemySize.X / 2,
-            Body.Position.Y - _enemySize.Y * 2 + (float)_enemySize.X / 4, _enemySize.X, _enemySize.Y);
-
+        
         var totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
+        Rectangle spritePos = camera.getScreenRectangle(Body.Position.X - (float)_enemySize.X / 2,
+            Body.Position.Y - _enemySize.Y * 2 + (float)_enemySize.X / 4, _enemySize.X, _enemySize.Y);
+        int yPos = spritePos.Y;
+        if (fallStart > 0) {
+            spritePos.Y += (int)((float)fallSpeed * (gameTime.TotalGameTime.TotalSeconds - fallStart));
+        }
+
 
         // if (isWalking)
         // {
@@ -250,20 +289,21 @@ public class Enemy : DrawableGameElement {
         // );
         // }
         // else
-        {
-            var idleDuration = 400f; //ms
-            var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
+        //{
+        var idleDuration = 400f; //ms
+        var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
 
-            batch.Draw(
-                _idle,
-                spritePos,
-                new Rectangle(idleFrameIdx * 512, 0, 512, 768),
-                Color.White,
-                0f,
-                Vector2.Zero,
-                SpriteEffects.None,
-                camera.getLayerDepth(spritePos.Y + spritePos.Height)
-            );
-        }
+        //Color test = overCliff > 0 ? Color.Red : Color.White;
+        batch.Draw(
+            _idle,
+            spritePos,
+            new Rectangle(idleFrameIdx * 512, 0, 512, 768),
+            Color.White,
+            0f,
+            Vector2.Zero,
+            SpriteEffects.None,
+            camera.getLayerDepth(yPos + spritePos.Height)
+        );
+        //}
     }
 }
