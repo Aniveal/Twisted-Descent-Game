@@ -4,11 +4,13 @@ using System.Diagnostics;
 using Meridian2.Columns;
 using Meridian2.Enemy;
 using Meridian2.GameElements;
+using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
 using static System.Net.Mime.MediaTypeNames;
+using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
 namespace Meridian2;
 
@@ -75,6 +77,14 @@ public class Map : DrawableGameElement {
         v.Add(new Vector2(0, -scaling)); //top corner
 
         return new Vertices(v);
+    }
+
+    protected bool OnCliffCollision(Fixture sender, Fixture other, Contact contact) {
+        if (sender.Body.Tag is RopeSegment || other.Body.Tag is RopeSegment) {
+            return false;
+        }
+
+        return true;
     }
 
     public void CreateMapBody(Tile tile) {
@@ -185,7 +195,12 @@ public class Map : DrawableGameElement {
                 break;
         }
 
-        if (tile.Body != null) tile.Body.Tag = tile;
+        if (tile.Body != null) {
+            tile.Body.Tag = tile;
+            if (tile.FinalPrototype.IsCliff) {
+                tile.Body.OnCollision += OnCliffCollision;
+            }
+        } 
     }
 
     public void Initialize() {
