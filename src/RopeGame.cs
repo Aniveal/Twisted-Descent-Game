@@ -22,8 +22,8 @@ public class RopeGame : Game {
     public SpriteFont Font;
 
     public GameData GameData;
+    private bool _gameScreen = true;
 
-    
     public GraphicsDeviceManager Graphics;
     public Texture2D RectangleTexture;
 
@@ -34,7 +34,7 @@ public class RopeGame : Game {
         Pause,
         MainMenu
     }
-    
+
     public RopeGame() {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
@@ -44,21 +44,17 @@ public class RopeGame : Game {
     public void ResetGame() {
         GameScreen = null;
     }
-    
+
     public void ChangeState(State state) {
-        if (state == State.MainMenu)
-        {
+        if (state == State.MainMenu) {
             _currentScreen = _menuScreen;
-        }
-        else if (state == State.Running)
-        {
+        } else if (state == State.Running) {
             if (GameScreen == null) {
                 GameScreen = new GameScreen(this);
                 GameScreen.Initialize();
             }
 
-            var gameScreen = true;
-            if (gameScreen)
+            if (_gameScreen)
                 _currentScreen = GameScreen;
             else
                 _currentScreen = _mapScreen;
@@ -81,8 +77,11 @@ public class RopeGame : Game {
 
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
-        _mapScreen = new MapScreen(this);
-        _mapScreen.Initialize();
+
+        if (!_gameScreen) {
+            _mapScreen = new MapScreen(this);
+            _mapScreen.Initialize();
+        }
 
         _currentScreen = _menuScreen;
 
