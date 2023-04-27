@@ -29,19 +29,34 @@ public class RopeGame : Game {
 
     public SoundEngine SoundEngine;
 
+    public enum State {
+        Running,
+        Pause,
+        MainMenu
+    }
+    
     public RopeGame() {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
 
-    public void ChangeState(int state) {
-        if (state == 0)
+    public void ResetGame() {
+        GameScreen = null;
+    }
+    
+    public void ChangeState(State state) {
+        if (state == State.MainMenu)
         {
             _currentScreen = _menuScreen;
         }
-        else if (state == 1)
+        else if (state == State.Running)
         {
+            if (GameScreen == null) {
+                GameScreen = new GameScreen(this);
+                GameScreen.Initialize();
+            }
+
             var gameScreen = true;
             if (gameScreen)
                 _currentScreen = GameScreen;
@@ -66,8 +81,6 @@ public class RopeGame : Game {
 
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
-        GameScreen = new GameScreen(this);
-        GameScreen.Initialize();
         _mapScreen = new MapScreen(this);
         _mapScreen.Initialize();
 
@@ -87,7 +100,7 @@ public class RopeGame : Game {
     protected override void Update(GameTime gameTime) {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
-            this.ChangeState(0);
+            this.ChangeState(State.MainMenu);
 
         _currentScreen.Update(gameTime);
         base.Update(gameTime);
