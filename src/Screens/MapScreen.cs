@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2; 
+namespace Meridian2.Screens; 
 
 public class MapScreen : Screen {
     private readonly SpriteBatch _batch;

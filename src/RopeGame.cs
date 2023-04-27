@@ -1,4 +1,5 @@
 ﻿using System;
+using Meridian2.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,17 +10,13 @@ public class RopeGame : Game {
     private const int TargetFrameRate = 144;
 
     private MapScreen _mapScreen;
-    public GameScreen _gameScreen;
+    public GameScreen GameScreen;
     private Screen _menuScreen;
-    public Screen _currentScreen;
+    private Screen _currentScreen;
 
     private SpriteBatch _spriteBatch;
 
-    private int _state;
-    public Camera Camera;
     public Texture2D ColumnTexture;
-
-    
 
     //TODO: move textures somewhere else?
     public SpriteFont Font;
@@ -47,7 +44,7 @@ public class RopeGame : Game {
         {
             var gameScreen = true;
             if (gameScreen)
-                _currentScreen = _gameScreen;
+                _currentScreen = GameScreen;
             else
                 _currentScreen = _mapScreen;
         }
@@ -69,8 +66,8 @@ public class RopeGame : Game {
 
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
-        _gameScreen = new GameScreen(this);
-        _gameScreen.Initialize();
+        GameScreen = new GameScreen(this);
+        GameScreen.Initialize();
         _mapScreen = new MapScreen(this);
         _mapScreen.Initialize();
 

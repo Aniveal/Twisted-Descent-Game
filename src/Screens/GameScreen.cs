@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2;
+namespace Meridian2.Screens;
 
 public class GameScreen : Screen {
     private const float FixedTimeStep = 1 / 60f;
