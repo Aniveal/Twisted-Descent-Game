@@ -311,7 +311,7 @@ public class Map : DrawableGameElement {
                     c++;
 
                     if (t.FinalPrototype.WallTex != null) {
-                        if (t.FinalPrototype.Name == "Wall2l" || t.FinalPrototype.Name == "Wall2u") {
+                        if (t.FinalPrototype.Name == "Wall2l" || t.FinalPrototype.Name == "Wall2u" || t.FinalPrototype.Name == "Wall1lu") {
                             layerDepthWalls = camera.getLayerDepth(tilePos.Y + tilePos.Height * 0.625f);
                         } else if (t.FinalPrototype.Name == "Wall2r" || t.FinalPrototype.Name == "Wall2d" || t.FinalPrototype.Name == "Wall1rd") {
                             layerDepthWalls = camera.getLayerDepth(tilePos.Y + tilePos.Height * 0.875f);
