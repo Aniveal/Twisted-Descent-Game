@@ -78,7 +78,7 @@ public class Button : Component {
         if (mouseRectangle.Intersects(Rectangle)) {
             _isHovering = true;
 
-            if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed)
+            if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed && !Disabled)
                 Click?.Invoke(this, new EventArgs());
         }
     }
