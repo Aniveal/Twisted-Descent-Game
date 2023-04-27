@@ -35,6 +35,7 @@ public class Rope : DrawableGameElement {
     private List<RopeSegment> _segments;
 
     public Texture2D BaseTexture;
+    private Texture2D Pixel;
 
     // 1 second cooldown between column breaks
     public TimeSpan BreakCoolDown = new(0, 0, 1);
@@ -105,6 +106,9 @@ public class Rope : DrawableGameElement {
     }
 
     private void CreateBaseTexture() {
+        Pixel = new Texture2D(_game.GraphicsDevice, 1, 1);
+        Pixel.SetData(new[] { new Color(170, 54, 54) });
+
         BaseTexture = new Texture2D(_game.GraphicsDevice, 1, 2);
         var data = new Color[BaseTexture.Width * BaseTexture.Height];
         var ropeColor = new Color(170, 54, 54);
@@ -138,7 +142,22 @@ public class Rope : DrawableGameElement {
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-        foreach (var segment in _segments) segment.Draw(gameTime, batch, camera);
+        // Draw each segment
+        foreach (var segment in _segments) {
+            if (segment.Next == null) {
+                continue;
+            }
+
+            var pos1 = camera.getScreenPoint(segment.Body.Position);
+            var pos2 = camera.getScreenPoint(segment.Next.Body.Position);
+
+            float distance = Vector2.Distance(pos2, pos1);
+            float angle = (float)Math.Atan2((double)pos1.Y - (double)pos2.Y, (double)pos1.X - (double)pos2.X);
+            batch.Draw(Pixel, pos2, null, Color.White, angle, Vector2.Zero, new Vector2(distance, 2),
+                SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+
+            // segment.Draw(gameTime, batch, camera);
+        }
     }
 
     public RopeSegment AppendSegment() {
