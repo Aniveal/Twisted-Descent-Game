@@ -70,8 +70,6 @@ public class MenuScreen : Screen {
 
     private void NewGameButton_Click(object sender, EventArgs e) {
         base.getGame().ResetGame();
-        base.getGame().ChangeState(RopeGame.State.Running);
-
         base.getGame()._loadingScreen = new LoadingScreen(base.getGame(), _content);
         base.getGame()._loadingScreen.Initialize();
         base.getGame().ChangeState(RopeGame.State.Loading);
