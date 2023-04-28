@@ -62,7 +62,7 @@ public class SpearsController {
             var pOr = _player.Orientation;
             var sPos = pPos + pOr * 2;
 
-            _columnsManager.Add(new Column(_game, _game.GameScreen.World, sPos, SpearWidth, normalSpearTexture, true));
+            _columnsManager.Add(new Column(_game, _game._gameScreen.World, sPos, SpearWidth, normalSpearTexture, true));
             SpearTimer = 0;
             _placing = true;
             return;
@@ -75,7 +75,7 @@ public class SpearsController {
             var pOr = _player.Orientation;
             var sPos = pPos + pOr;
 
-            _columnsManager.Add(new ElectricColumn(_game, _game.GameScreen.World, sPos, SpearWidth, _baseSpearTexture));
+            _columnsManager.Add(new ElectricColumn(_game, _game._gameScreen.World, sPos, SpearWidth, _baseSpearTexture));
             SpearTimer = 0;
             _placing = true;
             return;
@@ -88,7 +88,7 @@ public class SpearsController {
             var pOr = _player.Orientation;
             var sPos = pPos + pOr;
 
-            _columnsManager.Add(new FragileColumn(_game, _game.GameScreen.World, sPos, SpearWidth, _baseSpearTexture));
+            _columnsManager.Add(new FragileColumn(_game, _game._gameScreen.World, sPos, SpearWidth, _baseSpearTexture));
             SpearTimer = 0;
             _placing = true;
             return;
@@ -129,15 +129,15 @@ public class SpearsController {
                     _data.Spears[Selected]--;
                     switch (Selected) {
                         case 0:
-                            _columnsManager.Add(new Column(_game, _game.GameScreen.World, sPos, SpearWidth,
+                            _columnsManager.Add(new Column(_game, _game._gameScreen.World, sPos, SpearWidth,
                                 normalSpearTexture, true));
                             break;
                         case 1:
-                            _columnsManager.Add(new ElectricColumn(_game, _game.GameScreen.World, sPos, SpearWidth,
-                                _baseSpearTexture));
+                            _columnsManager.Add(new ElectricColumn(_game, _game._gameScreen.World, sPos, SpearWidth,
+                                _baseSpearTexture));    
                             break;
                         case 2:
-                            _columnsManager.Add(new FragileColumn(_game, _game.GameScreen.World, sPos, SpearWidth,
+                            _columnsManager.Add(new FragileColumn(_game, _game._gameScreen.World, sPos, SpearWidth,
                                 _baseSpearTexture));
                             break;
                     }
