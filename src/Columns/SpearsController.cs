@@ -12,6 +12,7 @@ public class SpearsController {
     private const float SpearWidth = 0.2f;
 
     private Texture2D _baseSpearTexture;
+    private ColumnTextures normalSpearTexture;
     private readonly ColumnsManager _columnsManager;
     private readonly GameData _data;
     private readonly RopeGame _game;
@@ -37,6 +38,9 @@ public class SpearsController {
 
     public void LoadContent() {
         _baseSpearTexture = _game.Content.Load<Texture2D>("circle");
+        normalSpearTexture = new ColumnTextures(_game.Content.Load<Texture2D>("Sprites/Spear/spear_lower2"),
+            _game.Content.Load<Texture2D>("Sprites/Spear/spear_upper2"));
+
     }
 
     public void Update(GameTime gameTime) {
@@ -58,7 +62,7 @@ public class SpearsController {
             var pOr = _player.Orientation;
             var sPos = pPos + pOr * 2;
 
-            _columnsManager.Add(new Column(_game, _game.GameScreen.World, sPos, SpearWidth, _baseSpearTexture));
+            _columnsManager.Add(new Column(_game, _game.GameScreen.World, sPos, SpearWidth, normalSpearTexture, true));
             SpearTimer = 0;
             _placing = true;
             return;
@@ -126,7 +130,7 @@ public class SpearsController {
                     switch (Selected) {
                         case 0:
                             _columnsManager.Add(new Column(_game, _game.GameScreen.World, sPos, SpearWidth,
-                                _baseSpearTexture));
+                                normalSpearTexture, true));
                             break;
                         case 1:
                             _columnsManager.Add(new ElectricColumn(_game, _game.GameScreen.World, sPos, SpearWidth,

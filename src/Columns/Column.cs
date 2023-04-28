@@ -16,6 +16,7 @@ public class Column : DrawableGameElement {
     protected SpriteBatch SpriteBatch;
     protected Texture2D UpperTexture;
     protected World World;
+    private bool isSpear;
 
     public Column(RopeGame game, World world, Vector2 center, float radius, Texture2D texture) {
         Game = game;
@@ -38,12 +39,33 @@ public class Column : DrawableGameElement {
         Body = World.CreateCircle(Radius, 0, Center);
     }
 
+    public Column(RopeGame game, World world, Vector2 center, float radius, ColumnTextures texture, bool isSpear) {
+        Game = game;
+        World = world;
+        Center = center;
+        Radius = radius;
+        LowerTexture = texture.Lower;
+        UpperTexture = texture.Upper;
+        MultiTexture = true;
+        Body = World.CreateCircle(Radius, 0, Center);
+        this.isSpear = isSpear;
+    }
+
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+        if (isSpear) {
+            Rectangle dstRecUp = camera.getSpriteRectangle(Center.X - 3 * Radius, Center.Y + Radius, Radius * 6, Radius * 12);
+            Rectangle dstRecLow = camera.getScreenRectangle(Center.X - 3 * Radius, Center.Y + Radius, Radius * 6, Radius);
+            batch.Draw(UpperTexture, dstRecUp, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRecUp.Y + dstRecUp.Height));
+            batch.Draw(LowerTexture, dstRecLow, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRecUp.Y + dstRecUp.Height));
+            return;
+        }
         if (MultiTexture) {
             var dstRec = camera.getSpriteRectangle(Center.X - 2 * Radius, Center.Y + Radius, Radius * 4, Radius * 8);
+
             //batch.Draw(_lowerTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
             batch.Draw(UpperTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(dstRec.Y + dstRec.Height));
+            
         } else {
             var dstRec = camera.getScreenRectangle(Center.X - Radius, Center.Y - Radius, Radius * 2, Radius * 2, true);
             batch.Draw(ColumnTexture, dstRec, null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None,
