@@ -225,7 +225,9 @@ public class Map : DrawableGameElement {
     public void transferDataToManagers() {
         var columnTexture = _game.Content.Load<Texture2D>("Sprites/Columns/column");
         var elecTexture = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column");
+        var elecAnimationTexture = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column_animation");
         var fragileTexture = _game.Content.Load<Texture2D>("Sprites/Columns/fragile_column");
+        var fragileAnimationTexture = _game.Content.Load<Texture2D>("Sprites/Columns/collapse_column");
         var brokenTexture = _game.Content.Load<Texture2D>("Sprites/Columns/fragile_column_broken");
 
         foreach (var r in RoomList) {
@@ -242,10 +244,10 @@ public class Map : DrawableGameElement {
 
                 switch (i) {
                     case 1:
-                        Cm.Add(new FragileColumn(_world, worldCoords, 1.5f, fragileTexture, brokenTexture));
+                        Cm.Add(new FragileColumn(_world, worldCoords, 1.5f, fragileTexture, brokenTexture, fragileAnimationTexture));
                         break;
                     case 2:
-                        Cm.Add(new ElectricColumn(_world, worldCoords, 1.5f, elecTexture));
+                        Cm.Add(new ElectricColumn(_world, worldCoords, 1.5f, elecTexture, elecAnimationTexture));
                         break;
                     default:
                         Cm.Add(new Column(_world, worldCoords, 1.5f, columnTexture));
