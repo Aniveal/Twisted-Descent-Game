@@ -14,11 +14,13 @@ public class MenuScreen : Screen {
     private Texture2D _enemyModel;
     private Texture2D _bg;
     private Button _continueButton;
+    private ContentManager _content;
 
     public MenuScreen(RopeGame game, GraphicsDevice graphicsDevice, ContentManager content) : base(game) {
         var buttonTexture = content.Load<Texture2D>("Button");
         var buttonFont = content.Load<SpriteFont>("Arial40");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
+        _content = content;
         _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
         _bg = content.Load<Texture2D>("Sprites/BG");
 
@@ -61,7 +63,7 @@ public class MenuScreen : Screen {
     }
 
     private void ContinueButton_Click(object sender, EventArgs e) {
-        if (base.getGame().GameScreen != null) {
+        if (base.getGame()._gameScreen != null) {
             base.getGame().ChangeState(RopeGame.State.Running);
         }
     }
@@ -69,6 +71,10 @@ public class MenuScreen : Screen {
     private void NewGameButton_Click(object sender, EventArgs e) {
         base.getGame().ResetGame();
         base.getGame().ChangeState(RopeGame.State.Running);
+
+        base.getGame()._loadingScreen = new LoadingScreen(base.getGame(), _content);
+        base.getGame()._loadingScreen.Initialize();
+        base.getGame().ChangeState(RopeGame.State.Loading);
 
         _continueButton.Disabled = false;
     }
@@ -84,7 +90,7 @@ public class MenuScreen : Screen {
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
         spriteBatch.Begin();
         spriteBatch.Draw(_bg, new Rectangle(0, 0, 1600, 900), Color.White);
-        spriteBatch.Draw(_playerModel, new Rectangle(1150, 100, 400, 700), Color.White);
+        spriteBatch.Draw(_playerModel, new Rectangle(1190, 100, 400, 700), Color.White);
         spriteBatch.Draw(_enemyModel, new Rectangle(800, 100, 400, 700), Color.White);
 
         foreach (var component in _components)

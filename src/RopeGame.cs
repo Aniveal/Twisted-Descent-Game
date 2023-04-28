@@ -9,10 +9,11 @@ namespace Meridian2;
 public class RopeGame : Game {
     private const int TargetFrameRate = 144;
 
-    private MapScreen _mapScreen;
-    public GameScreen GameScreen;
-    private Screen _menuScreen;
-    private Screen _currentScreen;
+    public MapScreen _mapScreen;
+    public GameScreen _gameScreen;
+    public MenuScreen _menuScreen;
+    public Screen _currentScreen;
+    public LoadingScreen _loadingScreen;
 
     private SpriteBatch _spriteBatch;
 
@@ -22,7 +23,7 @@ public class RopeGame : Game {
     public SpriteFont Font;
 
     public GameData GameData;
-    private bool _gameScreen = true;
+    private bool gameScreen = true;
 
     public GraphicsDeviceManager Graphics;
     public Texture2D RectangleTexture;
@@ -32,7 +33,8 @@ public class RopeGame : Game {
     public enum State {
         Running,
         Pause,
-        MainMenu
+        MainMenu,
+        Loading
     }
 
     public RopeGame() {
@@ -42,22 +44,21 @@ public class RopeGame : Game {
     }
 
     public void ResetGame() {
-        GameScreen = null;
+        _gameScreen = null;
     }
 
     public void ChangeState(State state) {
         if (state == State.MainMenu) {
             _currentScreen = _menuScreen;
         } else if (state == State.Running) {
-            if (GameScreen == null) {
-                GameScreen = new GameScreen(this);
-                GameScreen.Initialize();
-            }
-
-            if (_gameScreen)
-                _currentScreen = GameScreen;
+            if (gameScreen)
+                _currentScreen = _gameScreen;
             else
                 _currentScreen = _mapScreen;
+        }
+        else if (state == State.Loading)
+        {
+            _currentScreen = _loadingScreen;
         }
     }
 
@@ -73,16 +74,8 @@ public class RopeGame : Game {
         Graphics.PreferredBackBufferHeight = 900;
         Graphics.ApplyChanges();
 
-        GameData = new GameData(this);
-
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
-
-        if (!_gameScreen) {
-            _mapScreen = new MapScreen(this);
-            _mapScreen.Initialize();
-        }
-
         _currentScreen = _menuScreen;
 
         SoundEngine = new SoundEngine(this); //Create the sound engine
