@@ -96,13 +96,14 @@ public class Rope : DrawableGameElement {
     }
 
     public void Pull(GameTime gameTime) {
-        if (Fragiles.Count > 0)
+        if (Fragiles.Count > 0) {
             if (gameTime.TotalGameTime - LastBreak > BreakCoolDown) {
                 var col = Fragiles.Last();
                 Fragiles.RemoveAll(c => c == col);
                 col.Break();
                 LastBreak = gameTime.TotalGameTime;
             }
+        }
     }
 
     private void CreateBaseTexture() {

@@ -26,7 +26,6 @@ public class RopeGame : Game {
     private bool gameScreen = true;
 
     public GraphicsDeviceManager Graphics;
-    public Texture2D RectangleTexture;
 
     public SoundEngine SoundEngine;
 
@@ -86,7 +85,6 @@ public class RopeGame : Game {
 
         Font = Content.Load<SpriteFont>("Arial");
         ColumnTexture = Content.Load<Texture2D>("circle");
-        RectangleTexture = Content.Load<Texture2D>("rectangle");
     }
 
     protected override void Update(GameTime gameTime) {
