@@ -42,7 +42,7 @@ public class MapGenerator {
         int roomSize = 50;
 
         //Number of rooms: 10 + difficulty
-        int nRooms = difficulty + 10;
+        int nRooms = difficulty + 3;
 
         bool generationFail = true;
         while(generationFail)
@@ -59,11 +59,6 @@ public class MapGenerator {
                     generationFail = true;
                     break;
                 }
-
-                var nColumns = room.SizeX * room.SizeY / 30;
-
-                room.placeColumns(nColumns);
-                room.placeEnemies(nColumns / 2);
             }
         }
 

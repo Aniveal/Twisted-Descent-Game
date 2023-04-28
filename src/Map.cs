@@ -11,6 +11,7 @@ using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
 using static System.Net.Mime.MediaTypeNames;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
+using Meridian2.Screens;
 
 namespace Meridian2;
 
@@ -208,8 +209,6 @@ public class Map : DrawableGameElement {
 
         Debug.WriteLine("Initializing Map");
 
-
-        //mapGenerator.hardcodedMap();
         mapGenerator.createProceduralMap(1);
 
         RoomList = mapGenerator.RoomList;
@@ -235,14 +234,21 @@ public class Map : DrawableGameElement {
 
         foreach (var r in RoomList) {
             Debug.WriteLine("Sending coords to ColumnsManager: " + r.Columns.Count);
-            var typeCtr = 0;
+
             foreach (var v in r.Columns) {
                 var worldCoords = MapToWorld(v.X + r.PosX, v.Y + r.PosY);
-                switch (typeCtr % 8) {
-                    case 2:
+
+                double rand = RnGsus.Instance.NextDouble();
+                int i = 0;
+
+                while (i < r.columnWeight.Length && rand > r.columnWeight[i])
+                    i++;
+
+                switch (i) {
+                    case 1:
                         Cm.Add(new FragileColumn(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
                         break;
-                    case 3:
+                    case 2:
                         Cm.Add(new ElectricColumn(_game, _world, worldCoords, 0.4f, elecTexture));
                         break;
                     default:
@@ -250,7 +256,6 @@ public class Map : DrawableGameElement {
                         break;
                 }
 
-                typeCtr++;
             }
 
             foreach (var v in r.EnemyPositions)
@@ -272,20 +277,22 @@ public class Map : DrawableGameElement {
         var h = _game.Graphics.PreferredBackBufferHeight;
         var w = _game.Graphics.PreferredBackBufferWidth;
 
-        //var addonTiles = 4;
+        var addonPixel = 100;
 
-        /*var xMin = ScreenToMap(new Point(0 - addonTiles, 0 - addonTiles)).X;
-        var xMax = ScreenToMap(new Point(h + addonTiles, w + addonTiles)).X;
-        var yMin = ScreenToMap(new Point(w - addonTiles, 0 - addonTiles)).Y;
-        var yMax = ScreenToMap(new Point(0 + addonTiles, h + addonTiles)).Y;*/
+        var xMin = Math.Floor(camera.getWorldPixel(new Vector2(0 - addonPixel, 0 - addonPixel)).X);
+        var xMax = Math.Ceiling(camera.getWorldPixel(new Vector2(h + addonPixel, w + addonPixel)).X);
+        var yMin = Math.Floor(camera.getWorldPixel(new Vector2(w - addonPixel, 0 - addonPixel)).Y);
+        var yMax = Math.Ceiling(camera.getWorldPixel(new Vector2(0 + addonPixel, h + addonPixel)).Y);
 
-        //Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
+        Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
 
         foreach (var r in RoomList) {
-            //if (r.posX > xMax || r.posY > yMax || r.posX + r.sizeX < xMin || r.posY + r.sizeY < yMin)
-            //continue;
+            //if (r.PosX > xMax || r.PosY > yMax || r.PosX + r.SizeX < xMin || r.PosY + r.SizeY < yMin)
+                //continue;
             foreach (var t in r.TileMap) {
                 //Only draw what is on the screen, NOT WORKING
+                //if (t.X < xMin || t.X > xMax || t.Y < yMin || t.Y > yMax)
+                    //continue;
 
                 Vector2 screenPos;
                 Vector2 pos;

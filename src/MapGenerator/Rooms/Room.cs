@@ -12,6 +12,11 @@ public class Room {
     //Enemies
     public List<Vector2> EnemyPositions = new();
 
+    //How many columns there should be, as a percentage of walkable tiles
+    public float columnDensity = 0.15f;
+
+    public float[] columnWeight;
+
     public int Index;
 
     //If all tiles have been initialized
@@ -34,10 +39,12 @@ public class Room {
     //The map of this room
     public Tile[,] TileMap;
 
+
     //
     public List<Prototype> protList = new();
 
-    public Room(MapGenerator mg, int x, int y, int sizeX, int sizeY, int index, List<Prototype> protList) {
+    public Room(MapGenerator mg, int x, int y, int sizeX, int sizeY, int index, List<Prototype> protList, float[] columnWeight = null)
+    {
         Index = index;
         Openings = new List<Vector2>();
         Mg = mg;
@@ -49,6 +56,9 @@ public class Room {
         NInnerOpenings = (int)Math.Sqrt(sizeX * sizeY) / 4;
         this.protList = protList;
         initializeTileMap();
+        if (columnWeight == null)
+            this.columnWeight = new float[] { 0.1f, 0.9f, 1f };
+        else this.columnWeight = columnWeight;
     }
 
     //Finishes the room generation, results in a workable tileMap
@@ -58,11 +68,21 @@ public class Room {
         connectOpenings();
         runWaveFunctionCollapse();
 
+        int walkable = 0;
+
+
         //check if generation succeeded
         foreach(Tile t in TileMap)
         {
             if (t == null || t.FinalPrototype == null) return false;
+            if (t.FinalPrototype.Walkable)
+                walkable++;
         }
+
+
+        int nColumns = (int)(walkable * columnDensity);
+        //Add columns
+        placeColumns(nColumns);
         return true;
     }
 
