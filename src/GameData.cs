@@ -11,6 +11,10 @@ public class GameData {
 
     public int Score = 0;
 
+    //The current game difficulty level. Starting at 1, goes to infinity (or overflow i guess xD)>
+    //The higher the more enemies spawn, they are harder, better loot, larger levels
+    public int currentDifficulty = 1;
+
     //Spears data
     public int[] Spears; //basic, electric, fragile spears
 

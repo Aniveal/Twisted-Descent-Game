@@ -6,7 +6,7 @@ namespace Meridian2;
 public sealed class RnGsus {
     //Set seed to 0 to get a random one
     public int Seed = 0;
-    private readonly Random _random;
+    private Random _random;
 
     static RnGsus() { }
 
@@ -31,6 +31,12 @@ public sealed class RnGsus {
     //Same as Random.Next()
     public int Next() {
         return _random.Next();
+    }
+
+    public void NewSeed()
+    {
+        Seed = _random.Next();
+        _random = new Random(Seed);
     }
 
     public int Next(int i) {

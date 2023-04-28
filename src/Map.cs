@@ -210,7 +210,7 @@ public class Map : DrawableGameElement {
 
 
         //mapGenerator.hardcodedMap();
-        mapGenerator.createProceduralMap(100, 60);
+        mapGenerator.createProceduralMap(1);
 
         RoomList = mapGenerator.RoomList;
 

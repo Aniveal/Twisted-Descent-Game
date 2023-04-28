@@ -28,16 +28,16 @@ public class Room {
     //Top left edge of the room,
     public int PosX, PosY;
 
-    //The settings for this room
-    protected RoomSettings Rs;
-
     //Tile size of the room
     public int SizeX, SizeY;
 
     //The map of this room
     public Tile[,] TileMap;
 
-    public Room(MapGenerator mg, RoomSettings rs, int x, int y, int sizeX, int sizeY, int index) {
+    //
+    public List<Prototype> protList = new();
+
+    public Room(MapGenerator mg, int x, int y, int sizeX, int sizeY, int index, List<Prototype> protList) {
         Index = index;
         Openings = new List<Vector2>();
         Mg = mg;
@@ -46,17 +46,24 @@ public class Room {
         PosX = x;
         PosY = y;
         TileMap = new Tile[sizeX, sizeY];
-        Rs = rs;
         NInnerOpenings = (int)Math.Sqrt(sizeX * sizeY) / 4;
+        this.protList = protList;
         initializeTileMap();
     }
 
     //Finishes the room generation, results in a workable tileMap
-    public void generateRoom() {
+    public bool generateRoom() {
         createBorder();
         addMoreFloor();
         connectOpenings();
         runWaveFunctionCollapse();
+
+        //check if generation succeeded
+        foreach(Tile t in TileMap)
+        {
+            if (t == null || t.FinalPrototype == null) return false;
+        }
+        return true;
     }
 
     //Adds an inner opening, i.e. a guaranteed connected tile
@@ -129,7 +136,7 @@ public class Room {
         //Create all tiles, initialize with full set of prototypes
         for (var x = 0; x < SizeX; x++)
         for (var y = 0; y < SizeY; y++) {
-            TileMap[x, y] = new Tile(Rs.PossiblePrototypes, this);
+            TileMap[x, y] = new Tile(protList, this);
             TileMap[x, y].X = x;
             TileMap[x, y].Y = y;
         }
@@ -287,7 +294,7 @@ public class Room {
 
     //Gets a prototype reference by name
     public Prototype getPrototype(string s) {
-        foreach (var prototype in Rs.PossiblePrototypes)
+        foreach (var prototype in protList)
             if (prototype.Name == s)
                 return prototype;
         return null;
@@ -368,6 +375,7 @@ public class Room {
                 Debug.WriteLine("Error, wave function could not terminate");
                 break;
             }
+            
         }
     }
 

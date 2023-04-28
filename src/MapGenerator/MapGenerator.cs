@@ -35,57 +35,39 @@ public class MapGenerator {
         createPrototypeLists();
     }
 
-    public void createProceduralMap(int size, int maxRoomSize) {
+    public void createProceduralMap(int difficulty) {
         var graph = new DungeonGraph(this);
 
-        graph.createDungeonMap(size, maxRoomSize);
-        RoomList = graph.Rooms;
+        int size = 10000;
+        int roomSize = 50;
 
-        foreach (var room in RoomList) {
-            room.generateRoom();
+        //Number of rooms: 10 + difficulty
+        int nRooms = difficulty + 10;
 
-            var nColumns = room.SizeX * room.SizeY / 30;
+        bool generationFail = true;
+        while(generationFail)
+        {
+            generationFail = false;
+            RnGsus.Instance.NewSeed();
+            graph.createDungeonMap(size, roomSize, nRooms);
+            RoomList = graph.Rooms;
 
-            room.placeColumns(nColumns);
-            room.placeEnemies(nColumns / 2);
-        }
-    }
+            foreach (var room in RoomList)
+            {
+                if (!room.generateRoom())
+                {
+                    generationFail = true;
+                    break;
+                }
 
-    //Creates a map with 3 rooms
-    public bool hardcodedMap() {
-        var rs = new RoomSettings("StarterRoom", new List<List<Prototype>> { RockPrototypes });
-        var r1 = new Room(this, rs, 0, -3, 10, 10, 0); //(-5, -5), (5, 5)
-        var r2 = new Room(this, rs, 10, -3, 20, 15, 1); //(5, -5), (15, 10)
-        var r3 = new Room(this, rs, -30, 7, 40, 50, 2); //(-5, 5), (2, 55)
-        var r4 = new Room(this, rs, 20, 12, 10, 45, 3); //(15, 10), (25, 55)
+                var nColumns = room.SizeX * room.SizeY / 30;
 
-        r1.createOpening(0, 1, 3);
-        r1.createOpening(1, 0, 3);
-
-        r1.createOpening(2, r1.SizeY - 1, 1);
-        r3.createOpening(r3.SizeX - 8, 0, 1);
-
-        r1.createOpening(r1.SizeX - 1, 2, 1);
-        r2.createOpening(0, 2, 1);
-
-        r2.createOpening(15, r2.SizeY - 1, 1);
-        r4.createOpening(5, 0, 1);
-
-        r4.createOpening(2, r4.SizeY - 1, 1);
-
-        RoomList = new List<Room> { r1, r2, r3, r4 };
-
-        foreach (var room in RoomList) {
-            room.generateRoom();
-
-            var nColumns = room.SizeX * room.SizeY / 30;
-
-            room.placeColumns(nColumns);
-            room.placeEnemies(nColumns / 4);
+                room.placeColumns(nColumns);
+                room.placeEnemies(nColumns / 2);
+            }
         }
 
-
-        return true;
+        
     }
 
 

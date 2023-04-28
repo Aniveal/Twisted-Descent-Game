@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Meridian2; 
+namespace Meridian2;
 
 internal class DungeonGraph {
     private const int MinRoomSize = 15;
@@ -10,8 +10,6 @@ internal class DungeonGraph {
     private readonly MapGenerator _mg;
 
     private int[,] _occupationMap;
-
-    private List<RoomSettings> _roomTypes = new();
 
     //This is the start room, 
     public List<Room> Rooms = new();
@@ -27,26 +25,27 @@ internal class DungeonGraph {
     }
 
     //Creates a map with nRooms rooms, on a grid with maxSize size.
-    public void createDungeonMap(int maxSize, int maxRoomSize) {
+    public void createDungeonMap(int maxSize, int maxRoomSize, int nRooms) {
         _occupationMap = new int[maxSize, maxSize];
 
-        var allPrototypes = new List<List<Prototype>>();
-        allPrototypes.Add(_mg.RockPrototypes);
-        allPrototypes.Add(_mg.WallPrototypes);
-        allPrototypes.Add(_mg.CliffPrototypes);
+        var allPrototypes = new List<Prototype>();
+        allPrototypes.AddRange(_mg.RockPrototypes);
+        allPrototypes.AddRange(_mg.WallPrototypes);
+        allPrototypes.AddRange(_mg.CliffPrototypes);
 
-        var standardRoomSettings = new RoomSettings("RockRoom", allPrototypes);
 
         //Place random first room
-        var startRoom = createStartRoom(MinRoomSize + 2);
+        var startRoom = new StartRoom(_mg, _mg.RockPrototypes, maxSize/2, maxSize/2);
         occupy(startRoom);
         Rooms.Add(startRoom);
 
         //Index of currently placed room
         var i = 2;
         var numFails = 0;
+        var placedRooms = 1;
 
-        while (numFails < 100) {
+        while (placedRooms < nRooms && numFails < 100) {
+
             //Take a random room
             var r = RnGsus.Instance.Next(Rooms.Count);
             var target = Rooms[r];
@@ -55,63 +54,29 @@ internal class DungeonGraph {
             var sizeX = RnGsus.Instance.Next(maxRoomSize - MinRoomSize) + MinRoomSize;
             var sizeY = RnGsus.Instance.Next(maxRoomSize - MinRoomSize) + MinRoomSize;
 
-            var newRoom = new Room(_mg, standardRoomSettings, target.PosX, target.PosY, sizeX, sizeY, i);
+            var newRoom = new Room(_mg, target.PosX, target.PosY, sizeX, sizeY, i, allPrototypes);
 
-            //Move the room randomly inside the other one so they still overlap
-            if (RnGsus.Instance.NextDouble() < 0.5)
-                newRoom.PosX += RnGsus.Instance.Next(target.SizeX - 1);
-            else newRoom.PosX -= RnGsus.Instance.Next(newRoom.SizeX - 1);
-            if (RnGsus.Instance.NextDouble() < 0.5)
-                newRoom.PosY += RnGsus.Instance.Next(target.SizeY - 1);
-            else newRoom.PosY -= RnGsus.Instance.Next(newRoom.SizeY - 1);
-
-            //Check if the room is allready out of bounds:
-            if (!isInBounds(newRoom.PosX, newRoom.PosY) ||
-                !isInBounds(newRoom.PosX + newRoom.SizeX - 1, newRoom.PosY + newRoom.SizeY - 1)) {
-                numFails++;
-                continue;
-            }
-
-            //Move the room in a random direction, until it fits:
-            var random = RnGsus.Instance.NextDouble();
-
-            var rand = RnGsus.Instance.NextDouble();
-
-            if (rand < 0.25)
-                //Move in positive X direction
-                //Move to right until a free tile is reached:
-                while (isInBounds(newRoom.PosX, newRoom.PosY) && isOccupied(newRoom))
-                    newRoom.PosX++;
-            else if (rand < 0.5)
-                //Move in negative X direction
-                //Move to right until a free tile is reached:
-                while (isInBounds(newRoom.PosX, newRoom.PosY) && isOccupied(newRoom))
-                    newRoom.PosX--;
-            else if (rand < 0.75)
-                //Move in positive Y direction
-                //Move to right until a free tile is reached:
-                while (isInBounds(newRoom.PosX, newRoom.PosY) && isOccupied(newRoom))
-                    newRoom.PosY++;
-            else
-                //Move in negative Y direction
-                while (isInBounds(newRoom.PosX, newRoom.PosY) && isOccupied(newRoom))
-                    newRoom.PosY--;
-
-            if (!isInBounds(newRoom.PosX, newRoom.PosY)) {
-                numFails++;
-                continue;
-            }
-
-            //Try to add openings to other rooms:
-            if (connectWith(newRoom)) {
-                Rooms.Add(newRoom);
-                occupy(newRoom);
+            if(placeRoom(newRoom, target))
+            {
+                placedRooms++;
                 i++;
-                numFails = 0;
-            } else {
+            }
+            else
+            {
                 numFails++;
             }
         }
+        //Place End room
+
+        Room endRoom = new EndRoom(_mg, _mg.RockPrototypes);
+        endRoom.PosX = startRoom.PosX;
+        endRoom.PosY = startRoom.PosY;
+
+
+        int handbrake = 0;
+        //try adding end room endlessly
+        while (!placeRoom(endRoom, startRoom) && handbrake < 1000)
+            handbrake++;
 
         //Move all the rooms so that the starter room is in the middle:
         var displaceX = startRoom.PosX;
@@ -120,6 +85,66 @@ internal class DungeonGraph {
         foreach (var r in Rooms) {
             r.PosX -= displaceX - 1;
             r.PosY -= displaceY + 2;
+        }
+    }
+
+    public bool placeRoom(Room newRoom, Room target)
+    {
+        //Move the room randomly inside the other one so they still overlap
+        if (RnGsus.Instance.NextDouble() < 0.5)
+            newRoom.PosX += RnGsus.Instance.Next(target.SizeX - 1);
+        else newRoom.PosX -= RnGsus.Instance.Next(newRoom.SizeX - 1);
+        if (RnGsus.Instance.NextDouble() < 0.5)
+            newRoom.PosY += RnGsus.Instance.Next(target.SizeY - 1);
+        else newRoom.PosY -= RnGsus.Instance.Next(newRoom.SizeY - 1);
+
+        //Check if the room is allready out of bounds:
+        if (!isInBounds(newRoom.PosX, newRoom.PosY) ||
+            !isInBounds(newRoom.PosX + newRoom.SizeX - 1, newRoom.PosY + newRoom.SizeY - 1))
+        {
+            return false;
+        }
+
+        //Move the room in a random direction, until it fits:
+        var random = RnGsus.Instance.NextDouble();
+
+        var rand = RnGsus.Instance.NextDouble();
+
+        if (rand < 0.25)
+            //Move in positive X direction
+            //Move to right until a free tile is reached:
+            while (isInBounds(newRoom.PosX, newRoom.PosY) && isOccupied(newRoom))
+                newRoom.PosX++;
+        else if (rand < 0.5)
+            //Move in negative X direction
+            //Move to right until a free tile is reached:
+            while (isInBounds(newRoom.PosX, newRoom.PosY) && isOccupied(newRoom))
+                newRoom.PosX--;
+        else if (rand < 0.75)
+            //Move in positive Y direction
+            //Move to right until a free tile is reached:
+            while (isInBounds(newRoom.PosX, newRoom.PosY) && isOccupied(newRoom))
+                newRoom.PosY++;
+        else
+            //Move in negative Y direction
+            while (isInBounds(newRoom.PosX, newRoom.PosY) && isOccupied(newRoom))
+                newRoom.PosY--;
+
+        if (!isInBounds(newRoom.PosX, newRoom.PosY))
+        {
+            return false;
+        }
+
+        //Try to add openings to other rooms:
+        if (connectWith(newRoom))
+        {
+            Rooms.Add(newRoom);
+            occupy(newRoom);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -311,25 +336,5 @@ internal class DungeonGraph {
         for (var x = room.PosX; x < room.PosX + room.SizeX; x++)
         for (var y = room.PosY; y < room.PosY + room.SizeY; y++)
             _occupationMap[x, y] = room.Index;
-    }
-
-    public Room createStartRoom(int maxRoomSize) {
-        //Settings of the start room
-        var startRoomSettings = new RoomSettings("StartRoom", new List<List<Prototype>> { _mg.RockPrototypes });
-
-        var x = 0;
-        var y = 0;
-        var sizeX = RnGsus.Instance.Next(maxRoomSize - MinRoomSize) + MinRoomSize;
-        var sizeY = RnGsus.Instance.Next(maxRoomSize - MinRoomSize) + MinRoomSize;
-
-        var room = new Room(_mg, startRoomSettings, x, y, sizeX, sizeY, 1);
-
-        for (var i = 2; i < 5; i++)
-        for (var j = 2; j < 5; j++)
-            room.setWalkable(i, j);
-
-        room.innerOpening(2, 2);
-
-        return room;
     }
 }
