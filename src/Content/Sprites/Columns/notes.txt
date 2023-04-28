@@ -1,0 +1,14 @@
+Lightning Column:
+
+- lightning_column.png contains 5 frames. Each frame is 530 pixels wide.
+	
+
+Collapse Column:
+
+- collapse_column.png contains 7 frames. Each frame is 1060 pixels wide (twice as wide as fragile_column_1.png, use half the width of the fragile-column sprite as the horizontal offset).
+
+- "fragile_column_1.png", "fragile_column_2.png" and "fragile_column_3.png" should be used before it collapses. 
+
+- "collapse_column.png" together with "fragile_column_2.png", "fragile_column_3.png" as a collapse animation.
+
+- "fragile_column_broken.png" should be shown afterwards (without any collisions)
