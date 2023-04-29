@@ -79,5 +79,6 @@ public class FragileColumn : ActivableColumn {
         _broken = true;
         Body.Enabled = false;
         SoundEngine.Instance.CollapseColumn();
+        SoundEngine.Instance.FlingSound();
     }
 }

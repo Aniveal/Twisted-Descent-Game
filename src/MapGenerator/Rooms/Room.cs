@@ -83,6 +83,7 @@ public class Room {
         int nColumns = (int)(walkable * columnDensity);
         //Add columns
         placeColumns(nColumns);
+        placeEnemies(nColumns);
         return true;
     }
 
