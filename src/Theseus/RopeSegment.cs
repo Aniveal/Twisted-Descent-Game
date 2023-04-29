@@ -74,9 +74,13 @@ public class RopeSegment : DrawableGameElement {
     public void DeElectrify(bool fromPrev) {
         if (ElecSrcSegment != null && ElecSrcSegment.IsElecSrc) {
             if (fromPrev)
-                Previous?.Electrify(ElecSrcSegment, ElecIntensity - 1, false);
+                if (Previous != null && Previous.ElecSrcSegment == null) {
+                    Previous?.Electrify(ElecSrcSegment, ElecIntensity - 1, false);
+                }
             else
-                Next?.Electrify(ElecSrcSegment, ElecIntensity - 1, true);
+                if (Next != null && Next.ElecSrcSegment == null) {
+                    Next?.Electrify(ElecSrcSegment, ElecIntensity - 1, true);
+                }
             return;
         }
 
