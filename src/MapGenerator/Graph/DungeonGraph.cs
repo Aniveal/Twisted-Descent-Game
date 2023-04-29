@@ -25,7 +25,7 @@ internal class DungeonGraph {
     }
 
     //Creates a map with nRooms rooms, on a grid with maxSize size.
-    public void createDungeonMap(int maxSize, int maxRoomSize, int nRooms) {
+    public void createDungeonMap(int maxSize, int maxRoomSize, int nRooms, int difficulty, int difficultyRange) {
         _occupationMap = new int[maxSize, maxSize];
 
         var allPrototypes = new List<Prototype>();
@@ -54,7 +54,9 @@ internal class DungeonGraph {
             var sizeX = RnGsus.Instance.Next(maxRoomSize - MinRoomSize) + MinRoomSize;
             var sizeY = RnGsus.Instance.Next(maxRoomSize - MinRoomSize) + MinRoomSize;
 
-            var newRoom = new Room(_mg, target.PosX, target.PosY, sizeX, sizeY, i, allPrototypes);
+            var diff = RnGsus.Instance.Next(difficultyRange) - (difficultyRange / 2) + difficulty;
+
+            var newRoom = new Room(_mg, target.PosX, target.PosY, sizeX, sizeY, i, allPrototypes, diff);
 
             if(placeRoom(newRoom, target))
             {

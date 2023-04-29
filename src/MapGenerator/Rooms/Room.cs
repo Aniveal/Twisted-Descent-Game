@@ -12,6 +12,8 @@ public class Room {
     //Enemies
     public List<Vector2> EnemyPositions = new();
 
+    public int roomDifficulty;
+
     //How many columns there should be, as a percentage of walkable tiles
     public float columnDensity = 0.15f;
 
@@ -43,7 +45,7 @@ public class Room {
     //
     public List<Prototype> protList = new();
 
-    public Room(MapGenerator mg, int x, int y, int sizeX, int sizeY, int index, List<Prototype> protList, float[] columnWeight = null)
+    public Room(MapGenerator mg, int x, int y, int sizeX, int sizeY, int index, List<Prototype> protList, int diff, float[] columnWeight = null)
     {
         Index = index;
         Openings = new List<Vector2>();
@@ -59,6 +61,8 @@ public class Room {
         if (columnWeight == null)
             this.columnWeight = new float[] { 0.1f, 0.9f, 1f };
         else this.columnWeight = columnWeight;
+        roomDifficulty = diff;
+
     }
 
     //Finishes the room generation, results in a workable tileMap
@@ -79,11 +83,14 @@ public class Room {
                 walkable++;
         }
 
-
         int nColumns = (int)(walkable * columnDensity);
         //Add columns
         placeColumns(nColumns);
-        placeEnemies(nColumns);
+        if (roomDifficulty > 0)
+        {
+            int maxEnemies = (int)(roomDifficulty * (SizeX * SizeY) * 0.001f);
+            placeEnemies(RnGsus.Instance.Next(maxEnemies));
+        }
         return true;
     }
 
@@ -122,7 +129,7 @@ public class Room {
 
     private bool noColumnsNear(float x, float y) {
         foreach (var col in Columns)
-            if (Math.Abs(col.X - x) < 1 && Math.Abs(col.Y - y) < 1)
+            if (Math.Abs(col.X - x) < 2 && Math.Abs(col.Y - y) < 2)
                 return false;
 
         return true;

@@ -49,7 +49,7 @@ public class MapGenerator {
         {
             generationFail = false;
             RnGsus.Instance.NewSeed();
-            graph.createDungeonMap(size, roomSize, nRooms);
+            graph.createDungeonMap(size, roomSize, nRooms, 300, 0);
             RoomList = graph.Rooms;
 
             foreach (var room in RoomList)
