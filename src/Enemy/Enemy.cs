@@ -73,6 +73,7 @@ public class Enemy : DrawableGameElement {
     }
 
     public void Kill() {
+        SoundEngine.Instance.Squish();
         IsAlive = false;
     }
 

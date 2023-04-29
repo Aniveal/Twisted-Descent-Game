@@ -149,7 +149,7 @@ public class Player : DrawableGameElement {
             _footstepSoundDelayCurrent -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
         if (_isWalking && _footstepSoundDelayCurrent < 0) {
-            _game.SoundEngine.playGravelFootstep();
+            SoundEngine.Instance.playGravelFootstep();
             _footstepSoundDelayCurrent = _footstepSoundDelayMax;
         }
 

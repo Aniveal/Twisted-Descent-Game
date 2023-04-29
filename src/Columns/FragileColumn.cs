@@ -26,5 +26,6 @@ public class FragileColumn : ActivableColumn {
     public void Break() {
         _broken = true;
         Body.Enabled = false;
+        SoundEngine.Instance.CollapseColumn();
     }
 }

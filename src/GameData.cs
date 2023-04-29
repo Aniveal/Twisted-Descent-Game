@@ -35,6 +35,7 @@ public class GameData {
     }
 
     public void RemoveHealth(int amount) {
+        SoundEngine.Instance.SwordHit();
         Health -= 1;
         if (Health <= 0) GameOver = true;
     }

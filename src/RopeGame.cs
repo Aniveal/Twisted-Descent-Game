@@ -28,8 +28,6 @@ public class RopeGame : Game {
     public GraphicsDeviceManager Graphics;
     public Texture2D RectangleTexture;
 
-    public SoundEngine SoundEngine;
-
     public enum State {
         Running,
         Pause,
@@ -78,7 +76,8 @@ public class RopeGame : Game {
         _menuScreen.Initialize();
         _currentScreen = _menuScreen;
 
-        SoundEngine = new SoundEngine(this); //Create the sound engine
+
+        SoundEngine.Instance.SetRopeGame(this);
     }
 
     protected override void LoadContent() {

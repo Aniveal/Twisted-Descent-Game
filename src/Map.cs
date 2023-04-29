@@ -277,14 +277,14 @@ public class Map : DrawableGameElement {
         var h = _game.Graphics.PreferredBackBufferHeight;
         var w = _game.Graphics.PreferredBackBufferWidth;
 
-        var addonPixel = 100;
+        var addonTiles = 2; 
 
-        var xMin = Math.Floor(camera.getWorldPixel(new Vector2(0 - addonPixel, 0 - addonPixel)).X);
-        var xMax = Math.Ceiling(camera.getWorldPixel(new Vector2(h + addonPixel, w + addonPixel)).X);
-        var yMin = Math.Floor(camera.getWorldPixel(new Vector2(w - addonPixel, 0 - addonPixel)).Y);
-        var yMax = Math.Ceiling(camera.getWorldPixel(new Vector2(0 + addonPixel, h + addonPixel)).Y);
+        var xMin = Math.Floor(camera.getWorldPixel(new Vector2(0, 0)).X) - addonTiles;
+        var xMax = Math.Ceiling(camera.getWorldPixel(new Vector2(w, h)).X) + addonTiles;
+        var yMin = Math.Floor(camera.getWorldPixel(new Vector2(0,0)).Y) - addonTiles;
+        var yMax = Math.Ceiling(camera.getWorldPixel(new Vector2(w, h)).Y) + addonTiles;
 
-        Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
+        //Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
 
         foreach (var r in RoomList) {
             //if (r.PosX > xMax || r.PosY > yMax || r.PosX + r.SizeX < xMin || r.PosY + r.SizeY < yMin)
