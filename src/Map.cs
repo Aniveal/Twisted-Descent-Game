@@ -223,14 +223,12 @@ public class Map : DrawableGameElement {
     }
 
     public void transferDataToManagers() {
-        //TODO: move column textures loading to adequate location? 
-        //TODO: replace column_lower by column_base once the sprite is available AND modify Column.Draw() accordingly
-        var columnLower = _game.Content.Load<Texture2D>("Sprites/Columns/column_lower");
-        var columnUpper = _game.Content.Load<Texture2D>("Sprites/Columns/column");
-        var columnTexture = new ColumnTextures(columnLower, columnUpper);
-        var elecLower = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column_lower");
-        var elecUpper = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column");
-        var elecTexture = new ColumnTextures(elecLower, elecUpper);
+        var columnTexture = _game.Content.Load<Texture2D>("Sprites/Columns/column");
+        var elecTexture = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column");
+        var elecAnimationTexture = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column_animation");
+        var fragileTexture = _game.Content.Load<Texture2D>("Sprites/Columns/fragile_column");
+        var fragileAnimationTexture = _game.Content.Load<Texture2D>("Sprites/Columns/collapse_column");
+        var brokenTexture = _game.Content.Load<Texture2D>("Sprites/Columns/fragile_column_broken");
 
         foreach (var r in RoomList) {
             Debug.WriteLine("Sending coords to ColumnsManager: " + r.Columns.Count);
@@ -246,13 +244,13 @@ public class Map : DrawableGameElement {
 
                 switch (i) {
                     case 1:
-                        Cm.Add(new FragileColumn(_game, _world, worldCoords, 0.4f, _game.ColumnTexture));
+                        Cm.Add(new FragileColumn(_world, worldCoords, 1.5f, fragileTexture, brokenTexture, fragileAnimationTexture));
                         break;
                     case 2:
-                        Cm.Add(new ElectricColumn(_game, _world, worldCoords, 0.4f, elecTexture));
+                        Cm.Add(new ElectricColumn(_world, worldCoords, 1.5f, elecTexture, elecAnimationTexture));
                         break;
                     default:
-                        Cm.Add(new Column(_game, _world, worldCoords, 0.4f, columnTexture));
+                        Cm.Add(new Column(_world, worldCoords, 1.5f, columnTexture));
                         break;
                 }
 

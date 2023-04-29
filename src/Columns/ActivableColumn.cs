@@ -10,16 +10,14 @@ public class ActivableColumn : Column {
     protected bool Activated;
     protected int NContacts;
 
-    public ActivableColumn(RopeGame game, World world, Vector2 center, float radius, Texture2D texture) : base(game,
-        world, center, radius, texture) {
+    public ActivableColumn(World world, Vector2 position, float width, Texture2D texture) : base(world, position, width, texture) {
         Activated = false;
         NContacts = 0;
         Body.OnCollision += OnCollision;
         Body.OnSeparation += OnSeparation;
     }
-
-    public ActivableColumn(RopeGame game, World world, Vector2 center, float radius, ColumnTextures texture) : base(
-        game, world, center, radius, texture) {
+    
+    public ActivableColumn(World world, Vector2 position, float width, Texture2D texture, bool isSpear) : base(world, position, width, texture, isSpear) {
         Activated = false;
         NContacts = 0;
         Body.OnCollision += OnCollision;
@@ -53,24 +51,4 @@ public class ActivableColumn : Column {
             segment.ColumnCallback(this, false, !Activated);
         }
     }
-
-    // public override void DrawFirst(GameTime gameTime, SpriteBatch batch, Camera camera)
-    // {
-    //     if (_activated)
-    //     {
-    //         Rectangle dstRec = camera.getScreenRectangle(_center.X - _radius, _center.Y - _radius, _radius * 2, _radius*2, true);
-    //         //draw activated column
-    //         batch.Draw(_columnTexture, dstRec, Color.Yellow);
-    //     }
-    //     else
-    //     {
-    //         //draw noraml column
-    //         base.DrawFirst(gameTime, batch, camera);
-    //     }
-    // }
-
-    // public override void DrawSecond(GameTime gameTime, SpriteBatch batch, Camera camera)
-    // {
-    //     //TODO: update once sprites are available
-    // }
 }

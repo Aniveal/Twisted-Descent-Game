@@ -9,10 +9,10 @@ namespace Meridian2.Columns;
 public class SpearsController {
     private const int SpearCooldown = 2000;
     private const int PlacementDisantce = 1;
-    private const float SpearWidth = 0.2f;
+    private const float SpearWidth = 1.2f;
 
     private Texture2D _baseSpearTexture;
-    private ColumnTextures normalSpearTexture;
+    private Texture2D _normalSpearTexture;
     private readonly ColumnsManager _columnsManager;
     private readonly GameData _data;
     private readonly RopeGame _game;
@@ -38,9 +38,7 @@ public class SpearsController {
 
     public void LoadContent() {
         _baseSpearTexture = _game.Content.Load<Texture2D>("circle");
-        normalSpearTexture = new ColumnTextures(_game.Content.Load<Texture2D>("Sprites/Spear/spear_lower2"),
-            _game.Content.Load<Texture2D>("Sprites/Spear/spear_upper2"));
-
+        _normalSpearTexture = _game.Content.Load<Texture2D>("Sprites/Spear/spear");
     }
 
     public void Update(GameTime gameTime) {
@@ -54,46 +52,6 @@ public class SpearsController {
         }
 
         var keyboard = Keyboard.GetState();
-        //TODO: remove placing with 1,2,3. Left in for easier testing
-        //basic column
-        if (keyboard.IsKeyDown(Keys.D1)) {
-            if (_placing) return;
-            var pPos = _player.Body.Position;
-            var pOr = _player.Orientation;
-            var sPos = pPos + pOr * 2;
-
-            _columnsManager.Add(new Column(_game, _game._gameScreen.World, sPos, SpearWidth, normalSpearTexture, true));
-            SpearTimer = 0;
-            _placing = true;
-            return;
-        }
-
-        //electric column
-        if (keyboard.IsKeyDown(Keys.D2)) {
-            if (_placing) return;
-            var pPos = _player.Body.Position;
-            var pOr = _player.Orientation;
-            var sPos = pPos + pOr;
-
-            _columnsManager.Add(new ElectricColumn(_game, _game._gameScreen.World, sPos, SpearWidth, _baseSpearTexture));
-            SpearTimer = 0;
-            _placing = true;
-            return;
-        }
-
-        //fragile column
-        if (keyboard.IsKeyDown(Keys.D3)) {
-            if (_placing) return;
-            var pPos = _player.Body.Position;
-            var pOr = _player.Orientation;
-            var sPos = pPos + pOr;
-
-            _columnsManager.Add(new FragileColumn(_game, _game._gameScreen.World, sPos, SpearWidth, _baseSpearTexture));
-            SpearTimer = 0;
-            _placing = true;
-            return;
-        }
-
         //move selection left
         if (keyboard.IsKeyDown(Keys.Q)) {
             //TODO: adapt to controler
@@ -129,16 +87,16 @@ public class SpearsController {
                     _data.Spears[Selected]--;
                     switch (Selected) {
                         case 0:
-                            _columnsManager.Add(new Column(_game, _game._gameScreen.World, sPos, SpearWidth,
-                                normalSpearTexture, true));
+                            _columnsManager.Add(new Column(_game._gameScreen.World, sPos, SpearWidth,
+                                _normalSpearTexture, true));
                             break;
                         case 1:
-                            _columnsManager.Add(new ElectricColumn(_game, _game._gameScreen.World, sPos, SpearWidth,
-                                _baseSpearTexture));    
+                            _columnsManager.Add(new ElectricColumn(_game._gameScreen.World, sPos, SpearWidth,
+                                _normalSpearTexture, true));    
                             break;
                         case 2:
-                            _columnsManager.Add(new FragileColumn(_game, _game._gameScreen.World, sPos, SpearWidth,
-                                _baseSpearTexture));
+                            _columnsManager.Add(new FragileColumn(_game._gameScreen.World, sPos, SpearWidth,
+                                _normalSpearTexture, _normalSpearTexture, true));
                             break;
                     }
                 }

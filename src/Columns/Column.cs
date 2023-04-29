@@ -3,73 +3,57 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2.Columns; 
+namespace Meridian2.Columns;
 
 public class Column : DrawableGameElement {
     public Body Body;
-    protected Vector2 Center;
+    protected Vector2 Position;
     protected Texture2D ColumnTexture;
-    protected RopeGame Game;
-    protected Texture2D LowerTexture;
-    protected bool MultiTexture;
-    protected float Radius;
-    protected SpriteBatch SpriteBatch;
-    protected Texture2D UpperTexture;
+    protected float Width;
     protected World World;
     private bool isSpear;
 
-    public Column(RopeGame game, World world, Vector2 center, float radius, Texture2D texture) {
-        Game = game;
+    protected float ColumnDiameterFactor = 0.49f;
+    protected float SpearDiameterFactor = 0.3f;
+    protected float SpearOffsetFactor = 0.09f;
+    protected float OcclusionHeightFactor = 0.78f;
+
+    protected Vector2 SpriteSize;
+
+    public Column(World world, Vector2 position, float width, Texture2D texture) {
         World = world;
-        Center = center;
-        Radius = radius;
+        Position = position;
+        Width = width;
         ColumnTexture = texture;
-        MultiTexture = false;
-        Body = World.CreateCircle(Radius, 0, Center);
+        Body = World.CreateCircle(Width * ColumnDiameterFactor / 2f, 0, Position);
+        isSpear = false;
+
+        SpriteSize = new Vector2(width, width * texture.Height / texture.Width);
     }
 
-    public Column(RopeGame game, World world, Vector2 center, float radius, ColumnTextures texture) {
-        Game = game;
+    public Column(World world, Vector2 position, float width, Texture2D texture, bool isSpear) {
         World = world;
-        Center = center;
-        Radius = radius;
-        LowerTexture = texture.Lower;
-        UpperTexture = texture.Upper;
-        MultiTexture = true;
-        Body = World.CreateCircle(Radius, 0, Center);
-    }
-
-    public Column(RopeGame game, World world, Vector2 center, float radius, ColumnTextures texture, bool isSpear) {
-        Game = game;
-        World = world;
-        Center = center;
-        Radius = radius;
-        LowerTexture = texture.Lower;
-        UpperTexture = texture.Upper;
-        MultiTexture = true;
-        Body = World.CreateCircle(Radius, 0, Center);
+        Position = position;
+        Width = width;
+        ColumnTexture = texture;
         this.isSpear = isSpear;
+
+        SpriteSize = new Vector2(width, width * texture.Height / texture.Width);
+        
+        if (this.isSpear) {
+            Vector2 center = new Vector2(Position.X + SpriteSize.X * SpearOffsetFactor, Position.Y);
+            Body = World.CreateCircle(Width * SpearDiameterFactor / 2f, 0, center);
+        } else {
+            Body = World.CreateCircle(Width * ColumnDiameterFactor / 2f, 0, Position);
+        }
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-        if (isSpear) {
-            Rectangle dstRecUp = camera.getSpriteRectangle(Center.X - 3 * Radius, Center.Y + Radius, Radius * 6, Radius * 12);
-            Rectangle dstRecLow = camera.getScreenRectangle(Center.X - 3 * Radius, Center.Y + Radius, Radius * 6, Radius);
-            batch.Draw(UpperTexture, dstRecUp, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRecUp.Y + dstRecUp.Height));
-            batch.Draw(LowerTexture, dstRecLow, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRecUp.Y + dstRecUp.Height));
-            return;
-        }
-        if (MultiTexture) {
-            var dstRec = camera.getSpriteRectangle(Center.X - 2 * Radius, Center.Y + Radius, Radius * 4, Radius * 8);
+        var screenRec =
+            camera.getScreenRectangle(Position.X - SpriteSize.X / 2f, Position.Y, SpriteSize.X, SpriteSize.Y);
+        screenRec.Y -= (int)(screenRec.Height * OcclusionHeightFactor);
 
-            //batch.Draw(_lowerTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
-            batch.Draw(UpperTexture, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
-                camera.getLayerDepth(dstRec.Y + dstRec.Height));
-            
-        } else {
-            var dstRec = camera.getScreenRectangle(Center.X - Radius, Center.Y - Radius, Radius * 2, Radius * 2, true);
-            batch.Draw(ColumnTexture, dstRec, null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None,
-                camera.getLayerDepth(dstRec.Y + dstRec.Height));
-        }
+        batch.Draw(ColumnTexture, screenRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
+            camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor));
     }
 }
