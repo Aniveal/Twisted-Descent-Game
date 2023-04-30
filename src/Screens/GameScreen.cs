@@ -44,6 +44,8 @@ public class GameScreen : Screen {
         SpearsController = new SpearsController(game, ColumnsManager, TheseusManager.Player);
         GuiManager = new GuiManager(game, SpearsController);
         diverseManager = new DiverseManager();
+        //debugging items
+        //diverseManager.Add(new HealthChest(Game, World, new Vector2(2,2)));
 
 
         _map = new Map(game, World, ColumnsManager, EnemyManager);
@@ -82,6 +84,7 @@ public class GameScreen : Screen {
         GuiManager.LoadContent();
         SpearsController.LoadContent();
         diverseManager.LoadContent();
+        
     }
 
     public void FixedUpdate(GameTime gameTime) {
