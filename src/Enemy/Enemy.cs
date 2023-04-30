@@ -12,7 +12,7 @@ namespace Meridian2.Enemy;
 public class Enemy : DrawableGameElement {
     private const int CrushDuration = 16;
     private const int CrushThreshold = 4;
-    private const float WallKillVelocity = 1f;
+    private const float WallKillVelocity = 1.5f;
     private readonly Point _enemySize = new(1, 2);
     private readonly RopeGame _game;
     private readonly float _angerDistance = 6f;
