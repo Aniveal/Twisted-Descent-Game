@@ -7,7 +7,7 @@ namespace Meridian2.Columns;
 
 public class Column : DrawableGameElement {
     public Body Body;
-    protected Vector2 Position;
+    public Vector2 Position;
     protected Texture2D ColumnTexture;
     protected float Width;
     protected World World;
@@ -26,6 +26,7 @@ public class Column : DrawableGameElement {
         Width = width;
         ColumnTexture = texture;
         Body = World.CreateCircle(Width * ColumnDiameterFactor / 2f, 0, Position);
+        Body.Tag = this;
         isSpear = false;
 
         SpriteSize = new Vector2(width, width * texture.Height / texture.Width);
