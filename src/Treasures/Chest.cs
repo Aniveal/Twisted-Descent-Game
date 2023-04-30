@@ -41,8 +41,7 @@ public class Chest : IDrawableObject {
 
     public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         var dstRec = new Rectangle();
-        dstRec = camera.getSpriteRectangle(Pos.X - spriteWidth*0.5f, Pos.Y+Height, spriteWidth, 1.31f*spriteWidth);
-        dstRec.Y -= 3;
+        dstRec = camera.getSpriteRectangle(Pos.X - spriteWidth*0.5f, Pos.Y+Height*0.9f, spriteWidth, 1.31f*spriteWidth);
         if (Open)
             batch.Draw(TextureOpen, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(dstRec.Y + dstRec.Height));
