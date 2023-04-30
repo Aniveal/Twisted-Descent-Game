@@ -15,12 +15,19 @@ namespace Meridian2.Treasures {
             treasures = new List<Chest>();
         }
 
+        public void Add(Amphora amphora) {
+            amphoras.Add(amphora);
+        }
+
+        public void Add(Chest chest) {
+            treasures.Add(chest);
+        }
+
         public void LoadContent() {
             foreach(Chest c in treasures) {
                 c.LoadContent();
             }
         }
-
 
         public void Update(GameTime gameTime) {
             foreach(Amphora a in amphoras) {
