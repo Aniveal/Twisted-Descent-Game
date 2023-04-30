@@ -22,8 +22,12 @@ public class Amphora : DrawableGameElement {
     private const float VelocityDangerThreshold = 0.2f;
     private const float ExplosionSize = 2f;
     private float currentExplosionSize;
+    //flag indicating that the item should be considered destroyed in the game
+    public bool isDestroyed = false;
+    //flag indicating the explosion animation has finished and the item can be cleaned up
+    public bool hasExploded = false;
 
-    public Amphora(RopeGame game, World world, Vector2 position, float radius) {
+    public Amphora(RopeGame game, World world, Vector2 position, float radius, Texture2D texture) {
         _game = game;
         _world = world;
         _position = position;
@@ -40,9 +44,11 @@ public class Amphora : DrawableGameElement {
         _body.OnCollision += OnCollision;
     }
 
-    public void Destroy() {
-        //TODO
-        //careful, cannot destroy body when called by any method in the OnCollision Callback chain
+    // DO NOT CALL FROM A PHYSICS CALLBACK
+    public void DestroyBody() {
+        _world.Remove(_body);
+        isDestroyed = true;
+        hasExploded = true; //TODO: do this once the explosion animation is finished
     }
 
     private bool ExplodeObject(Fixture f) {
@@ -73,22 +79,24 @@ public class Amphora : DrawableGameElement {
     }
 
     public void Explode() {
+        if (isDestroyed) return;
         Vector2 aa = new Vector2(_position.X-ExplosionSize, _position.Y - ExplosionSize);
         Vector2 bb = new Vector2(_position.X + ExplosionSize, _position.Y + ExplosionSize);
         AABB aabb = new AABB(aa, bb);
         currentExplosionSize = ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
-        Destroy();
+        isDestroyed = true;
         //TODO graphics
     }
 
     public void BiggerExplode() {
+        if (isDestroyed) return;
         Vector2 aa = new Vector2(_position.X-ExplosionSize, _position.Y - ExplosionSize);
         Vector2 bb = new Vector2(_position.X + ExplosionSize, _position.Y + ExplosionSize);
         AABB aabb = new AABB(aa, bb);
         currentExplosionSize = 1.5f*ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
-        Destroy();
+        isDestroyed = true;
     }
 
     protected bool OnCollision(Fixture sender, Fixture other, Contact contact) {
@@ -119,7 +127,7 @@ public class Amphora : DrawableGameElement {
             return true;
         }
         if (collider.Tag is Amphora) {
-            ((Amphora)collider.Tag).Destroy();
+            ((Amphora)collider.Tag).isDestroyed = true;
             BiggerExplode();
         }
 
