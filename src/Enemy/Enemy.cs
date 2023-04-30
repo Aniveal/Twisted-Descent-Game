@@ -10,26 +10,26 @@ using tainicom.Aether.Physics2D.Dynamics.Contacts;
 namespace Meridian2.Enemy; 
 
 public class Enemy : DrawableGameElement {
-    private const int CrushDuration = 16;
-    private const int CrushThreshold = 4;
-    private const float WallKillVelocity = 1.5f;
-    private readonly Point _enemySize = new(1, 2);
-    private readonly RopeGame _game;
-    private readonly float _angerDistance = 6f;
-    private int _difficultyLevel;
-    private readonly float _enemyForce = 0.001f;
-    private readonly float _followDistance = 3f;
+    protected const int CrushDuration = 16;
+    protected const int CrushThreshold = 4;
+    protected const float WallKillVelocity = 1.5f;
+    protected readonly Point _enemySize = new(1, 2);
+    protected readonly RopeGame _game;
+    protected readonly float _angerDistance = 6f;
+    protected int _difficultyLevel;
+    protected float _enemyForce = 0.001f;
+    protected readonly float _followDistance = 3f;
 
-    private Texture2D _idle;
-    private Vector2 _input = Vector2.Zero;
+    protected Texture2D _idle;
+    protected Vector2 _input = Vector2.Zero;
 
-    private bool _isWalking;
-    private readonly Player _player;
-    private Texture2D _runningB;
-    private Texture2D _runningF;
-    private Texture2D _runningL;
-    private Texture2D _runningR;
-    private readonly World _world;
+    protected bool _isWalking;
+    protected readonly Player _player;
+    protected Texture2D _runningB;
+    protected Texture2D _runningF;
+    protected Texture2D _runningL;
+    protected Texture2D _runningR;
+    protected readonly World _world;
 
     public Body Body;
     public int Colliding;
@@ -37,8 +37,8 @@ public class Enemy : DrawableGameElement {
     public int Crushed;
     public int overCliff = 0;
     public Tile collidingCliff;
-    private const int fallSpeed = 100; //pixels per second
-    private float fallStart = 0;
+    protected const int fallSpeed = 100; //pixels per second
+    protected float fallStart = 0;
     public bool IsAlive = true;
     public Vector2 Orientation;
 
@@ -59,7 +59,7 @@ public class Enemy : DrawableGameElement {
         _difficultyLevel = difficultyLevel;
     }
 
-    public void LoadContent() {
+    public virtual void LoadContent() {
         _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
         _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
         _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
@@ -67,7 +67,7 @@ public class Enemy : DrawableGameElement {
         _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
     }
 
-    public void Electrify() {
+    public virtual void Electrify() {
         Kill();
         //TODO: play animation (change color to yellow?), take damage
     }
@@ -77,7 +77,7 @@ public class Enemy : DrawableGameElement {
         IsAlive = false;
     }
 
-    protected bool OnCollision(Fixture sender, Fixture other, Contact contact) {
+    protected virtual bool OnCollision(Fixture sender, Fixture other, Contact contact) {
         Body collider;
         if (sender.Body.Tag == this)
             collider = other.Body;

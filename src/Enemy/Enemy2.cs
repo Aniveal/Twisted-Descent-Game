@@ -9,37 +9,7 @@ using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
 namespace Meridian2.Enemy; 
 
-public class Enemy2 : DrawableGameElement {
-    private int CrushDuration = 16;
-    private int CrushThreshold = 4;
-    private const float WallKillVelocity = 1.5f;
-    private readonly Point _enemySize = new(1, 2);
-    private readonly RopeGame _game;
-    private readonly float _angerDistance = 6f;
-    private readonly float _followDistance = 3f;
-    private float _enemyForce = 0.001f;
-
-    private Texture2D _idle;
-    private Vector2 _input = Vector2.Zero;
-
-    private bool _isWalking;
-    private readonly Player _player;
-    private Texture2D _runningB;
-    private Texture2D _runningF;
-    private Texture2D _runningL;
-    private Texture2D _runningR;
-    private readonly World _world;
-
-    public Body Body;
-    public int Colliding;
-    public int CollidingSegments;
-    public int Crushed;
-    public int overCliff = 0;
-    public Tile collidingCliff;
-    private const int fallSpeed = 100; //pixels per second
-    private float fallStart = 0;
-    public bool IsAlive = true;
-    public Vector2 Orientation;
+public class Enemy2 : Enemy {
 
     private Boolean _canChase;
     private Boolean _canKite;
@@ -49,10 +19,7 @@ public class Enemy2 : DrawableGameElement {
     private Boolean _isFast;
 
 
-    public Enemy2(RopeGame game, World world, Player player) {
-        _game = game;
-        _world = world;
-        _player = player;
+    public Enemy2(RopeGame game, World world, Player player) : base (game, world, player) {
     }
 
     public void Initialize(Vector2 initpos, Boolean canChase, Boolean canKite, Boolean CanShoot, Boolean isDurable, Boolean isImmuneToElectricity, Boolean isFast) {
@@ -73,8 +40,9 @@ public class Enemy2 : DrawableGameElement {
         
         if (_isDurable)
         {
-            CrushDuration *= 2;
-            CrushThreshold *= 2;
+            //Would make it impossible to crush, you can't just find space for more RopeSegments
+            //CrushDuration *= 2;
+            //CrushThreshold *= 2;
         }
         if (_isFast)
         {
@@ -82,7 +50,7 @@ public class Enemy2 : DrawableGameElement {
         }
     }
 
-    public void LoadContent()
+    public override void LoadContent()
     {
 
         if (_isDurable)
@@ -96,15 +64,11 @@ public class Enemy2 : DrawableGameElement {
         
         else 
         {
-        _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
+            base.LoadContent();
         }
     }
 
-    public void Electrify() {
+    public override void Electrify() {
         if (!_isImmuneToElectricity)
         {
             Kill();
@@ -112,11 +76,7 @@ public class Enemy2 : DrawableGameElement {
         //TODO: play animation (change color to yellow?), take damage
     }
 
-    public void Kill() {
-        IsAlive = false;
-    }
-
-    protected bool OnCollision(Fixture sender, Fixture other, Contact contact) {
+    protected override bool OnCollision(Fixture sender, Fixture other, Contact contact) {
         Body collider;
         if (sender.Body.Tag == this)
             collider = other.Body;
@@ -130,11 +90,12 @@ public class Enemy2 : DrawableGameElement {
                 _player.IsImmune = true;
                 if (_isDurable)
                 {
+                    //TODO: reevaluate designe decision, losing 2 health feels bad for the playr IMO (Jules)
                     _game.GameData.RemoveHealth(2);
                 }
                 else
                 {
-                    _game.GameData.RemoveHealth(1); //TODO: do stuff when health reaches 0
+                    _game.GameData.RemoveHealth(1);
                 }
             }
 
@@ -169,17 +130,6 @@ public class Enemy2 : DrawableGameElement {
         }
         return true;
     }
-
-    protected void OnSeparation(Fixture sender, Fixture other, Contact contact) {
-        var collider = sender.Body.Tag == this ? other.Body : sender.Body;
-        if (collider.Tag is RopeSegment) CollidingSegments--;
-    }
-
-    //DO NOT CALL DURING ONCOLLISION!!!
-    public void Destroy() {
-        _world.Remove(Body);
-    }
-
 
     public override void Update(GameTime gameTime) {
         if (fallStart > 0) {
