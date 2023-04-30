@@ -27,12 +27,15 @@ public class Amphora : DrawableGameElement {
     //flag indicating the explosion animation has finished and the item can be cleaned up
     public bool hasExploded = false;
 
+    private Texture2D _texture;
+
     public Amphora(RopeGame game, World world, Vector2 position, float radius, Texture2D texture) {
         _game = game;
         _world = world;
         _position = position;
         _radius = radius;
         slinged = false;
+        _texture = texture;
         Initialize();
     }
 
@@ -147,6 +150,6 @@ public class Amphora : DrawableGameElement {
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         var dstRec = camera.getScreenRectangle(_body.Position.X - _radius, _body.Position.Y - _radius, _radius * 2,
             _radius * 2, true);
-        batch.Draw(_game.ColumnTexture, dstRec, Color.Red);
+        batch.Draw(_texture, dstRec, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y));
     }
 }

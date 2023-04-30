@@ -22,13 +22,13 @@ public class EnemyManager {
     }
 
     public void Initialize() {
-        for (var i = 0; i < _numOfEnemies; i++) {
-            var enemy = new Enemy(_game, _world, _player);
-            var initpos = new Vector2(-5, -5);
-            var difficultyLevel = 3; // TODO change difficulty to random when initialize
-            enemy.Initialize(initpos, difficultyLevel);
-            Enemies.Add(enemy);
-        }
+        // for (var i = 0; i < _numOfEnemies; i++) {
+        //     var enemy = new Enemy(_game, _world, _player);
+        //     var initpos = new Vector2(-5, -5);
+        //     var difficultyLevel = 3; // TODO change difficulty to random when initialize
+        //     enemy.Initialize(initpos, difficultyLevel);
+        //     Enemies.Add(enemy);
+        // }
     }
 
     public void AddEnemy(Vector2 pos, int diff) {
