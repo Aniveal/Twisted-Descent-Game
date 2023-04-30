@@ -15,15 +15,15 @@ public class Amphora : DrawableGameElement {
 
     private Body _body;
     private readonly RopeGame _game;
-    private readonly Vector2 _position;
     private readonly float _radius;
     private readonly World _world;
     private bool slinged;
-    private const float VelocityDangerThreshold = 0.2f;
-    private const float ExplosionSize = 2f;
+    private const float VelocityDangerThreshold = 0.5f;
+    private const float ExplosionSize = 3f;
     private float currentExplosionSize;
     //flag indicating that the item should be considered destroyed in the game
     public bool isDestroyed = false;
+    public bool bodyIsDestroyed = false;
     //flag indicating the explosion animation has finished and the item can be cleaned up
     public bool hasExploded = false;
 
@@ -34,30 +34,33 @@ public class Amphora : DrawableGameElement {
     private Texture2D _amphoraTexture;
     private Texture2D _explosionTexture;
 
-    public Amphora(RopeGame game, World world, Vector2 position, float radius, Texture2D amphoraTexture, Texture2D explosionTexture) {
+    public Amphora(RopeGame game, World world, Vector2 position, float radius) {
         _game = game;
         _world = world;
-        _position = position;
         _radius = radius;
         slinged = false;
-        _amphoraTexture = amphoraTexture;
-        _explosionTexture = explosionTexture;
-        Initialize();
+        Initialize(position);
     }
 
-    public void Initialize() {
-        _body = _world.CreateCircle(_radius, Density, _position, BodyType.Dynamic);
+    public void Initialize(Vector2 pos) {
+        _body = _world.CreateCircle(_radius, Density, pos, BodyType.Dynamic);
         _body.FixedRotation = true;
         _body.LinearDamping = 0.1f;
         _body.Tag = this;
         _body.OnCollision += OnCollision;
     }
 
+    public void LoadContent() {
+        _amphoraTexture = _game.Content.Load<Texture2D>("Sprites/amphora");
+        _explosionTexture = _game.Content.Load<Texture2D>("circle");
+    }
+
     // DO NOT CALL FROM A PHYSICS CALLBACK
     public void DestroyBody() {
+        if (bodyIsDestroyed) return;
         _world.Remove(_body);
+        bodyIsDestroyed = true;
         isDestroyed = true;
-        hasExploded = true; //TODO: do this once the explosion animation is finished
     }
 
     private bool ExplodeObject(Fixture f) {
@@ -66,21 +69,21 @@ public class Amphora : DrawableGameElement {
         }
         if (f.Body.Tag is Enemy.Enemy) {
             Enemy.Enemy e = (Enemy.Enemy)f.Body.Tag;
-            if ((_position-e.Body.Position).Length() < currentExplosionSize) {
+            if ((_body.Position-e.Body.Position).Length() < currentExplosionSize) {
                 e.Kill();
             }
             return true;
         }
         if (f.Body.Tag is FragileColumn) {
             FragileColumn c = (FragileColumn)f.Body.Tag;
-            if ((_position-c.Position).Length() < currentExplosionSize) {
+            if ((_body.Position-c.Position).Length() < currentExplosionSize) {
                 c.Break();
             }
         }
 
         if (f.Body.Tag is Amphora) {
             Amphora a = (Amphora)f.Body.Tag;
-            if ((_position-a._position).Length() < currentExplosionSize) {
+            if ((_body.Position-a._body.Position).Length() < currentExplosionSize) {
                 a.Explode();
             }
         }
@@ -89,24 +92,25 @@ public class Amphora : DrawableGameElement {
 
     public void Explode() {
         if (isDestroyed) return;
-        Vector2 aa = new Vector2(_position.X-ExplosionSize, _position.Y - ExplosionSize);
-        Vector2 bb = new Vector2(_position.X + ExplosionSize, _position.Y + ExplosionSize);
+        Vector2 aa = new Vector2(_body.Position.X-ExplosionSize, _body.Position.Y - ExplosionSize);
+        Vector2 bb = new Vector2(_body.Position.X + ExplosionSize, _body.Position.Y + ExplosionSize);
         AABB aabb = new AABB(aa, bb);
         exploding = true;
+        isDestroyed = true;
         currentExplosionSize = ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
-        isDestroyed = true;
+        
         //TODO graphics
     }
 
     public void BiggerExplode() {
         if (isDestroyed) return;
-        Vector2 aa = new Vector2(_position.X-ExplosionSize, _position.Y - ExplosionSize);
-        Vector2 bb = new Vector2(_position.X + ExplosionSize, _position.Y + ExplosionSize);
+        Vector2 aa = new Vector2(_body.Position.X-ExplosionSize, _body.Position.Y - ExplosionSize);
+        Vector2 bb = new Vector2(_body.Position.X + ExplosionSize, _body.Position.Y + ExplosionSize);
         AABB aabb = new AABB(aa, bb);
+        isDestroyed = true;
         currentExplosionSize = 1.5f*ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
-        isDestroyed = true;
     }
 
     protected bool OnCollision(Fixture sender, Fixture other, Contact contact) {
@@ -165,13 +169,14 @@ public class Amphora : DrawableGameElement {
         if (!isDestroyed) {
             Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - _radius, _body.Position.Y - _radius, _radius * 2,
             _radius * 2, true);
+            dstRec = camera.getSpriteRectangle(_body.Position.X - _radius, _body.Position.Y + _radius, _radius*2, _radius*2*2);
             batch.Draw(_amphoraTexture, dstRec, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y));
         }
         if (exploding) {
             //TODO: improve once we have an animation
-            Rectangle dstRec = camera.getScreenRectangle(_position.X - currentExplosionSize, _position.Y - currentExplosionSize, 
+            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - currentExplosionSize, _body.Position.Y - currentExplosionSize, 
             2*currentExplosionSize, currentExplosionSize);
-            batch.Draw(_explosionTexture, dstRec, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 0.20f);
+            batch.Draw(_explosionTexture, dstRec, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1f);
         }
     }
 }

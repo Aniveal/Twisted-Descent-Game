@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Meridian2.Columns; //TODO: move amphoras into treasures and refactor it to diverse?
@@ -27,10 +28,13 @@ namespace Meridian2.Treasures {
             foreach(Chest c in treasures) {
                 c.LoadContent();
             }
+            foreach(Amphora a in amphoras) {
+                a.LoadContent();
+            }
         }
 
         public void Update(GameTime gameTime) {
-            foreach(Amphora a in amphoras) {
+            foreach(Amphora a in amphoras.ToList()) {
                 a.Update(gameTime);
                 if (a.isDestroyed) {
                     a.DestroyBody(); //destroy the body
