@@ -183,10 +183,7 @@ public class Player : DrawableGameElement {
         if (keyboard.IsKeyDown(Keys.P) || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0.5f) {
             _isPulling = true;
             if (ropeJointDistance < Rope.TextureHeight * 1.5) {
-                _world.Remove(_ropeConnection);
-                _ropeConnection = null;
-                _rope.RemoveSegment();
-                LinkToRope();
+                _rope.RemoveLastSegment();
             }
 
             _rope.Pull(gameTime);
