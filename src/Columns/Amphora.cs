@@ -27,15 +27,21 @@ public class Amphora : DrawableGameElement {
     //flag indicating the explosion animation has finished and the item can be cleaned up
     public bool hasExploded = false;
 
-    private Texture2D _texture;
+    private const float ExplosionDuration = 500f; //explosion in milliseconds
+    private float explosionStart = 0;
+    private bool exploding = false;
 
-    public Amphora(RopeGame game, World world, Vector2 position, float radius, Texture2D texture) {
+    private Texture2D _amphoraTexture;
+    private Texture2D _explosionTexture;
+
+    public Amphora(RopeGame game, World world, Vector2 position, float radius, Texture2D amphoraTexture, Texture2D explosionTexture) {
         _game = game;
         _world = world;
         _position = position;
         _radius = radius;
         slinged = false;
-        _texture = texture;
+        _amphoraTexture = amphoraTexture;
+        _explosionTexture = explosionTexture;
         Initialize();
     }
 
@@ -86,6 +92,7 @@ public class Amphora : DrawableGameElement {
         Vector2 aa = new Vector2(_position.X-ExplosionSize, _position.Y - ExplosionSize);
         Vector2 bb = new Vector2(_position.X + ExplosionSize, _position.Y + ExplosionSize);
         AABB aabb = new AABB(aa, bb);
+        exploding = true;
         currentExplosionSize = ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
         isDestroyed = true;
@@ -110,6 +117,9 @@ public class Amphora : DrawableGameElement {
         if (collider.Tag is RopeSegment) {
             slinged = true;
         }
+        if (collider.Tag is Player) {
+            slinged = false; //We want amphoras to be slung, not thrown
+        }
         if (!slinged) return true;
         //Explode on collision if slinged
         if (collider.Tag is Tile) {
@@ -131,6 +141,7 @@ public class Amphora : DrawableGameElement {
         }
         if (collider.Tag is Amphora) {
             ((Amphora)collider.Tag).isDestroyed = true;
+            ((Amphora)collider.Tag).hasExploded = true;
             BiggerExplode();
         }
 
@@ -139,17 +150,28 @@ public class Amphora : DrawableGameElement {
 
     public override void Update(GameTime gameTime)
     {
-        if (!slinged) {
-            return;
+        if (exploding && explosionStart == 0) {
+            explosionStart = gameTime.TotalGameTime.Milliseconds;
         }
-        if (_body.LinearVelocity.Length() < VelocityDangerThreshold) {
+        if (exploding && explosionStart + ExplosionDuration < gameTime.TotalGameTime.Milliseconds) {
+            hasExploded = true;
+        }
+        if (slinged && _body.LinearVelocity.Length() < VelocityDangerThreshold) {
             slinged = false;
         }
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-        var dstRec = camera.getScreenRectangle(_body.Position.X - _radius, _body.Position.Y - _radius, _radius * 2,
+        if (!isDestroyed) {
+            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - _radius, _body.Position.Y - _radius, _radius * 2,
             _radius * 2, true);
-        batch.Draw(_texture, dstRec, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y));
+            batch.Draw(_amphoraTexture, dstRec, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y));
+        }
+        if (exploding) {
+            //TODO: improve once we have an animation
+            Rectangle dstRec = camera.getScreenRectangle(_position.X - currentExplosionSize, _position.Y - currentExplosionSize, 
+            2*currentExplosionSize, currentExplosionSize);
+            batch.Draw(_explosionTexture, dstRec, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 0.20f);
+        }
     }
 }
