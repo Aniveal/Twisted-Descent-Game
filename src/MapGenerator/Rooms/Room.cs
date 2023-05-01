@@ -11,6 +11,7 @@ public class Room {
 
     //Enemies
     public List<Vector2> EnemyPositions = new();
+    public List<int> EnemyTypes = new();
 
     public int roomDifficulty;
 
@@ -88,9 +89,10 @@ public class Room {
         placeColumns(nColumns);
         if (roomDifficulty > 0)
         {
-            int maxEnemies = (int)(roomDifficulty * (SizeX * SizeY) * 0.001f);
-            placeEnemies(RnGsus.Instance.Next(maxEnemies));
+            int enemyBudget = (int)(roomDifficulty * (SizeX * SizeY) * 0.001f);
+            placeEnemies(RnGsus.Instance.Next(enemyBudget));
         }
+
         return true;
     }
 
@@ -146,8 +148,10 @@ public class Room {
             var y = (float)RnGsus.Instance.NextDouble() * SizeY;
 
             if (TileMap[(int)x, (int)y].FinalPrototype.Walkable) {
+                int r = RnGsus.Instance.Next(2);
+                EnemyTypes.Add(r);
                 EnemyPositions.Add(new Vector2((int)x, (int)y));
-                i++;
+                i += r + 1;
             } else {
                 j++;
             }

@@ -256,8 +256,10 @@ public class Map : DrawableGameElement {
 
             }
 
-            foreach (var v in r.EnemyPositions)
-                Em.AddEnemy(MapToWorld(v.X + r.PosX, v.Y + r.PosY), RnGsus.Instance.Next(3) + 1);
+            for (int i = 0; i < r.EnemyPositions.Count; i++)
+            {
+                Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY), RnGsus.Instance.Next(3) + 1, r.EnemyTypes[i]);
+            }
         }
     }
 
