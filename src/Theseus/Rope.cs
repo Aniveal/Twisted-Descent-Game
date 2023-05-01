@@ -184,41 +184,14 @@ public class Rope : DrawableGameElement {
         return nextLast;
     }
 
-    //Remove last segment
-    // !!! WARNING !!!
-    // Does not update the player rope connection, needs to be done separately
-    public bool RemoveSegment() {
-        if (_segments.Count < 5) return false;
-        var last = _segments.Last();
-        var penultimate = last.Previous;
+    public bool RemoveLastSegment() {
+        var removeIndex = _segments.Count - 2;
 
-        penultimate.SetNext(null);
-        _segments.Remove(last);
-        last.Destroy();
+        if (removeIndex > 0) {
+            return RemoveSegment(removeIndex);
+        }
 
-        var enableIndex = _segments.Count - KeepActive;
-        if (enableIndex >= 0) _segments[enableIndex].Body.BodyType = BodyType.Dynamic;
-
-        return true;
-    }
-
-    //remove any rope segment
-    public bool RemoveSegment(RopeSegment segment) {
-        if (segment == _segments.Last())
-            return false; //removing last segment has to be called axplicitely ba player in order to adjust player joint
-        if (segment == _segments.First()) return false; //cannot remove first segment
-
-        var prev = segment.Previous;
-        var next = segment.Next;
-        _segments.Remove(segment);
-        segment.Destroy();
-        var joint = JointFactory.CreateDistanceJoint(_world, prev.Body, next.Body,
-            new Vector2(TextureWidth / 2, TextureHeight),
-            new Vector2(TextureWidth / 2, 0));
-        joint.Length = RopeJointLength;
-        joint.Frequency = RopeJointFrequency;
-        joint.DampingRatio = RopeJointDampingRatio;
-        return true;
+        return false;
     }
 
     //remove rope segment at given index, not first or last

@@ -2,6 +2,7 @@
 using Meridian2.Enemy;
 using Meridian2.Gui;
 using Meridian2.Theseus;
+using Meridian2.Treasures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
@@ -16,6 +17,7 @@ public class GameScreen : Screen {
     private readonly Map _map;
     public ColumnsManager ColumnsManager;
     public EnemyManager EnemyManager;
+    public DiverseManager diverseManager;
     public RopeGame Game;
 
     public GuiManager GuiManager;
@@ -41,6 +43,9 @@ public class GameScreen : Screen {
         EnemyManager = new EnemyManager(Game, World, TheseusManager.Player, 1);
         SpearsController = new SpearsController(game, ColumnsManager, TheseusManager.Player);
         GuiManager = new GuiManager(game, SpearsController);
+        diverseManager = new DiverseManager();
+        //debugging items
+        //diverseManager.Add(new HealthChest(Game, World, new Vector2(2,2)));
 
 
         _map = new Map(game, World, ColumnsManager, EnemyManager);
@@ -78,6 +83,8 @@ public class GameScreen : Screen {
         EnemyManager.LoadContent();
         GuiManager.LoadContent();
         SpearsController.LoadContent();
+        diverseManager.LoadContent();
+        
     }
 
     public void FixedUpdate(GameTime gameTime) {
@@ -102,6 +109,7 @@ public class GameScreen : Screen {
         TheseusManager.Update(gameTime);
         EnemyManager.Update(gameTime);
         SpearsController.Update(gameTime);
+        diverseManager.Update(gameTime);
         Diagnostics.Instance.Update(gameTime, TheseusManager.Player);
 
         //putting it here cuz otherwise we'll forget about it the day when columns actually need updating. same for gui
@@ -123,6 +131,7 @@ public class GameScreen : Screen {
 
         TheseusManager.Draw(gameTime, _batch, Camera);
         EnemyManager.Draw(gameTime, _batch, Camera);
+        diverseManager.Draw(gameTime, _batch, Camera);
 
         //foreach (DummyRectangle rec in walls)
         //{

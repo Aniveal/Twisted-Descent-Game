@@ -136,14 +136,14 @@ public class MapGenerator {
             _rg.Content.Load<Texture2D>("Sprites/Wall/ground_rockwall_04"), 
             _rg.Content.Load<Texture2D>("Sprites/Wall/ground_rockwall_05"), 
             _rg.Content.Load<Texture2D>("Sprites/Wall/ground_rockwall_06"),
-            _rg.Content.Load<Texture2D>("Sprites/WallToRock/WallToRock_01"),
-            _rg.Content.Load<Texture2D>("Sprites/WallToRock/WallToRock_02"),
-            _rg.Content.Load<Texture2D>("Sprites/WallToRock/WallToRock_03"),
-            _rg.Content.Load<Texture2D>("Sprites/WallToRock/WallToRock_04"),
-            _rg.Content.Load<Texture2D>("Sprites/WallToRock/Ground_WallToRock_01"),
-            _rg.Content.Load<Texture2D>("Sprites/WallToRock/Ground_WallToRock_02"),
-            _rg.Content.Load<Texture2D>("Sprites/WallToRock/Ground_WallToRock_03"),
-            _rg.Content.Load<Texture2D>("Sprites/WallToRock/Ground_WallToRock_04")
+            _rg.Content.Load<Texture2D>("Sprites/WalltoRock/WallToRock_01"),
+            _rg.Content.Load<Texture2D>("Sprites/WalltoRock/WallToRock_02"),
+            _rg.Content.Load<Texture2D>("Sprites/WalltoRock/WallToRock_03"),
+            _rg.Content.Load<Texture2D>("Sprites/WalltoRock/WallToRock_04"),
+            _rg.Content.Load<Texture2D>("Sprites/WalltoRock/Ground_WallToRock_01"),
+            _rg.Content.Load<Texture2D>("Sprites/WalltoRock/Ground_WallToRock_02"),
+            _rg.Content.Load<Texture2D>("Sprites/WalltoRock/Ground_WallToRock_03"),
+            _rg.Content.Load<Texture2D>("Sprites/WalltoRock/Ground_WallToRock_04")
 
         };
 

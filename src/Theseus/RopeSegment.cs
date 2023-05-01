@@ -55,6 +55,9 @@ public class RopeSegment : DrawableGameElement {
 
     public void Electrify(RopeSegment src, int intensity, bool fromPrev) {
         if (intensity == 0) {
+            if (ElecIntensity > 0) { 
+                return; 
+            }
             if (fromPrev)
                 Next?.DeElectrify(true);
             else
@@ -73,6 +76,9 @@ public class RopeSegment : DrawableGameElement {
 
     public void DeElectrify(bool fromPrev) {
         if (ElecSrcSegment != null && ElecSrcSegment.IsElecSrc) {
+            if (ElecIntensity <= 1) {
+                return; 
+            }
             if (fromPrev)
                 Previous?.Electrify(ElecSrcSegment, ElecIntensity - 1, false);
             else
@@ -99,8 +105,8 @@ public class RopeSegment : DrawableGameElement {
         // Nothing to update
     }
 
-    public void Destroy() {
-        if ((Previous == null) | (Next == null)) return; //cannot destroy frist/last segment
+    public bool Destroy() {
+        if ((Previous == null) | (Next == null)) return false; //cannot destroy frist/last segment
         Previous.Next = Next;
         Next.Previous = Previous;
         _world.Remove(Body);
@@ -123,6 +129,7 @@ public class RopeSegment : DrawableGameElement {
         }
         //TODO: update electrification of neighbors
         //TODO: there probably is something else to do to destroy this object
+        return true;
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {

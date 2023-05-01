@@ -9,46 +9,21 @@ using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
 namespace Meridian2.Enemy; 
 
-public class Enemy : DrawableGameElement {
-    protected const int CrushDuration = 16;
-    protected const int CrushThreshold = 4;
-    protected const float WallKillVelocity = 1.5f;
-    protected readonly Point _enemySize = new(1, 2);
-    protected readonly RopeGame _game;
-    protected readonly float _angerDistance = 6f;
-    protected int _difficultyLevel;
-    protected float _enemyForce = 0.001f;
-    protected readonly float _followDistance = 3f;
+public class Enemy2 : Enemy {
 
-    protected Texture2D _idle;
-    protected Vector2 _input = Vector2.Zero;
+    private Boolean _canChase;
+    private Boolean _reduce2Health;
+    private Boolean _canKite;
+    private Boolean _canShoot;
+    private Boolean _isImmuneToCrush;
+    private Boolean _isImmuneToElectricity;
+    private Boolean _isFast;
+    private Boolean _isImmuneToAmphoras;
 
-    protected bool _isWalking;
-    protected readonly Player _player;
-    protected Texture2D _runningB;
-    protected Texture2D _runningF;
-    protected Texture2D _runningL;
-    protected Texture2D _runningR;
-    protected readonly World _world;
-
-    public Body Body;
-    public int Colliding;
-    public int CollidingSegments;
-    public int Crushed;
-    public int overCliff = 0;
-    public Tile collidingCliff;
-    protected const int fallSpeed = 100; //pixels per second
-    protected float fallStart = 0;
-    public bool IsAlive = true;
-    public Vector2 Orientation;
-
-    public Enemy(RopeGame game, World world, Player player) {
-        _game = game;
-        _world = world;
-        _player = player;
+    public Enemy2(RopeGame game, World world, Player player) : base (game, world, player) {
     }
 
-    public void Initialize(Vector2 initpos, int difficultyLevel) {
+    public void Initialize(Vector2 initpos, Boolean canChase, Boolean reduce2Health, Boolean canKite, Boolean CanShoot, Boolean isImmuneToCrush, Boolean isImmuneToElectricity, Boolean isFast, Boolean isImmuneToAmphoras) {
         Body = _world.CreateEllipse((float)_enemySize.X / 4, (float)_enemySize.X / 8, 20, 0.01f,
             initpos, 0f, BodyType.Dynamic);
         Body.FixedRotation = true;
@@ -56,28 +31,49 @@ public class Enemy : DrawableGameElement {
         Body.Tag = this;
         Body.OnCollision += OnCollision;
         Body.OnSeparation += OnSeparation;
-        _difficultyLevel = difficultyLevel;
+
+        _canChase = canChase;
+        _reduce2Health = reduce2Health;
+        _canKite = canKite;
+        _canShoot = CanShoot;
+        _isImmuneToCrush = isImmuneToCrush;
+        _isImmuneToElectricity = isImmuneToElectricity;
+        _isFast = isFast;
+        _isImmuneToAmphoras = isImmuneToAmphoras;
+        
+        if (_isFast)
+        {
+            _enemyForce *= 2;
+        }
     }
 
-    public virtual void LoadContent() {
-        _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
+    public override void LoadContent()
+    {
+
+        if (_reduce2Health)
+        {
+            _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+            _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+            _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+            _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+            _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+        }
+        
+        else 
+        {
+            base.LoadContent();
+        }
     }
 
-    public virtual void Electrify() {
-        Kill();
+    public override void Electrify() {
+        if (!_isImmuneToElectricity)
+        {
+            Kill();
+        }
         //TODO: play animation (change color to yellow?), take damage
     }
 
-    public void Kill() {
-        SoundEngine.Instance.Squish();
-        IsAlive = false;
-    }
-
-    protected virtual bool OnCollision(Fixture sender, Fixture other, Contact contact) {
+    protected override bool OnCollision(Fixture sender, Fixture other, Contact contact) {
         Body collider;
         if (sender.Body.Tag == this)
             collider = other.Body;
@@ -86,9 +82,19 @@ public class Enemy : DrawableGameElement {
         if (collider.Tag == null) return true;
         ///player collision
         if (collider.Tag is Player)
-            if (_player.IsImmune == false) {
+            if (_player.IsImmune == false)
+            {
                 _player.IsImmune = true;
-                _game.GameData.RemoveHealth(1); //TODO: do stuff when health reaches 0
+                if (_reduce2Health)
+                {
+                    //TODO: reevaluate designe decision, losing 2 health feels bad for the playr IMO (Jules)
+                    // We can can reduce the spwan rate of this type of enemies, We can discuss about it.
+                    _game.GameData.RemoveHealth(2);
+                }
+                else
+                {
+                    _game.GameData.RemoveHealth(1);
+                }
             }
 
         // If colliding with rope, and rope electrified
@@ -123,19 +129,6 @@ public class Enemy : DrawableGameElement {
         return true;
     }
 
-    protected void OnSeparation(Fixture sender, Fixture other, Contact contact) {
-        var collider = sender.Body.Tag == this ? other.Body : sender.Body;
-
-
-        if (collider.Tag is RopeSegment) CollidingSegments--;
-    }
-
-    //DO NOT CALL DURING ONCOLLISION!!!
-    public void Destroy() {
-        _world.Remove(Body);
-    }
-
-
     public override void Update(GameTime gameTime) {
         if (fallStart > 0) {
             if (gameTime.TotalGameTime.TotalSeconds - fallStart > 1) {
@@ -143,7 +136,7 @@ public class Enemy : DrawableGameElement {
             }
             return;
         }
-        if (CollidingSegments > CrushThreshold) {
+        if (CollidingSegments > CrushThreshold && !_isImmuneToCrush) {
             Crushed++;
             if (Crushed > CrushDuration) {
                 Kill();
@@ -160,85 +153,69 @@ public class Enemy : DrawableGameElement {
 
         _input = Vector2.Zero;
         _isWalking = false;
-        if (_difficultyLevel == 0) // enemies does not move
-        { }
 
-        if (_difficultyLevel == 1) // enemies moves random
-        {
-            var rnd = new Random();
-            var r = rnd.Next(0, 4);
-            if (r == 0) {
-                _input.X += 0.1f;
-                _isWalking = true;
-            }
-
-            if (r == 1) {
-                _input.X -= 0.1f;
-                _isWalking = true;
-            }
-
-            if (r == 2) {
-                _input.Y += 0.1f;
-                _isWalking = true;
-            }
-
-            if (r == 3) {
-                _input.Y -= 0.1f;
-                _isWalking = true;
-            }
-        }
-
-        if (_difficultyLevel == 2) // enemies chase you
+        if (_canChase) 
         {
             var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
+            if (_canKite)
+            {
+                if ((currentDistance > _followDistance) && (currentDistance < _angerDistance))
+                {
+                    if (Body.Position.X < _player.Body.Position.X)
+                    {
+                        _input.X += 0.1f;
+                        _isWalking = true;
+                    }
 
-            if (currentDistance < _angerDistance) {
-                if (Body.Position.X < _player.Body.Position.X) {
-                    _input.X += 0.1f;
-                    _isWalking = true;
-                }
+                    if (Body.Position.X > _player.Body.Position.X)
+                    {
+                        _input.X -= 0.1f;
+                        _isWalking = true;
+                    }
 
-                if (Body.Position.X > _player.Body.Position.X) {
-                    _input.X -= 0.1f;
-                    _isWalking = true;
-                }
+                    if (Body.Position.Y < _player.Body.Position.Y)
+                    {
+                        _input.Y += 0.1f;
+                        _isWalking = true;
+                    }
 
-                if (Body.Position.Y < _player.Body.Position.Y) {
-                    _input.Y += 0.1f;
-                    _isWalking = true;
-                }
-
-                if (Body.Position.Y > _player.Body.Position.Y) {
-                    _input.Y -= 0.1f;
-                    _isWalking = true;
-                }
-            }
-        }
-
-        if (_difficultyLevel == 3) // enemies chase you for a while
-        {
-            var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
-            if ((currentDistance > _followDistance) & (currentDistance < _angerDistance)) {
-                if (Body.Position.X < _player.Body.Position.X) {
-                    _input.X += 0.1f;
-                    _isWalking = true;
-                }
-
-                if (Body.Position.X > _player.Body.Position.X) {
-                    _input.X -= 0.1f;
-                    _isWalking = true;
-                }
-
-                if (Body.Position.Y < _player.Body.Position.Y) {
-                    _input.Y += 0.1f;
-                    _isWalking = true;
-                }
-
-                if (Body.Position.Y > _player.Body.Position.Y) {
-                    _input.Y -= 0.1f;
-                    _isWalking = true;
+                    if (Body.Position.Y > _player.Body.Position.Y)
+                    {
+                        _input.Y -= 0.1f;
+                        _isWalking = true;
+                    }
                 }
             }
+            else
+            {
+                if (currentDistance < _angerDistance)
+                {
+                    if (Body.Position.X < _player.Body.Position.X)
+                    {
+                        _input.X += 0.1f;
+                        _isWalking = true;
+                    }
+
+                    if (Body.Position.X > _player.Body.Position.X)
+                    {
+                        _input.X -= 0.1f;
+                        _isWalking = true;
+                    }
+
+                    if (Body.Position.Y < _player.Body.Position.Y)
+                    {
+                        _input.Y += 0.1f;
+                        _isWalking = true;
+                    }
+
+                    if (Body.Position.Y > _player.Body.Position.Y)
+                    {
+                        _input.Y -= 0.1f;
+                        _isWalking = true;
+                    }
+                }
+            }
+                
         }
 
 
