@@ -37,6 +37,8 @@ public class Map : DrawableGameElement {
 
     public Point TileSize = new(160, 160); // pixels
 
+    public bool levelFinished = false;
+
     public Map(RopeGame game, World world, ColumnsManager cm, EnemyManager em) {
         _game = game;
         _world = world;
@@ -88,6 +90,14 @@ public class Map : DrawableGameElement {
         return true;
     }
 
+    protected bool OnFinishCollision(Fixture sender, Fixture other, Contact contact) {
+        if (sender.Body.Tag is Player || other.Body.Tag is Player) {
+            levelFinished = true;
+            return false;
+        }
+        return false;
+    }
+
     public void CreateMapBody(Tile tile) {
         if (tile.FinalPrototype == null)
             return;
@@ -99,6 +109,10 @@ public class Map : DrawableGameElement {
         switch ((tile.FinalPrototype.Sockets[0], tile.FinalPrototype.Sockets[1], tile.FinalPrototype.Sockets[2],
                     tile.FinalPrototype.Sockets[3])) {
             case (0, 0, 0, 0): //no walls at all
+                if (tile.FinalPrototype.Name == "finish") {
+                    tile.Body = _world.CreateRectangle(l*0.5f, l*0.5f, 0, p + new Vector2(MapScaling, 0), (float)Math.PI / 4);
+                    tile.Body.OnCollision += OnFinishCollision;
+                }
                 break;
             case (3, 3, 3, 3): //fully walls tile
 
