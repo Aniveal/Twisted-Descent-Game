@@ -184,7 +184,7 @@ public class Amphora : DrawableGameElement {
             dstRec = camera.getSpriteRectangle(_body.Position.X - _radius, _body.Position.Y + _radius, _radius*2, _radius*2*2);
             batch.Draw(_amphoraTexture, dstRec, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y));
         }
-        if (exploding) {
+        if (exploding && !hasExploded) {
             //TODO: improve once we have an animation
             Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - currentExplosionSize, _body.Position.Y - currentExplosionSize, 
             2*currentExplosionSize, currentExplosionSize);
