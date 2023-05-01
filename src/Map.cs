@@ -40,10 +40,9 @@ public class Map : DrawableGameElement {
 
     public Point TileSize = new(160, 160); // pixels
 
-    public Map(RopeGame game, World world, ColumnsManager cm, EnemyManager em, DiverseManager dm) {
     public bool levelFinished = false;
 
-    public Map(RopeGame game, World world, ColumnsManager cm, EnemyManager em) {
+    public Map(RopeGame game, World world, ColumnsManager cm, EnemyManager em, DiverseManager dm) {
         _game = game;
         _world = world;
         Cm = cm;
