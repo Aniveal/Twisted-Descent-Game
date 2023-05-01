@@ -67,7 +67,7 @@ public class Amphora : DrawableGameElement {
     }
 
     private bool ExplodeObject(Fixture f) {
-        if (f.Body.Tag == null) {
+        if (f.Body.Tag == null || f.Body.Tag == this) {
             return true;
         }
         if (f.Body.Tag is Enemy.Enemy) {
@@ -170,6 +170,7 @@ public class Amphora : DrawableGameElement {
         }
         if (exploding && explosionStart + ExplosionDuration < gameTime.TotalGameTime.Milliseconds) {
             hasExploded = true;
+            exploding = false;
         }
         if (slinged && _body.LinearVelocity.Length() < VelocityDangerThreshold) {
             slinged = false;
