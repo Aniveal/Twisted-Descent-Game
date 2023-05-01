@@ -78,9 +78,9 @@ internal class DungeonGraph {
         while (true)
         {
             //Take a random room
-            var r = RnGsus.Instance.Next(Rooms.Count);
-            var target = Rooms[r];
-
+            var r = Rooms.Count - 1;
+            Room target = Rooms[r];
+            
             var newRoom = new EndRoom(_mg, _mg.RockPrototypes);
 
             newRoom.PosX = target.PosX;
