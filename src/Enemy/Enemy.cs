@@ -42,10 +42,15 @@ public class Enemy : DrawableGameElement {
     public bool IsAlive = true;
     public Vector2 Orientation;
 
+    
     public Enemy(RopeGame game, World world, Player player) {
         _game = game;
         _world = world;
         _player = player;
+    }
+    public void generateRandomAbilities()
+    {
+        throw new NotImplementedException();
     }
 
     public void Initialize(Vector2 initpos, int difficultyLevel) {

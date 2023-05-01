@@ -32,30 +32,24 @@ public class EnemyManager {
     }
 
     public void AddEnemy(Vector2 pos, int diff, int type) {
-        Enemy enemy;
         switch(type)
         {
             case 1:
-                enemy = new Enemy2(_game, _world, _player);
+                Enemy2 enemy2 = new Enemy2(_game, _world, _player);
+                enemy2.generateRandomAbilities();
+                enemy2.Initialize(pos, diff);
+                enemy2.LoadContent();
+                Enemies.Add(enemy2);
                 break;
 
             default:
-                enemy = new Enemy(_game, _world, _player);
+                Enemy enemy = new Enemy(_game, _world, _player);
+                enemy.Initialize(pos, diff);
+                enemy.LoadContent();
+                Enemies.Add(enemy);
                 break;
 
-        }
-        
-        enemy.Initialize(pos, diff);
-        enemy.LoadContent();
-        Enemies.Add(enemy);
-    }
-
-    public void AddEnemy2(Vector2 pos, int diff)
-    {
-        var enemy = new Enemy(_game, _world, _player);
-        enemy.Initialize(pos, diff);
-        enemy.LoadContent();
-        Enemies.Add(enemy);
+        } 
     }
 
     public void LoadContent() {

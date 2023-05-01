@@ -11,42 +11,44 @@ namespace Meridian2.Enemy;
 
 public class Enemy2 : Enemy {
 
-    private Boolean _canChase;
-    private Boolean _reduce2Health;
-    private Boolean _canKite;
-    private Boolean _canShoot;
-    private Boolean _isImmuneToCrush;
-    private Boolean _isImmuneToElectricity;
-    private Boolean _isFast;
-    private Boolean _isImmuneToAmphoras;
+    private Boolean _canChase = false;
+    private Boolean _reduce2Health = false;
+    private Boolean _canKite = false;
+    private Boolean _canShoot = false;
+    private Boolean _isImmuneToCrush = false;
+    private Boolean _isImmuneToElectricity = false;
+    private Boolean _isFast = false;
+    private Boolean _isImmuneToAmphoras = false;
 
     public Enemy2(RopeGame game, World world, Player player) : base (game, world, player) {
     }
 
-    public void Initialize(Vector2 initpos, Boolean canChase, Boolean reduce2Health, Boolean canKite, Boolean CanShoot, Boolean isImmuneToCrush, Boolean isImmuneToElectricity, Boolean isFast, Boolean isImmuneToAmphoras) {
-        Body = _world.CreateEllipse((float)_enemySize.X / 4, (float)_enemySize.X / 8, 20, 0.01f,
-            initpos, 0f, BodyType.Dynamic);
-        Body.FixedRotation = true;
-        Body.LinearDamping = 0.5f;
-        Body.Tag = this;
-        Body.OnCollision += OnCollision;
-        Body.OnSeparation += OnSeparation;
+    public new void generateRandomAbilities()
+    {
+        Random rng = new Random();
 
-        _canChase = canChase;
-        _reduce2Health = reduce2Health;
-        _canKite = canKite;
-        _canShoot = CanShoot;
-        _isImmuneToCrush = isImmuneToCrush;
-        _isImmuneToElectricity = isImmuneToElectricity;
-        _isFast = isFast;
-        _isImmuneToAmphoras = isImmuneToAmphoras;
-        
+        if (rng.Next(100) > 50)
+            _canChase = true;
+        if (rng.Next(100) > 50)
+            _reduce2Health = true;
+        if (rng.Next(100) > 50)
+            _canKite = true;
+        if (rng.Next(100) > 50)
+            _canShoot = true;
+        if (rng.Next(100) > 50)
+            _isImmuneToCrush = true;
+        if (rng.Next(100) > 50)
+            _isImmuneToElectricity = true;
+        if (rng.Next(100) > 50)
+            _isFast = true;
+        if (rng.Next(100) > 50)
+            _isImmuneToAmphoras = true;
+
         if (_isFast)
         {
             _enemyForce *= 2;
         }
     }
-
     public override void LoadContent()
     {
 
