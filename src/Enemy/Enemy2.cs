@@ -12,17 +12,18 @@ namespace Meridian2.Enemy;
 public class Enemy2 : Enemy {
 
     private Boolean _canChase;
+    private Boolean _reduce2Health;
     private Boolean _canKite;
     private Boolean _canShoot;
-    private Boolean _isDurable;
+    private Boolean _isImmuneToCrush;
     private Boolean _isImmuneToElectricity;
     private Boolean _isFast;
-
+    private Boolean _isImmuneToAmphoras;
 
     public Enemy2(RopeGame game, World world, Player player) : base (game, world, player) {
     }
 
-    public void Initialize(Vector2 initpos, Boolean canChase, Boolean canKite, Boolean CanShoot, Boolean isDurable, Boolean isImmuneToElectricity, Boolean isFast) {
+    public void Initialize(Vector2 initpos, Boolean canChase, Boolean reduce2Health, Boolean canKite, Boolean CanShoot, Boolean isImmuneToCrush, Boolean isImmuneToElectricity, Boolean isFast, Boolean isImmuneToAmphoras) {
         Body = _world.CreateEllipse((float)_enemySize.X / 4, (float)_enemySize.X / 8, 20, 0.01f,
             initpos, 0f, BodyType.Dynamic);
         Body.FixedRotation = true;
@@ -32,18 +33,14 @@ public class Enemy2 : Enemy {
         Body.OnSeparation += OnSeparation;
 
         _canChase = canChase;
+        _reduce2Health = reduce2Health;
         _canKite = canKite;
         _canShoot = CanShoot;
-        _isDurable = isDurable;
+        _isImmuneToCrush = isImmuneToCrush;
         _isImmuneToElectricity = isImmuneToElectricity;
         _isFast = isFast;
+        _isImmuneToAmphoras = isImmuneToAmphoras;
         
-        if (_isDurable)
-        {
-            //Would make it impossible to crush, you can't just find space for more RopeSegments
-            //CrushDuration *= 2;
-            //CrushThreshold *= 2;
-        }
         if (_isFast)
         {
             _enemyForce *= 2;
@@ -53,7 +50,7 @@ public class Enemy2 : Enemy {
     public override void LoadContent()
     {
 
-        if (_isDurable)
+        if (_reduce2Health)
         {
             _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
             _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
@@ -88,9 +85,10 @@ public class Enemy2 : Enemy {
             if (_player.IsImmune == false)
             {
                 _player.IsImmune = true;
-                if (_isDurable)
+                if (_reduce2Health)
                 {
                     //TODO: reevaluate designe decision, losing 2 health feels bad for the playr IMO (Jules)
+                    // We can can reduce the spwan rate of this type of enemies, We can discuss about it.
                     _game.GameData.RemoveHealth(2);
                 }
                 else
@@ -138,7 +136,7 @@ public class Enemy2 : Enemy {
             }
             return;
         }
-        if (CollidingSegments > CrushThreshold) {
+        if (CollidingSegments > CrushThreshold && !_isImmuneToCrush) {
             Crushed++;
             if (Crushed > CrushDuration) {
                 Kill();
