@@ -75,6 +75,7 @@ public class FragileColumn : ActivableColumn {
     }
 
     public void Break() {
+        if (_broken) return; //don't repeat animation
         _animation = true;
         _broken = true;
         Body.Enabled = false;

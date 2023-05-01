@@ -1,4 +1,5 @@
 ﻿using Meridian2.GameElements;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
@@ -30,6 +31,8 @@ public class Amphora : DrawableGameElement {
     private const float ExplosionDuration = 500f; //explosion in milliseconds
     private float explosionStart = 0;
     private bool exploding = false;
+
+    private List<FragileColumn> toBreak = new List<FragileColumn>();
 
     private Texture2D _amphoraTexture;
     private Texture2D _explosionTexture;
@@ -64,7 +67,7 @@ public class Amphora : DrawableGameElement {
     }
 
     private bool ExplodeObject(Fixture f) {
-        if (f.Body.Tag == null) {
+        if (f.Body.Tag == null || f.Body.Tag == this) {
             return true;
         }
         if (f.Body.Tag is Enemy.Enemy) {
@@ -77,7 +80,9 @@ public class Amphora : DrawableGameElement {
         if (f.Body.Tag is FragileColumn) {
             FragileColumn c = (FragileColumn)f.Body.Tag;
             if ((_body.Position-c.Position).Length() < currentExplosionSize) {
-                c.Break();
+                if (!toBreak.Contains(c)) {
+                    toBreak.Add(c);
+                }
             }
         }
 
@@ -154,11 +159,18 @@ public class Amphora : DrawableGameElement {
 
     public override void Update(GameTime gameTime)
     {
+        if (toBreak.Count > 0) {
+            foreach (FragileColumn c in toBreak) {
+                c.Break();
+            }
+            toBreak.Clear();
+        }
         if (exploding && explosionStart == 0) {
             explosionStart = gameTime.TotalGameTime.Milliseconds;
         }
         if (exploding && explosionStart + ExplosionDuration < gameTime.TotalGameTime.Milliseconds) {
             hasExploded = true;
+            exploding = false;
         }
         if (slinged && _body.LinearVelocity.Length() < VelocityDangerThreshold) {
             slinged = false;

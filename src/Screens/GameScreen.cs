@@ -45,6 +45,7 @@ public class GameScreen : Screen {
         diverseManager = new DiverseManager();
         //debugging items
         //diverseManager.Add(new HealthChest(Game, World, new Vector2(2,2)));
+        //diverseManager.Add(new Amphora(Game, World, new Vector2(2,2), 1));
 
 
         _map = new Map(game, World, ColumnsManager, EnemyManager, diverseManager);
@@ -114,6 +115,9 @@ public class GameScreen : Screen {
         //putting it here cuz otherwise we'll forget about it the day when columns actually need updating. same for gui
         //columnsManager.Update(gameTime);
         //guiManager.Update(gameTime);
+        if (_map.levelFinished) {
+            //TODO: load new level
+        }
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch = null)
@@ -139,6 +143,10 @@ public class GameScreen : Screen {
         GuiManager.Draw(gameTime, _batch, Camera);
 
         var ropeRed = new Color(170, 54, 54);
+        if (_map.levelFinished) {
+            _batch.DrawString(Game.Font, "LEVEL COMPLETE", new Vector2(300, 300), ropeRed, 0f, Vector2.Zero, 1f,
+                SpriteEffects.None, 1f);
+        }
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), ropeRed);
         _batch.End();
     }
