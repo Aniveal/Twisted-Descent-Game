@@ -52,19 +52,19 @@ public class Enemy2 : Enemy {
     public override void LoadContent()
     {
 
-        if (_reduce2Health)
-        {
-            _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
-            _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
-            _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
-            _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
-            _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
-        }
+        //if (_reduce2Health)
+        //{
+        //    _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+        //    _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+        //    _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+        //    _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+        //    _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
+        //}
         
-        else 
-        {
+        //else 
+        //{
             base.LoadContent();
-        }
+        //}
     }
 
     public override void Electrify() {
