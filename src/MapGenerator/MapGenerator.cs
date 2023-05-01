@@ -46,7 +46,7 @@ public class MapGenerator {
         int roomSize = 50;
 
         //Number of rooms: 3 + difficulty
-        int nRooms = difficulty + 20;
+        int nRooms = difficulty + 5;
 
         bool generationFail = true;
         while(generationFail)
