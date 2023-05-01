@@ -12,6 +12,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 using static System.Net.Mime.MediaTypeNames;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
 using Meridian2.Screens;
+using Meridian2.Treasures;
 
 namespace Meridian2;
 
@@ -32,16 +33,19 @@ public class Map : DrawableGameElement {
 
     public EnemyManager Em;
 
+    public DiverseManager Dm;
+
     //The list of rooms to draw
     public List<Room> RoomList = new();
 
     public Point TileSize = new(160, 160); // pixels
 
-    public Map(RopeGame game, World world, ColumnsManager cm, EnemyManager em) {
+    public Map(RopeGame game, World world, ColumnsManager cm, EnemyManager em, DiverseManager dm) {
         _game = game;
         _world = world;
         Cm = cm;
         Em = em;
+        Dm = dm;
     }
 
 
@@ -259,6 +263,25 @@ public class Map : DrawableGameElement {
             for (int i = 0; i < r.EnemyPositions.Count; i++)
             {
                 Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY), RnGsus.Instance.Next(3) + 1, r.EnemyTypes[i]);
+            }
+
+            foreach(Vector2 pos in r.AmphoraPositions)
+            {
+                Amphora a = new Amphora(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), 0.5f);
+                Dm.Add(a);
+            }
+
+            foreach (Vector2 pos in r.TreasurePositions)
+            {
+                
+                Chest c;
+                if(RnGsus.Instance.NextDouble() > 0.5)
+                {
+                    c = new HealthChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
+                }
+                else c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
+                
+                Dm.Add(c);
             }
         }
     }

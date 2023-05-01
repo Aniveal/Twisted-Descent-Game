@@ -26,7 +26,6 @@ public class GameScreen : Screen {
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
 
     public TheseusManager TheseusManager;
-    public World World;
 
 
     public GameScreen(RopeGame game) : base(game) {
@@ -48,7 +47,7 @@ public class GameScreen : Screen {
         //diverseManager.Add(new HealthChest(Game, World, new Vector2(2,2)));
 
 
-        _map = new Map(game, World, ColumnsManager, EnemyManager);
+        _map = new Map(game, World, ColumnsManager, EnemyManager, diverseManager);
     }
 
     public override void Initialize() {

@@ -25,5 +25,6 @@ public class HealthChest : Chest {
     public override void Loot() {
         Game.GameData.MaxHealth += _contentMaxHealth;
         Game.GameData.AddHealth(_contentHealth);
+        SoundEngine.Instance.ChestSound();
     }
 }

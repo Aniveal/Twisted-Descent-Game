@@ -24,5 +24,6 @@ public class SpearsChest : Chest {
 
     public override void Loot() {
         for (var i = 0; i < 3; i++) Game.GameData.Spears[i] += _content[i];
+        SoundEngine.Instance.ChestSound();
     }
 }

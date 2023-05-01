@@ -15,8 +15,6 @@ public class MapScreen : Screen {
     private readonly Map _map;
     public ColumnsManager ColumnsManager;
     public RopeGame Game;
-
-    public World World;
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
 
 
@@ -30,7 +28,7 @@ public class MapScreen : Screen {
 
         World = new World(Vector2.Zero);
         ColumnsManager = new ColumnsManager();
-        _map = new Map(game, World, ColumnsManager, new EnemyManager(game, World, null, 0));
+        _map = new Map(game, World, ColumnsManager, new EnemyManager(game, World, null, 0), new Treasures.DiverseManager());
     }
 
     public override void Initialize() {

@@ -37,7 +37,10 @@ public class Chest : IDrawableObject {
     }
 
     //Overwrite in subclasses
-    public virtual void Loot() { }
+    public virtual void Loot() 
+    {
+        
+    }
 
     public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         var dstRec = new Rectangle();

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using Meridian2.Columns;
 using Microsoft.Xna.Framework;
 
 namespace Meridian2; 
@@ -12,6 +14,10 @@ public class Room {
     //Enemies
     public List<Vector2> EnemyPositions = new();
     public List<int> EnemyTypes = new();
+
+    public List<Vector2> AmphoraPositions = new();
+
+    public List<Vector2> TreasurePositions = new();
 
     public int roomDifficulty;
 
@@ -42,11 +48,14 @@ public class Room {
     //The map of this room
     public Tile[,] TileMap;
 
+    protected int nColumns;
+    protected int nTreasures = 0;
+
 
     //
     public List<Prototype> protList = new();
 
-    public Room(MapGenerator mg, int x, int y, int sizeX, int sizeY, int index, List<Prototype> protList, int diff, float[] columnWeight = null)
+    public Room(MapGenerator mg, int x, int y, int sizeX, int sizeY, int index, List<Prototype> protList, int diff, bool treasure = false, float[] columnWeight = null)
     {
         Index = index;
         Openings = new List<Vector2>();
@@ -64,6 +73,10 @@ public class Room {
         else this.columnWeight = columnWeight;
         roomDifficulty = diff;
 
+        if (treasure)
+        {
+            this.nTreasures = RnGsus.Instance.Next(4);
+        }
     }
 
     //Finishes the room generation, results in a workable tileMap
@@ -84,9 +97,14 @@ public class Room {
                 walkable++;
         }
 
-        int nColumns = (int)(walkable * columnDensity);
+        nColumns = (int)(walkable * columnDensity);
+
         //Add columns
         placeColumns(nColumns);
+
+        addTreasures();
+        addAmphoras();
+
         if (roomDifficulty > 0)
         {
             int enemyBudget = (int)(roomDifficulty * (SizeX * SizeY) * 0.001f);
@@ -135,6 +153,62 @@ public class Room {
                 return false;
 
         return true;
+    }
+
+    private bool noTreasuresNear(float x, float y)
+    {
+        foreach (var C in TreasurePositions)
+            if (Math.Abs(C.X - x) < 1 && Math.Abs(C.Y - y) < 1)
+                return false;
+
+        return true;
+    }
+
+    private void addAmphoras()
+    {
+        int nAmphoras = (int)(((SizeX * SizeY) / 100) * RnGsus.Instance.NextDouble());
+        int i = 0;
+        int j = 0;
+        while (i < nAmphoras)
+        {
+            if (j > 1000)
+                break;
+            var x = (float)RnGsus.Instance.NextDouble() * SizeX;
+            var y = (float)RnGsus.Instance.NextDouble() * SizeY;
+
+            if (TileMap[(int)x, (int)y].FinalPrototype.Walkable)
+            {
+                if (noColumnsNear(x, y) && noTreasuresNear(x, y))
+                {
+                    AmphoraPositions.Add(new Vector2(x, y));
+                    i++;
+                }
+            }
+            j++;
+        }
+    }
+
+    private void addTreasures()
+    {
+        int i = 0;
+        int j = 0;
+        while (i < nTreasures)
+        {
+            if (j > 1000)
+                break;
+            var x = (float)RnGsus.Instance.NextDouble() * SizeX;
+            var y = (float)RnGsus.Instance.NextDouble() * SizeY;
+
+            if (TileMap[(int)x, (int)y].FinalPrototype.Walkable)
+            {
+                if (noColumnsNear(x, y))
+                {
+                    TreasurePositions.Add(new Vector2(x, y));
+                    i++;
+                }
+            }
+            j++;
+        }
     }
 
     public void placeEnemies(int n) {

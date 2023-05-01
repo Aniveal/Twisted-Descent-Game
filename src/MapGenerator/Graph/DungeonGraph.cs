@@ -56,7 +56,11 @@ internal class DungeonGraph {
 
             var diff = RnGsus.Instance.Next(difficultyRange) - (difficultyRange / 2) + difficulty;
 
-            var newRoom = new Room(_mg, target.PosX, target.PosY, sizeX, sizeY, i, allPrototypes, diff);
+            bool treasure = false;
+            if (RnGsus.Instance.NextDouble() < 0.1)
+                treasure = true;
+
+            var newRoom = new Room(_mg, target.PosX, target.PosY, sizeX, sizeY, i, allPrototypes, diff, treasure);
 
             if(placeRoom(newRoom, target))
             {

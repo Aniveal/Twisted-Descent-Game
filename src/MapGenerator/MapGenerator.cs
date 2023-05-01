@@ -16,7 +16,7 @@ public class MapGenerator {
     private DungeonGraph _graph;
 
     //Parent game
-    private readonly RopeGame _rg;
+    public readonly RopeGame _rg;
 
     //All rock textures
     private List<Texture2D> _rockTextures;
@@ -37,6 +37,8 @@ public class MapGenerator {
         createPrototypeLists();
     }
 
+    //Creates a new map with difficulty level "difficulty". difficulty increases linearly.
+    //difficulty 10 has twice as many enemies and rooms as difficulty 5
     public void createProceduralMap(int difficulty) {
         var graph = new DungeonGraph(this);
 
