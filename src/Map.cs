@@ -28,6 +28,10 @@ public class Map : DrawableGameElement {
     private float _wallWidth = (float)Math.Sqrt(MapScaling * 2);
     private readonly World _world;
 
+    public int mapDifficulty = 1;
+
+    MapGenerator _mapGenerator;
+
     //WIP, remove this as soon as possible
     public ColumnsManager Cm;
 
@@ -96,7 +100,9 @@ public class Map : DrawableGameElement {
 
     protected bool OnFinishCollision(Fixture sender, Fixture other, Contact contact) {
         if (sender.Body.Tag is Player || other.Body.Tag is Player) {
+
             levelFinished = true;
+            
             return false;
         }
         return false;
@@ -223,13 +229,15 @@ public class Map : DrawableGameElement {
     }
 
     public void Initialize() {
-        var mapGenerator = new MapGenerator(_game);
+        _mapGenerator = new MapGenerator(_game);
 
         Debug.WriteLine("Initializing Map");
 
-        mapGenerator.createProceduralMap(3);
+        _mapGenerator.createProceduralMap(mapDifficulty);
 
-        RoomList = mapGenerator.RoomList;
+        RoomList = _mapGenerator.RoomList;
+
+        
 
 
         transferDataToManagers();
