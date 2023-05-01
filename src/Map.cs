@@ -209,7 +209,7 @@ public class Map : DrawableGameElement {
 
         Debug.WriteLine("Initializing Map");
 
-        mapGenerator.createProceduralMap(1);
+        mapGenerator.createProceduralMap(3);
 
         RoomList = mapGenerator.RoomList;
 

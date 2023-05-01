@@ -68,17 +68,29 @@ internal class DungeonGraph {
                 numFails++;
             }
         }
+
+
         //Place End room
+        while (true)
+        {
+            //Take a random room
+            var r = RnGsus.Instance.Next(Rooms.Count);
+            var target = Rooms[r];
 
-        Room endRoom = new EndRoom(_mg, _mg.RockPrototypes);
-        endRoom.PosX = startRoom.PosX;
-        endRoom.PosY = startRoom.PosY;
+            var newRoom = new EndRoom(_mg, _mg.RockPrototypes);
 
+            newRoom.PosX = target.PosX;
+            newRoom.PosY = target.PosY;
 
-        int handbrake = 0;
-        //try adding end room endlessly
-        while (!placeRoom(endRoom, startRoom) && handbrake < 1000)
-            handbrake++;
+            if (placeRoom(newRoom, target))
+            {
+                break;
+            }
+            else
+            {
+                numFails++;
+            }
+        }
 
         //Move all the rooms so that the starter room is in the middle:
         var displaceX = startRoom.PosX;

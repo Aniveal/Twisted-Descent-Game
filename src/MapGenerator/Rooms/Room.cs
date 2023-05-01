@@ -214,7 +214,7 @@ public class Room {
     }
 
     public void setTile(int x, int y, Prototype p) {
-        TileMap[x, y].setFinalPrototype(p);
+        TileMap[x, y].setFinalPrototype(p, true);
     }
 
     public void setWalkable(int x, int y) {
@@ -241,38 +241,32 @@ public class Room {
             if (x <= 1 || x >= SizeX - 2) {
                 //First, do one step towards the middle
                 while (x <= 1) {
-                    TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                    collapseTile(TileMap[x, y]);
+                    TileMap[x, y].makeWalkable();
                     x = x + 1;
                 }
 
                 while (x >= SizeX - 2) {
-                    TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                    collapseTile(TileMap[x, y]);
+                    TileMap[x, y].makeWalkable();
                     x = x - 1;
                 }
 
-                TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                collapseTile(TileMap[x, y]);
+                TileMap[x, y].makeWalkable();
             }
 
             //opening on top or bottom
             if (y <= 1 || y >= SizeY - 2) {
                 //First, do one step towards the middle
                 while (y <= 1) {
-                    TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                    collapseTile(TileMap[x, y]);
+                    TileMap[x, y].makeWalkable();
                     y = y + 1;
                 }
 
                 while (y >= SizeY - 2) {
-                    TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                    collapseTile(TileMap[x, y]);
+                    TileMap[x, y].makeWalkable();
                     y = y - 1;
                 }
 
-                TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                collapseTile(TileMap[x, y]);
+                TileMap[x, y].makeWalkable();
             }
 
             while (!(x == midX && y == midY)) {
@@ -283,16 +277,14 @@ public class Room {
                 if (x == midX) {
                     if (y < midY) y++;
                     else y--;
-                    TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                    collapseTile(TileMap[x, y]);
+                    TileMap[x, y].makeWalkable();
                     continue;
                 }
 
                 if (y == midY) {
                     if (x < midX) x++;
                     else x--;
-                    TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                    collapseTile(TileMap[x, y]);
+                    TileMap[x, y].makeWalkable();
                     continue;
                 }
 
@@ -311,8 +303,7 @@ public class Room {
                     else y--;
                 }
 
-                TileMap[x, y].setFinalPrototype(getPrototype("ground"));
-                collapseTile(TileMap[x, y]);
+                TileMap[x, y].makeWalkable();
             }
 
             Debug.Write("Complete!\n");

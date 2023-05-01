@@ -36,7 +36,12 @@ public class Tile {
     }
 
     public bool makeWalkable() {
+
+        if (this.Superpositions.Count == 1 && Superpositions[0].Walkable)
+            return true;
         var protList = new List<Prototype>();
+
+
 
         foreach (var p in Superpositions)
             if (p.Walkable)

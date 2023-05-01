@@ -10,6 +10,8 @@ namespace Meridian2;
 public class MapGenerator {
     private List<Texture2D> _cliffTextures;
 
+    public Prototype FinishPrototype;
+
     //Graph of the rooms of this map, a graph consisting of rooms
     private DungeonGraph _graph;
 
@@ -41,8 +43,8 @@ public class MapGenerator {
         int size = 10000;
         int roomSize = 50;
 
-        //Number of rooms: 10 + difficulty
-        int nRooms = difficulty + 3;
+        //Number of rooms: 3 + difficulty
+        int nRooms = difficulty + 2;
 
         bool generationFail = true;
         while(generationFail)
@@ -68,6 +70,10 @@ public class MapGenerator {
 
     //Initializes the prototypes
     private void createPrototypeLists() {
+
+        Texture2D FinishTexture = _rg.Content.Load<Texture2D>("Sprites/GroundTiles/RockTile_01");
+        FinishPrototype = new Prototype(FinishTexture, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true);
+
         //Load the textures we want for the Prototypes
         _rockTextures = new List<Texture2D> {
             _rg.Content.Load<Texture2D>("Sprites/Rock/ground_wall_1b"), //0

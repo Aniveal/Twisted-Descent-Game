@@ -23,7 +23,7 @@ public class RopeGame : Game {
     public SpriteFont Font;
 
     public GameData GameData;
-    private bool gameScreen = true;
+    private bool gameScreen = false;
 
     public GraphicsDeviceManager Graphics;
 
