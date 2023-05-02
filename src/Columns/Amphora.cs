@@ -139,9 +139,6 @@ public class Amphora : DrawableGameElement {
         }
         if (collider.Tag is Column) {
             Explode();
-            if (collider.Tag is FragileColumn) {
-                ((FragileColumn)collider.Tag).Break();
-            }
             return true;
         }
         if (collider.Tag is Enemy2 || collider.Tag is Enemy.Enemy) {
