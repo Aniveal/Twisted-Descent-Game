@@ -36,6 +36,7 @@ public class FragileColumn : ActivableColumn {
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+        if (!camera.IsVisible(Position)) return;
         Rectangle screenRec;
         if (_animation && _animationTexture != null) {
             if (_animationStart == 0) {

@@ -14,7 +14,7 @@ namespace Meridian2.Columns;
 public class Amphora : DrawableGameElement {
     private const float Density = 0.1f;
 
-    private Body _body;
+    public Body _body;
     private readonly RopeGame _game;
     private readonly float _radius;
     private readonly World _world;

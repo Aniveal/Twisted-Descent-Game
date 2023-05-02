@@ -50,6 +50,7 @@ public class Column : DrawableGameElement {
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+        if (!camera.IsVisible(Position)) return;
         var screenRec =
             camera.getScreenRectangle(Position.X - SpriteSize.X / 2f, Position.Y, SpriteSize.X, SpriteSize.Y);
         screenRec.Y -= (int)(screenRec.Height * OcclusionHeightFactor);

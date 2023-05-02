@@ -73,6 +73,7 @@ public class EnemyManager {
     public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         foreach (var enemy in Enemies) {
             if (enemy.IsAlive == false) continue;
+            if (!camera.IsVisible(enemy.Body.Position)) continue;
             enemy.Draw(gameTime, batch, camera);
         }
     }

@@ -47,10 +47,14 @@ namespace Meridian2.Treasures {
 
         public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
             foreach(Amphora a in amphoras) {
-                a.Draw(gameTime, batch, camera);
+                if (camera.IsVisible(a._body.Position)) {
+                    a.Draw(gameTime, batch, camera);
+                }
             }
             foreach(Chest c in treasures) {
-                c.Draw(gameTime, batch, camera);
+                if (camera.IsVisible(c.Pos)) {
+                    c.Draw(gameTime, batch, camera);
+                }
             }
         }
     }
