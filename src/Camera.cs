@@ -8,6 +8,9 @@ public class Camera {
     private readonly float _inverseScale; //let's multiply instead of dividing
     private Vector2 _position;
     private float _scale;
+    private Vector2 aa; //top left corner of the camera are in world coords
+    private Vector2 bb; //bot right corner of the camera area in world coords
+    private Vector2 cornerDist;
 
     // private readonly Matrix IsometricToEuclidean = Matrix.CreateRotationX((float)-Math.PI / 4) *
     //                                                Matrix.CreateRotationY((float)-Math.PI / 4) *
@@ -18,11 +21,28 @@ public class Camera {
         _scale = 60.0f;
         _inverseScale = 1 / _scale;
         _position = Vector2.Zero;
+        cornerDist = getWorldPixel(Vector2.Zero) - new Vector2(10,10); //drawing stuff 10 units beyond camera range so everything gets drawn
     }
 
+    //Deprecated for Set, use SetCameraPos instead
     public Vector2 Pos {
         get => _position;
         set => _position = value;
+    }
+
+    public void SetCameraPos(Vector2 pos) {
+        _position = pos;
+        aa = pos + cornerDist;
+        bb = pos - cornerDist;
+    }
+
+    //Determines whether an object with radius < 10 is in the camera FOW
+    //Does not accurately work for bigger objects, need another method if case arises
+    public bool IsVisible(Vector2 pos) {
+        if (pos.X < aa.X || pos.Y < aa.Y || pos.X > bb.X || pos.Y > bb.Y) {
+            return false;
+        }
+        return true;
     }
 
     public float Scale {

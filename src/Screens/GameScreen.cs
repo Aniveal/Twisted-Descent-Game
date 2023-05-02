@@ -124,7 +124,7 @@ public class GameScreen : Screen {
     {
         
 
-        Camera.Pos = TheseusManager.Player.Body.Position;
+        Camera.SetCameraPos(TheseusManager.Player.Body.Position);
         base.Draw(gameTime);
 
         _batch.Begin(SpriteSortMode.FrontToBack);

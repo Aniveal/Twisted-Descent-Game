@@ -354,6 +354,9 @@ public class Map : DrawableGameElement {
                         pos = MapToWorld(new Point(t.X + r.PosX, t.Y + r.PosY));
                         screenPos = camera.getScreenPoint(new Vector2(pos.X, pos.Y));
                     }
+                    if (!camera.IsVisible(pos)) {
+                        continue;
+                    }
 
                     float layerDepthWalls = camera.getLayerDepth(screenPos.Y);
                     float layerDepthFloor = 0.24f;
