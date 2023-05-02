@@ -1,0 +1,4 @@
+explosion.png contains 7 frames. Each frame is 2750 pixels wide and 2700 pixels high.
+This means that each frame is 5 times as wide as the amphora sprite and 3 times as high. 
+When a amphora is exploding, draw the explosion with a x-axis offset of 2 times the amphoras width
+and a y-axis offset of 1 time the amphoras height (I think this should be correct?)

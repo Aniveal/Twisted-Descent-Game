@@ -725,6 +725,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Columns/lightning_column.png
 
+#begin Sprites/Effects/explosion.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Effects/explosion.png
+
 #begin Sprites/Enemies/enemy.png
 /importer:TextureImporter
 /processor:TextureProcessor
