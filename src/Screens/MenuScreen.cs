@@ -39,13 +39,12 @@ public class MenuScreen : Screen {
 
         newGameButton.Click += NewGameButton_Click;
 
-        var loadGameButton = new Button(buttonTexture, buttonFont) {
+        var tutorialButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(80, 450),
-            Text = "HighScore",
-            Disabled = true
+            Text = "Tutorial",
         };
 
-        loadGameButton.Click += HighScoreButton_Click;
+        tutorialButton.Click += TutorialButton_Click;
 
         var quitGameButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(80, 650),
@@ -57,7 +56,7 @@ public class MenuScreen : Screen {
         _components = new List<Component> {
             _continueButton,
             newGameButton,
-            loadGameButton,
+            tutorialButton,
             quitGameButton
         };
     }
@@ -77,8 +76,11 @@ public class MenuScreen : Screen {
         _continueButton.Disabled = false;
     }
 
-    private void HighScoreButton_Click(object sender, EventArgs e) {
-        //
+    private void TutorialButton_Click(object sender, EventArgs e) {
+        base.getGame()._tutorialScreen = new TutorialScreen(base.getGame(), _content);
+        base.getGame()._tutorialScreen.Initialize();
+        base.getGame().ChangeState(RopeGame.State.Tutorial);
+
     }
 
     private void QuitGameButton_Click(object sender, EventArgs e) {

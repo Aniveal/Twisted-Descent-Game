@@ -12,6 +12,7 @@ public class RopeGame : Game {
     public MapScreen _mapScreen;
     public GameScreen _gameScreen;
     public MenuScreen _menuScreen;
+    public TutorialScreen _tutorialScreen;
     public Screen _currentScreen;
     public LoadingScreen _loadingScreen;
 
@@ -31,7 +32,8 @@ public class RopeGame : Game {
         Running,
         Pause,
         MainMenu,
-        Loading
+        Loading,
+        Tutorial
     }
 
     public RopeGame() {
@@ -56,6 +58,10 @@ public class RopeGame : Game {
         else if (state == State.Loading)
         {
             _currentScreen = _loadingScreen;
+        }
+        else if (state == State.Tutorial)
+        {
+            _currentScreen = _tutorialScreen;
         }
     }
 
