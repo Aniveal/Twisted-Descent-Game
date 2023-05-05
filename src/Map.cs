@@ -240,9 +240,6 @@ public class Map : DrawableGameElement {
 
         RoomList = _mapGenerator.RoomList;
 
-        
-
-
         transferDataToManagers();
 
         //create bodies for tiles

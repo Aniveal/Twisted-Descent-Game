@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Meridian2;
 
 internal class DungeonGraph {
-    private const int MinRoomSize = 15;
+    private const int MinRoomSize = 10;
 
     private readonly MapGenerator _mg;
 
@@ -42,9 +42,11 @@ internal class DungeonGraph {
         //Index of currently placed room
         var i = 2;
         var numFails = 0;
-        var placedRooms = 1;
+        var placedTiles = startRoom.SizeX * startRoom.SizeY;
 
-        while (placedRooms < nRooms && numFails < 100) {
+        int nTiles = nRooms * (maxRoomSize / 2) * (maxRoomSize / 2);
+
+        while (placedTiles < nTiles && numFails < 100) {
 
             //Take a random room
             var r = RnGsus.Instance.Next(Rooms.Count);
@@ -53,6 +55,12 @@ internal class DungeonGraph {
             //Take the same spot as target and random size
             var sizeX = RnGsus.Instance.Next(maxRoomSize - MinRoomSize) + MinRoomSize;
             var sizeY = RnGsus.Instance.Next(maxRoomSize - MinRoomSize) + MinRoomSize;
+
+            if (sizeX * sizeY + placedTiles > nTiles)
+            {
+                sizeX = MinRoomSize + 1;
+                sizeY = MinRoomSize + 1;
+            }
 
             var diff = RnGsus.Instance.Next(difficultyRange) - (difficultyRange / 2) + difficulty;
 
@@ -64,7 +72,7 @@ internal class DungeonGraph {
 
             if(placeRoom(newRoom, target))
             {
-                placedRooms++;
+                placedTiles = placedTiles + newRoom.SizeX * newRoom.SizeY;
                 i++;
             }
             else

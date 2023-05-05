@@ -107,7 +107,7 @@ public class Room {
 
         if (roomDifficulty > 0)
         {
-            int enemyBudget = (int)(roomDifficulty * (SizeX * SizeY) * 0.001f);
+            int enemyBudget = (int)(roomDifficulty * (SizeX * SizeY) * 0.005f);
             placeEnemies(RnGsus.Instance.Next(enemyBudget));
         }
 
@@ -222,10 +222,9 @@ public class Room {
             var y = (float)RnGsus.Instance.NextDouble() * SizeY;
 
             if (TileMap[(int)x, (int)y].FinalPrototype.Walkable) {
-                int r = RnGsus.Instance.Next(2);
-                EnemyTypes.Add(r);
+                
                 EnemyPositions.Add(new Vector2((int)x, (int)y));
-                i += r + 1;
+                i += 1;
             } else {
                 j++;
             }

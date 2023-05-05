@@ -43,10 +43,10 @@ public class MapGenerator {
         var graph = new DungeonGraph(this);
 
         int size = 10000;
-        int roomSize = 30;
+        int roomSize = 40;
 
         //Number of rooms: 3 + difficulty
-        int nRooms = difficulty + 2;
+        int nRooms = difficulty / 2 + 2;
 
         bool generationFail = true;
         while(generationFail)
