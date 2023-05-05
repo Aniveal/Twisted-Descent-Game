@@ -14,7 +14,7 @@ public class GameScreen : Screen {
     private SpriteBatch _batch;
     private double _fixedTickAccumulator;
 
-    private Map _map;
+    public Map _map;
     public ColumnsManager ColumnsManager;
     public EnemyManager EnemyManager;
     public DiverseManager diverseManager;

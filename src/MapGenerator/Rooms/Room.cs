@@ -130,6 +130,7 @@ public class Room {
             var y = (float)RnGsus.Instance.NextDouble() * SizeY;
 
             if (TileMap[(int)Math.Floor(x), (int)Math.Floor(y)].FinalPrototype.Walkable) {
+                y = y - 1f;
                 if (noColumnsNear(x, y)) {
                     Columns.Add(new Vector2(x, y));
                     i++;
@@ -178,6 +179,7 @@ public class Room {
 
             if (TileMap[(int)x, (int)y].FinalPrototype.Walkable)
             {
+                y = y - 1f;
                 if (noColumnsNear(x, y) && noTreasuresNear(x, y))
                 {
                     AmphoraPositions.Add(new Vector2(x, y));
@@ -196,14 +198,14 @@ public class Room {
         {
             if (j > 1000)
                 break;
-            var x = (float)RnGsus.Instance.NextDouble() * SizeX;
-            var y = (float)RnGsus.Instance.NextDouble() * SizeY;
+            var x = (int)(RnGsus.Instance.NextDouble() * SizeX);
+            var y = (int)(RnGsus.Instance.NextDouble() * SizeY);
 
-            if (TileMap[(int)x, (int)y].FinalPrototype.Walkable)
+            if (TileMap[x, y].FinalPrototype.Walkable)
             {
                 if (noColumnsNear(x, y))
                 {
-                    TreasurePositions.Add(new Vector2(x, y));
+                    TreasurePositions.Add(new Vector2(x + 0.5f, y - 0.5f));
                     i++;
                 }
             }
