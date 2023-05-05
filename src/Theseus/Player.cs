@@ -67,7 +67,7 @@ public class Player : DrawableGameElement {
 
     public void LoadContent() {
         _idle = _game.Content.Load<Texture2D>("Sprites/Theseus/idle");
-        _runningL = _game.Content.Load<Texture2D>("Sprites/Theseus/running");
+        _runningL = _game.Content.Load<Texture2D>("Sprites/Theseus/running_l");
         _runningR = _game.Content.Load<Texture2D>("Sprites/Theseus/running_r");
         _runningF = _game.Content.Load<Texture2D>("Sprites/Theseus/running_f");
         _runningB = _game.Content.Load<Texture2D>("Sprites/Theseus/running_b");
@@ -214,9 +214,9 @@ public class Player : DrawableGameElement {
             var runningSprite = _runningF;
 
             if (_input.X > 0 && _input.X >= _input.Y)
-                runningSprite = _runningR;
-            else if (_input.X < 0 && _input.X <= _input.Y)
                 runningSprite = _runningL;
+            else if (_input.X < 0 && _input.X < _input.Y)
+                runningSprite = _runningR;
             else if (_input.Y < 0) runningSprite = _runningB;
             //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
 

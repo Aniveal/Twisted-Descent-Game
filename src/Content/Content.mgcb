@@ -1253,6 +1253,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Theseus/running_f.png
 
+#begin Sprites/Theseus/running_l.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Theseus/running_l.png
+
 #begin Sprites/Theseus/running_r.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1264,18 +1276,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Theseus/running_r.png
-
-#begin Sprites/Theseus/running.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Theseus/running.png
 
 #begin Sprites/UI/box.png
 /importer:TextureImporter
