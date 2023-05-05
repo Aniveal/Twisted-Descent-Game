@@ -31,25 +31,13 @@ public class EnemyManager {
         // }
     }
 
-    public void AddEnemy(Vector2 pos, int diff, int type) {
-        switch(type)
-        {
-            case 1:
-                Enemy2 enemy2 = new Enemy2(_game, _world, _player);
-                enemy2.generateRandomAbilities();
-                enemy2.Initialize(pos, diff);
-                enemy2.LoadContent();
-                Enemies.Add(enemy2);
-                break;
-
-            default:
-                Enemy enemy = new Enemy(_game, _world, _player);
-                enemy.Initialize(pos, diff);
-                enemy.LoadContent();
-                Enemies.Add(enemy);
-                break;
-
-        } 
+    public void AddEnemy(Vector2 pos, int diff)
+    {
+        Enemy enemy = new Enemy(_game, _world, _player);
+        enemy.generateRandomAbilities();
+        enemy.Initialize(pos, diff);
+        enemy.LoadContent();
+        Enemies.Add(enemy);
     }
 
     public void LoadContent() {
@@ -76,10 +64,5 @@ public class EnemyManager {
             if (!camera.IsVisible(enemy.Body.Position)) continue;
             enemy.Draw(gameTime, batch, camera);
         }
-    }
-
-    public void Clear()
-    {
-        Enemies.Clear();
     }
 }

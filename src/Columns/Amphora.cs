@@ -73,7 +73,7 @@ public class Amphora : DrawableGameElement {
         if (f.Body.Tag is Enemy.Enemy) {
             Enemy.Enemy e = (Enemy.Enemy)f.Body.Tag;
             if ((_body.Position-e.Body.Position).Length() < currentExplosionSize) { // TODO add e.isImmuneToAmphoras();
-                e.Kill();
+                e.Kill(2);
             }
             return true;
         }
@@ -141,7 +141,7 @@ public class Amphora : DrawableGameElement {
             Explode();
             return true;
         }
-        if (collider.Tag is Enemy2 || collider.Tag is Enemy.Enemy) {
+        if (collider.Tag is Enemy.Enemy) {
             Explode();
             return true;
         }

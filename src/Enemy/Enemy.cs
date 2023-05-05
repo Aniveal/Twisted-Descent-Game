@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Meridian2.GameElements;
 using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
@@ -15,12 +16,15 @@ public class Enemy : DrawableGameElement {
     protected const float WallKillVelocity = 1.5f;
     protected readonly Point _enemySize = new(1, 2);
     protected readonly RopeGame _game;
-    protected readonly float _angerDistance = 6f;
+    protected readonly float _angerDistance = 7f;
     protected int _difficultyLevel;
-    protected float _enemyForce = 0.001f;
+    protected float _enemyForce = 0.003f;
     protected readonly float _followDistance = 3f;
+    
+    private int _reducedHealth = 1;
 
     protected Texture2D _idle;
+
     protected Vector2 _input = Vector2.Zero;
 
     protected bool _isWalking;
@@ -42,7 +46,13 @@ public class Enemy : DrawableGameElement {
     public bool IsAlive = true;
     public Vector2 Orientation;
 
+    private Boolean _canShoot = false;
+    private Boolean _hasImmunity = false;
+    private Boolean _isImmuneToElectricity = false;
+    private Boolean _isImmuneToAmphoras = false;
+    private Boolean _canKite = false;
     
+
     public Enemy(RopeGame game, World world, Player player) {
         _game = game;
         _world = world;
@@ -50,7 +60,33 @@ public class Enemy : DrawableGameElement {
     }
     public void generateRandomAbilities()
     {
-        throw new NotImplementedException();
+        Random rng = new Random();
+        if(rng.Next(100) > 90)
+        {
+            _enemyForce /= 3;
+            _reducedHealth *= 2;
+            _hasImmunity = true;
+            _isImmuneToAmphoras = true;
+            _isImmuneToElectricity = true;
+            _canKite = true;
+        }
+        else
+        {
+            if (rng.Next(100) > 70)
+            {
+                _hasImmunity = true;
+                if (rng.Next(100) > 50)
+                    _isImmuneToElectricity = true;
+                else
+                    _isImmuneToAmphoras = true;
+            }
+            if (rng.Next(100) > 70)
+                _canKite = true;
+        }
+
+        //if (rng.Next(100) > 50)
+        //    _canShoot = true;
+
     }
 
     public void Initialize(Vector2 initpos, int difficultyLevel) {
@@ -73,13 +109,26 @@ public class Enemy : DrawableGameElement {
     }
 
     public virtual void Electrify() {
-        Kill();
+        Kill(1);
         //TODO: play animation (change color to yellow?), take damage
     }
 
-    public void Kill() {
-        SoundEngine.Instance.Squish();
-        IsAlive = false;
+    public void Kill(int cause) {
+        if (cause == 0) // normal
+        {
+            SoundEngine.Instance.Squish();
+            IsAlive = false;
+        }
+        if (cause == 1 && !_isImmuneToElectricity) // electricity
+        {
+            SoundEngine.Instance.Squish();
+            IsAlive = false;
+        }
+        if (cause == 2 && !_isImmuneToAmphoras) // apmohras
+        {
+            SoundEngine.Instance.Squish();
+            IsAlive = false;
+        }
     }
 
     protected virtual bool OnCollision(Fixture sender, Fixture other, Contact contact) {
@@ -93,7 +142,7 @@ public class Enemy : DrawableGameElement {
         if (collider.Tag is Player)
             if (_player.IsImmune == false) {
                 _player.IsImmune = true;
-                _game.GameData.RemoveHealth(1); //TODO: do stuff when health reaches 0
+                _game.GameData.RemoveHealth(_reducedHealth); //TODO: do stuff when health reaches 0
             }
 
         // If colliding with rope, and rope electrified
@@ -113,7 +162,7 @@ public class Enemy : DrawableGameElement {
                     collidingCliff = tile;
                     return false;
                 }
-                Kill();
+                Kill(0);
             }
             if (tile.FinalPrototype.IsCliff && collidingCliff != null) {
                 //
@@ -151,7 +200,7 @@ public class Enemy : DrawableGameElement {
         if (CollidingSegments > CrushThreshold) {
             Crushed++;
             if (Crushed > CrushDuration) {
-                Kill();
+                Kill(0);
                 return;
             }
         } else {
@@ -165,35 +214,7 @@ public class Enemy : DrawableGameElement {
 
         _input = Vector2.Zero;
         _isWalking = false;
-        if (_difficultyLevel == 0) // enemies does not move
-        { }
-
-        if (_difficultyLevel == 1) // enemies moves random
-        {
-            var rnd = new Random();
-            var r = rnd.Next(0, 4);
-            if (r == 0) {
-                _input.X += 0.1f;
-                _isWalking = true;
-            }
-
-            if (r == 1) {
-                _input.X -= 0.1f;
-                _isWalking = true;
-            }
-
-            if (r == 2) {
-                _input.Y += 0.1f;
-                _isWalking = true;
-            }
-
-            if (r == 3) {
-                _input.Y -= 0.1f;
-                _isWalking = true;
-            }
-        }
-
-        if (_difficultyLevel == 2) // enemies chase you
+        if (!_canKite) // enemies chase you
         {
             var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
 
@@ -220,7 +241,7 @@ public class Enemy : DrawableGameElement {
             }
         }
 
-        if (_difficultyLevel == 3) // enemies chase you for a while
+        if (_canKite) // enemies chase you for a while
         {
             var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
             if ((currentDistance > _followDistance) & (currentDistance < _angerDistance)) {
@@ -260,6 +281,10 @@ public class Enemy : DrawableGameElement {
         var totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
         Rectangle spritePos = camera.getScreenRectangle(Body.Position.X - (float)_enemySize.X / 2,
             Body.Position.Y - _enemySize.Y * 2 + (float)_enemySize.X / 4, _enemySize.X, _enemySize.Y);
+
+        Rectangle AbilityPos = camera.getScreenRectangle(Body.Position.X - (float)_enemySize.X / 2,
+            Body.Position.Y - _enemySize.Y * 2 + (float)_enemySize.X / 4, 0.2f, 0.1f);
+
         int yPos = spritePos.Y;
         if (fallStart > 0) {
             spritePos.Y += (int)((float)fallSpeed * (gameTime.TotalGameTime.TotalSeconds - fallStart));
@@ -310,6 +335,7 @@ public class Enemy : DrawableGameElement {
             SpriteEffects.None,
             camera.getLayerDepth(yPos + spritePos.Height)
         );
+
         //}
     }
 }

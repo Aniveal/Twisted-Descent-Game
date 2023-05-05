@@ -287,7 +287,7 @@ public class Map : DrawableGameElement {
 
             for (int i = 0; i < r.EnemyPositions.Count; i++)
             {
-                Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY), RnGsus.Instance.Next(3) + 1, r.EnemyTypes[i]);
+                Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY), RnGsus.Instance.Next(3) + 1);
             }
 
             foreach(Vector2 pos in r.AmphoraPositions)
