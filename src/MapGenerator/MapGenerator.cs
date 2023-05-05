@@ -43,17 +43,17 @@ public class MapGenerator {
         var graph = new DungeonGraph(this);
 
         int size = 10000;
-        int roomSize = 50;
+        int roomSize = 30;
 
         //Number of rooms: 3 + difficulty
-        int nRooms = difficulty + 5;
+        int nRooms = difficulty + 2;
 
         bool generationFail = true;
         while(generationFail)
         {
             generationFail = false;
             RnGsus.Instance.NewSeed();
-            graph.createDungeonMap(size, roomSize, nRooms, 100, 0);
+            graph.createDungeonMap(size, roomSize, nRooms, _rg.GameData.currentDifficulty, 0);
             RoomList = graph.Rooms;
 
             foreach (var room in RoomList)

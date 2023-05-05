@@ -77,4 +77,9 @@ public class EnemyManager {
             enemy.Draw(gameTime, batch, camera);
         }
     }
+
+    public void Clear()
+    {
+        Enemies.Clear();
+    }
 }

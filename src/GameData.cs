@@ -13,7 +13,8 @@ public class GameData {
 
     //The current game difficulty level. Starting at 1, goes to infinity (or overflow i guess xD)>
     //The higher the more enemies spawn, they are harder, better loot, larger levels
-    public int currentDifficulty = 1;
+    public int currentDifficulty = 2;
+    public float levelScaling = 1.5f;
 
     //Spears data
     public int[] Spears; //basic, electric, fragile spears
@@ -42,5 +43,10 @@ public class GameData {
 
     public void AddHealth(int amount) {
         Health = Math.Max(MaxHealth, Health + amount);
+    }
+
+    public void IncreaseDifficulty()
+    {
+        currentDifficulty = (int)(currentDifficulty * levelScaling);
     }
 }

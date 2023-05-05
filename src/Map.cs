@@ -102,6 +102,8 @@ public class Map : DrawableGameElement {
         if (sender.Body.Tag is Player || other.Body.Tag is Player) {
 
             levelFinished = true;
+
+            _game._gameScreen.LoadNextLevel();
             
             return false;
         }
@@ -228,12 +230,13 @@ public class Map : DrawableGameElement {
         } 
     }
 
+
     public void Initialize() {
         _mapGenerator = new MapGenerator(_game);
 
         Debug.WriteLine("Initializing Map");
 
-        _mapGenerator.createProceduralMap(mapDifficulty);
+        _mapGenerator.createProceduralMap(_game.GameData.currentDifficulty);
 
         RoomList = _mapGenerator.RoomList;
 

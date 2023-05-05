@@ -11,10 +11,10 @@ namespace Meridian2.Screens;
 
 public class GameScreen : Screen {
     private const float FixedTimeStep = 1 / 60f;
-    private readonly SpriteBatch _batch;
+    private SpriteBatch _batch;
     private double _fixedTickAccumulator;
 
-    private readonly Map _map;
+    private Map _map;
     public ColumnsManager ColumnsManager;
     public EnemyManager EnemyManager;
     public DiverseManager diverseManager;
@@ -149,5 +149,33 @@ public class GameScreen : Screen {
         }
         Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), ropeRed);
         _batch.End();
+    }
+
+    public void LoadNextLevel()
+    {
+
+        Game.GameData.IncreaseDifficulty();
+
+        Camera = new Camera(Game.GraphicsDevice);
+
+        _batch = new SpriteBatch(Game.GraphicsDevice);
+
+        World = new World(Vector2.Zero);
+        ColumnsManager = new ColumnsManager();
+
+
+        TheseusManager = new TheseusManager(Game, World);
+        EnemyManager = new EnemyManager(Game, World, TheseusManager.Player, 1);
+        SpearsController = new SpearsController(Game, ColumnsManager, TheseusManager.Player);
+        GuiManager = new GuiManager(Game, SpearsController);
+        diverseManager = new DiverseManager();
+        //debugging items
+        //diverseManager.Add(new HealthChest(Game, World, new Vector2(2,2)));
+        //diverseManager.Add(new Amphora(Game, World, new Vector2(2,2), 1));
+
+
+        _map = new Map(Game, World, ColumnsManager, EnemyManager, diverseManager);
+
+        this.Initialize();
     }
 }

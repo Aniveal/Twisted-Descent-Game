@@ -85,6 +85,7 @@ public class RopeGame : Game {
         SoundEngine.Instance.SetRopeGame(this);
     }
 
+
     protected override void LoadContent() {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 

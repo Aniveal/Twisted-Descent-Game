@@ -33,4 +33,9 @@ public class ColumnsManager {
     public void Update(GameTime gameTime) {
         foreach (var element in _columns) element.Update(gameTime);
     }
+
+    public void Clear()
+    {
+        _columns.Clear();
+    }
 }
