@@ -58,12 +58,13 @@ public class Enemy : DrawableGameElement {
         _world = world;
         _player = player;
     }
-    public void generateRandomAbilities()
+    public void generateRandomAbilities(int diff)
     {
         Random rng = new Random();
-        if(rng.Next(100) > 90)
+        // dif is between 1 to 50
+        if(rng.Next(100) < diff * 2)
         {
-            _enemyForce /= 3;
+            _enemyForce /= 4;
             _reducedHealth *= 2;
             _hasImmunity = true;
             _isImmuneToAmphoras = true;
@@ -72,7 +73,7 @@ public class Enemy : DrawableGameElement {
         }
         else
         {
-            if (rng.Next(100) > 70)
+            if (rng.Next(100) < diff * 2  * 7 / 10)
             {
                 _hasImmunity = true;
                 if (rng.Next(100) > 50)
@@ -80,7 +81,7 @@ public class Enemy : DrawableGameElement {
                 else
                     _isImmuneToAmphoras = true;
             }
-            if (rng.Next(100) > 70)
+            if (rng.Next(100) < diff * 2 * 7 / 10)
                 _canKite = true;
         }
 

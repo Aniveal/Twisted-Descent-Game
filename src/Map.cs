@@ -284,7 +284,7 @@ public class Map : DrawableGameElement {
 
             for (int i = 0; i < r.EnemyPositions.Count; i++)
             {
-                Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY), RnGsus.Instance.Next(3) + 1);
+                Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY), RnGsus.Instance.Next(3) + 1); // pass map diff here as second arg
             }
 
             foreach(Vector2 pos in r.AmphoraPositions)
