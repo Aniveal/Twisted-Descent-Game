@@ -149,7 +149,7 @@ public class GameScreen : Screen {
             _batch.DrawString(Game.Font, "LEVEL COMPLETE", new Vector2(300, 300), ropeRed, 0f, Vector2.Zero, 1f,
                 SpriteEffects.None, 1f);
         }
-        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), ropeRed);
+        Diagnostics.Instance.Draw(_batch, Game.Graphics.GraphicsDevice, Game.Font, new Vector2(10, 20), ropeRed);
         _batch.End();
     }
 

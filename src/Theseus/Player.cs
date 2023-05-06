@@ -241,6 +241,7 @@ public class Player : DrawableGameElement {
                 SpriteEffects.None,
                 camera.getLayerDepth(spritePos.Y + spritePos.Height)
             );
+
         } else {
 
             currentSprite = _idle;
