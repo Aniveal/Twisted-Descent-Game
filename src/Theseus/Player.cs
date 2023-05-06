@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -37,6 +38,8 @@ public class Player : DrawableGameElement {
     private Texture2D _runningR;
     private readonly World _world;
 
+    private Texture2D currentSprite;
+
     public Body Body;
 
     public double DashTimer;
@@ -57,6 +60,8 @@ public class Player : DrawableGameElement {
         Body.FixedRotation = true;
         Body.LinearDamping = 1f;
         Body.Tag = this;
+
+        currentSprite = _idle;
 
         Body.Mass = 10;
         // Disable rope collision
@@ -211,13 +216,19 @@ public class Player : DrawableGameElement {
             var runDuration = 200f;
             var runFrameIdx = (int)(totalTime / runDuration) % 4;
 
-            var runningSprite = _runningF;
+            //Get the direction of the input
+            Vector2 dir = Body.LinearVelocity;
+            dir.Normalize();
 
-            if (_input.X > 0 && _input.X >= _input.Y)
+            var runningSprite = _runningR;
+
+
+            if (dir.X < 0 && dir.Y > 0)
+                runningSprite = _runningF;
+            else if (dir.X >= 0 && dir.Y > 0)
                 runningSprite = _runningL;
-            else if (_input.X < 0 && _input.X < _input.Y)
-                runningSprite = _runningR;
-            else if (_input.Y < 0) runningSprite = _runningB;
+            else if (dir.X > 0 && dir.Y < 0)
+                runningSprite = _runningB;
             //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
 
             batch.Draw(
@@ -231,6 +242,9 @@ public class Player : DrawableGameElement {
                 camera.getLayerDepth(spritePos.Y + spritePos.Height)
             );
         } else {
+
+            currentSprite = _idle;
+
             var idleDuration = 400f; //ms
             var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
 
