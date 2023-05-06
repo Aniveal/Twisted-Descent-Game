@@ -10,22 +10,32 @@ public class MenuScreen : Screen {
     private readonly List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
-    private Texture2D _playerModel;
-    private Texture2D _enemyModel;
+    
+    private Texture2D _menu_img;
+    private Texture2D _menu_title;
+
     private Texture2D _bg;
     private Button _continueButton;
     private ContentManager _content;
 
+    private int w;
+    private int h;
+
     public MenuScreen(RopeGame game, GraphicsDevice graphicsDevice, ContentManager content) : base(game) {
-        var buttonTexture = content.Load<Texture2D>("Button");
-        var buttonFont = content.Load<SpriteFont>("Arial40");
-        _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
+        var buttonTexture = content.Load<Texture2D>("Sprites/UI/menu_selection_highlight");
+        var buttonFont = content.Load<SpriteFont>("Damn");
+
         _content = content;
-        _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle");
-        _bg = content.Load<Texture2D>("Sprites/BG");
+
+        _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
+        _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
+        _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
+
+        w = game.Graphics.PreferredBackBufferWidth;
+        h = game.Graphics.PreferredBackBufferHeight;
 
         _continueButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(80, 50),
+            Position = new Vector2(9 * w / 16, 4 * h / 9),
             Text = "Continue",
             Disabled = true
         };
@@ -33,21 +43,21 @@ public class MenuScreen : Screen {
         _continueButton.Click += ContinueButton_Click;
 
         var newGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(80, 250),
+            Position = new Vector2(9 * w / 16, 5 * h / 9),
             Text = "New Game"
         };
 
         newGameButton.Click += NewGameButton_Click;
 
         var tutorialButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(80, 450),
+            Position = new Vector2(9 * w / 16, 6 * h / 9),
             Text = "Tutorial",
         };
 
         tutorialButton.Click += TutorialButton_Click;
 
         var quitGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(80, 650),
+            Position = new Vector2(9 * w / 16, 7 * h / 9),
             Text = "Quit Game"
         };
 
@@ -89,9 +99,9 @@ public class MenuScreen : Screen {
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
         spriteBatch.Begin();
-        spriteBatch.Draw(_bg, new Rectangle(0, 0, 1600, 900), Color.White);
-        spriteBatch.Draw(_playerModel, new Rectangle(1190, 100, 400, 700), Color.White);
-        spriteBatch.Draw(_enemyModel, new Rectangle(800, 100, 400, 700), Color.White);
+        spriteBatch.Draw(_bg, new Rectangle(0, 0, w, h), Color.White);
+        spriteBatch.Draw(_menu_title, new Rectangle(w / 16, 4 * h / 9, 6 * w / 16, 4 * h / 9), Color.White);
+        spriteBatch.Draw(_menu_img, new Rectangle(11 * w / 16, h / 9, 35 * w / 160, 7 * h / 9), Color.White);
 
         foreach (var component in _components)
             component.Draw(gameTime, spriteBatch);
