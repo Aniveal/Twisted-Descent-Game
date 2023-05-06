@@ -114,6 +114,25 @@ public class Map : DrawableGameElement {
         if (tile.FinalPrototype == null)
             return;
 
+        // Prepare vertices for rock walls
+        var v_tl_1_4 = new Vector2(0.375f * MapScaling * 2, -0.1875f * MapScaling * 4);
+        var v_tl_2_4 = new Vector2(0.25f * MapScaling * 2, -0.125f * MapScaling * 4);
+        var v_tr_1_4 = new Vector2(0.625f * MapScaling * 2, -0.1875f * MapScaling * 4);
+        var v_tr_2_4 = new Vector2(0.75f * MapScaling * 2, -0.125f * MapScaling * 4);
+        var v_bl_1_4 = new Vector2(0.125f * MapScaling * 2, 0.0625f * MapScaling * 4);
+        var v_bl_2_4 = new Vector2(0.25f * MapScaling * 2, 0.125f * MapScaling * 4);
+        var v_br_1_4 = new Vector2(0.875f * MapScaling * 2, 0.0625f * MapScaling * 4);
+        var v_br_2_4 = new Vector2(0.75f * MapScaling * 2, 0.125f * MapScaling * 4);
+        var v_c = new Vector2(0.5f * MapScaling * 2, 0);
+        var v_ct = new Vector2(0.5f * MapScaling * 2, -0.125f * MapScaling * 4);
+        var v_ctl = new Vector2(0.375f * MapScaling * 2, -0.0625f * MapScaling * 4);
+        var v_ctr = new Vector2(0.625f * MapScaling * 2, -0.0625f * MapScaling * 4);
+
+        var v_t = new Vector2(0.5f * MapScaling * 2, -0.25f * MapScaling * 4);
+        var v_l = new Vector2(0, 0);
+        var v_b = new Vector2(0.5f * MapScaling * 2, 0.25f * MapScaling * 4);
+        var v_r = new Vector2(MapScaling * 2, 0);
+
         var p = MapToWorld(tile.getX(), tile.getY());
         //TODO: make computation of l dependent on map_scaling only, find adequate formula
         var pn = MapToWorld(tile.getX(), tile.getY() + 1);
@@ -173,15 +192,42 @@ public class Map : DrawableGameElement {
                 break;
             // rock walls
             case "RockWall_ud":
+                tile.Body = _world.CreatePolygon(new Vertices { v_bl_1_4, v_bl_2_4, v_tr_2_4, v_tr_1_4 }, 0, p);
+                break;
             case "RockWall_lr":
+                tile.Body = _world.CreatePolygon(new Vertices { v_tl_2_4, v_br_2_4, v_br_1_4, v_tl_1_4 }, 0, p);
+                break;
             case "RockWall_ur":
+                tile.Body = _world.CreatePolygon(new Vertices { v_ctl, v_br_2_4, v_br_1_4, v_ctr, v_tr_2_4, v_tr_1_4 },
+                    0, p);
+                break;
             case "RockWall_bl":
+                tile.Body = _world.CreatePolygon(new Vertices { v_bl_1_4, v_bl_2_4, v_ctr, v_tl_1_4, v_tl_2_4, v_ctl },
+                    0, p);
+                break;
             case "RockWall_ul":
+                tile.Body = _world.CreatePolygon(new Vertices { v_tl_2_4, v_c, v_tr_2_4, v_tr_1_4, v_ct, v_tl_1_4 }, 0,
+                    p);
+                break;
             case "RockWall_dr":
+                tile.Body = _world.CreatePolygon(new Vertices { v_bl_1_4, v_bl_2_4, v_c, v_br_2_4, v_br_1_4, v_ct }, 0,
+                    p);
+                break;
             case "WallToRock_01":
+                tile.Body = _world.CreatePolygon(
+                    new Vertices { v_bl_2_4, v_c, v_br_2_4, v_br_1_4, v_ctr, v_tr_2_4, v_t, v_l }, 0, p);
+                break;
             case "WallToRock_02":
+                tile.Body = _world.CreatePolygon(
+                    new Vertices { v_tl_2_4, v_ctl, v_bl_1_4, v_bl_2_4, v_c, v_br_2_4, v_r, v_t }, 0, p);
+                break;
             case "WallToRock_03":
+                tile.Body = _world.CreatePolygon(
+                    new Vertices { v_tl_2_4, v_c, v_br_2_4, v_b, v_r, v_tr_2_4, v_ctr, v_tl_1_4 }, 0, p);
+                break;
             case "WallToRock_04":
+                tile.Body = _world.CreatePolygon(
+                    new Vertices { v_l, v_b, v_br_2_4, v_c, v_tr_2_4, v_tr_1_4, v_ctl, v_tl_2_4 }, 0, p);
                 break;
             // cliffs
             case "FullCliff": //full cliff
