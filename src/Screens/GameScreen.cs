@@ -84,6 +84,8 @@ public class GameScreen : Screen {
         GuiManager.LoadContent();
         SpearsController.LoadContent();
         diverseManager.LoadContent();
+
+        SpearsController.PlaceSpear(-0.1f, 0, 0);
         
     }
 

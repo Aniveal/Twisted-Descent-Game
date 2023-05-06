@@ -6,7 +6,7 @@ namespace Meridian2;
 
 public class EndRoom : Room{
 
-    public EndRoom(MapGenerator mg, List<Prototype> protList) : base(mg, 0, 0, 7, 7, 1, protList, 0)
+    public EndRoom(MapGenerator mg, List<Prototype> protList, int index) : base(mg, 0, 0, 7, 7, index, protList, 0)
     {
         setTile(3, 3, mg.FinishPrototype);
 
@@ -14,6 +14,9 @@ public class EndRoom : Room{
             for (int y = 2; y < 5; y++)
                 setWalkable(x, y);
         innerOpening(3, 3);
-        
+
+        columnDensity = 0f;
+        nTreasures = 1;
+
     }
 }

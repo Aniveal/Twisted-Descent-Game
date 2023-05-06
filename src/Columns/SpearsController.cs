@@ -104,5 +104,25 @@ public class SpearsController {
         } else {
             PlaceDown = false;
         }
+
+    }
+
+    public void PlaceSpear(float x, float y, int type)
+    {
+        switch (type)
+        {
+            case 0:
+                _columnsManager.Add(new Column(_game._gameScreen.World, new Vector2(x,y), SpearWidth,
+                    _normalSpearTexture, true));
+                break;
+            case 1:
+                _columnsManager.Add(new ElectricColumn(_game._gameScreen.World, new Vector2(x, y), SpearWidth,
+                    _normalSpearTexture, true));
+                break;
+            case 2:
+                _columnsManager.Add(new FragileColumn(_game._gameScreen.World, new Vector2(x, y), SpearWidth,
+                    _normalSpearTexture, _normalSpearTexture, true));
+                break;
+        }
     }
 }

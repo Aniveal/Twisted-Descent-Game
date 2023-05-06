@@ -64,11 +64,23 @@ internal class DungeonGraph {
 
             var diff = RnGsus.Instance.Next(difficultyRange) - (difficultyRange / 2) + difficulty;
 
-            bool treasure = false;
-            if (RnGsus.Instance.NextDouble() < 0.1)
-                treasure = true;
 
-            var newRoom = new Room(_mg, target.PosX, target.PosY, sizeX, sizeY, i, allPrototypes, diff, treasure);
+            //Weight to decide what type of room
+            double weight = RnGsus.Instance.NextDouble();
+
+            Room newRoom;
+                
+            switch(weight)
+            {
+                case < 0.05f:
+                    newRoom = new TreasureRoom(_mg, allPrototypes, target.PosX, target.PosY, i); break;
+                case < 0.1f:
+                    newRoom = new AmphoraRoom(_mg, allPrototypes, target.PosX, target.PosY, sizeX, sizeY, i, diff); break;
+                default:
+                    newRoom = new Room(_mg, target.PosX, target.PosY, sizeX, sizeY, i, allPrototypes, diff); break;
+            }
+
+
 
             if(placeRoom(newRoom, target))
             {
@@ -89,7 +101,7 @@ internal class DungeonGraph {
             var r = Rooms.Count - 1;
             Room target = Rooms[r];
             
-            var newRoom = new EndRoom(_mg, _mg.RockPrototypes);
+            var newRoom = new EndRoom(_mg, _mg.RockPrototypes, ++i);
 
             newRoom.PosX = target.PosX;
             newRoom.PosY = target.PosY;

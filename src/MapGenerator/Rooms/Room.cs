@@ -23,6 +23,7 @@ public class Room {
 
     //How many columns there should be, as a percentage of walkable tiles
     public float columnDensity = 0.15f;
+    public float amphoraDensity = 0.05f;
 
     public float[] columnWeight;
 
@@ -65,18 +66,14 @@ public class Room {
         PosX = x;
         PosY = y;
         TileMap = new Tile[sizeX, sizeY];
-        NInnerOpenings = (int)Math.Sqrt(sizeX * sizeY) / 4;
+        NInnerOpenings = (int)Math.Sqrt(sizeX * sizeY) / 3;
         this.protList = protList;
         initializeTileMap();
         if (columnWeight == null)
             this.columnWeight = new float[] { 0.1f, 0.9f, 1f };
+        
         else this.columnWeight = columnWeight;
         roomDifficulty = diff;
-
-        if (treasure)
-        {
-            this.nTreasures = RnGsus.Instance.Next(4);
-        }
     }
 
     //Finishes the room generation, results in a workable tileMap
@@ -131,7 +128,7 @@ public class Room {
 
             if (TileMap[(int)Math.Floor(x), (int)Math.Floor(y)].FinalPrototype.Walkable) {
                 y = y - 1f;
-                if (noColumnsNear(x, y)) {
+                if (noColumnsNear(x, y, 1)) {
                     Columns.Add(new Vector2(x, y));
                     i++;
                 } else {
@@ -148,15 +145,15 @@ public class Room {
         }
     }
 
-    private bool noColumnsNear(float x, float y) {
+    private bool noColumnsNear(float x, float y, float r) {
         foreach (var col in Columns)
-            if (Math.Abs(col.X - x) < 2 && Math.Abs(col.Y - y) < 2)
+            if (Math.Abs(col.X - x) < r && Math.Abs(col.Y - y) < r)
                 return false;
 
         return true;
     }
 
-    private bool noTreasuresNear(float x, float y)
+    private bool noTreasuresNear(float x, float y, float r)
     {
         foreach (var C in TreasurePositions)
             if (Math.Abs(C.X - x) < 1 && Math.Abs(C.Y - y) < 1)
@@ -165,9 +162,18 @@ public class Room {
         return true;
     }
 
+    private bool noAmphoraNear(float x, float y, float r)
+    {
+        foreach (var C in AmphoraPositions)
+            if (Math.Abs(C.X - x) < r && Math.Abs(C.Y - y) < r)
+                return false;
+
+        return true;
+    }
+
     private void addAmphoras()
     {
-        int nAmphoras = (int)(((SizeX * SizeY) / 100) * RnGsus.Instance.NextDouble());
+        int nAmphoras = (int)((SizeX * SizeY) * amphoraDensity * RnGsus.Instance.NextDouble());
         int i = 0;
         int j = 0;
         while (i < nAmphoras)
@@ -180,7 +186,7 @@ public class Room {
             if (TileMap[(int)x, (int)y].FinalPrototype.Walkable)
             {
                 y = y - 1f;
-                if (noColumnsNear(x, y) && noTreasuresNear(x, y))
+                if (noColumnsNear(x, y, 0.5f) && noTreasuresNear(x, y, 0.5f) && noAmphoraNear(x,y, 0.2f))
                 {
                     AmphoraPositions.Add(new Vector2(x, y));
                     i++;
@@ -198,14 +204,15 @@ public class Room {
         {
             if (j > 1000)
                 break;
-            var x = (int)(RnGsus.Instance.NextDouble() * SizeX);
-            var y = (int)(RnGsus.Instance.NextDouble() * SizeY);
+            var x = (float)(RnGsus.Instance.NextDouble() * SizeX);
+            var y = (float)(RnGsus.Instance.NextDouble() * SizeY);
 
-            if (TileMap[x, y].FinalPrototype.Walkable)
+            if (TileMap[(int)x, (int)y].FinalPrototype.Walkable)
             {
-                if (noColumnsNear(x, y))
+                y -= 1f;
+                if (noColumnsNear(x, y, 1))
                 {
-                    TreasurePositions.Add(new Vector2(x + 0.5f, y - 0.5f));
+                    TreasurePositions.Add(new Vector2(x, y));
                     i++;
                 }
             }
@@ -412,7 +419,7 @@ public class Room {
 
             if (TileMap[x, SizeY - 1].Superpositions.Contains(getPrototype("FullWall"))) {
                 TileMap[x, SizeY - 1].setFinalPrototype(getPrototype("FullWall"));
-                ;
+                
                 collapseTile(TileMap[x, SizeY - 1]);
             }
         }
@@ -420,13 +427,13 @@ public class Room {
         for (var y = 0; y < SizeY; y++) {
             if (TileMap[0, y].Superpositions.Contains(getPrototype("FullWall"))) {
                 TileMap[0, y].setFinalPrototype(getPrototype("FullWall"));
-                ;
+                
                 collapseTile(TileMap[0, y]);
             }
 
             if (TileMap[SizeX - 1, y].Superpositions.Contains(getPrototype("FullWall"))) {
                 TileMap[SizeX - 1, y].setFinalPrototype(getPrototype("FullWall"));
-                ;
+                
                 collapseTile(TileMap[SizeX - 1, y]);
             }
         }
