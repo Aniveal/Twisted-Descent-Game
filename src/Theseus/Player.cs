@@ -260,5 +260,7 @@ public class Player : DrawableGameElement {
                 camera.getLayerDepth(spritePos.Y + spritePos.Height)
             );
         }
+        
+        _rope.DrawPlayerConnection(gameTime, batch, camera, Body.Position + new Vector2(0.02f, -0.09f));
     }
 }
