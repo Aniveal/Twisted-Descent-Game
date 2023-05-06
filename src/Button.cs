@@ -63,18 +63,15 @@ public class Button : Component {
         if (_isHovering)
         {
             // Drawing the Selection Highlight (red background behind text)
-            // Selection Highlight is drawn 1/6 longer than text on each side (on the x-axis, y-axis stays the same)
-            var x = (int)(Rectangle.X + Rectangle.Width - 8 * _font.MeasureString(Text).X / 6);
-            int sprite_length = (int)(8 * _font.MeasureString(Text).X / 6);
-            spriteBatch.Draw(_texture, new Rectangle(x, Rectangle.Y, sprite_length, 90), colour);
+            spriteBatch.Draw(_texture, new Rectangle(Rectangle.X, Rectangle.Y, (int)_font.MeasureString(Text).X + 80, Rectangle.Height), colour);
         }
 
 
         if (!string.IsNullOrEmpty(Text))
         {
-            // drawing the text, shifting it 1/6 to the left s.t. it is centered in the selection highlight
-            var x = Rectangle.X + Rectangle.Width - 7 * _font.MeasureString(Text).X / 6;
-            var y = Rectangle.Y + Rectangle.Height / 2 - _font.MeasureString(Text).Y / 2;
+            // drawing the text, shifting it by 40 pixels to the left s.t. it is centered in the selection highlight
+            var x = Rectangle.X + 40;
+            var y = Rectangle.Y;
 
             spriteBatch.DrawString(_font, Text, new Vector2(x, y), font_colour);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,8 +35,15 @@ public class MenuScreen : Screen {
         w = game.Graphics.PreferredBackBufferWidth;
         h = game.Graphics.PreferredBackBufferHeight;
 
+        // The Buttons are aligned within a "Box" on the right half of the menu screen. 100 pixels margin to the right / bottom are left
+        // The Boxes Height : Width Ratio is 2 : 3 (same as the logo). Computing the maximal size of the box:
+        int text_box_width = Math.Min(w / 2 - 150, 2 * (h - 200) / 3);
+        int text_box_height = 2 * text_box_width / 3;
+
+        text_box_height = Math.Max(text_box_height, 300); // Fixing overlapping 
+
         _continueButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(9 * w / 16, 4 * h / 9),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
             Text = "Continue",
             Disabled = true
         };
@@ -43,21 +51,21 @@ public class MenuScreen : Screen {
         _continueButton.Click += ContinueButton_Click;
 
         var newGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(9 * w / 16, 5 * h / 9),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 3 * (text_box_height / 4)),
             Text = "New Game"
         };
 
         newGameButton.Click += NewGameButton_Click;
 
         var tutorialButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(9 * w / 16, 6 * h / 9),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 2 * (text_box_height / 4)),
             Text = "Tutorial",
         };
 
         tutorialButton.Click += TutorialButton_Click;
 
         var quitGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(9 * w / 16, 7 * h / 9),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 1 * (text_box_height / 4)),
             Text = "Quit Game"
         };
 
@@ -100,8 +108,18 @@ public class MenuScreen : Screen {
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
         spriteBatch.Begin();
         spriteBatch.Draw(_bg, new Rectangle(0, 0, w, h), Color.White);
-        spriteBatch.Draw(_menu_title, new Rectangle(w / 16, 4 * h / 9, 6 * w / 16, 4 * h / 9), Color.White);
-        spriteBatch.Draw(_menu_img, new Rectangle(11 * w / 16, h / 9, 35 * w / 160, 7 * h / 9), Color.White);
+
+        // Title is drawn on the left half of the screen, we leave 100 pixels to the left / top / bottom and 50 to the middle
+        // widht : height ratio of Title is 3 : 2
+        int title_width = Math.Min(w / 2 - 150, 2 * (h - 200) / 3); 
+        int title_height = 2 * title_width / 3;
+        spriteBatch.Draw(_menu_title, new Rectangle(100, h - title_height - 100, title_width, title_height), Color.White);
+
+        // Img is drawn on the left half of the screen, we leave 100 pixels to the left / top / bottom and 50 to the middle
+        // widht : height ratio of Img is 1 : 2
+        int img_width = Math.Min(w / 2 - 150,  (h - 200) / 2);
+        int img_height = 2 * img_width;
+        spriteBatch.Draw(_menu_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
 
         foreach (var component in _components)
             component.Draw(gameTime, spriteBatch);
