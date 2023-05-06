@@ -73,8 +73,9 @@ public class RopeGame : Game {
         TargetElapsedTime = new TimeSpan((long)temp);
 
         // Set resolution
-        Graphics.PreferredBackBufferWidth = 1600;
-        Graphics.PreferredBackBufferHeight = 900;
+        Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        Graphics.IsFullScreen = true;
         Graphics.ApplyChanges();
 
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
