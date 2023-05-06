@@ -55,15 +55,17 @@ public sealed class Diagnostics {
         spriteBatch.DrawString(font, _forceMessage, fpsDisplayPosition + new Vector2(0, 15), fpsTextColor, 0f,
             Vector2.Zero, 0.7f, SpriteEffects.None, 1f);
 
-        Color[] data = new Color[14 * _widthOfRect];
-        Texture2D rectTexture = new Texture2D(graphicsDevice, _widthOfRect, 14);
+        if (_widthOfRect > 0) {
+            Color[] data = new Color[14 * _widthOfRect];
+            Texture2D rectTexture = new Texture2D(graphicsDevice, _widthOfRect, 14);
 
-        for (int i = 0; i < data.Length; ++i)
-            data[i] = Color.Red;
+            for (int i = 0; i < data.Length; ++i)
+                data[i] = Color.Red;
 
-        rectTexture.SetData(data);
-        var position = fpsDisplayPosition + new Vector2(100, 35);
-        spriteBatch.Draw(rectTexture, position, null, Color.Red, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 1f);
+            rectTexture.SetData(data);
+            var position = fpsDisplayPosition + new Vector2(100, 35);
+            spriteBatch.Draw(rectTexture, position, null, Color.Red, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 1f);
+        }
 
         DrawEmptyRectangle(spriteBatch, new Rectangle((int)fpsDisplayPosition.X + 100, (int)(fpsDisplayPosition.Y + 35), 70, 10), Color.Red, 5);
 
