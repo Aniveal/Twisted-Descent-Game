@@ -34,7 +34,7 @@ public class EnemyManager {
     public void AddEnemy(Vector2 pos, int diff)
     {
         Enemy enemy = new Enemy(_game, _world, _player);
-        enemy.generateRandomAbilities();
+        enemy.generateRandomAbilities(diff);
         enemy.Initialize(pos, diff);
         enemy.LoadContent();
         Enemies.Add(enemy);
