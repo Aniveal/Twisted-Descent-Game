@@ -25,6 +25,8 @@ public class RopeGame : Game {
     public SpriteFont Font;
 
     public GameData GameData;
+
+    private State _currentState;
     private bool gameScreen = true;
 
     public GraphicsDeviceManager Graphics;
@@ -69,6 +71,8 @@ public class RopeGame : Game {
         {
             _currentScreen = _finalScreen;
         }
+
+        _currentState = state;
     }
 
     protected override void Initialize() {
@@ -87,7 +91,6 @@ public class RopeGame : Game {
         _menuScreen.Initialize();
         _currentScreen = _menuScreen;
 
-
         SoundEngine.Instance.SetRopeGame(this);
     }
 
@@ -100,9 +103,14 @@ public class RopeGame : Game {
     }
 
     protected override void Update(GameTime gameTime) {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-            Keyboard.GetState().IsKeyDown(Keys.Escape))
-            this.ChangeState(State.MainMenu);
+        Input.GetState();
+        if (Input.IsButtonPressed(Buttons.Back, true) || Input.IsKeyPressed(Keys.Escape, true)) {
+            if (_currentState == State.MainMenu && _gameScreen != null) {
+                ChangeState(State.Running);
+            } else {
+                ChangeState(State.MainMenu);
+            }
+        }
 
         _currentScreen.Update(gameTime);
         base.Update(gameTime);
