@@ -119,19 +119,19 @@ public class Enemy : DrawableGameElement {
         if (cause == 0) // normal
         {
             SoundEngine.Instance.Squish();
-            _game.GameData.Score += 1000;
+            _game.GameData.Kills += 1;
             IsAlive = false;
         }
         if (cause == 1 && !_isImmuneToElectricity) // electricity
         {
             SoundEngine.Instance.Squish();
-            _game.GameData.Score += 1000;
+            _game.GameData.Kills += 1;
             IsAlive = false;
         }
         if (cause == 2 && !_isImmuneToAmphoras) // apmohras
         {
             SoundEngine.Instance.Squish();
-            _game.GameData.Score += 1000;
+            _game.GameData.Kills += 1;
             IsAlive = false;
         }
     }

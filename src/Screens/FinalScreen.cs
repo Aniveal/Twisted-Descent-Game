@@ -55,7 +55,7 @@ public class FinalScreen : Screen {
         int img_height = 2 * img_width;
         spriteBatch.Draw(_menu_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
         spriteBatch.DrawString(font, "You Died!", new Vector2(w / 16, h / 9 * 2), Color.White);
-        spriteBatch.DrawString(font, "During the run, you killed " + (this.getGame().GameData.Score / 1000) + " Enemies. Good Job!", new Vector2(w / 16, h / 9 * 3), Color.White);
+        spriteBatch.DrawString(font, "During the run, you killed " + (this.getGame().GameData.Kills) + " Enemies. Good Job!", new Vector2(w / 16, h / 9 * 3), Color.White);
         spriteBatch.End();
     }
 

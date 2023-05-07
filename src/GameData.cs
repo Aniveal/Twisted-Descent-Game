@@ -12,6 +12,7 @@ public class GameData {
     public int MaxHealth;
 
     public int Score = 0;
+    public int Kills = 0;
 
     //The current game difficulty level. Starting at 1, goes to infinity (or overflow i guess xD)>
     //The higher the more enemies spawn, they are harder, better loot, larger levels
