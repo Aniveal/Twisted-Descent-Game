@@ -28,8 +28,8 @@ public class Amphora : DrawableGameElement {
     //flag indicating the explosion animation has finished and the item can be cleaned up
     public bool hasExploded = false;
 
-    private const float ExplosionDuration = 500f; //explosion in milliseconds
-    private float explosionStart = 0;
+    private const double ExplosionDuration = 1.5; //explosion in milliseconds
+    private double explosionStart = 0;
     private bool exploding = false;
 
     private List<FragileColumn> toBreak = new List<FragileColumn>();
@@ -104,8 +104,6 @@ public class Amphora : DrawableGameElement {
         isDestroyed = true;
         currentExplosionSize = ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
-        
-        //TODO graphics
     }
 
     public void BiggerExplode() {
@@ -113,6 +111,7 @@ public class Amphora : DrawableGameElement {
         Vector2 aa = new Vector2(_body.Position.X-ExplosionSize, _body.Position.Y - ExplosionSize);
         Vector2 bb = new Vector2(_body.Position.X + ExplosionSize, _body.Position.Y + ExplosionSize);
         AABB aabb = new AABB(aa, bb);
+        exploding = true;
         isDestroyed = true;
         currentExplosionSize = 1.5f*ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
@@ -163,9 +162,9 @@ public class Amphora : DrawableGameElement {
             toBreak.Clear();
         }
         if (exploding && explosionStart == 0) {
-            explosionStart = gameTime.TotalGameTime.Milliseconds;
+            explosionStart = gameTime.TotalGameTime.TotalSeconds;
         }
-        if (exploding && explosionStart + ExplosionDuration < gameTime.TotalGameTime.Milliseconds) {
+        if (exploding && explosionStart + ExplosionDuration < gameTime.TotalGameTime.TotalSeconds) {
             hasExploded = true;
             exploding = false;
         }
