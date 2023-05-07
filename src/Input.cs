@@ -25,13 +25,9 @@ public class Input
         if(!once) return _currentKeyState.IsKeyDown(key);
         return _currentKeyState.IsKeyDown(key) && !_previousKeyState.IsKeyDown(key);
     }
-    
+
     public static bool IsButtonPressed(Buttons button, bool once) {
-        var type = _currentGamePadState.Buttons.GetType();
-        var prevState = (ButtonState)(type.GetMethod("get_" + button).Invoke(_previousGamePadState.Buttons, null));
-        var state = (ButtonState)(type.GetMethod("get_" + button).Invoke(_currentGamePadState.Buttons, null));
-        
-        if(!once) return state == ButtonState.Pressed;
-        return state == ButtonState.Pressed && prevState != ButtonState.Pressed;
+        if(!once) return _currentGamePadState.IsButtonDown(button);
+        return _currentGamePadState.IsButtonDown(button) && !_previousGamePadState.IsButtonDown(button);
     }
 }

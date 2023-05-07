@@ -104,7 +104,7 @@ public class RopeGame : Game {
 
     protected override void Update(GameTime gameTime) {
         Input.GetState();
-        if (Input.IsButtonPressed(Buttons.Back, true) || Input.IsKeyPressed(Keys.Escape, true)) {
+        if (Input.IsButtonPressed(Buttons.Back, true) || Input.IsKeyPressed(Keys.Escape, true) || (Input.IsButtonPressed(Buttons.B, true) && _currentState == State.Tutorial)) {
             if (_currentState == State.MainMenu && _gameScreen != null) {
                 ChangeState(State.Running);
             } else {

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Meridian2.Screens;
 
@@ -18,6 +19,8 @@ public class MenuScreen : Screen {
     private Texture2D _bg;
     private Button _continueButton;
     private ContentManager _content;
+
+    private Button _activeButton;
 
     private int w;
     private int h;
@@ -130,5 +133,32 @@ public class MenuScreen : Screen {
     public override void Update(GameTime gameTime) {
         foreach (var component in _components)
             component.Update(gameTime);
+
+        if (_activeButton != null && Input.IsButtonPressed(Buttons.A, true)) {
+            _activeButton.Trigger();
+        }
+
+        var buttons = _components.OfType<Button>().Where(button => !button.Disabled).ToList();
+        if (Input.IsButtonPressed(Buttons.DPadDown, true)) {
+            if (_activeButton == null) {
+                _activeButton = buttons.First();
+            } else {
+                var next = ((buttons.IndexOf(_activeButton) + 1) % buttons.Count + buttons.Count) % buttons.Count;
+                _activeButton = buttons[next];
+            }
+            
+            buttons.ForEach(button => button.SetHover(false));
+            _activeButton.SetHover(true);
+        } else if (Input.IsButtonPressed(Buttons.DPadUp, true)) {
+            if (_activeButton == null) {
+                _activeButton = buttons.First();
+            } else {
+                var next = ((buttons.IndexOf(_activeButton) - 1) % buttons.Count + buttons.Count) % buttons.Count;
+                _activeButton = buttons[next];
+            }
+            
+            buttons.ForEach(button => button.SetHover(false));
+            _activeButton.SetHover(true);
+        }
     }
 }

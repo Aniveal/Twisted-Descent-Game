@@ -14,6 +14,8 @@ public class Button : Component {
 
     private bool _isHovering;
 
+    private bool _isMouseControlled;
+
     private MouseState _previousMouse;
 
     private readonly Texture2D _texture;
@@ -77,19 +79,35 @@ public class Button : Component {
         }
     }
 
+    public void Trigger() {
+        Click?.Invoke(this, new EventArgs());
+    }
+
+    public void SetHover(bool hover) {
+        _isHovering = hover;
+        _isMouseControlled = false;
+    }
+
     public override void Update(GameTime gameTime) {
         _previousMouse = _currentMouse;
         _currentMouse = Mouse.GetState();
 
-        var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
+        // Enable mouse controls if mouse moved
+        if (_currentMouse.Position != _previousMouse.Position) {
+            _isMouseControlled = true;
+        }
+        
+        if (_isMouseControlled) {
+            var mouseRectangle = new Rectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
 
-        _isHovering = false;
+            _isHovering = false;
 
-        if (mouseRectangle.Intersects(Rectangle)) {
-            _isHovering = true;
+            if (mouseRectangle.Intersects(Rectangle)) {
+                _isHovering = true;
 
-            if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed && !Disabled)
-                Click?.Invoke(this, new EventArgs());
+                if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed && !Disabled)
+                    Trigger();
+            }
         }
     }
 
