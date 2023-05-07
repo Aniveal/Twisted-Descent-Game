@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -92,6 +93,8 @@ public class MenuScreen : Screen {
         base.getGame().ResetGame();
         base.getGame()._loadingScreen = new LoadingScreen(base.getGame(), _content);
         base.getGame()._loadingScreen.Initialize();
+        base.getGame()._transitionScreen = new TransitionScreen(base.getGame(), _content);
+        base.getGame()._transitionScreen.Initialize();
         base.getGame().ChangeState(RopeGame.State.Loading);
 
         _continueButton.Disabled = false;

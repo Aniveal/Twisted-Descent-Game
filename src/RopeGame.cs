@@ -16,6 +16,7 @@ public class RopeGame : Game {
     public Screen _currentScreen;
     public LoadingScreen _loadingScreen;
     public FinalScreen _finalScreen;
+    public TransitionScreen _transitionScreen;
 
     private SpriteBatch _spriteBatch;
 
@@ -36,7 +37,8 @@ public class RopeGame : Game {
         Pause,
         MainMenu,
         Loading,
-        Tutorial, 
+        Tutorial,
+        Transition,
         Final
     }
 
@@ -58,6 +60,10 @@ public class RopeGame : Game {
                 _currentScreen = _gameScreen;
             else
                 _currentScreen = _mapScreen;
+        }
+        else if (state == State.Transition)
+        {
+            _currentScreen = _transitionScreen;
         }
         else if (state == State.Loading)
         {

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2.Screens; 
 
-public class LoadingScreen : Screen {
+public class TransitionScreen : Screen {
     private readonly List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
@@ -21,13 +21,13 @@ public class LoadingScreen : Screen {
     private Texture2D _bg;
 
     public Boolean gameLoaded;
-    double timer;
+    public double timer;
     private SpriteFont font;
 
     private int w;
     private int h;
 
-    public LoadingScreen(RopeGame game, ContentManager content) : base(game)
+    public TransitionScreen(RopeGame game, ContentManager content) : base(game)
     {
         w = game.Graphics.PreferredBackBufferWidth;
         h = game.Graphics.PreferredBackBufferHeight;
@@ -57,7 +57,7 @@ public class LoadingScreen : Screen {
         spriteBatch.Draw(_menu_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
         //spriteBatch.Draw(_playerModel, new Rectangle(w / 4 * 3 - 10, h / 9, w / 4, h / 9 * 7), Color.White);
         //spriteBatch.Draw(_enemyModel, new Rectangle(10, h / 9, w / 4, h / 9 * 7), Color.White);
-        spriteBatch.DrawString(font, "Generating The First Level", new Vector2(w / 2 - 270, h / 9 * 2), Color.White);
+        spriteBatch.DrawString(font, "Generating The next Level", new Vector2(w / 2 - 270, h / 9 * 2), Color.White);
         spriteBatch.DrawString(font, "This Might Take Couple Of Seconds", new Vector2(w / 2 - 350, h / 9 * 3), Color.White);
         spriteBatch.End();
     }
@@ -68,11 +68,7 @@ public class LoadingScreen : Screen {
         if (!gameLoaded && timer > 100)
         {
             gameLoaded = true;
-            base.getGame().GameData = new GameData(base.getGame());
-            base.getGame()._gameScreen = new GameScreen(base.getGame());
-            base.getGame()._mapScreen = new MapScreen(base.getGame());
-            base.getGame()._gameScreen.Initialize();
-            base.getGame()._mapScreen.Initialize();
+            base.getGame()._gameScreen.LoadNextLevel();
             base.getGame().ChangeState(RopeGame.State.Running);
         }
     }

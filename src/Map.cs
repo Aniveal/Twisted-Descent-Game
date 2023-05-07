@@ -101,8 +101,9 @@ public class Map : DrawableGameElement {
     protected bool OnFinishCollision(Fixture sender, Fixture other, Contact contact) {
         if (sender.Body.Tag is Player || other.Body.Tag is Player) {
             levelFinished = true;
-
-            _game._gameScreen.LoadNextLevel();
+            _game._transitionScreen.gameLoaded = false;
+            _game._transitionScreen.timer = 0;
+            _game.ChangeState(RopeGame.State.Transition);
 
             return false;
         }
