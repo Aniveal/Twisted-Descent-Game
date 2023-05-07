@@ -1,3 +1,5 @@
+using Meridian2.Screens;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Meridian2; 
@@ -38,7 +40,14 @@ public class GameData {
     public void RemoveHealth(int amount) {
         SoundEngine.Instance.SwordHit();
         Health -= 1;
-        if (Health <= 0) GameOver = true;
+        if (Health <= 0)
+        {
+            GameOver = true;
+            _game._finalScreen = new FinalScreen(_game, _game.Content);
+            _game._finalScreen.Initialize();
+            _game.ChangeState(RopeGame.State.Final);
+            _game.ResetGame();
+        }
     }
 
     public void AddHealth(int amount) {
