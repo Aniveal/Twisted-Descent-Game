@@ -29,8 +29,8 @@ public class TransitionScreen : Screen {
 
     public TransitionScreen(RopeGame game, ContentManager content) : base(game)
     {
-        w = game.Graphics.PreferredBackBufferWidth;
-        h = game.Graphics.PreferredBackBufferHeight;
+        w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
+        h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
 
         font = content.Load<SpriteFont>("Damn");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");

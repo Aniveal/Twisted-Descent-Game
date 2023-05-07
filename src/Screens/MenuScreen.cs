@@ -35,9 +35,9 @@ public class MenuScreen : Screen {
         _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
         _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
         _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
-
-        w = game.Graphics.PreferredBackBufferWidth;
-        h = game.Graphics.PreferredBackBufferHeight;
+        
+        w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
+        h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
 
         // The Buttons are aligned within a "Box" on the right half of the menu screen. 100 pixels margin to the right / bottom are left
         // The Boxes Height : Width Ratio is 2 : 3 (same as the logo). Computing the maximal size of the box:

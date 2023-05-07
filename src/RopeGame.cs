@@ -31,6 +31,8 @@ public class RopeGame : Game {
     private bool gameScreen = true;
 
     public GraphicsDeviceManager Graphics;
+    private int currentWidth;
+    private int currentHeight;
 
     public enum State {
         Running,
@@ -96,10 +98,13 @@ public class RopeGame : Game {
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
         _currentScreen = _menuScreen;
+        _currentState = State.MainMenu;
+
+        currentWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
+        currentHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
         SoundEngine.Instance.SetRopeGame(this);
     }
-
 
     protected override void LoadContent() {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -108,9 +113,21 @@ public class RopeGame : Game {
         ColumnTexture = Content.Load<Texture2D>("circle");
     }
 
+    private void ToggleFullscreen() {
+        if (Graphics.IsFullScreen) {
+            Graphics.IsFullScreen = false;
+            Graphics.HardwareModeSwitch = true;
+        } else {
+            Graphics.IsFullScreen = true;
+            Graphics.HardwareModeSwitch = false;
+        }
+
+        Graphics.ApplyChanges();
+    }
+    
     protected override void Update(GameTime gameTime) {
         Input.GetState();
-        if (Input.IsButtonPressed(Buttons.Back, true) || Input.IsKeyPressed(Keys.Escape, true) || (Input.IsButtonPressed(Buttons.B, true) && _currentState == State.Tutorial)) {
+        if (Input.IsButtonPressed(Buttons.Back, true) || Input.IsKeyPressed(Keys.Escape, true) || (Input.IsButtonPressed(Buttons.B, true) && _currentState is State.Tutorial or State.Final)) {
             if (_currentState == State.MainMenu && _gameScreen != null) {
                 ChangeState(State.Running);
             } else {
@@ -118,6 +135,22 @@ public class RopeGame : Game {
             }
         }
 
+        if (Input.IsKeyPressed(Keys.F11, true)) {
+            ToggleFullscreen();
+        }
+
+        // If the resolution changed, redraw main menu
+        if (currentWidth != GraphicsDevice.PresentationParameters.BackBufferWidth || 
+            currentHeight != GraphicsDevice.PresentationParameters.BackBufferHeight) {
+            _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
+            _menuScreen.Initialize();
+            
+            ChangeState(_currentState);
+
+            currentWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            currentHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
+        }
+        
         _currentScreen.Update(gameTime);
         base.Update(gameTime);
     }

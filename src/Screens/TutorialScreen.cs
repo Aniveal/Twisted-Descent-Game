@@ -37,8 +37,8 @@ public class TutorialScreen : Screen {
         _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
         _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
 
-        w = game.Graphics.PreferredBackBufferWidth;
-        h = game.Graphics.PreferredBackBufferHeight;
+        w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
+        h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
         gameLoaded = false;
         timer = 0;
 

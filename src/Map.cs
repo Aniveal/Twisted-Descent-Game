@@ -371,8 +371,8 @@ public class Map : DrawableGameElement {
         var c = 0;
 
         // only draw planes that are visible on screen:
-        var h = _game.Graphics.PreferredBackBufferHeight;
-        var w = _game.Graphics.PreferredBackBufferWidth;
+        var h = _game.GraphicsDevice.PresentationParameters.BackBufferHeight;
+        var w = _game.GraphicsDevice.PresentationParameters.BackBufferWidth;
 
         var addonTiles = 2;
 
