@@ -65,7 +65,7 @@ public class TutorialScreen : Screen {
 
 
         spriteBatch.DrawString(font, "Player Movement : ", new Vector2(w / 16, h / 9 * 3), Color.White);
-        spriteBatch.DrawString(font, "Arrow Keys", new Vector2(w / 16 * 12, h / 9 * 3), Color.White);
+        spriteBatch.DrawString(font, "Arrows/ WASD", new Vector2(w / 16 * 12, h / 9 * 3), Color.White);
 
         spriteBatch.DrawString(font, "Pull the Rope : ", new Vector2(w / 16, h / 9 * 4), Color.White);
         spriteBatch.DrawString(font, "P", new Vector2(w / 16 * 12, h / 9 * 4), Color.White);
