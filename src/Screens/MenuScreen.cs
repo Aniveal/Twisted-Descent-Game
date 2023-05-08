@@ -63,7 +63,7 @@ public class MenuScreen : Screen {
 
         var tutorialButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(w - 100 - text_box_width, h - 120 - 2 * (text_box_height / 4)),
-            Text = "Tutorial",
+            Text = "Controls",
         };
 
         tutorialButton.Click += TutorialButton_Click;
