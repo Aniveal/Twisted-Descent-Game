@@ -62,7 +62,7 @@ public class Enemy : DrawableGameElement {
     public void generateRandomAbilities(int diff)
     {
         Random rng = new Random();
-        // dif is between 1 to 50
+        
         if(rng.Next(100) < diff * 2)
         {
             _enemyForce /= 4;
@@ -71,10 +71,11 @@ public class Enemy : DrawableGameElement {
             _isImmuneToAmphoras = true;
             _isImmuneToElectricity = true;
             _canKite = true;
+
         }
         else
         {
-            if (rng.Next(100) < diff * 2  * 7 / 10)
+            if (rng.Next(100) < diff * 2 * 7 / 10)
             {
                 _hasImmunity = true;
                 if (rng.Next(100) > 50)
@@ -324,7 +325,30 @@ public class Enemy : DrawableGameElement {
                 camera.getLayerDepth(spritePos.Y + spritePos.Height)
             );
 
-        } else {
+            if (_isImmuneToAmphoras)
+            {
+                Color[] data = new Color[10 * 20];
+                Texture2D rectTexture = new Texture2D(_game.GraphicsDevice, 10, 20);
+                for (int i = 0; i < data.Length; ++i)
+                    data[i] = Color.Red;
+                rectTexture.SetData(data);
+                var position = new Vector2(spritePos.X, spritePos.Y - 5);
+                batch.Draw(rectTexture, position, null, Color.Red, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, camera.getLayerDepth(spritePos.Y + spritePos.Height));
+            }
+            if (_isImmuneToElectricity)
+            {
+                Color[] data = new Color[10 * 20];
+                Texture2D rectTexture = new Texture2D(_game.GraphicsDevice, 10, 20);
+                for (int i = 0; i < data.Length; ++i)
+                    data[i] = Color.Yellow;
+                rectTexture.SetData(data);
+                var position = new Vector2(spritePos.X + spritePos.Width, spritePos.Y - 5);
+                batch.Draw(rectTexture, position, null, Color.Yellow, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, camera.getLayerDepth(spritePos.Y + spritePos.Height));
+            }
+
+
+        }
+        else {
 
             var idleDuration = 400f; //ms
             var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
@@ -340,6 +364,27 @@ public class Enemy : DrawableGameElement {
                 SpriteEffects.None,
                 camera.getLayerDepth(yPos + spritePos.Height)
             );
+
+            if (_isImmuneToAmphoras)
+            {
+                Color[] data = new Color[10 * 20];
+                Texture2D rectTexture = new Texture2D(_game.GraphicsDevice, 10, 20);
+                for (int i = 0; i < data.Length; ++i)
+                    data[i] = Color.Red;
+                rectTexture.SetData(data);
+                var position = new Vector2(spritePos.X, spritePos.Y - 5);
+                batch.Draw(rectTexture, position, null, Color.Red, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, camera.getLayerDepth(spritePos.Y + spritePos.Height));
+            }
+            if (_isImmuneToElectricity)
+            {
+                Color[] data = new Color[10 * 20];
+                Texture2D rectTexture = new Texture2D(_game.GraphicsDevice, 10, 20);
+                for (int i = 0; i < data.Length; ++i)
+                    data[i] = Color.Yellow;
+                rectTexture.SetData(data);
+                var position = new Vector2(spritePos.X + spritePos.Width, spritePos.Y - 5);
+                batch.Draw(rectTexture, position, null, Color.Yellow, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, camera.getLayerDepth(spritePos.Y + spritePos.Height));
+            }
         }
     }
 }
