@@ -96,14 +96,38 @@ public class Rope : DrawableGameElement {
     }
 
     public void Pull(GameTime gameTime) {
-        if (Fragiles.Count > 0) {
-            if (gameTime.TotalGameTime - LastBreak > BreakCoolDown) {
-                var col = Fragiles.Last();
-                Fragiles.RemoveAll(c => c == col);
+
+        if (gameTime.TotalGameTime - LastBreak > BreakCoolDown)
+        {
+            //Traverse linked list and break last column
+            RopeSegment currentSegment = _segments.Last();
+            while (true)
+            {
+                if (currentSegment == null)
+                    break;
+
+                else if (currentSegment.touchingColumn == null)
+                {
+                    currentSegment = currentSegment.Previous;
+                    continue;
+                }
+                else if (currentSegment.touchingColumn.GetType() == typeof(FragileColumn))
+                {
+                    break;
+                }
+                else currentSegment = currentSegment.Previous;
+
+            }
+
+            if (currentSegment != null)
+            {
+                FragileColumn col = currentSegment.touchingColumn as FragileColumn;
                 col.Break();
                 LastBreak = gameTime.TotalGameTime;
             }
+            
         }
+        
     }
 
     private void CreateBaseTexture() {

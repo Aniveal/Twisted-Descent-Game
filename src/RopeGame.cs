@@ -34,6 +34,8 @@ public class RopeGame : Game {
     private int currentWidth;
     private int currentHeight;
 
+    bool isFullscreen = false;
+
     public enum State {
         Running,
         Pause,
@@ -93,7 +95,7 @@ public class RopeGame : Game {
         // Set resolution
         Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
         Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-        Graphics.IsFullScreen = true;
+        Graphics.IsFullScreen = isFullscreen;
         Graphics.ApplyChanges();
 
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);

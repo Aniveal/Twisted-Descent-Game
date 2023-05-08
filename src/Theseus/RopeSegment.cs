@@ -23,6 +23,9 @@ public class RopeSegment : DrawableGameElement {
     public int ElecIntensity;
     public RopeSegment ElecSrcSegment;
 
+    
+    public Column touchingColumn; //Pointer to the column this segment is touching, null if none
+
     public bool IsElecSrc;
     public RopeSegment Next; //may be null if none
     public RopeSegment Previous; //may be null if none
@@ -144,13 +147,21 @@ public class RopeSegment : DrawableGameElement {
      * TODO: change unique to encompass situation where column is wrapped on two separate occasions, will currently not behave as expected by player
      */
     public void ColumnCallback(ActivableColumn column, bool collision, bool unique) {
+        
+
+
         _black = collision;
-        if (column is FragileColumn) {
+        /*if (column is FragileColumn) 
+        {
             if (collision & unique) _rope.Fragiles.Add((FragileColumn)column);
             if (!collision & unique)
                 //TODO: change this when changing unique trigger
                 _rope.Fragiles.RemoveAll(x => x == column);
-        }
+        }*/
+
+        if (collision)
+            this.touchingColumn = column;
+        else this.touchingColumn = null;
 
         if (column is ElectricColumn) {
             if (collision) {
