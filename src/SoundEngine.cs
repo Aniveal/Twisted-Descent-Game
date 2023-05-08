@@ -55,7 +55,8 @@ public sealed class SoundEngine {
     }
 
     public void playGravelFootstep() {
-        _gravelFootsteps[RnGsus.Instance.Next(20)].Play();
+        var pitch = (RnGsus.Instance.Next(3) - 1) / 8f;
+        _gravelFootsteps[RnGsus.Instance.Next(20)].Play(0.6f, pitch, 0f);
     }
 
     public void ChestSound()
