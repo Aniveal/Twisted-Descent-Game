@@ -24,7 +24,7 @@ public class Player : DrawableGameElement {
     private readonly float _footstepSoundDelayMax = 400f;
 
     private Texture2D _idle;
-    private readonly double _immuneCooldown = 3000;
+    private readonly double _immuneCooldown = 1500;
     private double _immuneTimer;
     private Vector2 _input = Vector2.Zero;
     private bool _isPulling;
@@ -47,6 +47,8 @@ public class Player : DrawableGameElement {
     public bool IsImmune;
 
     public Vector2 Orientation;
+
+    private readonly Color _immunityColor = new(255, 150, 150);
 
     public Player(RopeGame game, World world, Rope rope) {
         _rope = rope;
@@ -212,6 +214,12 @@ public class Player : DrawableGameElement {
 
         var totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
 
+        var playerColor = Color.White;
+        if (IsImmune) {
+            var shift = Math.Sin(totalTime / 70) + 1;
+            playerColor = Color.Lerp(playerColor, _immunityColor, (float)shift);
+        }
+        
         if (_isWalking) {
             var runDuration = 200f;
             var runFrameIdx = (int)(totalTime / runDuration) % 4;
@@ -221,7 +229,6 @@ public class Player : DrawableGameElement {
             dir.Normalize();
 
             var runningSprite = _runningR;
-
 
             if (dir.X < 0 && dir.Y > 0)
                 runningSprite = _runningF;
@@ -235,7 +242,7 @@ public class Player : DrawableGameElement {
                 runningSprite,
                 spritePos,
                 new Rectangle(runFrameIdx * 512, 0, 512, 768),
-                Color.White,
+                playerColor,
                 0f,
                 Vector2.Zero,
                 SpriteEffects.None,
@@ -253,7 +260,7 @@ public class Player : DrawableGameElement {
                 _idle,
                 spritePos,
                 new Rectangle(idleFrameIdx * 512, 0, 512, 768),
-                Color.White,
+                playerColor,
                 0f,
                 Vector2.Zero,
                 SpriteEffects.None,
