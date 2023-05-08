@@ -15,17 +15,30 @@ public class TutorialScreen : Screen {
     public GraphicsDeviceManager Graphics;
     private Texture2D _playerModel;
     private Texture2D _enemyModel;
+
     private Texture2D _bg;
+    private Texture2D _menu_img;
+    private Texture2D _menu_title;
+
     public Boolean gameLoaded;
     double timer;
     private SpriteFont font;
+
+    private int w;
+    private int h;
 
     public TutorialScreen(RopeGame game, ContentManager content) : base(game)
     {
         font = content.Load<SpriteFont>("Arial40");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
         _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle_flip");
-        _bg = content.Load<Texture2D>("Sprites/bg");
+
+        _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
+        _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
+        _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
+
+        w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
+        h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
         gameLoaded = false;
         timer = 0;
 
@@ -34,35 +47,40 @@ public class TutorialScreen : Screen {
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
-        spriteBatch.Draw(_bg, new Rectangle(0, 0, 1600, 900), Color.White);
 
-        spriteBatch.DrawString(font, "In this game you are playing as Theseus (", new Vector2(100, 50), Color.White);
-        spriteBatch.Draw(_playerModel, new Rectangle(1065, 50, 60, 60), Color.White);
-        spriteBatch.DrawString(font, ")", new Vector2(1120, 50), Color.White);
+        spriteBatch.Draw(_bg, new Rectangle(0, 0, w, h), Color.White);
+        int title_width = Math.Min(w / 2 - 150, 2 * (h - 200) / 3);
+        int title_height = 2 * title_width / 3;
+        //spriteBatch.Draw(_menu_title, new Rectangle(100, h - title_height - 100, title_width, title_height), Color.White);
+        int img_width = Math.Min(w / 2 - 150, (h - 200) / 2);
+        int img_height = 2 * img_width;
+        //spriteBatch.Draw(_menu_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
 
-        spriteBatch.DrawString(font, "Your goal is to kill as many Enemies ( ", new Vector2(100, 100), Color.White);
-        spriteBatch.Draw(_enemyModel, new Rectangle(970, 100, 60, 60), Color.White);
-        spriteBatch.DrawString(font, ") as you can and ", new Vector2(1030, 100), Color.White);
-        spriteBatch.DrawString(font, "proceed to the Exit Point ", new Vector2(100, 150), Color.White);
+        spriteBatch.DrawString(font, "In this game you are playing as Theseus (", new Vector2(w / 16, h / 18), Color.White);
+        spriteBatch.Draw(_playerModel, new Rectangle(w / 16 + 965, h / 18, w / 25, w / 25), Color.White);
+        spriteBatch.DrawString(font, ")", new Vector2(w / 16 + 1020, h / 18), Color.White);
+
+        spriteBatch.DrawString(font, "Your goal is to kill as many Enemies as you can and ", new Vector2(w / 16, h / 9), Color.White);
+        spriteBatch.DrawString(font, "proceed to the Exit Point ", new Vector2(w / 16, h / 6), Color.White);
 
 
-        spriteBatch.DrawString(font, "Player Movement : ", new Vector2(100, 300), Color.White);
-        spriteBatch.DrawString(font, "Arrow Keys", new Vector2(1000, 300), Color.White);
+        spriteBatch.DrawString(font, "Player Movement : ", new Vector2(w / 16, h / 9 * 3), Color.White);
+        spriteBatch.DrawString(font, "Arrow Keys", new Vector2(w / 16 * 12, h / 9 * 3), Color.White);
 
-        spriteBatch.DrawString(font, "Pull the Rope : ", new Vector2(100, 400), Color.White);
-        spriteBatch.DrawString(font, "P", new Vector2(1000, 400), Color.White);
+        spriteBatch.DrawString(font, "Pull the Rope : ", new Vector2(w / 16, h / 9 * 4), Color.White);
+        spriteBatch.DrawString(font, "P", new Vector2(w / 16 * 12, h / 9 * 4), Color.White);
 
-        spriteBatch.DrawString(font, "Dash : ", new Vector2(100, 500), Color.White);
-        spriteBatch.DrawString(font, "Space", new Vector2(1000, 500), Color.White);
+        spriteBatch.DrawString(font, "Dash : ", new Vector2(w / 16, h / 9 * 5), Color.White);
+        spriteBatch.DrawString(font, "Space", new Vector2(w / 16 * 12, h / 9 * 5), Color.White);
 
-        spriteBatch.DrawString(font, "Change between Spears : ", new Vector2(100, 600), Color.White);
-        spriteBatch.DrawString(font, "Q, E", new Vector2(1000, 600), Color.White);
+        spriteBatch.DrawString(font, "Change between Spears : ", new Vector2(w / 16, h / 9 * 6), Color.White);
+        spriteBatch.DrawString(font, "Q, E", new Vector2(w / 16 * 12, h / 9 * 6), Color.White);
 
-        spriteBatch.DrawString(font, "Place a Spear: ", new Vector2(100, 700), Color.White);
-        spriteBatch.DrawString(font, "R", new Vector2(1000, 700), Color.White);
+        spriteBatch.DrawString(font, "Place a Spear: ", new Vector2(w / 16, h / 9 * 7), Color.White);
+        spriteBatch.DrawString(font, "R", new Vector2(w / 16 * 12, h / 9 * 7), Color.White);
 
-        spriteBatch.DrawString(font, "Pause/Back to Menu: ", new Vector2(100, 800), Color.White);
-        spriteBatch.DrawString(font, "Esc", new Vector2(1000, 800), Color.White);
+        spriteBatch.DrawString(font, "Pause/Back to Menu: ", new Vector2(w / 16, h / 9 * 8), Color.White);
+        spriteBatch.DrawString(font, "Esc", new Vector2(w / 16 * 12, h / 9 * 8), Color.White);
 
 
         spriteBatch.End();

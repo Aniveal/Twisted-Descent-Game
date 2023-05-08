@@ -135,6 +135,17 @@ public class Rope : DrawableGameElement {
         _decayCount++;
     }
 
+    public void DrawPlayerConnection(GameTime gameTime, SpriteBatch batch, Camera camera, Vector2 connection) {
+        var pos1 = camera.getScreenPoint(_segments.Last().Body.Position);
+        var pos2 = camera.getScreenPoint(connection);
+
+        float distance = Vector2.Distance(pos2, pos1);
+        float angle = (float)Math.Atan2((double)pos1.Y - (double)pos2.Y, (double)pos1.X - (double)pos2.X);
+
+        batch.Draw(_pixel, pos2, null, _ropeColor, angle, Vector2.Zero, new Vector2(distance, 2),
+            SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+    }
+    
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         // Draw each segment
         foreach (var segment in _segments) {

@@ -70,7 +70,7 @@ public class MapScreen : Screen {
         //{
         //    rec.Draw(_batch);
         //}
-        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 10), Color.Red);
+        Diagnostics.Instance.Draw(_batch, Game.Graphics.GraphicsDevice, Game.Font, new Vector2(10, 10), Color.Red);
         _batch.End();
     }
 

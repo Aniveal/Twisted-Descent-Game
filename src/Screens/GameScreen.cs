@@ -5,6 +5,10 @@ using Meridian2.Theseus;
 using Meridian2.Treasures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Threading;
+using System.Timers;
+using System.Xml.Linq;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Screens;
@@ -117,9 +121,6 @@ public class GameScreen : Screen {
         //putting it here cuz otherwise we'll forget about it the day when columns actually need updating. same for gui
         //columnsManager.Update(gameTime);
         //guiManager.Update(gameTime);
-        if (_map.levelFinished) {
-            //TODO: load new level
-        }
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch = null)
@@ -149,15 +150,13 @@ public class GameScreen : Screen {
             _batch.DrawString(Game.Font, "LEVEL COMPLETE", new Vector2(300, 300), ropeRed, 0f, Vector2.Zero, 1f,
                 SpriteEffects.None, 1f);
         }
-        Diagnostics.Instance.Draw(_batch, Game.Font, new Vector2(10, 20), ropeRed);
+        Diagnostics.Instance.Draw(_batch, Game.Graphics.GraphicsDevice, Game.Font, new Vector2(10, 20), ropeRed);
         _batch.End();
     }
 
     public void LoadNextLevel()
     {
-
         Game.GameData.IncreaseDifficulty();
-
         Camera = new Camera(Game.GraphicsDevice);
 
         _batch = new SpriteBatch(Game.GraphicsDevice);
@@ -177,7 +176,8 @@ public class GameScreen : Screen {
 
 
         _map = new Map(Game, World, ColumnsManager, EnemyManager, diverseManager);
-
+        _map.levelFinished = false;
         this.Initialize();
+        
     }
 }

@@ -1,3 +1,5 @@
+using Meridian2.Screens;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Meridian2; 
@@ -10,6 +12,7 @@ public class GameData {
     public int MaxHealth;
 
     public int Score = 0;
+    public int Kills = 0;
 
     //The current game difficulty level. Starting at 1, goes to infinity (or overflow i guess xD)>
     //The higher the more enemies spawn, they are harder, better loot, larger levels
@@ -38,7 +41,14 @@ public class GameData {
     public void RemoveHealth(int amount) {
         SoundEngine.Instance.SwordHit();
         Health -= 1;
-        if (Health <= 0) GameOver = true;
+        if (Health <= 0)
+        {
+            GameOver = true;
+            _game._finalScreen = new FinalScreen(_game, _game.Content);
+            _game._finalScreen.Initialize();
+            _game.ChangeState(RopeGame.State.Final);
+            _game.ResetGame();
+        }
     }
 
     public void AddHealth(int amount) {

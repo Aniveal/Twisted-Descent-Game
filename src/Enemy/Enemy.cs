@@ -5,6 +5,7 @@ using Meridian2.GameElements;
 using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
 
@@ -102,11 +103,11 @@ public class Enemy : DrawableGameElement {
     }
 
     public virtual void LoadContent() {
-        _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
-        _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/idle_enemy");
+        _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_idle_f");  // 2 frames, each one is 512 pixels wide
+        _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_l");  // 4 frames, each one is 512 pixels wide
+        _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_r");  // 4 frames, each one is 512 pixels wide
+        _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_f");  // 4 frames, each one is 512 pixels wide
+        _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_b");  // 4 frames, each one is 512 pixels wide
     }
 
     public virtual void Electrify() {
@@ -118,16 +119,19 @@ public class Enemy : DrawableGameElement {
         if (cause == 0) // normal
         {
             SoundEngine.Instance.Squish();
+            _game.GameData.Kills += 1;
             IsAlive = false;
         }
         if (cause == 1 && !_isImmuneToElectricity) // electricity
         {
             SoundEngine.Instance.Squish();
+            _game.GameData.Kills += 1;
             IsAlive = false;
         }
         if (cause == 2 && !_isImmuneToAmphoras) // apmohras
         {
             SoundEngine.Instance.Squish();
+            _game.GameData.Kills += 1;
             IsAlive = false;
         }
     }
@@ -144,13 +148,13 @@ public class Enemy : DrawableGameElement {
             if (_player.IsImmune == false) {
                 _player.IsImmune = true;
                 _game.GameData.RemoveHealth(_reducedHealth); //TODO: do stuff when health reaches 0
+                
             }
 
         // If colliding with rope, and rope electrified
         if (collider.Tag is RopeSegment) {
             CollidingSegments++;
             if (((RopeSegment)collider.Tag).ElecIntensity > 0) {
-                _game.GameData.Score += 1000;
                 Electrify();
             }
         }
@@ -291,52 +295,51 @@ public class Enemy : DrawableGameElement {
             spritePos.Y += (int)((float)fallSpeed * (gameTime.TotalGameTime.TotalSeconds - fallStart));
         }
 
+        if (_isWalking){
 
-        // if (isWalking)
-        // {
-        //     float run_duration = 200f;
-        //     int run_frame_idx = (int)(totalTime / run_duration) % 4;
-        //
-        //     Texture2D running_sprite = running_f;
-        //
-        //     if (input.X > 0 && input.X >= input.Y)
-        //     {
-        //         running_sprite = running_r;
-        //     }
-        //     else if (input.X < 0 && input.X <= input.Y)
-        //     {
-        //         running_sprite = running_l;
-        //     }
-        //     else if (input.Y < 0)
-        //     {
-        //         running_sprite = running_b;
-        //     }
-        //     //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
-        //
-        //     batch.Draw(
-        //     running_sprite,
-        //     spritePos,
-        //     new Rectangle(run_frame_idx * 512, 0, 512, 768),
-        //     Color.White
-        // );
-        // }
-        // else
-        //{
-        var idleDuration = 400f; //ms
-        var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
+            var runningDuration = 400f; //ms
+            var runningFrameIdx = (int)(totalTime / runningDuration) % 4;
 
-        //Color test = overCliff > 0 ? Color.Red : Color.White;
-        batch.Draw(
-            _idle,
-            spritePos,
-            new Rectangle(idleFrameIdx * 512, 0, 512, 768),
-            Color.White,
-            0f,
-            Vector2.Zero,
-            SpriteEffects.None,
-            camera.getLayerDepth(yPos + spritePos.Height)
-        );
+            Vector2 dir = Body.LinearVelocity;
 
-        //}
+            dir.Normalize();
+
+            var runningSprite = _runningR;
+
+            if (dir.X < 0 && dir.Y > 0)
+                runningSprite = _runningF;
+            else if (dir.X >= 0 && dir.Y > 0)
+                runningSprite = _runningL;
+            else if (dir.X > 0 && dir.Y < 0)
+                runningSprite = _runningB;
+
+            batch.Draw(
+                runningSprite,
+                spritePos,
+                new Rectangle(runningFrameIdx * 512, 0, 512, 768),
+                Color.White,
+                0f,
+                Vector2.Zero,
+                SpriteEffects.None,
+                camera.getLayerDepth(spritePos.Y + spritePos.Height)
+            );
+
+        } else {
+
+            var idleDuration = 400f; //ms
+            var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
+
+            //Color test = overCliff > 0 ? Color.Red : Color.White;
+            batch.Draw(
+                _idle,
+                spritePos,
+                new Rectangle(idleFrameIdx * 512, 0, 512, 768),
+                Color.White,
+                0f,
+                Vector2.Zero,
+                SpriteEffects.None,
+                camera.getLayerDepth(yPos + spritePos.Height)
+            );
+        }
     }
 }

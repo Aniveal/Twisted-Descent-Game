@@ -15,6 +15,8 @@ public class RopeGame : Game {
     public TutorialScreen _tutorialScreen;
     public Screen _currentScreen;
     public LoadingScreen _loadingScreen;
+    public FinalScreen _finalScreen;
+    public TransitionScreen _transitionScreen;
 
     private SpriteBatch _spriteBatch;
 
@@ -24,16 +26,22 @@ public class RopeGame : Game {
     public SpriteFont Font;
 
     public GameData GameData;
+
+    private State _currentState;
     private bool gameScreen = true;
 
     public GraphicsDeviceManager Graphics;
+    private int currentWidth;
+    private int currentHeight;
 
     public enum State {
         Running,
         Pause,
         MainMenu,
         Loading,
-        Tutorial
+        Tutorial,
+        Transition,
+        Final
     }
 
     public RopeGame() {
@@ -55,6 +63,10 @@ public class RopeGame : Game {
             else
                 _currentScreen = _mapScreen;
         }
+        else if (state == State.Transition)
+        {
+            _currentScreen = _transitionScreen;
+        }
         else if (state == State.Loading)
         {
             _currentScreen = _loadingScreen;
@@ -63,6 +75,12 @@ public class RopeGame : Game {
         {
             _currentScreen = _tutorialScreen;
         }
+        else if (state == State.Final)
+        {
+            _currentScreen = _finalScreen;
+        }
+
+        _currentState = state;
     }
 
     protected override void Initialize() {
@@ -81,11 +99,13 @@ public class RopeGame : Game {
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
         _currentScreen = _menuScreen;
+        _currentState = State.MainMenu;
 
+        currentWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
+        currentHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
         SoundEngine.Instance.SetRopeGame(this);
     }
-
 
     protected override void LoadContent() {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -94,11 +114,44 @@ public class RopeGame : Game {
         ColumnTexture = Content.Load<Texture2D>("circle");
     }
 
-    protected override void Update(GameTime gameTime) {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-            Keyboard.GetState().IsKeyDown(Keys.Escape))
-            this.ChangeState(State.MainMenu);
+    private void ToggleFullscreen() {
+        if (Graphics.IsFullScreen) {
+            Graphics.IsFullScreen = false;
+            Graphics.HardwareModeSwitch = true;
+        } else {
+            Graphics.IsFullScreen = true;
+            Graphics.HardwareModeSwitch = false;
+        }
 
+        Graphics.ApplyChanges();
+    }
+    
+    protected override void Update(GameTime gameTime) {
+        Input.GetState();
+        if (Input.IsButtonPressed(Buttons.Back, true) || Input.IsKeyPressed(Keys.Escape, true) || (Input.IsButtonPressed(Buttons.B, true) && _currentState is State.Tutorial or State.Final)) {
+            if (_currentState == State.MainMenu && _gameScreen != null) {
+                ChangeState(State.Running);
+            } else {
+                ChangeState(State.MainMenu);
+            }
+        }
+
+        if (Input.IsKeyPressed(Keys.F11, true)) {
+            ToggleFullscreen();
+        }
+
+        // If the resolution changed, redraw main menu
+        if (currentWidth != GraphicsDevice.PresentationParameters.BackBufferWidth || 
+            currentHeight != GraphicsDevice.PresentationParameters.BackBufferHeight) {
+            _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
+            _menuScreen.Initialize();
+            
+            ChangeState(_currentState);
+
+            currentWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
+            currentHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
+        }
+        
         _currentScreen.Update(gameTime);
         base.Update(gameTime);
     }

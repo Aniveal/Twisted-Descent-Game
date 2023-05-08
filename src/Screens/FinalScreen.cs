@@ -9,16 +9,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2.Screens; 
 
-public class LoadingScreen : Screen {
+public class FinalScreen : Screen {
     private readonly List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
     private Texture2D _playerModel;
     private Texture2D _enemyModel;
 
+    private Texture2D _bg;
     private Texture2D _menu_img;
     private Texture2D _menu_title;
-    private Texture2D _bg;
 
     public Boolean gameLoaded;
     double timer;
@@ -27,12 +27,9 @@ public class LoadingScreen : Screen {
     private int w;
     private int h;
 
-    public LoadingScreen(RopeGame game, ContentManager content) : base(game)
+    public FinalScreen(RopeGame game, ContentManager content) : base(game)
     {
-        w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
-        h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
-
-        font = content.Load<SpriteFont>("Damn");
+        font = content.Load<SpriteFont>("Arial40");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
         _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle_flip");
 
@@ -40,6 +37,8 @@ public class LoadingScreen : Screen {
         _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
         _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
 
+        w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
+        h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
         gameLoaded = false;
         timer = 0;
 
@@ -55,26 +54,13 @@ public class LoadingScreen : Screen {
         int img_width = Math.Min(w / 2 - 150, (h - 200) / 2);
         int img_height = 2 * img_width;
         spriteBatch.Draw(_menu_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
-        //spriteBatch.Draw(_playerModel, new Rectangle(w / 4 * 3 - 10, h / 9, w / 4, h / 9 * 7), Color.White);
-        //spriteBatch.Draw(_enemyModel, new Rectangle(10, h / 9, w / 4, h / 9 * 7), Color.White);
-        spriteBatch.DrawString(font, "Generating The First Level", new Vector2(w / 2 - 270, h / 9 * 2), Color.White);
-        spriteBatch.DrawString(font, "This Might Take Couple Of Seconds", new Vector2(w / 2 - 350, h / 9 * 3), Color.White);
+        spriteBatch.DrawString(font, "You Died!", new Vector2(w / 16, h / 9 * 2), Color.White);
+        spriteBatch.DrawString(font, "During the run, you killed " + (this.getGame().GameData.Kills) + " Enemies. Good Job!", new Vector2(w / 16, h / 9 * 3), Color.White);
         spriteBatch.End();
     }
 
     public override void Update(GameTime gameTime) {
-        timer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-        if (!gameLoaded && timer > 100)
-        {
-            gameLoaded = true;
-            base.getGame().GameData = new GameData(base.getGame());
-            base.getGame()._gameScreen = new GameScreen(base.getGame());
-            base.getGame()._mapScreen = new MapScreen(base.getGame());
-            base.getGame()._gameScreen.Initialize();
-            base.getGame()._mapScreen.Initialize();
-            base.getGame().ChangeState(RopeGame.State.Running);
-        }
+        //
     }
     
 }

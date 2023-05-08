@@ -53,7 +53,7 @@ public class SpearsController {
 
         var keyboard = Keyboard.GetState();
         //move selection left
-        if (keyboard.IsKeyDown(Keys.Q)) {
+        if (keyboard.IsKeyDown(Keys.Q) || Input.IsButtonPressed(Buttons.LeftShoulder, true)) {
             //TODO: adapt to controler
             if (!LeftDown) {
                 Selected = Selected == 0 ? 2 : Selected - 1;
@@ -64,7 +64,7 @@ public class SpearsController {
         }
 
         //move selection right
-        if (keyboard.IsKeyDown(Keys.E)) {
+        if (keyboard.IsKeyDown(Keys.E) || Input.IsButtonPressed(Buttons.RightShoulder, true)) {
             //TODO adapt to controler
             if (!RightDown) {
                 Selected = Selected == 2 ? 0 : Selected + 1;
@@ -75,7 +75,7 @@ public class SpearsController {
         }
 
         //place selected spear
-        if (keyboard.IsKeyDown(Keys.R)) {
+        if (keyboard.IsKeyDown(Keys.R) || Input.IsButtonPressed(Buttons.X, true)) {
             if (!PlaceDown) {
                 if (_data.Spears[Selected] < 1) {
                     //TODO play animation to highlight you cannot place spear

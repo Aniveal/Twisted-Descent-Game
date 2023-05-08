@@ -100,13 +100,14 @@ public class Map : DrawableGameElement {
 
     protected bool OnFinishCollision(Fixture sender, Fixture other, Contact contact) {
         if (sender.Body.Tag is Player || other.Body.Tag is Player) {
-
             levelFinished = true;
+            _game._transitionScreen.gameLoaded = false;
+            _game._transitionScreen.timer = 0;
+            _game.ChangeState(RopeGame.State.Transition);
 
-            _game._gameScreen.LoadNextLevel();
-            
             return false;
         }
+
         return false;
     }
 
@@ -114,110 +115,166 @@ public class Map : DrawableGameElement {
         if (tile.FinalPrototype == null)
             return;
 
+        // Prepare vertices for rock walls
+        var v_tl_1_4 = new Vector2(0.375f * MapScaling * 2, -0.1875f * MapScaling * 4);
+        var v_tl_2_4 = new Vector2(0.25f * MapScaling * 2, -0.125f * MapScaling * 4);
+        var v_tr_1_4 = new Vector2(0.625f * MapScaling * 2, -0.1875f * MapScaling * 4);
+        var v_tr_2_4 = new Vector2(0.75f * MapScaling * 2, -0.125f * MapScaling * 4);
+        var v_bl_1_4 = new Vector2(0.125f * MapScaling * 2, 0.0625f * MapScaling * 4);
+        var v_bl_2_4 = new Vector2(0.25f * MapScaling * 2, 0.125f * MapScaling * 4);
+        var v_br_1_4 = new Vector2(0.875f * MapScaling * 2, 0.0625f * MapScaling * 4);
+        var v_br_2_4 = new Vector2(0.75f * MapScaling * 2, 0.125f * MapScaling * 4);
+        var v_c = new Vector2(0.5f * MapScaling * 2, 0);
+        var v_ct = new Vector2(0.5f * MapScaling * 2, -0.125f * MapScaling * 4);
+        var v_ctl = new Vector2(0.375f * MapScaling * 2, -0.0625f * MapScaling * 4);
+        var v_ctr = new Vector2(0.625f * MapScaling * 2, -0.0625f * MapScaling * 4);
+
+        var v_t = new Vector2(0.5f * MapScaling * 2, -0.25f * MapScaling * 4);
+        var v_l = new Vector2(0, 0);
+        var v_b = new Vector2(0.5f * MapScaling * 2, 0.25f * MapScaling * 4);
+        var v_r = new Vector2(MapScaling * 2, 0);
+
         var p = MapToWorld(tile.getX(), tile.getY());
         //TODO: make computation of l dependent on map_scaling only, find adequate formula
         var pn = MapToWorld(tile.getX(), tile.getY() + 1);
         var l = (p - pn).Length();
-        switch ((tile.FinalPrototype.Sockets[0], tile.FinalPrototype.Sockets[1], tile.FinalPrototype.Sockets[2],
-                    tile.FinalPrototype.Sockets[3])) {
-            case (0, 0, 0, 0): //no walls at all
-                if (tile.FinalPrototype.Name == "finish") {
-                    tile.Body = _world.CreateRectangle(l*0.5f, l*0.5f, 0, p + new Vector2(MapScaling, 0), (float)Math.PI / 4);
-                    tile.Body.OnCollision += OnFinishCollision;
-                }
-                break;
-            case (3, 3, 3, 3): //fully walls tile
 
+        switch (tile.FinalPrototype.Name) {
+            case "finish":
+                tile.Body = _world.CreateRectangle(l * 0.5f, l * 0.5f, 0, p + new Vector2(MapScaling, 0),
+                    (float)Math.PI / 4);
+                tile.Body.OnCollision += OnFinishCollision;
+                break;
+            case "FullWall": //fully walls tile
                 tile.Body = _world.CreateRectangle(l, l, 0, p + new Vector2(MapScaling, 0), (float)Math.PI / 4);
                 break;
-            case (2, 2, 3, 0): //topleft straight wall
+            case "Wall2l": //topleft straight wall
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 0.75f, -0.25f * MapScaling), (float)-Math.PI / 4);
                 break;
-            case (3, 0, 1, 1): //topright straight wall
+            case "Wall2u": //topright straight wall
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 1.25f, -0.25f * MapScaling), (float)Math.PI / 4);
                 break;
-            case (1, 1, 0, 3): //bottom right straight wall
+            case "Wall2r": //bottom right straight wall
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 1.25f, 0.25f * MapScaling), (float)-Math.PI / 4);
                 break;
-            case (0, 3, 2, 2): //bottom left wall
+            case "Wall2d": //bottom left wall
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 0.75f, 0.25f * MapScaling), (float)Math.PI / 4);
                 break;
-            case (0, 1, 0, 2): //bottom corner
+            case "Wall1rd": //bottom corner
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling, MapScaling));
                 break;
-            case (1, 0, 0, 1): //right corner
+            case "Wall1ru": //right corner
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling * 2, 0));
                 break;
-            case (2, 0, 1, 0): //top corner
+            case "Wall1lu": //top corner
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling, -MapScaling));
                 break;
-            case (0, 2, 2, 0): //left corner
+            case "Wall1ld": //left corner
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p);
                 break;
-            case (3, 2, 3, 1): //wall 3 open bot
+            case "Wall3dr": //wall 3 open bot
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0));
                 break;
-            case (3, 1, 1, 3): //wall 3 open left
+            case "Wall3dl": //wall 3 open left
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)Math.PI / 2);
                 break;
-            case (2, 3, 3, 2): //wall 3 open right
+            case "Wall3ur": //wall 3 open right
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)-Math.PI / 2);
                 break;
-            case (1, 3, 2, 3): //wall 3 open top
+            case "Wall3ul": //wall 3 open top
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)Math.PI);
                 break;
-            //cliffs
-            case (8, 8, 8, 8): //full cliff
+            // rock walls
+            case "RockWall_ud":
+                tile.Body = _world.CreatePolygon(new Vertices { v_bl_1_4, v_bl_2_4, v_tr_2_4, v_tr_1_4 }, 0, p);
+                break;
+            case "RockWall_lr":
+                tile.Body = _world.CreatePolygon(new Vertices { v_tl_2_4, v_br_2_4, v_br_1_4, v_tl_1_4 }, 0, p);
+                break;
+            case "RockWall_ur":
+                tile.Body = _world.CreatePolygon(new Vertices { v_ctl, v_br_2_4, v_br_1_4, v_ctr, v_tr_2_4, v_tr_1_4 },
+                    0, p);
+                break;
+            case "RockWall_bl":
+                tile.Body = _world.CreatePolygon(new Vertices { v_bl_1_4, v_bl_2_4, v_ctr, v_tl_1_4, v_tl_2_4, v_ctl },
+                    0, p);
+                break;
+            case "RockWall_ul":
+                tile.Body = _world.CreatePolygon(new Vertices { v_tl_2_4, v_c, v_tr_2_4, v_tr_1_4, v_ct, v_tl_1_4 }, 0,
+                    p);
+                break;
+            case "RockWall_dr":
+                tile.Body = _world.CreatePolygon(new Vertices { v_bl_1_4, v_bl_2_4, v_c, v_br_2_4, v_br_1_4, v_ct }, 0,
+                    p);
+                break;
+            case "WallToRock_01":
+                tile.Body = _world.CreatePolygon(
+                    new Vertices { v_bl_2_4, v_c, v_br_2_4, v_br_1_4, v_ctr, v_tr_2_4, v_t, v_l }, 0, p);
+                break;
+            case "WallToRock_02":
+                tile.Body = _world.CreatePolygon(
+                    new Vertices { v_tl_2_4, v_ctl, v_bl_1_4, v_bl_2_4, v_c, v_br_2_4, v_r, v_t }, 0, p);
+                break;
+            case "WallToRock_03":
+                tile.Body = _world.CreatePolygon(
+                    new Vertices { v_tl_2_4, v_c, v_br_2_4, v_b, v_r, v_tr_2_4, v_ctr, v_tl_1_4 }, 0, p);
+                break;
+            case "WallToRock_04":
+                tile.Body = _world.CreatePolygon(
+                    new Vertices { v_l, v_b, v_br_2_4, v_c, v_tr_2_4, v_tr_1_4, v_ctl, v_tl_2_4 }, 0, p);
+                break;
+            // cliffs
+            case "FullCliff": //full cliff
                 tile.Body = _world.CreateRectangle(l, l, 0, p + new Vector2(MapScaling, 0), (float)Math.PI / 4);
                 break;
-            case (8, 6, 8, 7): //bottom NOT cliff
+            case "Cliff_1rd": //bottom NOT cliff
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0));
                 break;
-            case (7, 8, 6, 8): //top NOT cliff
+            case "Cliff_1ul": //top NOT cliff
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)Math.PI);
                 break;
-            case (8, 7, 7, 8): //left NOT cliff
+            case "Cliff_1dl": //left NOT cliff
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)Math.PI / 2);
                 break;
-            case (6, 8, 8, 6): //right NOT cliff
+            case "Cliff_1dr": //right NOT cliff
                 tile.Body = _world.CreatePolygon(buildWall3Polygon(MapScaling), 0, p + new Vector2(MapScaling, 0),
                     (float)-Math.PI / 2);
                 break;
-            case (8, 0, 7, 7): //top right cliff
+            case "Cliff_2u": //top right cliff
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 1.25f, -0.25f * MapScaling), (float)Math.PI / 4);
                 break;
-            case (7, 7, 0, 8): //bottom right cliff
+            case "Cliff_2r": //bottom right cliff
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 1.25f, 0.25f * MapScaling), (float)-Math.PI / 4);
                 break;
-            case (6, 6, 8, 0): //top left cliff
+            case "Cliff_2l": //top left cliff
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 0.75f, -0.25f * MapScaling), (float)-Math.PI / 4);
                 break;
-            case (0, 8, 7, 7): //bottom left cliff
+            case "Cliff_2d": //bottom left cliff
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 0.75f, 0.25f * MapScaling), (float)Math.PI / 4);
                 break;
-            case (7, 0, 0, 7): //right quarter cliff
+            case "Cliff_3ur": //right quarter cliff
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling * 2, 0));
                 break;
-            case (0, 7, 0, 6): //bottom quarter cliff
+            case "Cliff_3dr": //bottom quarter cliff
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling, MapScaling));
                 break;
-            case (0, 6, 6, 0): //left quarter cliff
+            case "Cliff_3dl": //left quarter cliff
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p);
                 break;
-            case (6, 0, 7, 0): //top quarter cliff
+            case "Cliff_3ul": //top quarter cliff
                 tile.Body = _world.CreateCircle(l * 0.5f, 0, p + new Vector2(MapScaling, -MapScaling));
                 break;
         }
@@ -227,7 +284,7 @@ public class Map : DrawableGameElement {
             if (tile.FinalPrototype.IsCliff) {
                 tile.Body.OnCollision += OnCliffCollision;
             }
-        } 
+        }
     }
 
 
@@ -270,7 +327,8 @@ public class Map : DrawableGameElement {
 
                 switch (i) {
                     case 1:
-                        Cm.Add(new FragileColumn(_world, worldCoords, 1.5f, fragileTexture, brokenTexture, fragileAnimationTexture));
+                        Cm.Add(new FragileColumn(_world, worldCoords, 1.5f, fragileTexture, brokenTexture,
+                            fragileAnimationTexture));
                         break;
                     case 2:
                         Cm.Add(new ElectricColumn(_world, worldCoords, 1.5f, elecTexture, elecAnimationTexture));
@@ -279,30 +337,24 @@ public class Map : DrawableGameElement {
                         Cm.Add(new Column(_world, worldCoords, 1.5f, columnTexture));
                         break;
                 }
-
             }
 
-            for (int i = 0; i < r.EnemyPositions.Count; i++)
-            {
-                Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY), RnGsus.Instance.Next(3) + 1); // pass map diff here as second arg
+            for (int i = 0; i < r.EnemyPositions.Count; i++) {
+                Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
+                    RnGsus.Instance.Next(3) + 1); // pass map diff here as second arg
             }
 
-            foreach(Vector2 pos in r.AmphoraPositions)
-            {
+            foreach (Vector2 pos in r.AmphoraPositions) {
                 Amphora a = new Amphora(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), 0.5f);
                 Dm.Add(a);
             }
 
-            foreach (Vector2 pos in r.TreasurePositions)
-            {
-                
+            foreach (Vector2 pos in r.TreasurePositions) {
                 Chest c;
-                if(RnGsus.Instance.NextDouble() > 0.5)
-                {
+                if (RnGsus.Instance.NextDouble() > 0.5) {
                     c = new HealthChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
-                }
-                else c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
-                
+                } else c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
+
                 Dm.Add(c);
             }
         }
@@ -319,25 +371,25 @@ public class Map : DrawableGameElement {
         var c = 0;
 
         // only draw planes that are visible on screen:
-        var h = _game.Graphics.PreferredBackBufferHeight;
-        var w = _game.Graphics.PreferredBackBufferWidth;
+        var h = _game.GraphicsDevice.PresentationParameters.BackBufferHeight;
+        var w = _game.GraphicsDevice.PresentationParameters.BackBufferWidth;
 
-        var addonTiles = 2; 
+        var addonTiles = 2;
 
         var xMin = Math.Floor(camera.getWorldPixel(new Vector2(0, 0)).X) - addonTiles;
         var xMax = Math.Ceiling(camera.getWorldPixel(new Vector2(w, h)).X) + addonTiles;
-        var yMin = Math.Floor(camera.getWorldPixel(new Vector2(0,0)).Y) - addonTiles;
+        var yMin = Math.Floor(camera.getWorldPixel(new Vector2(0, 0)).Y) - addonTiles;
         var yMax = Math.Ceiling(camera.getWorldPixel(new Vector2(w, h)).Y) + addonTiles;
 
         //Debug.WriteLine(xMin + ", " + xMax + ", " + yMin + ", " + yMax);
 
         foreach (var r in RoomList) {
             //if (r.PosX > xMax || r.PosY > yMax || r.PosX + r.SizeX < xMin || r.PosY + r.SizeY < yMin)
-                //continue;
+            //continue;
             foreach (var t in r.TileMap) {
                 //Only draw what is on the screen, NOT WORKING
                 //if (t.X < xMin || t.X > xMax || t.Y < yMin || t.Y > yMax)
-                    //continue;
+                //continue;
 
                 Vector2 screenPos;
                 Vector2 pos;
@@ -354,6 +406,7 @@ public class Map : DrawableGameElement {
                         pos = MapToWorld(new Point(t.X + r.PosX, t.Y + r.PosY));
                         screenPos = camera.getScreenPoint(new Vector2(pos.X, pos.Y));
                     }
+
                     if (!camera.IsVisible(pos)) {
                         continue;
                     }
@@ -366,9 +419,11 @@ public class Map : DrawableGameElement {
                     c++;
 
                     if (t.FinalPrototype.WallTex != null) {
-                        if (t.FinalPrototype.Name == "Wall2l" || t.FinalPrototype.Name == "Wall2u" || t.FinalPrototype.Name == "Wall1lu") {
+                        if (t.FinalPrototype.Name == "Wall2l" || t.FinalPrototype.Name == "Wall2u" ||
+                            t.FinalPrototype.Name == "Wall1lu") {
                             layerDepthWalls = camera.getLayerDepth(tilePos.Y + tilePos.Height * 0.625f);
-                        } else if (t.FinalPrototype.Name == "Wall2r" || t.FinalPrototype.Name == "Wall2d" || t.FinalPrototype.Name == "Wall1rd") {
+                        } else if (t.FinalPrototype.Name == "Wall2r" || t.FinalPrototype.Name == "Wall2d" ||
+                                   t.FinalPrototype.Name == "Wall1rd") {
                             layerDepthWalls = camera.getLayerDepth(tilePos.Y + tilePos.Height * 0.875f);
                         }
 
@@ -379,7 +434,7 @@ public class Map : DrawableGameElement {
                     if (t.FinalPrototype.GroundTex != null) {
                         // We put cliffs below ground (between 0.025 and 0.075)
                         if (t.FinalPrototype.IsCliff) {
-                            layerDepthFloor = camera.getLayerDepth(tilePos.Y)/10f;
+                            layerDepthFloor = camera.getLayerDepth(tilePos.Y) / 10f;
                         }
 
                         batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero,
