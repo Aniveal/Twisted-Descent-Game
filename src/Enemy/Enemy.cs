@@ -121,18 +121,21 @@ public class Enemy : DrawableGameElement {
         {
             SoundEngine.Instance.Squish();
             _game.GameData.Kills += 1;
+            _game.GameData.AddTime(10f);
             IsAlive = false;
         }
         if (cause == 1 && !_isImmuneToElectricity) // electricity
         {
             SoundEngine.Instance.Squish();
             _game.GameData.Kills += 1;
+            _game.GameData.AddTime(10f);
             IsAlive = false;
         }
         if (cause == 2 && !_isImmuneToAmphoras) // apmohras
         {
             SoundEngine.Instance.Squish();
             _game.GameData.Kills += 1;
+            _game.GameData.AddTime(10f);
             IsAlive = false;
         }
     }

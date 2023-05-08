@@ -121,12 +121,13 @@ public class GameScreen : Screen {
         //putting it here cuz otherwise we'll forget about it the day when columns actually need updating. same for gui
         //columnsManager.Update(gameTime);
         //guiManager.Update(gameTime);
+        
+        // Update Game Timer
+        Game.GameData.DecayTime(gameTime);
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch = null)
     {
-        
-
         Camera.SetCameraPos(TheseusManager.Player.Body.Position);
         base.Draw(gameTime);
 
