@@ -202,7 +202,7 @@ public class Enemy : DrawableGameElement {
     public override void Update(GameTime gameTime) {
         if (fallStart > 0) {
             if (gameTime.TotalGameTime.TotalSeconds - fallStart > 1) {
-                IsAlive = false;
+                Kill(0);
             }
             return;
         }
