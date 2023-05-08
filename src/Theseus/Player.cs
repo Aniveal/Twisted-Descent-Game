@@ -22,6 +22,7 @@ public class Player : DrawableGameElement {
 
     //How many milliseconds between footsteps
     private readonly float _footstepSoundDelayMax = 400f;
+    private readonly float _footstepSoundDelayDashMax = 200f;
 
     private Texture2D _idle;
     private readonly double _immuneCooldown = 1500;
@@ -122,6 +123,7 @@ public class Player : DrawableGameElement {
             _dash = true;
             DashTimer = 0;
             _playerForce = 50f;
+            _footstepSoundDelayCurrent = 0;
         }
 
         if (_dash & (DashTimer >= DashUsageTime)) {
@@ -157,7 +159,7 @@ public class Player : DrawableGameElement {
 
         if (_isWalking && _footstepSoundDelayCurrent < 0) {
             SoundEngine.Instance.playGravelFootstep();
-            _footstepSoundDelayCurrent = _footstepSoundDelayMax;
+            _footstepSoundDelayCurrent = _dash ? _footstepSoundDelayDashMax : _footstepSoundDelayMax;
         }
 
         if (_input.LengthSquared() > 1) _input.Normalize();
