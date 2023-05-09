@@ -138,6 +138,13 @@ public class Enemy : DrawableGameElement {
             _game.GameData.AddTime(10f);
             IsAlive = false;
         }
+        if (cause == 3) // cliff
+        {
+            SoundEngine.Instance.WilhelmScream();
+            _game.GameData.Kills += 1;
+            _game.GameData.AddTime(10f);
+            IsAlive = false;
+        }
     }
 
     protected virtual bool OnCollision(Fixture sender, Fixture other, Contact contact) {
@@ -202,7 +209,7 @@ public class Enemy : DrawableGameElement {
     public override void Update(GameTime gameTime) {
         if (fallStart > 0) {
             if (gameTime.TotalGameTime.TotalSeconds - fallStart > 1) {
-                Kill(0);
+                Kill(3);
             }
             return;
         }

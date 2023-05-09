@@ -26,6 +26,7 @@ public sealed class SoundEngine {
     private SoundEffect _electricityImpact;
     private SoundEffect _electricityColumn;
     private SoundEffect _explosion;
+    private SoundEffect _wilhelmScream;
     private readonly List<SoundEffect> _swordHits = new();
 
     private SoundEngine() {
@@ -60,6 +61,7 @@ public sealed class SoundEngine {
         _electricityColumn = _game.Content.Load<SoundEffect>("Sound/ElectricityArc");
         _buttonHit = _game.Content.Load<SoundEffect>("Sound/Interactions/ButtonPress");
         _amphora = _game.Content.Load<SoundEffect>("Sound/Hits/AmphoraSmash1");
+        _wilhelmScream = _game.Content.Load<SoundEffect>("Sound/WilhelmScream");
 
 
         Debug.WriteLine("Done!");
@@ -109,5 +111,9 @@ public sealed class SoundEngine {
     public void ElectroShock()
     {
         _electricityImpact.Play();
+    }
+
+    public void WilhelmScream() {
+        _wilhelmScream.Play();
     }
 }
