@@ -43,6 +43,7 @@ public class Rope : DrawableGameElement {
     public TimeSpan BreakCoolDown = new(0, 0, 1);
     public List<FragileColumn> Fragiles = new();
     public TimeSpan LastBreak = TimeSpan.Zero;
+    private FragileColumn _breakingColumn;
 
     public Rope(RopeGame game, World world, Vector2 pos, int segmentCount) {
         _game = game;
@@ -98,8 +99,7 @@ public class Rope : DrawableGameElement {
         }
     }
 
-    public void Pull(GameTime gameTime) {
-
+    private void UpdateBreakingColumn(GameTime gameTime) {
         if (gameTime.TotalGameTime - LastBreak > BreakCoolDown)
         {
             //Traverse linked list and break last column
@@ -125,12 +125,28 @@ public class Rope : DrawableGameElement {
             if (currentSegment != null)
             {
                 FragileColumn col = currentSegment.touchingColumn as FragileColumn;
-                col.Break();
-                LastBreak = gameTime.TotalGameTime;
+                _breakingColumn = col;
+            } else {
+                _breakingColumn = null;
             }
             
+            foreach (var fragileColumn in _game._gameScreen.ColumnsManager.Columns.OfType<FragileColumn>()) {
+                fragileColumn.hideTooltip();
+            }
+
+            _breakingColumn?.showTooltip();
         }
-        
+    }
+    
+    public void Pull(GameTime gameTime) {
+        if (gameTime.TotalGameTime - LastBreak > BreakCoolDown)
+        {
+            if (_breakingColumn != null) {
+                _breakingColumn.Break();
+                LastBreak = gameTime.TotalGameTime;
+                _breakingColumn = null;
+            }
+        }
     }
 
     private void CreateBaseTexture() {
@@ -175,6 +191,7 @@ public class Rope : DrawableGameElement {
     }
     
     public override void Update(GameTime gameTime) {
+        UpdateBreakingColumn(gameTime);
         DynamicSegmentSuspension();
 
         //natural shortening

@@ -12,6 +12,7 @@ public class FragileColumn : ActivableColumn {
 
     private const int AnimationFrameWidth = 1060;
     private double _animationStart = 0;
+    private bool _showTooltip = false;
 
     public FragileColumn(World world, Vector2 position, float width, Texture2D texture, Texture2D brokenTexture) : base(
         world, position, width, texture) {
@@ -70,11 +71,20 @@ public class FragileColumn : ActivableColumn {
             batch.Draw(_brokenTexture, screenRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor));
         } else {
-            batch.Draw(ColumnTexture, screenRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
+            var color = _showTooltip ? Color.Red : Color.White;
+            batch.Draw(ColumnTexture, screenRec, null, color, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor));
         }
     }
 
+    public void showTooltip() {
+        _showTooltip = true;
+    }
+    
+    public void hideTooltip() {
+        _showTooltip = false;
+    }
+    
     public void Break() {
         if (_broken) return; //don't repeat animation
         _animation = true;
