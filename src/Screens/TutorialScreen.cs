@@ -65,22 +65,22 @@ public class TutorialScreen : Screen {
 
 
         spriteBatch.DrawString(font, "Player Movement : ", new Vector2(w / 16, h / 9 * 3), Color.White);
-        spriteBatch.DrawString(font, "Arrows/ WASD", new Vector2(w / 16 * 12, h / 9 * 3), Color.White);
+        spriteBatch.DrawString(font, "WASD / left stick", new Vector2(w / 16 * 12, h / 9 * 3), Color.White);
 
         spriteBatch.DrawString(font, "Pull the Rope : ", new Vector2(w / 16, h / 9 * 4), Color.White);
-        spriteBatch.DrawString(font, "P", new Vector2(w / 16 * 12, h / 9 * 4), Color.White);
+        spriteBatch.DrawString(font, "P / RT", new Vector2(w / 16 * 12, h / 9 * 4), Color.White);
 
         spriteBatch.DrawString(font, "Dash : ", new Vector2(w / 16, h / 9 * 5), Color.White);
-        spriteBatch.DrawString(font, "Space", new Vector2(w / 16 * 12, h / 9 * 5), Color.White);
+        spriteBatch.DrawString(font, "Space / A", new Vector2(w / 16 * 12, h / 9 * 5), Color.White);
 
         spriteBatch.DrawString(font, "Change between Spears : ", new Vector2(w / 16, h / 9 * 6), Color.White);
-        spriteBatch.DrawString(font, "Q, E", new Vector2(w / 16 * 12, h / 9 * 6), Color.White);
+        spriteBatch.DrawString(font, "Q, E / LB, RB", new Vector2(w / 16 * 12, h / 9 * 6), Color.White);
 
         spriteBatch.DrawString(font, "Place a Spear: ", new Vector2(w / 16, h / 9 * 7), Color.White);
-        spriteBatch.DrawString(font, "R", new Vector2(w / 16 * 12, h / 9 * 7), Color.White);
+        spriteBatch.DrawString(font, "R / X", new Vector2(w / 16 * 12, h / 9 * 7), Color.White);
 
         spriteBatch.DrawString(font, "Pause/Back to Menu: ", new Vector2(w / 16, h / 9 * 8), Color.White);
-        spriteBatch.DrawString(font, "Esc", new Vector2(w / 16 * 12, h / 9 * 8), Color.White);
+        spriteBatch.DrawString(font, "Esc / start", new Vector2(w / 16 * 12, h / 9 * 8), Color.White);
 
 
         spriteBatch.End();

@@ -74,7 +74,7 @@ public class GameData {
     }
 
     public void AddHealth(int amount) {
-        Health = Math.Max(MaxHealth, Health + amount);
+        Health = Math.Min(MaxHealth, Health + amount);
     }
 
     public void IncreaseDifficulty()
