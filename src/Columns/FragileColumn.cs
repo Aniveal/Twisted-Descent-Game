@@ -56,7 +56,7 @@ public class FragileColumn : ActivableColumn {
             screenRec = camera.getScreenRectangle(Position.X - animationScreenWidth / 2f, Position.Y, animationScreenWidth, SpriteSize.Y);
             screenRec.Y -= (int)(screenRec.Height * OcclusionHeightFactor);
             
-            batch.Draw(_animationTexture, screenRec, srcRect, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
+            batch.Draw(_animationTexture, screenRec, srcRect, Color.LightGray, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor + 0.1f));
             
             if (animationIndex >= 7) {
@@ -68,11 +68,11 @@ public class FragileColumn : ActivableColumn {
         screenRec.Y -= (int)(screenRec.Height * OcclusionHeightFactor);
         
         if (_broken) {
-            batch.Draw(_brokenTexture, screenRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
+            batch.Draw(_brokenTexture, screenRec, null, Color.LightGray, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor));
         } else {
             var color = _showTooltip ? Color.Red : Color.White;
-            batch.Draw(ColumnTexture, screenRec, null, color, 0f, Vector2.Zero, SpriteEffects.None,
+            batch.Draw(ColumnTexture, screenRec, null, Color.LightGray, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor));
         }
     }
