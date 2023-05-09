@@ -269,6 +269,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/BG.jpg
 
+#begin Sprites/Chest/chest_closed_updated.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Chest/chest_closed_updated.png
+
 #begin Sprites/Chest/chest_closed.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -281,6 +293,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Chest/chest_closed.png
 
+#begin Sprites/Chest/chest_open_updated.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Chest/chest_open_updated.png
+
 #begin Sprites/Chest/chest_open.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -292,6 +316,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Chest/chest_open.png
+
+#begin Sprites/Chest/chest_opening.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Chest/chest_opening.png
 
 #begin Sprites/Cliff/cliff_1b.png
 /importer:TextureImporter
