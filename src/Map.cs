@@ -305,6 +305,23 @@ public class Map : DrawableGameElement {
             CreateMapBody(t);
     }
 
+    public void InitializeTutorialMap() {
+        _mapGenerator = new MapGenerator(_game);
+
+        Debug.WriteLine("Initializing Map");
+
+        _mapGenerator.CreateTutorialMap();
+
+        RoomList = _mapGenerator.RoomList;
+
+        transferDataToManagers();
+
+        //create bodies for tiles
+        foreach (var r in RoomList)
+        foreach (var t in r.TileMap)
+            CreateMapBody(t);
+    }
+
     public void transferDataToManagers() {
         var columnTexture = _game.Content.Load<Texture2D>("Sprites/Columns/column");
         var elecTexture = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column");

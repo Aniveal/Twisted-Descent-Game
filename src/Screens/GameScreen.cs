@@ -64,7 +64,12 @@ public class GameScreen : Screen {
     public override void Initialize() {
         base.Initialize();
 
-        _map.Initialize();
+        if (_tutorial) {
+            _map.InitializeTutorialMap();
+        } else {
+            _map.Initialize();
+        }
+        
 
         TheseusManager.Initialize();
         EnemyManager.Initialize();
@@ -96,7 +101,7 @@ public class GameScreen : Screen {
         diverseManager.LoadContent();
 
         SpearsController.PlaceSpear(-0.1f, 0, 0);
-        
+        _tutorial = false;
     }
 
     public void FixedUpdate(GameTime gameTime) {
