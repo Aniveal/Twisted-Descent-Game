@@ -31,6 +31,8 @@ public class GameScreen : Screen {
 
     public TheseusManager TheseusManager;
 
+    private bool _tutorial = false;
+
 
     public GameScreen(RopeGame game) : base(game) {
         Game = getGame();
@@ -54,6 +56,10 @@ public class GameScreen : Screen {
 
         _map = new Map(game, World, ColumnsManager, EnemyManager, diverseManager);
     }
+
+    public GameScreen(RopeGame game, bool tutorial) : this(game) {
+        _tutorial = tutorial;
+    } 
 
     public override void Initialize() {
         base.Initialize();

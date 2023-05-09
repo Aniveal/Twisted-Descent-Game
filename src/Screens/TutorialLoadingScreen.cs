@@ -18,8 +18,7 @@ public class TutorialLoadingScreen : LoadingScreen
         {
             gameLoaded = true;
             base.getGame().GameData = new GameData(base.getGame());
-            //TODO: modify
-            base.getGame()._gameScreen = new GameScreen(base.getGame());
+            base.getGame()._gameScreen = new GameScreen(base.getGame(), true);
             base.getGame()._mapScreen = new MapScreen(base.getGame());
             base.getGame()._gameScreen.Initialize();
             base.getGame()._mapScreen.Initialize();
