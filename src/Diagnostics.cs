@@ -15,6 +15,7 @@ public sealed class Diagnostics {
     private double _elapsed;
     private double _force;
     private string _forceMessage = "";
+    public int Fps = 0;
     private string _fpsMessage = "";
 
     private double _frames;
@@ -38,7 +39,8 @@ public sealed class Diagnostics {
         _now = gameTime.TotalGameTime.TotalSeconds;
         _elapsed = _now - _last;
         if (_elapsed > MsgFrequency) {
-            _fpsMessage = "FPS: " + (int)(_frames / _elapsed);
+            Fps = (int)(_frames / _elapsed);
+            _fpsMessage = "FPS: " + Fps;
             _elapsed = 0;
             _frames = 0;
             _last = _now;

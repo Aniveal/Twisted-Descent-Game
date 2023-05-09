@@ -22,7 +22,8 @@ public class Rope : DrawableGameElement {
     public const float RopeJointFrequency = 20;
     public const float RopeJointDampingRatio = 0.5f;
 
-    private const int KeepActive = 400;
+    private const int MinFps = 60;
+    private int KeepActive = 400;
     private readonly RopeGame _game;
     private readonly Vector2 _pos;
     private readonly int _segmentCount;
@@ -33,6 +34,7 @@ public class Rope : DrawableGameElement {
 
     private readonly Random _decayRng;
     private List<RopeSegment> _segments;
+    private List<RopeSegment> _suspendedSegments;
 
     private Texture2D _pixel;
     private readonly Color _ropeColor = new(170, 54, 54);
@@ -48,6 +50,7 @@ public class Rope : DrawableGameElement {
         _pos = pos;
         _segmentCount = segmentCount;
         _decayRng = new Random();
+        _suspendedSegments = new List<RopeSegment>();
     }
 
     public Vector2 GetEndPosition() {
@@ -145,7 +148,35 @@ public class Rope : DrawableGameElement {
         foreach (var segment in _segments) segment.LoadContent();
     }
 
+    private void IncreaseSuspension(int amount) {
+        for (int i = 0; i < amount; i++) {
+            var disableIndex = _segments.Count - KeepActive - 1 - i;
+            if (disableIndex >= 0) _segments[disableIndex].Body.BodyType = BodyType.Static;
+        }
+
+        KeepActive -= amount;
+    }
+    
+    private void DecreaseSuspension(int amount) {
+        for (int i = 0; i < amount; i++) {
+            var enableIndex = _segments.Count - KeepActive + i;
+            if (enableIndex >= 0 && enableIndex < _segments.Count) _segments[enableIndex].Body.BodyType = BodyType.Dynamic;
+        }
+
+        KeepActive += amount;
+    }
+    
+    private void DynamicSegmentSuspension() {
+        if (Diagnostics.Instance.Fps <= MinFps) {
+            // IncreaseSuspension(5);
+        } else {
+            // DecreaseSuspension(1);
+        }
+    }
+    
     public override void Update(GameTime gameTime) {
+        DynamicSegmentSuspension();
+
         //natural shortening
         if (_decayCount >= DecayRate) {
             var r = _decayRng.Next(DecayRange);
