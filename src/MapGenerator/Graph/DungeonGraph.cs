@@ -126,6 +126,35 @@ internal class DungeonGraph {
         }
     }
 
+    public void CreateTutorialGraph() {
+        int maxSize = 200;
+        _occupationMap = new int[maxSize, maxSize];
+
+        var allPrototypes = new List<Prototype>();
+        allPrototypes.AddRange(_mg.RockPrototypes);
+        allPrototypes.AddRange(_mg.WallPrototypes);
+        allPrototypes.AddRange(_mg.CliffPrototypes);
+
+        //Place random first room
+        var startRoom = new StartRoom(_mg, _mg.RockPrototypes, maxSize/2, maxSize/2);
+        occupy(startRoom);
+        Rooms.Add(startRoom);
+
+        Room endRoom = new EndRoom(_mg, _mg.RockPrototypes, 2);
+        endRoom.PosX = maxSize/2 + 6;
+        endRoom.PosY = maxSize/2;
+        occupy(endRoom);
+        Rooms.Add(endRoom);
+
+        var displaceX = startRoom.PosX;
+        var displaceY = startRoom.PosY;
+
+        foreach (var r in Rooms) {
+            r.PosX -= displaceX - 1;
+            r.PosY -= displaceY + 2;
+        }
+    }
+
     public bool placeRoom(Room newRoom, Room target)
     {
         //Move the room randomly inside the other one so they still overlap

@@ -47,12 +47,19 @@ public class MenuScreen : Screen {
         text_box_height = Math.Max(text_box_height, 300); // Fixing overlapping 
 
         _continueButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 5 * (text_box_height / 4)),
             Text = "Continue",
             Disabled = true
         };
 
         _continueButton.Click += ContinueButton_Click;
+
+        Button tutorialButton = new Button(buttonTexture, buttonFont) {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
+            Text = "Tutorial"
+        };
+
+        tutorialButton.Click += TutorialButton_Click;
 
         var newGameButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(w - 100 - text_box_width, h - 120 - 3 * (text_box_height / 4)),
@@ -61,12 +68,12 @@ public class MenuScreen : Screen {
 
         newGameButton.Click += NewGameButton_Click;
 
-        var tutorialButton = new Button(buttonTexture, buttonFont) {
+        var controlsButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(w - 100 - text_box_width, h - 120 - 2 * (text_box_height / 4)),
             Text = "Controls",
         };
 
-        tutorialButton.Click += TutorialButton_Click;
+        controlsButton.Click += ControlsButton_Click;
 
         var quitGameButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(w - 100 - text_box_width, h - 120 - 1 * (text_box_height / 4)),
@@ -77,8 +84,9 @@ public class MenuScreen : Screen {
 
         _components = new List<Component> {
             _continueButton,
-            newGameButton,
             tutorialButton,
+            newGameButton,
+            controlsButton,
             quitGameButton
         };
     }
@@ -87,6 +95,17 @@ public class MenuScreen : Screen {
         if (base.getGame()._gameScreen != null) {
             base.getGame().ChangeState(RopeGame.State.Running);
         }
+    }
+
+    private void TutorialButton_Click(object sender, EventArgs e) {
+        base.getGame().ResetGame();
+        base.getGame()._tutorialLoadingScreen = new TutorialLoadingScreen(base.getGame(), _content);
+        base.getGame()._tutorialLoadingScreen.Initialize();
+        base.getGame()._transitionScreen = new TransitionScreen(base.getGame(), _content);
+        base.getGame()._transitionScreen.Initialize();
+        base.getGame().ChangeState(RopeGame.State.Tutorial);
+
+        _continueButton.Disabled = false;
     }
 
     private void NewGameButton_Click(object sender, EventArgs e) {
@@ -100,10 +119,10 @@ public class MenuScreen : Screen {
         _continueButton.Disabled = false;
     }
 
-    private void TutorialButton_Click(object sender, EventArgs e) {
+    private void ControlsButton_Click(object sender, EventArgs e) {
         base.getGame()._tutorialScreen = new TutorialScreen(base.getGame(), _content);
         base.getGame()._tutorialScreen.Initialize();
-        base.getGame().ChangeState(RopeGame.State.Tutorial);
+        base.getGame().ChangeState(RopeGame.State.Controls);
 
     }
 

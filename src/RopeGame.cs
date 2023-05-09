@@ -15,6 +15,7 @@ public class RopeGame : Game {
     public TutorialScreen _tutorialScreen;
     public Screen _currentScreen;
     public LoadingScreen _loadingScreen;
+    public TutorialLoadingScreen _tutorialLoadingScreen;
     public FinalScreen _finalScreen;
     public TransitionScreen _transitionScreen;
 
@@ -34,7 +35,7 @@ public class RopeGame : Game {
     private int currentWidth;
     private int currentHeight;
 
-    bool isFullscreen = false;
+    bool isFullscreen = true;
 
     public enum State {
         Running,
@@ -42,6 +43,7 @@ public class RopeGame : Game {
         MainMenu,
         Loading,
         Tutorial,
+        Controls,
         Transition,
         Final
     }
@@ -73,7 +75,10 @@ public class RopeGame : Game {
         {
             _currentScreen = _loadingScreen;
         }
-        else if (state == State.Tutorial)
+        else if (state == State.Tutorial) {
+            _currentScreen = _tutorialLoadingScreen;
+        }
+        else if (state == State.Controls)
         {
             _currentScreen = _tutorialScreen;
         }
@@ -130,7 +135,7 @@ public class RopeGame : Game {
     
     protected override void Update(GameTime gameTime) {
         Input.GetState();
-        if (Input.IsButtonPressed(Buttons.Back, true) || Input.IsKeyPressed(Keys.Escape, true) || (Input.IsButtonPressed(Buttons.B, true) && _currentState is State.Tutorial or State.Final)) {
+        if (Input.IsButtonPressed(Buttons.Back, true) || Input.IsKeyPressed(Keys.Escape, true) || (Input.IsButtonPressed(Buttons.B, true) && _currentState is State.Controls or State.Final)) {
             if (_currentState == State.MainMenu && _gameScreen != null) {
                 ChangeState(State.Running);
             } else {
