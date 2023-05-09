@@ -83,6 +83,12 @@
 /processorParam:Quality=Best
 /build:Sound/ColumnCollapse.mp3
 
+#begin Sound/ElectricityArc.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/ElectricityArc.mp3
+
 #begin Sound/GravelFootsteps/gravel0.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -203,6 +209,24 @@
 /processorParam:Quality=Best
 /build:Sound/GravelFootsteps/gravel9.mp3
 
+#begin Sound/Hits/AmphoraSmash1.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Hits/AmphoraSmash1.mp3
+
+#begin Sound/Hits/ElectricityImpact.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Hits/ElectricityImpact.mp3
+
+#begin Sound/Hits/Explosion.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Hits/Explosion.mp3
+
 #begin Sound/Hits/Squish.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -232,6 +256,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/Hits/SwordHit4.mp3
+
+#begin Sound/Interactions/ButtonPress.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Interactions/ButtonPress.mp3
 
 #begin Sound/Interactions/Chest5.mp3
 /importer:Mp3Importer

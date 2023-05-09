@@ -80,6 +80,7 @@ public class Button : Component {
     }
 
     public void Trigger() {
+        SoundEngine.Instance.ButtonClick();
         Click?.Invoke(this, new EventArgs());
     }
 

@@ -34,7 +34,7 @@ public class RopeGame : Game {
     private int currentWidth;
     private int currentHeight;
 
-    bool isFullscreen = false;
+    bool isFullscreen = true;
 
     public enum State {
         Running,

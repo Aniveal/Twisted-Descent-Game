@@ -21,6 +21,11 @@ public sealed class SoundEngine {
     private SoundEffect _chest;
     private SoundEffect _squish;
     private SoundEffect _columnCollapse;
+    private SoundEffect _buttonHit;
+    private SoundEffect _amphora;
+    private SoundEffect _electricityImpact;
+    private SoundEffect _electricityColumn;
+    private SoundEffect _explosion;
     private readonly List<SoundEffect> _swordHits = new();
 
     private SoundEngine() {
@@ -50,6 +55,12 @@ public sealed class SoundEngine {
         _chest = _game.Content.Load<SoundEffect>("Sound/Interactions/Chest5");
         _ropeFling = _game.Content.Load<SoundEffect>("Sound/Rope/RopeFling1");
         _columnCollapse = _game.Content.Load<SoundEffect>("Sound/ColumnCollapse");
+        _explosion = _game.Content.Load<SoundEffect>("Sound/Hits/Explosion");
+        _electricityImpact = _game.Content.Load<SoundEffect>("Sound/Hits/ElectricityImpact");
+        _electricityColumn = _game.Content.Load<SoundEffect>("Sound/ElectricityArc");
+        _buttonHit = _game.Content.Load<SoundEffect>("Sound/Interactions/ButtonPress");
+        _amphora = _game.Content.Load<SoundEffect>("Sound/Hits/AmphoraSmash1");
+
 
         Debug.WriteLine("Done!");
     }
@@ -78,5 +89,25 @@ public sealed class SoundEngine {
     public void SwordHit()
     {
         _swordHits[RnGsus.Instance.Next(4)].Play();
+    }
+    public void Amphora()
+    {
+        _amphora.Play();
+        _explosion.Play();
+    }
+    
+    public void ButtonClick()
+    {
+        _buttonHit.Play();
+    }
+
+    public void ElectroColumn()
+    {
+        _electricityColumn.Play();
+    }
+
+    public void ElectroShock()
+    {
+        _electricityImpact.Play();
     }
 }
