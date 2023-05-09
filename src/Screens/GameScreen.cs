@@ -39,8 +39,7 @@ public class GameScreen : Screen {
         _batch = new SpriteBatch(Game.GraphicsDevice);
 
         World = new World(Vector2.Zero);
-        ColumnsManager = new ColumnsManager();
-
+        ColumnsManager = new ColumnsManager(game);
 
         TheseusManager = new TheseusManager(Game, World);
         EnemyManager = new EnemyManager(Game, World, TheseusManager.Player, 1);
@@ -88,6 +87,7 @@ public class GameScreen : Screen {
         GuiManager.LoadContent();
         SpearsController.LoadContent();
         diverseManager.LoadContent();
+        ColumnsManager.LoadContent();
 
         SpearsController.PlaceSpear(-0.1f, 0, 0);
         
@@ -163,7 +163,7 @@ public class GameScreen : Screen {
         _batch = new SpriteBatch(Game.GraphicsDevice);
 
         World = new World(Vector2.Zero);
-        ColumnsManager = new ColumnsManager();
+        ColumnsManager = new ColumnsManager(Game);
 
 
         TheseusManager = new TheseusManager(Game, World);

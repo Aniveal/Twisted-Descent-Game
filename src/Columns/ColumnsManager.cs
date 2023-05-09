@@ -13,9 +13,11 @@ namespace Meridian2.Columns;
  */
 public class ColumnsManager {
     public readonly List<DrawableGameElement> Columns;
+    private readonly RopeGame _game;
 
-    public ColumnsManager() {
+    public ColumnsManager(RopeGame game) {
         Columns = new List<DrawableGameElement>();
+        _game = game;
     }
 
     public void Add(DrawableGameElement column) {
@@ -34,6 +36,11 @@ public class ColumnsManager {
         foreach (var element in Columns) element.Update(gameTime);
     }
 
+    public void LoadContent() {
+        FragileColumn.ControlsTexture =
+            _game.Content.Load<Texture2D>("Sprites/Controller/Triggers/button_xbox_analog_trigger_dark_2");
+    }
+    
     public void Clear()
     {
         Columns.Clear();

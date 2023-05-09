@@ -129,12 +129,14 @@ public class Rope : DrawableGameElement {
             } else {
                 _breakingColumn = null;
             }
-            
-            foreach (var fragileColumn in _game._gameScreen.ColumnsManager.Columns.OfType<FragileColumn>()) {
-                fragileColumn.hideTooltip();
+
+            if (_game._gameScreen != null) {
+                foreach (var fragileColumn in _game._gameScreen.ColumnsManager.Columns.OfType<FragileColumn>()) {
+                    fragileColumn.HideControls();
+                }
             }
 
-            _breakingColumn?.showTooltip();
+            _breakingColumn?.ShowControls();
         }
     }
     

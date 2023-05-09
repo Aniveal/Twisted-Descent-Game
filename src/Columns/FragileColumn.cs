@@ -7,12 +7,13 @@ namespace Meridian2.Columns;
 public class FragileColumn : ActivableColumn {
     private readonly Texture2D _brokenTexture;
     private readonly Texture2D _animationTexture;
+    public static Texture2D ControlsTexture;
     private bool _animation;
     private bool _broken;
 
     private const int AnimationFrameWidth = 1060;
     private double _animationStart = 0;
-    private bool _showTooltip = false;
+    private bool _showControls = false;
 
     public FragileColumn(World world, Vector2 position, float width, Texture2D texture, Texture2D brokenTexture) : base(
         world, position, width, texture) {
@@ -71,18 +72,27 @@ public class FragileColumn : ActivableColumn {
             batch.Draw(_brokenTexture, screenRec, null, Color.LightGray, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor));
         } else {
-            var color = _showTooltip ? Color.Red : Color.White;
             batch.Draw(ColumnTexture, screenRec, null, Color.LightGray, 0f, Vector2.Zero, SpriteEffects.None,
                 camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor));
+
+            if (_showControls && ControlsTexture != null) {
+                var controlsWidth = screenRec.Width * 0.8f;
+                var controlsHeight = ControlsTexture.Height / (float)ControlsTexture.Width * controlsWidth;
+                var xMargin = (screenRec.Width - controlsWidth) / 2;
+                var yMargin = (controlsHeight + 5) * -1;
+                var controlsRect =
+                    new Rectangle(screenRec.X + (int)xMargin, screenRec.Y + (int)yMargin, (int)controlsWidth, (int)controlsHeight);
+                batch.Draw(ControlsTexture, controlsRect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+            }
         }
     }
 
-    public void showTooltip() {
-        _showTooltip = true;
+    public void ShowControls() {
+        _showControls = true;
     }
     
-    public void hideTooltip() {
-        _showTooltip = false;
+    public void HideControls() {
+        _showControls = false;
     }
     
     public void Break() {
