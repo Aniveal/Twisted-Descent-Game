@@ -76,12 +76,11 @@ public class FragileColumn : ActivableColumn {
                 camera.getLayerDepth(screenRec.Y + screenRec.Height * OcclusionHeightFactor));
 
             if (_showControls && ControlsTexture != null) {
-                var controlsWidth = screenRec.Width * 0.8f;
-                var controlsHeight = ControlsTexture.Height / (float)ControlsTexture.Width * controlsWidth;
-                var xMargin = (screenRec.Width - controlsWidth) / 2;
-                var yMargin = (controlsHeight + 5) * -1;
+                var controlsSize = 48;
+                var xMargin = (screenRec.Width - controlsSize) / 2;
+                var yMargin = (controlsSize + 5) * -1;
                 var controlsRect =
-                    new Rectangle(screenRec.X + (int)xMargin, screenRec.Y + (int)yMargin, (int)controlsWidth, (int)controlsHeight);
+                    new Rectangle(screenRec.X + (int)xMargin, screenRec.Y + (int)yMargin, (int)controlsSize, (int)controlsSize);
                 batch.Draw(ControlsTexture, controlsRect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             }
         }
