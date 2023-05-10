@@ -10,6 +10,7 @@ public class GuiManager {
     private readonly SpearsGui _spearsGui;
     private readonly StatsGui _statsGui;
     private readonly TimeBarGui _timeBarGui;
+    private readonly DashGui _dashGui;
 
     public GuiManager(RopeGame game, SpearsController spearsController) {
         _game = game;
@@ -17,6 +18,7 @@ public class GuiManager {
         _spearsGui = new SpearsGui(_game, _game.GameData, spearsController);
         _statsGui = new StatsGui(_game, _game.GameData);
         _timeBarGui = new TimeBarGui(_game, _game.GameData);
+        _dashGui = new DashGui(_game, _game.GameData);
     }
 
     public void Initialize() {
@@ -27,6 +29,7 @@ public class GuiManager {
         _spearsGui.LoadContent();
         _statsGui.LoadContent();
         _timeBarGui.LoadContent();
+        _dashGui.LoadContent();
     }
 
     /**
@@ -38,6 +41,7 @@ public class GuiManager {
         _spearsGui.Update(gameTime);
         _statsGui.Update(gameTime);
         _timeBarGui.Update(gameTime);
+        _dashGui.Update(gameTime);
     }
 
     public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
@@ -45,5 +49,6 @@ public class GuiManager {
         _spearsGui.Draw(gameTime, batch, camera);
         _statsGui.Draw(gameTime, batch, camera);
         _timeBarGui.Draw(gameTime, batch, camera);
+        _dashGui.Draw(gameTime, batch, camera);
     }
 }
