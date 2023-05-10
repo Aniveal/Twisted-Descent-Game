@@ -33,5 +33,9 @@ public class StatsGui : DrawableGameElement {
         
         batch.DrawString(_font, text, position, new(170, 54, 54), 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
         batch.Draw(_enemyTexture, enemyTextureRect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+
+        text = "Level " + _game._gameScreen._map.mapLevel.ToString();
+        stringSize = _font.MeasureString(text);
+        batch.DrawString(_font, text, new Vector2(viewportWidth / 2 - stringSize.X / 2, margin), new(170, 54, 54), 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
     }
 }

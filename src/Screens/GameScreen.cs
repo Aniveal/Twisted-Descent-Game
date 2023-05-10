@@ -158,6 +158,7 @@ public class GameScreen : Screen {
     public void LoadNextLevel()
     {
         Game.GameData.IncreaseDifficulty();
+        int maplvl = base.getGame()._gameScreen._map.mapLevel;
         Camera = new Camera(Game.GraphicsDevice);
 
         _batch = new SpriteBatch(Game.GraphicsDevice);
@@ -177,6 +178,7 @@ public class GameScreen : Screen {
 
 
         _map = new Map(Game, World, ColumnsManager, EnemyManager, diverseManager);
+        _map.mapLevel = maplvl + 1;
         _map.levelFinished = false;
         this.Initialize();
         
