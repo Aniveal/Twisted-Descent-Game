@@ -146,12 +146,12 @@ public class GameScreen : Screen {
         //}
         GuiManager.Draw(gameTime, _batch, Camera);
 
-        var ropeRed = new Color(170, 54, 54);
+        // var ropeRed = new Color(170, 54, 54);
         //if (_map.levelFinished) {
         //    _batch.DrawString(Game.Font, "LEVEL COMPLETE", new Vector2(300, 300), ropeRed, 0f, Vector2.Zero, 1f,
         //        SpriteEffects.None, 1f);
         //}
-        Diagnostics.Instance.Draw(_batch, Game.Graphics.GraphicsDevice, Game.Font, new Vector2(10, 20), ropeRed);
+        // Diagnostics.Instance.Draw(_batch, Game.Graphics.GraphicsDevice, Game.Font, new Vector2(10, 20), ropeRed);
         _batch.End();
     }
 

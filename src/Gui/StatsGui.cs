@@ -47,24 +47,24 @@ public class StatsGui : DrawableGameElement
         var viewportWidth = _game.GraphicsDevice.Viewport.Width;
         var margin = 10;
 
+        // Write the level
+        var text = "Level " + _game._gameScreen._map.mapLevel;
+        var stringSize = _font.MeasureString(text);
+        batch.DrawString(_font, text, new Vector2(viewportWidth / 2f - stringSize.X / 2, margin), new(170, 54, 54), 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        
         // Writing the number of Skills as a number
-        var text = _data.Kills.ToString();
-        var stringSize = _font.MeasureString(_data.Kills.ToString());
+        text = _data.Kills.ToString();
+        stringSize = _font.MeasureString(_data.Kills.ToString());
         var text_position = new Vector2(margin, margin);
         var text_color = new Color(154, 139, 141);
         batch.DrawString(_font, text, text_position, text_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-
-        // Write the level
-        text = "Level " + _game._gameScreen._map.mapLevel.ToString();
-        stringSize = _font.MeasureString(text);
-        batch.DrawString(_font, text, new Vector2(viewportWidth / 2 - stringSize.X / 2, margin), new(170, 54, 54), 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
         // Drawing Skull Icons
         var n_skulls = Math.Min(max_skulls, _data.Kills);
 
         if (n_skulls == 0)  // if player has no kills yet, draw grayed-out skull
         {
-            var skull_pos = new Rectangle(margin + (int)stringSize.X, margin, skull_size, skull_size);
+            var skull_pos = new Rectangle(2 * margin + (int)stringSize.X, margin, skull_size, skull_size);
             var skull_color = new Color(100, 100, 100);
             batch.Draw(_skull, skull_pos, null, skull_color, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
