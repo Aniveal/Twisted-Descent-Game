@@ -54,6 +54,11 @@ public class StatsGui : DrawableGameElement
         var text_color = new Color(154, 139, 141);
         batch.DrawString(_font, text, text_position, text_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
+        // Write the level
+        text = "Level " + _game._gameScreen._map.mapLevel.ToString();
+        stringSize = _font.MeasureString(text);
+        batch.DrawString(_font, text, new Vector2(viewportWidth / 2 - stringSize.X / 2, margin), new(170, 54, 54), 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+
         // Drawing Skull Icons
         var n_skulls = Math.Min(max_skulls, _data.Kills);
 
