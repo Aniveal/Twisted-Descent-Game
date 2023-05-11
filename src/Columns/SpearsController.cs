@@ -4,15 +4,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Meridian2.Columns; 
+namespace Meridian2.Columns;
 
-public class SpearsController {
+public class SpearsController
+{
     private const int SpearCooldown = 2000;
     private const int PlacementDisantce = 1;
     private const float SpearWidth = 1.2f;
 
     private Texture2D _baseSpearTexture;
     private Texture2D _normalSpearTexture;
+
+    private Texture2D _woodenSpear;
+    private Texture2D _metalSpear;
+    private Texture2D _electricSpear;
+
     private readonly ColumnsManager _columnsManager;
     private readonly GameData _data;
     private readonly RopeGame _game;
@@ -28,7 +34,8 @@ public class SpearsController {
     public double SpearTimer;
 
 
-    public SpearsController(RopeGame game, ColumnsManager columnsManager, Player player) {
+    public SpearsController(RopeGame game, ColumnsManager columnsManager, Player player)
+    {
         _game = game;
         _data = game.GameData;
         _player = player;
@@ -36,16 +43,23 @@ public class SpearsController {
         SpearTimer = 5000;
     }
 
-    public void LoadContent() {
+    public void LoadContent()
+    {
         _baseSpearTexture = _game.Content.Load<Texture2D>("circle");
         _normalSpearTexture = _game.Content.Load<Texture2D>("Sprites/Spear/spear");
+
+        _woodenSpear = _game.Content.Load<Texture2D>("Sprites/Spear/wooden_spear");
+        _metalSpear = _game.Content.Load<Texture2D>("Sprites/Spear/metal_spear");
+        _electricSpear = _game.Content.Load<Texture2D>("Sprites/Spear/lightning_spear");
     }
 
-    public void Update(GameTime gameTime) {
+    public void Update(GameTime gameTime)
+    {
         SpearTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
         SpearTimer = Math.Min(SpearTimer, SpearCooldown);
 
-        if (SpearTimer < SpearCooldown) {
+        if (SpearTimer < SpearCooldown)
+        {
             //cannot place a new spear yet
             _placing = false;
             return;
@@ -53,55 +67,71 @@ public class SpearsController {
 
         var keyboard = Keyboard.GetState();
         //move selection left
-        if (keyboard.IsKeyDown(Keys.Q) || Input.IsButtonPressed(Buttons.LeftShoulder, true)) {
+        if (keyboard.IsKeyDown(Keys.Q) || Input.IsButtonPressed(Buttons.LeftShoulder, true))
+        {
             //TODO: adapt to controler
-            if (!LeftDown) {
+            if (!LeftDown)
+            {
                 Selected = Selected == 0 ? 2 : Selected - 1;
                 LeftDown = true;
             }
-        } else {
+        }
+        else
+        {
             LeftDown = false;
         }
 
         //move selection right
-        if (keyboard.IsKeyDown(Keys.E) || Input.IsButtonPressed(Buttons.RightShoulder, true)) {
+        if (keyboard.IsKeyDown(Keys.E) || Input.IsButtonPressed(Buttons.RightShoulder, true))
+        {
             //TODO adapt to controler
-            if (!RightDown) {
+            if (!RightDown)
+            {
                 Selected = Selected == 2 ? 0 : Selected + 1;
                 RightDown = true;
             }
-        } else {
+        }
+        else
+        {
             RightDown = false;
         }
 
         //place selected spear
-        if (keyboard.IsKeyDown(Keys.R) || Input.IsButtonPressed(Buttons.X, true)) {
-            if (!PlaceDown) {
-                if (_data.Spears[Selected] < 1) {
+        if (keyboard.IsKeyDown(Keys.R) || Input.IsButtonPressed(Buttons.X, true))
+        {
+            if (!PlaceDown)
+            {
+                if (_data.Spears[Selected] < 1)
+                {
                     //TODO play animation to highlight you cannot place spear
-                } else {
+                }
+                else
+                {
                     PlaceDown = true;
                     var pPos = _player.Body.Position;
                     var pOr = _player.Orientation;
                     var sPos = pPos + pOr * 2;
                     _data.Spears[Selected]--;
-                    switch (Selected) {
+                    switch (Selected)
+                    {
                         case 0:
                             _columnsManager.Add(new Column(_game._gameScreen.World, sPos, SpearWidth,
-                                _normalSpearTexture, true));
+                                _metalSpear, true));
                             break;
                         case 1:
                             _columnsManager.Add(new ElectricColumn(_game._gameScreen.World, sPos, SpearWidth,
-                                _normalSpearTexture, true));    
+                                _electricSpear, true));
                             break;
                         case 2:
                             _columnsManager.Add(new FragileColumn(_game._gameScreen.World, sPos, SpearWidth,
-                                _normalSpearTexture, _normalSpearTexture, true));
+                                _woodenSpear, _normalSpearTexture, true));
                             break;
                     }
                 }
             }
-        } else {
+        }
+        else
+        {
             PlaceDown = false;
         }
 
@@ -112,7 +142,7 @@ public class SpearsController {
         switch (type)
         {
             case 0:
-                _columnsManager.Add(new Column(_game._gameScreen.World, new Vector2(x,y), SpearWidth,
+                _columnsManager.Add(new Column(_game._gameScreen.World, new Vector2(x, y), SpearWidth,
                     _normalSpearTexture, true));
                 break;
             case 1:
