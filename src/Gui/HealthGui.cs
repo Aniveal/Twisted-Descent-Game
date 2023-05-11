@@ -1,3 +1,4 @@
+using System;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,13 +42,18 @@ public class HealthGui : DrawableGameElement
         var margin = 10;
         var text = _data.Health.ToString();
         var stringSize = _font.MeasureString(text);
+        var text_width = (int)Math.Max(stringSize.X, _font.MeasureString("42").X); // leaving space for up to 99 kills
+
+        if (text.Length < 2) // right align text (after measuring its size!)
+            text = " " + text;
+
         var text_position = new Vector2(margin, (int)(5 * margin / 4 + stringSize.Y));
         var text_color = new Color(170, 54, 54);
         batch.DrawString(_font, text, text_position, text_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
         for (var i = 0; i < _data.Health; i++)
         {
-            var pos = new Rectangle(2 * margin + (int)stringSize.X + i * heart_size, (int)text_position.Y, heart_size, heart_size);
+            var pos = new Rectangle(2 * margin + text_width + i * heart_size, (int)text_position.Y, heart_size, heart_size);
             batch.Draw(_heartTexture, pos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
     }

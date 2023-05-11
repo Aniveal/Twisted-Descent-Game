@@ -54,7 +54,12 @@ public class StatsGui : DrawableGameElement
         
         // Writing the number of Skills as a number
         text = _data.Kills.ToString();
-        stringSize = _font.MeasureString(_data.Kills.ToString());
+        stringSize = _font.MeasureString(text);
+        var text_width = (int) Math.Max(stringSize.X, _font.MeasureString("42").X); // leaving space for up to 99 kills
+
+        if (text.Length < 2)    // right align text (after measuring its size!)
+            text = " " + text;
+
         var text_position = new Vector2(margin, margin);
         var text_color = new Color(154, 139, 141);
         batch.DrawString(_font, text, text_position, text_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
@@ -64,7 +69,7 @@ public class StatsGui : DrawableGameElement
 
         if (n_skulls == 0)  // if player has no kills yet, draw grayed-out skull
         {
-            var skull_pos = new Rectangle(2 * margin + (int)stringSize.X, margin, skull_size, skull_size);
+            var skull_pos = new Rectangle(2 * margin + text_width, margin, skull_size, skull_size);
             var skull_color = new Color(100, 100, 100);
             batch.Draw(_skull, skull_pos, null, skull_color, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
@@ -72,7 +77,7 @@ public class StatsGui : DrawableGameElement
         {
             for (var i = 0; i < n_skulls; i++)
             {
-                var skull_pos = new Rectangle(2 * margin + (int)stringSize.X + (i * 5 * skull_size / 8), margin, skull_size, skull_size);
+                var skull_pos = new Rectangle(2 * margin + text_width + (i * 5 * skull_size / 8), margin, skull_size, skull_size);
                 var skull_color = Color.White;
                 var skull_sprite = _skull;
                 if (i % 3 == 1)
