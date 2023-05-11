@@ -90,6 +90,16 @@ public sealed class SoundEngine {
         MediaPlayer.Pause();
     }
 
+    public void SetEffectVolume(float volume)
+    {
+        SoundEffect.MasterVolume = volume;
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        MediaPlayer.Volume = volume;
+    }
+
     public void ChestSound()
     {
         _chest.Play();
