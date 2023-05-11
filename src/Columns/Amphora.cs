@@ -28,7 +28,7 @@ public class Amphora : DrawableGameElement {
     //flag indicating the explosion animation has finished and the item can be cleaned up
     public bool hasExploded = false;
 
-    private const double ExplosionDuration = 1.5; //explosion in milliseconds
+    private const double ExplosionDuration = 0.5; //explosion in milliseconds
     private double explosionStart = 0;
     private bool exploding = false;
 
@@ -55,7 +55,7 @@ public class Amphora : DrawableGameElement {
 
     public void LoadContent() {
         _amphoraTexture = _game.Content.Load<Texture2D>("Sprites/amphora");
-        _explosionTexture = _game.Content.Load<Texture2D>("circle");
+        _explosionTexture = _game.Content.Load<Texture2D>("Sprites/Effects/explosion");
     }
 
     // DO NOT CALL FROM A PHYSICS CALLBACK
@@ -177,16 +177,15 @@ public class Amphora : DrawableGameElement {
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         if (!isDestroyed) {
-            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - _radius, _body.Position.Y - _radius, _radius * 2,
-            _radius * 2, true);
-            dstRec = camera.getSpriteRectangle(_body.Position.X - _radius, _body.Position.Y + _radius, _radius*2, _radius*3.2f);
+            Rectangle dstRec = camera.getSpriteRectangle(_body.Position.X - _radius, _body.Position.Y + _radius, _radius*2, _radius*3.2f);
             batch.Draw(_amphoraTexture, dstRec, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
         }
         if (exploding && !hasExploded) {
-            //TODO: improve once we have an animation
-            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - currentExplosionSize, _body.Position.Y - currentExplosionSize, 
-            currentExplosionSize*2, currentExplosionSize*2, scaleIsometric: true);
-            batch.Draw(_explosionTexture, dstRec, null, new Color(255,0,0,0.6f), 0, Vector2.Zero, SpriteEffects.None, 0.241f);
+            var explosionFrame = 6 - (int) Math.Round((explosionStart + ExplosionDuration - gameTime.TotalGameTime.TotalSeconds) /
+                ExplosionDuration * 6);
+            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - currentExplosionSize, _body.Position.Y - currentExplosionSize*2, 
+            currentExplosionSize*2, currentExplosionSize*2);
+            batch.Draw(_explosionTexture, dstRec, new Rectangle(explosionFrame * 2750, 0, 2750, 2700), Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.95f);
         }
     }
 }
