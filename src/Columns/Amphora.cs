@@ -34,8 +34,8 @@ public class Amphora : DrawableGameElement {
 
     private List<FragileColumn> toBreak = new List<FragileColumn>();
 
-    private Texture2D _amphoraTexture;
-    private Texture2D _explosionTexture;
+    private static Texture2D _amphoraTexture;
+    private static Texture2D _explosionTexture;
 
     public Amphora(RopeGame game, World world, Vector2 position, float radius) {
         _game = game;
@@ -54,8 +54,13 @@ public class Amphora : DrawableGameElement {
     }
 
     public void LoadContent() {
-        _amphoraTexture = _game.Content.Load<Texture2D>("Sprites/amphora");
-        _explosionTexture = _game.Content.Load<Texture2D>("Sprites/Effects/explosion");
+        if (_amphoraTexture == null) {
+            _amphoraTexture = _game.Content.Load<Texture2D>("Sprites/amphora");
+        }
+
+        if (_explosionTexture == null) {
+            _explosionTexture = _game.Content.Load<Texture2D>("Sprites/Effects/explosion");
+        }
     }
 
     // DO NOT CALL FROM A PHYSICS CALLBACK
