@@ -11,6 +11,9 @@ public class Room {
     //Column Positions
     public List<Vector2> Columns = new();
 
+    //0,1,2 basic, fragile, electric. Only used for TutorialRoom
+    public List<int> columnTypes = new();
+
     //Enemies
     public List<Vector2> EnemyPositions = new();
     public List<int> EnemyTypes = new();

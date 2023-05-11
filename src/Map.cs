@@ -333,6 +333,7 @@ public class Map : DrawableGameElement {
         foreach (var r in RoomList) {
             Debug.WriteLine("Sending coords to ColumnsManager: " + r.Columns.Count);
 
+            int j = 0;
             foreach (var v in r.Columns) {
                 var worldCoords = MapToWorld(v.X + r.PosX, v.Y + r.PosY);
 
@@ -341,6 +342,10 @@ public class Map : DrawableGameElement {
 
                 while (i < r.columnWeight.Length && rand > r.columnWeight[i])
                     i++;
+
+                if (r is TutorialRoom) {
+                    i = r.columnTypes[j];
+                }
 
                 switch (i) {
                     case 1:
@@ -354,6 +359,7 @@ public class Map : DrawableGameElement {
                         Cm.Add(new Column(_world, worldCoords, 1.5f, columnTexture));
                         break;
                 }
+                j++;
             }
 
             for (int i = 0; i < r.EnemyPositions.Count; i++) {

@@ -1,5 +1,5 @@
 
-
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace Meridian2;
@@ -9,6 +9,7 @@ public class TutorialRoom : Room
     public TutorialRoom(MapGenerator mg, List<Prototype> protList) : base(mg, -9, -16, 80, 32, 1, protList, 0) {
     
         PlaceTiles();
+        PlaceElements();
     }
 
     private void Horizontal(int y, int x1, int x2, Prototype p) {
@@ -50,6 +51,27 @@ public class TutorialRoom : Room
         Vertical(x1, y1+1, y2-1, protList[4]);
         //ground
         Square(x1+1, x2-1, y1+1, y2-1, protList[13]);
+    }
+
+    private void CliffSquare(int x1, int x2, int y1, int y2) {
+        //top left corner
+        TileMap[x1, y1].FinalPrototype = Mg.CliffPrototypes[9];
+        //top right corner
+        TileMap[x2, y1].FinalPrototype = Mg.CliffPrototypes[10];
+        //bot right corner
+        TileMap[x2, y2].FinalPrototype = Mg.CliffPrototypes[11];
+        //bot left corner
+        TileMap[x1, y2].FinalPrototype = Mg.CliffPrototypes[8];
+        //top wall
+        Horizontal(y1, x1+1, x2-1, Mg.CliffPrototypes[7]);
+        //right wall
+        Vertical(x2, y1+1, y2-1, Mg.CliffPrototypes[6]);
+        //bottom wall
+        Horizontal(y2, x1+1, x2-1, Mg.CliffPrototypes[4]);
+        //left wall
+        Vertical(x1, y1+1, y2-1, Mg.CliffPrototypes[5]);
+        //ground
+        Square(x1+1, x2-1, y1+1, y2-1, Mg.CliffPrototypes[12]);
     }
 
     public void PlaceTiles() {
@@ -106,8 +128,31 @@ public class TutorialRoom : Room
         TileMap[65,17].FinalPrototype = bl1;
         //Corridor ground
         Horizontal(16, 11, 68, ground);
-        foreach(Tile  t in TileMap) {
-            t.setFinalPrototype(t.FinalPrototype);
-        }
+        // foreach(Tile  t in TileMap) {
+        //     t.setFinalPrototype(t.FinalPrototype);
+        // }
+        CliffSquare(55, 59, 14, 18);
+    }
+
+    private void PlaceElements() {
+        //room 1
+        EnemyPositions.Add(new Vector2 (20, 16.5f));
+        //Room 2
+        EnemyPositions.Add(new Vector2(30, 15.5f));
+        Columns.Add(new Vector2(28, 15.5f));
+        columnTypes.Add(2);
+        //Room 3
+        EnemyPositions.Add(new Vector2(42, 16));
+        Columns.Add(new Vector2(36, 16));
+        columnTypes.Add(1);
+        Columns.Add(new Vector2(38, 14));
+        columnTypes.Add(0);
+        Columns.Add(new Vector2(38, 18));
+        columnTypes.Add(0);
+        AmphoraPositions.Add(new Vector2(38, 16));
+        //room 4
+        Columns.Add(new Vector2(50, 16));
+        columnTypes.Add(1);
+        EnemyPositions.Add(new Vector2(53, 16));
     }
 }
