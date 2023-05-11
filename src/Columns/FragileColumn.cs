@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Meridian2.Theseus;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
@@ -99,7 +100,7 @@ public class FragileColumn : ActivableColumn {
         _animation = true;
         _broken = true;
         Body.Enabled = false;
-        SoundEngine.Instance.CollapseColumn();
-        SoundEngine.Instance.FlingSound();
+        SoundEngine.Instance.CollapseColumn(this.Body.Position);
+        SoundEngine.Instance.FlingSound(this.Body.Position);
     }
 }

@@ -104,7 +104,7 @@ public class Amphora : DrawableGameElement {
         isDestroyed = true;
         currentExplosionSize = ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
-        SoundEngine.Instance.Amphora();
+        SoundEngine.Instance.Amphora(_body.Position);
     }
 
     public void BiggerExplode() {
@@ -116,7 +116,7 @@ public class Amphora : DrawableGameElement {
         isDestroyed = true;
         currentExplosionSize = 1.5f*ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
-        SoundEngine.Instance.Amphora();
+        SoundEngine.Instance.Amphora(_body.Position);
     }
 
     protected bool OnCollision(Fixture sender, Fixture other, Contact contact) {

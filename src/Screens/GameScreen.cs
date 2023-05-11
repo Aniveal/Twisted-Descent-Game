@@ -46,6 +46,9 @@ public class GameScreen : Screen {
         SpearsController = new SpearsController(game, ColumnsManager, TheseusManager.Player);
         GuiManager = new GuiManager(game, SpearsController);
         diverseManager = new DiverseManager();
+
+        SoundEngine.Instance.SetPlayer(TheseusManager.Player);
+
         //debugging items
         //diverseManager.Add(new HealthChest(Game, World, new Vector2(2,2)));
         //diverseManager.Add(new Amphora(Game, World, new Vector2(2,2), 1));

@@ -52,7 +52,7 @@ public class DashGui : DrawableGameElement
             );
 
         var dash_timer = _game._gameScreen.TheseusManager.Player.DashTimer;
-        Debug.WriteLine(dash_timer);
+        //Debug.WriteLine(dash_timer);
 
         var dashbar_position = new Rectangle(
             margin + dashbar_width / 5,                                     // dashbar (moving part) starts at a 1/5th offset of the full dashbar visuals

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Meridian2.Theseus;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using tainicom.Aether.Physics2D.Collision;
 
 namespace Meridian2; 
 
@@ -31,6 +34,8 @@ public sealed class SoundEngine {
     private Song _song;
     private readonly List<SoundEffect> _swordHits = new();
 
+    private Player player;
+
     private SoundEngine() {
         
         _gravelFootsteps = new List<SoundEffect>();
@@ -38,6 +43,11 @@ public sealed class SoundEngine {
     }
 
     public static SoundEngine Instance { get; } = new();
+
+    public void SetPlayer(Player player)
+    {
+        this.player = player;
+    }
 
     public void SetRopeGame(RopeGame game)
     {
@@ -100,30 +110,67 @@ public sealed class SoundEngine {
         MediaPlayer.Volume = volume;
     }
 
+
+
+    //Calculates the volume based on distance
+    public float CalculateIntensity(Vector2 position)
+    {
+        double distance = Vector2.Distance(position, this.player.Body.Position);
+
+        if(distance <= 1) return 1;
+
+        //Assume base sound is 100db loud
+        double reduction = Math.Abs(20f * Math.Log(distance));
+
+        float intensity = Math.Min(1.0f, Math.Max(1f - (float)(reduction * 0.01), 0.1f));
+
+        return intensity;
+    }
+
+    public float CalculatePan(Vector2 position)
+    {
+        float difference = position.X - this.player.Body.Position.X;
+
+        if (difference < -10)
+            return -1f;
+        else if (difference > 10) return 1f;
+        else return difference / 5f;
+
+        
+    }
+
+    public void PlayEffect(SoundEffect effect, Vector2 position)
+    {
+        SoundEffectInstance i = effect.CreateInstance();
+        i.Volume = CalculateIntensity(position);
+        //i.Pan = CalculatePan(position);
+        i.Play();
+        Debug.WriteLine("Volume: " + i.Volume + ", Pan:" + i.Pan);
+    }
+
     public void ChestSound()
     {
         _chest.Play();
     }
-    public void FlingSound()
+    public void FlingSound(Vector2 position)
     {
-        _ropeFling.Play();
+        PlayEffect(_ropeFling, position);
     }
-    public void CollapseColumn()
+    public void CollapseColumn(Vector2 position)
     {
-        _columnCollapse.Play();
+        PlayEffect(_columnCollapse, position);
     }
-    public void Squish()
+    public void Squish(Vector2 position)
     {
-        _squish.Play();
+        PlayEffect(_squish, position);
     }
     public void SwordHit()
     {
         _swordHits[RnGsus.Instance.Next(4)].Play();
     }
-    public void Amphora()
+    public void Amphora(Vector2 position)
     {
-        _amphora.Play();
-        _explosion.Play();
+        PlayEffect(_amphora, position);
     }
     
     public void ButtonClick()
@@ -131,17 +178,18 @@ public sealed class SoundEngine {
         _buttonHit.Play();
     }
 
-    public void ElectroColumn()
+    public void ElectroColumn(Vector2 position)
     {
-        _electricityColumn.Play();
+        PlayEffect(_electricityColumn, position);
     }
 
-    public void ElectroShock()
+    public void ElectroShock(Vector2 position)
     {
-        _electricityImpact.Play();
+        PlayEffect(_electricityImpact, position);
     }
 
-    public void WilhelmScream() {
-        _wilhelmScream.Play();
+    public void WilhelmScream(Vector2 position)
+    {
+        PlayEffect(_wilhelmScream, position);
     }
 }
