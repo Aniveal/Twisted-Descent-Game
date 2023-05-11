@@ -68,25 +68,10 @@ public class MapGenerator {
     }
 
     public void CreateTutorialMap() {
-        var graph = new DungeonGraph(this);
 
-        bool generationFail = true;
-        while(generationFail)
-        {
-            generationFail = false;
-            RnGsus.Instance.NewSeed();
-            graph.CreateTutorialGraph();
-            RoomList = graph.Rooms;
-
-            foreach (var room in RoomList)
-            {
-                if (!room.generateRoom())
-                {
-                    generationFail = true;
-                    break;
-                }
-            }
-        }
+        RoomList = new List<Room>();
+        Room tRoom = new TutorialRoom(this, RockPrototypes);
+        RoomList.Add(tRoom);
     }
 
 
