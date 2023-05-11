@@ -12,7 +12,7 @@ public class FragileColumn : ActivableColumn {
     private bool _animation;
     private bool _broken;
 
-    private const int AnimationFrameWidth = 1060;
+    private int AnimationFrameWidth = 1060;
     private double _animationStart = 0;
     private bool _showControls = false;
 
@@ -36,6 +36,16 @@ public class FragileColumn : ActivableColumn {
         _brokenTexture = brokenTexture;
         _broken = false;
         _animation = false;
+    }
+
+    // Spear with Animation
+    public FragileColumn(World world, Vector2 position, float width, Texture2D texture, Texture2D brokenTexture,
+        Texture2D animationTexture, bool isSpear) : base(world, position, width, texture, isSpear) {
+        _brokenTexture = brokenTexture;
+        _animationTexture = animationTexture;
+        _broken = false;
+        _animation = false;
+        AnimationFrameWidth = 512;
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
@@ -64,6 +74,10 @@ public class FragileColumn : ActivableColumn {
             if (animationIndex >= 7) {
                 _animation = false;
             }
+            if (AnimationFrameWidth == 512 && animationIndex >= 6){
+                _animation = false;
+            }
+            
         }
         
         screenRec = camera.getScreenRectangle(Position.X - SpriteSize.X / 2f, Position.Y, SpriteSize.X, SpriteSize.Y);

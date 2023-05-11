@@ -16,7 +16,9 @@ public class SpearsController
     private Texture2D _normalSpearTexture;
 
     private Texture2D _woodenSpear;
+    private Texture2D _woodenSpearAnimation;
     private Texture2D _woodenSpearBroken;
+
     private Texture2D _metalSpear;
     private Texture2D _electricSpear;
 
@@ -50,7 +52,9 @@ public class SpearsController
         _normalSpearTexture = _game.Content.Load<Texture2D>("Sprites/Spear/spear");
 
         _woodenSpear = _game.Content.Load<Texture2D>("Sprites/Spear/wooden_spear");
+        _woodenSpearAnimation = _game.Content.Load<Texture2D>("Sprites/Spear/wooden_spear_animation");
         _woodenSpearBroken = _game.Content.Load<Texture2D>("Sprites/Spear/wooden_spear_lower");
+
         _metalSpear = _game.Content.Load<Texture2D>("Sprites/Spear/metal_spear");
         _electricSpear = _game.Content.Load<Texture2D>("Sprites/Spear/lightning_spear");
     }
@@ -126,7 +130,10 @@ public class SpearsController
                             break;
                         case 2:
                             _columnsManager.Add(new FragileColumn(_game._gameScreen.World, sPos, SpearWidth,
-                                _woodenSpear, _woodenSpearBroken, true));
+                                _woodenSpear, _woodenSpearBroken, _woodenSpearAnimation, true));
+
+                            // FragileColumn(World world, Vector2 position, float width, Texture2D texture, Texture2D brokenTexture,
+                            // Texture2D animationTexture)
                             break;
                     }
                 }
