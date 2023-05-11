@@ -377,7 +377,10 @@ public class Map : DrawableGameElement {
 
             foreach (Vector2 pos in r.TreasurePositions) {
                 Chest c;
-                if (RnGsus.Instance.NextDouble() > 0.5) {
+                if (r is TutorialRoom) {
+                    int[] loot = { 10, 0, 0 };
+                    c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), loot);
+                } else if (RnGsus.Instance.NextDouble() > 0.5) {
                     c = new HealthChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
                 } else c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
 

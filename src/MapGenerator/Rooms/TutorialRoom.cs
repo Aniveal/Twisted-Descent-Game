@@ -150,7 +150,8 @@ public class TutorialRoom : Room
         columnTypes.Add(0);
         AmphoraPositions.Add(new Vector2(38, 16));
         //room 4
-        Columns.Add(new Vector2(50, 16));
+        TreasurePositions.Add(new Vector2(49, 16));
+        Columns.Add(new Vector2(51.5f, 16));
         columnTypes.Add(1);
         EnemyPositions.Add(new Vector2(53, 16));
     }
