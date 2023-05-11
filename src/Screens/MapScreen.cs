@@ -27,7 +27,7 @@ public class MapScreen : Screen {
         _batch = new SpriteBatch(Game.GraphicsDevice);
 
         World = new World(Vector2.Zero);
-        ColumnsManager = new ColumnsManager();
+        ColumnsManager = new ColumnsManager(game);
         _map = new Map(game, World, ColumnsManager, new EnemyManager(game, World, null, 0), new Treasures.DiverseManager());
     }
 

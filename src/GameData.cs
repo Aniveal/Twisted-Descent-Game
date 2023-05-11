@@ -30,7 +30,7 @@ public class GameData {
         resetHealth();
         GameOver = false;
         _game = game;
-        Spears = new int[3] { 10, 5, 5 }; //define initial spears amount, basic/electric/fragile
+        Spears = new int[3] { 0, 0, 0 }; //define initial spears amount, basic/electric/fragile
     }
 
     public int Health { private set; get; }

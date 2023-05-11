@@ -12,30 +12,37 @@ namespace Meridian2.Columns;
  * This will also bring up the question of when to initialize the columns, currently done by the columns in thei constructor
  */
 public class ColumnsManager {
-    private readonly List<DrawableGameElement> _columns;
+    public readonly List<DrawableGameElement> Columns;
+    private readonly RopeGame _game;
 
-    public ColumnsManager() {
-        _columns = new List<DrawableGameElement>();
+    public ColumnsManager(RopeGame game) {
+        Columns = new List<DrawableGameElement>();
+        _game = game;
     }
 
     public void Add(DrawableGameElement column) {
-        _columns.Add(column);
+        Columns.Add(column);
     }
 
     public void Remove(DrawableGameElement column) {
-        _columns.Remove(column);
+        Columns.Remove(column);
     }
 
     public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-        foreach (var element in _columns) element.Draw(gameTime, batch, camera);
+        foreach (var element in Columns) element.Draw(gameTime, batch, camera);
     }
 
     public void Update(GameTime gameTime) {
-        foreach (var element in _columns) element.Update(gameTime);
+        foreach (var element in Columns) element.Update(gameTime);
     }
 
+    public void LoadContent() {
+        FragileColumn.ControlsTexture =
+            _game.Content.Load<Texture2D>("Sprites/Controller/Triggers/button_xbox_analog_trigger_dark_2");
+    }
+    
     public void Clear()
     {
-        _columns.Clear();
+        Columns.Clear();
     }
 }

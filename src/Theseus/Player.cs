@@ -113,8 +113,10 @@ public class Player : DrawableGameElement {
         var gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
         if (gamePadCapabilities.IsConnected) {
             _input = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
-            _input.Y *= -1;
-            _isWalking = true;
+            if (_input.Length() > 0.05) {
+                _input.Y *= -1;
+                _isWalking = true;
+            }
         }
 
         var keyboard = Keyboard.GetState();

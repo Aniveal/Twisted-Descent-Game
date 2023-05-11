@@ -41,14 +41,16 @@ public class GameScreen : Screen {
         _batch = new SpriteBatch(Game.GraphicsDevice);
 
         World = new World(Vector2.Zero);
-        ColumnsManager = new ColumnsManager();
-
+        ColumnsManager = new ColumnsManager(game);
 
         TheseusManager = new TheseusManager(Game, World);
         EnemyManager = new EnemyManager(Game, World, TheseusManager.Player, 1);
         SpearsController = new SpearsController(game, ColumnsManager, TheseusManager.Player);
         GuiManager = new GuiManager(game, SpearsController);
         diverseManager = new DiverseManager();
+
+        SoundEngine.Instance.SetPlayer(TheseusManager.Player);
+
         //debugging items
         //diverseManager.Add(new HealthChest(Game, World, new Vector2(2,2)));
         //diverseManager.Add(new Amphora(Game, World, new Vector2(2,2), 1));
@@ -99,6 +101,7 @@ public class GameScreen : Screen {
         GuiManager.LoadContent();
         SpearsController.LoadContent();
         diverseManager.LoadContent();
+        ColumnsManager.LoadContent();
 
         SpearsController.PlaceSpear(-0.1f, 0, 0);
         _tutorial = false;
@@ -157,24 +160,25 @@ public class GameScreen : Screen {
         //}
         GuiManager.Draw(gameTime, _batch, Camera);
 
-        var ropeRed = new Color(170, 54, 54);
-        if (_map.levelFinished) {
-            _batch.DrawString(Game.Font, "LEVEL COMPLETE", new Vector2(300, 300), ropeRed, 0f, Vector2.Zero, 1f,
-                SpriteEffects.None, 1f);
-        }
-        Diagnostics.Instance.Draw(_batch, Game.Graphics.GraphicsDevice, Game.Font, new Vector2(10, 20), ropeRed);
+        // var ropeRed = new Color(170, 54, 54);
+        //if (_map.levelFinished) {
+        //    _batch.DrawString(Game.Font, "LEVEL COMPLETE", new Vector2(300, 300), ropeRed, 0f, Vector2.Zero, 1f,
+        //        SpriteEffects.None, 1f);
+        //}
+        // Diagnostics.Instance.Draw(_batch, Game.Graphics.GraphicsDevice, Game.Font, new Vector2(10, 20), ropeRed);
         _batch.End();
     }
 
     public void LoadNextLevel()
     {
         Game.GameData.IncreaseDifficulty();
+        int maplvl = base.getGame()._gameScreen._map.mapLevel;
         Camera = new Camera(Game.GraphicsDevice);
 
         _batch = new SpriteBatch(Game.GraphicsDevice);
 
         World = new World(Vector2.Zero);
-        ColumnsManager = new ColumnsManager();
+        ColumnsManager = new ColumnsManager(Game);
 
 
         TheseusManager = new TheseusManager(Game, World);
@@ -188,6 +192,7 @@ public class GameScreen : Screen {
 
 
         _map = new Map(Game, World, ColumnsManager, EnemyManager, diverseManager);
+        _map.mapLevel = maplvl + 1;
         _map.levelFinished = false;
         this.Initialize();
         

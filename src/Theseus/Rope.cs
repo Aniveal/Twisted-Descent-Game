@@ -22,7 +22,8 @@ public class Rope : DrawableGameElement {
     public const float RopeJointFrequency = 20;
     public const float RopeJointDampingRatio = 0.5f;
 
-    private const int KeepActive = 400;
+    private const int MinFps = 60;
+    private int KeepActive = 400;
     private readonly RopeGame _game;
     private readonly Vector2 _pos;
     private readonly int _segmentCount;
@@ -33,6 +34,7 @@ public class Rope : DrawableGameElement {
 
     private readonly Random _decayRng;
     private List<RopeSegment> _segments;
+    private List<RopeSegment> _suspendedSegments;
 
     private Texture2D _pixel;
     private readonly Color _ropeColor = new(170, 54, 54);
@@ -41,6 +43,7 @@ public class Rope : DrawableGameElement {
     public TimeSpan BreakCoolDown = new(0, 0, 1);
     public List<FragileColumn> Fragiles = new();
     public TimeSpan LastBreak = TimeSpan.Zero;
+    private FragileColumn _breakingColumn;
 
     public Rope(RopeGame game, World world, Vector2 pos, int segmentCount) {
         _game = game;
@@ -48,6 +51,7 @@ public class Rope : DrawableGameElement {
         _pos = pos;
         _segmentCount = segmentCount;
         _decayRng = new Random();
+        _suspendedSegments = new List<RopeSegment>();
     }
 
     public Vector2 GetEndPosition() {
@@ -95,8 +99,7 @@ public class Rope : DrawableGameElement {
         }
     }
 
-    public void Pull(GameTime gameTime) {
-
+    private void UpdateBreakingColumn(GameTime gameTime) {
         if (gameTime.TotalGameTime - LastBreak > BreakCoolDown)
         {
             //Traverse linked list and break last column
@@ -122,12 +125,30 @@ public class Rope : DrawableGameElement {
             if (currentSegment != null)
             {
                 FragileColumn col = currentSegment.touchingColumn as FragileColumn;
-                col.Break();
-                LastBreak = gameTime.TotalGameTime;
+                _breakingColumn = col;
+            } else {
+                _breakingColumn = null;
             }
-            
+
+            if (_game._gameScreen != null) {
+                foreach (var fragileColumn in _game._gameScreen.ColumnsManager.Columns.OfType<FragileColumn>()) {
+                    fragileColumn.HideControls();
+                }
+            }
+
+            _breakingColumn?.ShowControls();
         }
-        
+    }
+    
+    public void Pull(GameTime gameTime) {
+        if (gameTime.TotalGameTime - LastBreak > BreakCoolDown)
+        {
+            if (_breakingColumn != null) {
+                _breakingColumn.Break();
+                LastBreak = gameTime.TotalGameTime;
+                _breakingColumn = null;
+            }
+        }
     }
 
     private void CreateBaseTexture() {
@@ -145,7 +166,36 @@ public class Rope : DrawableGameElement {
         foreach (var segment in _segments) segment.LoadContent();
     }
 
+    private void IncreaseSuspension(int amount) {
+        for (int i = 0; i < amount; i++) {
+            var disableIndex = _segments.Count - KeepActive - 1 - i;
+            if (disableIndex >= 0) _segments[disableIndex].Body.BodyType = BodyType.Static;
+        }
+
+        KeepActive -= amount;
+    }
+    
+    private void DecreaseSuspension(int amount) {
+        for (int i = 0; i < amount; i++) {
+            var enableIndex = _segments.Count - KeepActive + i;
+            if (enableIndex >= 0 && enableIndex < _segments.Count) _segments[enableIndex].Body.BodyType = BodyType.Dynamic;
+        }
+
+        KeepActive += amount;
+    }
+    
+    private void DynamicSegmentSuspension() {
+        if (Diagnostics.Instance.Fps <= MinFps) {
+            // IncreaseSuspension(5);
+        } else {
+            // DecreaseSuspension(1);
+        }
+    }
+    
     public override void Update(GameTime gameTime) {
+        UpdateBreakingColumn(gameTime);
+        DynamicSegmentSuspension();
+
         //natural shortening
         if (_decayCount >= DecayRate) {
             var r = _decayRng.Next(DecayRange);

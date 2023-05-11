@@ -1,34 +1,59 @@
+using System;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2.Gui; 
+namespace Meridian2.Gui;
 
-public class HealthGui : DrawableGameElement {
+public class HealthGui : DrawableGameElement
+{
     private readonly GameData _data;
     private readonly RopeGame _game;
 
     private Texture2D _heartTexture;
+    private SpriteFont _font;
 
-    public HealthGui(RopeGame game, GameData data) {
+    private int heart_size;
+
+    public HealthGui(RopeGame game, GameData data)
+    {
         _game = game;
         _data = data;
+
+        heart_size = 42 + 5;
     }
 
-    public void LoadContent() {
-        _heartTexture = _game.Content.Load<Texture2D>("Sprites/UI/heart");
+    public void LoadContent()
+    {
+        _heartTexture = _game.Content.Load<Texture2D>("Sprites/UI/hearth_icon");
+        _font = _game.Content.Load<SpriteFont>("damn_ui");
     }
 
-    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-        if (_data.GameOver) {
+    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
+    {
+        if (_data.GameOver)
+        {
             var ropeRed = new Color(170, 54, 54);
             batch.DrawString(_game.Font, "GAME  OVER", new Vector2(300, 300), ropeRed, 0f, Vector2.Zero, 1f,
                 SpriteEffects.None, 1f);
             return;
         }
 
-        for (var i = 0; i < _data.Health; i++) {
-            var pos = new Rectangle(70 + i * 40, 10, 30, 30);
+        var margin = 10;
+        var text = _data.Health.ToString();
+        var stringSize = _font.MeasureString(text);
+        var text_width = (int)Math.Max(stringSize.X, _font.MeasureString("42").X); // leaving space for up to 99 kills
+
+        if (text.Length < 2) // right align text (after measuring its size!)
+            text = " " + text;
+
+        var text_position = new Vector2(margin, (int)(5 * margin / 4 + stringSize.Y));
+        var text_color = new Color(170, 54, 54);
+        batch.DrawString(_font, text, text_position, text_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+
+        for (var i = 0; i < _data.Health; i++)
+        {
+            var pos = new Rectangle(2 * margin + text_width + i * heart_size, (int)text_position.Y, heart_size, heart_size);
             batch.Draw(_heartTexture, pos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
     }

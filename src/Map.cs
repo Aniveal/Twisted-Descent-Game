@@ -28,7 +28,7 @@ public class Map : DrawableGameElement {
     private float _wallWidth = (float)Math.Sqrt(MapScaling * 2);
     private readonly World _world;
 
-    public int mapDifficulty = 1;
+    public int mapLevel = 1;
 
     MapGenerator _mapGenerator;
 

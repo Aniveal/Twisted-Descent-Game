@@ -119,21 +119,28 @@ public class Enemy : DrawableGameElement {
     public void Kill(int cause) {
         if (cause == 0) // normal
         {
-            SoundEngine.Instance.Squish();
+            SoundEngine.Instance.Squish(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
             IsAlive = false;
         }
         if (cause == 1 && !_isImmuneToElectricity) // electricity
         {
-            SoundEngine.Instance.Squish();
+            SoundEngine.Instance.ElectroShock(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
             IsAlive = false;
         }
         if (cause == 2 && !_isImmuneToAmphoras) // apmohras
         {
-            SoundEngine.Instance.Squish();
+            SoundEngine.Instance.Squish(this.Body.Position);
+            _game.GameData.Kills += 1;
+            _game.GameData.AddTime(10f);
+            IsAlive = false;
+        }
+        if (cause == 3) // cliff
+        {
+            SoundEngine.Instance.WilhelmScream(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
             IsAlive = false;
@@ -202,7 +209,7 @@ public class Enemy : DrawableGameElement {
     public override void Update(GameTime gameTime) {
         if (fallStart > 0) {
             if (gameTime.TotalGameTime.TotalSeconds - fallStart > 1) {
-                Kill(0);
+                Kill(3);
             }
             return;
         }
