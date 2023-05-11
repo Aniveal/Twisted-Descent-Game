@@ -4170,6 +4170,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Rock/wall_4.png
 
+#begin Sprites/Spear/lightning_spear_animation.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Spear/lightning_spear_animation.png
+
 #begin Sprites/Spear/lightning_spear_lower.png
 /importer:TextureImporter
 /processor:TextureProcessor

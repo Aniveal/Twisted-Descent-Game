@@ -16,8 +16,15 @@ internal class ElectricColumn : ActivableColumn {
         _animationTexture = animationTexture;
     }
 
+    // electric spear without animation
     public ElectricColumn(World world, Vector2 position, float width, Texture2D texture, bool isSpear) : base(world,
         position, width, texture, isSpear) {
+    }
+
+    // electric spear with animation
+    public ElectricColumn(World world, Vector2 position, float width, Texture2D texture, Texture2D animationTexture, bool isSpear) : base(world,
+        position, width, texture, isSpear) {
+        _animationTexture = animationTexture;
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
@@ -33,7 +40,16 @@ internal class ElectricColumn : ActivableColumn {
         if (Activated && _animationTexture != null) {
             var totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
             var animationLength = 100f;
-            var animationIndex = (int)(totalTime / animationLength) % 5;
+
+            var animationIndex = (int)(totalTime / animationLength);
+
+            bool isSpear = (ColumnTexture.Width == 512);
+
+            if (isSpear) {
+                animationIndex = animationIndex % 4;
+            } else {
+                animationIndex = animationIndex % 5;
+            }
 
             var srcRect = new Rectangle(animationIndex * ColumnTexture.Width, 0,
                 ColumnTexture.Width, ColumnTexture.Height);
