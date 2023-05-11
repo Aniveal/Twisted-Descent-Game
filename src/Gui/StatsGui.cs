@@ -83,7 +83,7 @@ public class StatsGui : DrawableGameElement
                 {
                     skull_sprite = _skull_2;
                 }
-                batch.Draw(skull_sprite, skull_pos, null, skull_color, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                batch.Draw(skull_sprite, skull_pos, null, skull_color, 0f, Vector2.Zero, SpriteEffects.None, 1f - i * 0.001f);
             }
         }
     }
