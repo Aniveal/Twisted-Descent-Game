@@ -69,10 +69,6 @@ public class SpearsGui : DrawableGameElement {
         var pos_2 = new Rectangle(margin + icon_size + gap_size, spearsUIHeight, icon_size, icon_size);
         var pos_3 = new Rectangle(margin + 2 * (icon_size + gap_size), spearsUIHeight, icon_size, icon_size);
 
-        // drawing the background (diamond shaped squares)
-        batch.Draw(_spears_background, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.97f);
-        batch.Draw(_spears_background, pos_2, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
-        batch.Draw(_spears_background, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.97f);
 
         // select sprite with 3, 2, or 1 spear on it, depending on how many are available to player
         var wooden_sprite = _wooden_spears_3;
@@ -106,41 +102,44 @@ public class SpearsGui : DrawableGameElement {
         if (metal_spears_text.Length <= 1)
             metal_spears_text = " " + electric_spears_text;
 
-        // Wooden Spears
-        if (_controller.Selected == 0)
-        {
-            batch.Draw(electric_sprite, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X, pos_1.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.98f);
 
+        if (_controller.Selected == 1)  // Electric Spears at position 3 (right)
+        {
+            batch.Draw(_spears_background, pos_3, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
+            batch.Draw(electric_sprite, pos_3, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
+            batch.DrawString(_font, electric_spears_text, new Vector2(pos_3.X, pos_3.Y), active_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        }
+        else
+        {
+            batch.Draw(_spears_background, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
+            batch.Draw(electric_sprite, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
+            batch.DrawString(_font, electric_spears_text, new Vector2(pos_3.X, pos_3.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.985f);
+        }
+
+        if (_controller.Selected == 0) // Wooden Spears at position 2 (middle)
+        {
+            batch.Draw(_spears_background, pos_2, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
             batch.Draw(wooden_sprite, pos_2, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
             batch.DrawString(_font, wooden_spears_text, new Vector2(pos_2.X, pos_2.Y), active_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-
-            batch.Draw(metal_sprite, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
-            batch.DrawString(_font, metal_spears_text, new Vector2(pos_3.X, pos_3.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.98f);
         }
-        // Electric Spears
-        else if (_controller.Selected == 1)
+        else
         {
-            batch.Draw(metal_sprite, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
-            batch.DrawString(_font, metal_spears_text, new Vector2(pos_1.X, pos_1.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.98f);
-
-            batch.Draw(electric_sprite, pos_2, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X, pos_2.Y), active_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-
-            batch.Draw(wooden_sprite, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
-            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_3.X, pos_3.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.98f);
+            batch.Draw(_spears_background, pos_2, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
+            batch.Draw(wooden_sprite, pos_2, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_2.X, pos_2.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.985f);
         }
-        // Metal Spears
-        else if (_controller.Selected == 2)
+
+        if (_controller.Selected == 2) // Electric Spears at position 1 (left)
         {
-            batch.Draw(wooden_sprite, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
-            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X, pos_1.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.98f);
-
-            batch.Draw(metal_sprite, pos_2, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
-            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X, pos_2.Y), active_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-
-            batch.Draw(electric_sprite, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_3.X, pos_3.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.98f);
+            batch.Draw(_spears_background, pos_1, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
+            batch.Draw(electric_sprite, pos_1, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
+            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X, pos_1.Y), active_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        }
+        else
+        {
+            batch.Draw(_spears_background, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
+            batch.Draw(electric_sprite, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
+            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X, pos_1.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.95f);
         }
 
     }
