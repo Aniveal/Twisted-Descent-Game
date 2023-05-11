@@ -128,9 +128,8 @@ public class TutorialRoom : Room
         TileMap[65,17].FinalPrototype = bl1;
         //Corridor ground
         Horizontal(16, 11, 68, ground);
-        // foreach(Tile  t in TileMap) {
-        //     t.setFinalPrototype(t.FinalPrototype);
-        // }
+        //end tile
+        TileMap[67, 16].FinalPrototype = Mg.FinishPrototype;
         CliffSquare(55, 59, 14, 18);
     }
 
