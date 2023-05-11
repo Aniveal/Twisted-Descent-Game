@@ -111,7 +111,7 @@ public class SpearsGui : DrawableGameElement {
         }
         else
         {
-            batch.Draw(_spears_background, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
+            batch.Draw(_spears_background, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.97f);
             batch.Draw(electric_sprite, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
             batch.DrawString(_font, electric_spears_text, new Vector2(pos_3.X, pos_3.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.985f);
         }
@@ -137,7 +137,7 @@ public class SpearsGui : DrawableGameElement {
         }
         else
         {
-            batch.Draw(_spears_background, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
+            batch.Draw(_spears_background, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.97f);
             batch.Draw(wooden_sprite, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
             batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X, pos_1.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.95f);
         }
