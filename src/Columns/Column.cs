@@ -15,7 +15,7 @@ public class Column : DrawableGameElement {
 
     protected float ColumnDiameterFactor = 0.49f;
     protected float SpearDiameterFactor = 0.3f;
-    protected float SpearOffsetFactor = 0.09f;
+    protected float SpearOffsetFactor = -0.02f;
     protected float OcclusionHeightFactor = 0.78f;
 
     protected Vector2 SpriteSize;
