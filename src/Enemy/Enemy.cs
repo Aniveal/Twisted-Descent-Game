@@ -52,6 +52,7 @@ public class Enemy : DrawableGameElement {
     private Boolean _isImmuneToElectricity = false;
     private Boolean _isImmuneToAmphoras = false;
     private Boolean _canKite = false;
+    public bool tutorialEnemy = false;
     
 
     public Enemy(RopeGame game, World world, Player player) {
@@ -90,6 +91,12 @@ public class Enemy : DrawableGameElement {
         //if (rng.Next(100) > 50)
         //    _canShoot = true;
 
+    }
+
+    public void SetTutorialMode() {
+        tutorialEnemy = true;
+        _isImmuneToAmphoras = false;
+        _isImmuneToElectricity = false;
     }
 
     public void Initialize(Vector2 initpos, int difficultyLevel) {
@@ -223,8 +230,14 @@ public class Enemy : DrawableGameElement {
             Crushed = 0;
         }
         if (overCliff > 0) {
-            fallStart = (float) gameTime.TotalGameTime.TotalSeconds;
+            fallStart = (float)gameTime.TotalGameTime.TotalSeconds;
             Body.Enabled = false;
+            return;
+        }
+
+        if (tutorialEnemy)
+        {
+            //tutorial enemies do not move by themselves
             return;
         }
 

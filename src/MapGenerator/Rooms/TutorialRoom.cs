@@ -137,7 +137,7 @@ public class TutorialRoom : Room
         //room 1
         EnemyPositions.Add(new Vector2 (20, 16.5f));
         //Room 2
-        EnemyPositions.Add(new Vector2(30, 15.5f));
+        EnemyPositions.Add(new Vector2(29.5f, 15.5f));
         Columns.Add(new Vector2(28, 15.5f));
         columnTypes.Add(2);
         //Room 3

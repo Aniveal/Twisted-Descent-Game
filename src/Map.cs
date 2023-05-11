@@ -366,6 +366,9 @@ public class Map : DrawableGameElement {
                 Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
                     _game.GameData.currentDifficulty); // pass map diff here as second arg
             }
+            if (r is TutorialRoom) {
+                Em.SetTutorialMode();
+            }
 
             foreach (Vector2 pos in r.AmphoraPositions) {
                 Amphora a = new Amphora(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), 0.5f);
