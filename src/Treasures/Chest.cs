@@ -21,11 +21,13 @@ public class Chest : IDrawableObject {
     protected float spriteWidth = 1.8f;
     protected float spriteHeight;
     protected World World;
+    protected float iconSpriteWidth = 0.8f;
+    protected float iconSpriteHeight;
     
     protected Texture2D TextureAnimation;
     protected double AnimationStart;
-    protected double FadeEnd;
-    protected double FadeDuration = 1000;
+    protected double KeepEnd;
+    protected double KeepDuration = 1500;
 
     //TODO: modify usage of width and height in Body and draw to fit to proportions of future sprite
     public Chest(RopeGame game, World world, Vector2 position) {
@@ -37,12 +39,13 @@ public class Chest : IDrawableObject {
         Body.OnCollision += OnCollision;
     }
 
-    public void LoadContent() {
+    public virtual void LoadContent() {
         TextureClosed = Game.Content.Load<Texture2D>("Sprites/Chest/chest_closed_updated");
         TextureOpen = Game.Content.Load<Texture2D>("Sprites/Chest/chest_open_updated");
         TextureAnimation = Game.Content.Load<Texture2D>("Sprites/Chest/chest_opening");
         
         spriteHeight = (TextureClosed.Height / (float)TextureClosed.Width) * spriteWidth;
+        iconSpriteHeight = (LootTexture.Height / (float)LootTexture.Width) * iconSpriteWidth;
     }
 
     //Overwrite in subclasses
@@ -73,15 +76,20 @@ public class Chest : IDrawableObject {
                 batch.Draw(TextureOpen, dstRec, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
                     camera.getLayerDepth(dstRec.Y + dstRec.Height));
 
-                if (FadeEnd == 0)
-                    FadeEnd = gameTime.TotalGameTime.TotalMilliseconds + FadeDuration;
+                if (KeepEnd == 0)
+                    KeepEnd = gameTime.TotalGameTime.TotalMilliseconds + KeepDuration;
 
-                var opacity = (FadeEnd - gameTime.TotalGameTime.TotalMilliseconds) / FadeDuration;
-
-                if (opacity > 0) {
+                if (KeepEnd > gameTime.TotalGameTime.TotalMilliseconds) {
                     var animRect = new Rectangle(4 * TextureOpen.Width, 0, TextureOpen.Width, TextureOpen.Height);
-                    batch.Draw(TextureAnimation, dstRec, animRect, new Color(255, 255, 255, (float)opacity), 0f, Vector2.Zero, SpriteEffects.None,
+                    batch.Draw(TextureAnimation, dstRec, animRect, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
                         camera.getLayerDepth(dstRec.Y + dstRec.Height) + 0.01f);
+
+                    if (LootTexture != null) {
+                        var lootRect = camera.getSpriteRectangle(Pos.X - iconSpriteWidth * 0.5f, Pos.Y - 3.75f, iconSpriteWidth,
+                            iconSpriteHeight);
+                        batch.Draw(LootTexture, lootRect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None,
+                            camera.getLayerDepth(dstRec.Y + dstRec.Height) + 0.02f);
+                    }
                 }
             }
         } else {

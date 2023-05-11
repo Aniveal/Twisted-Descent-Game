@@ -1,10 +1,12 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Treasures; 
 
 public class SpearsChest : Chest {
     private int[] _content;
+    private int spearType;
 
     public SpearsChest(RopeGame game, World world, Vector2 position) : base(game, world, position) {
         GenerateLoot();
@@ -16,10 +18,28 @@ public class SpearsChest : Chest {
         else
             _content = loot;
     }
+    
+    public override void LoadContent() {
+        switch (spearType) {
+            case 0:
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/UI/metal_spears_" + _content[spearType]);
+                break;
+            case 1:
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/UI/electric_spears_" + _content[spearType]);
+                break;
+            case 2:
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/UI/wooden_spears_" + _content[spearType]);
+                break;
+        }
+
+        base.LoadContent();
+    }
 
     public void GenerateLoot() {
-        //TODO randomize?
-        _content = new int[3] { 5, 2, 2 };
+        _content = new int[3];
+        spearType = RnGsus.Instance.Next(3);
+        var spearAmount = RnGsus.Instance.Next(3) + 1;
+        _content[spearType] = spearAmount;
     }
 
     public override void Loot() {

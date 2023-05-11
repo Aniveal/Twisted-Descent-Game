@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Treasures; 
@@ -15,6 +16,12 @@ public class HealthChest : Chest {
         position) {
         _contentHealth = health;
         _contentMaxHealth = maxHealth;
+    }
+
+    public override void LoadContent() {
+        LootTexture = Game.Content.Load<Texture2D>("Sprites/UI/hearth_icon");
+        
+        base.LoadContent();
     }
 
     public void GenerateContent() {
