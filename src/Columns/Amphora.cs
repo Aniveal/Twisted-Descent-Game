@@ -188,9 +188,13 @@ public class Amphora : DrawableGameElement {
         if (exploding && !hasExploded) {
             var explosionFrame = 6 - (int) Math.Round((explosionStart + ExplosionDuration - gameTime.TotalGameTime.TotalSeconds) /
                 ExplosionDuration * 6);
-            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - currentExplosionSize, _body.Position.Y - currentExplosionSize*2, 
+
+            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - currentExplosionSize, _body.Position.Y - currentExplosionSize*2,
             currentExplosionSize*2, currentExplosionSize*2);
-            batch.Draw(_explosionTexture, dstRec, new Rectangle(explosionFrame * 2750, 0, 2750, 2700), Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.95f);
+
+            var frameWidth = (int)(_explosionTexture.Width / 7);
+
+            batch.Draw(_explosionTexture, dstRec, new Rectangle(explosionFrame * frameWidth, 0, frameWidth, _explosionTexture.Height), Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.95f);
         }
     }
 }
