@@ -107,6 +107,7 @@ public class RopeGame : Game {
         currentHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
         SoundEngine.Instance.SetRopeGame(this);
+        SoundEngine.Instance.playTheme();
     }
 
     protected override void LoadContent() {

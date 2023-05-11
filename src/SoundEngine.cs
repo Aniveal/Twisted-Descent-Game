@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Meridian2; 
 
@@ -27,6 +28,7 @@ public sealed class SoundEngine {
     private SoundEffect _electricityColumn;
     private SoundEffect _explosion;
     private SoundEffect _wilhelmScream;
+    private Song _song;
     private readonly List<SoundEffect> _swordHits = new();
 
     private SoundEngine() {
@@ -62,7 +64,12 @@ public sealed class SoundEngine {
         _buttonHit = _game.Content.Load<SoundEffect>("Sound/Interactions/ButtonPress");
         _amphora = _game.Content.Load<SoundEffect>("Sound/Hits/AmphoraSmash1");
         _wilhelmScream = _game.Content.Load<SoundEffect>("Sound/WilhelmScream");
+        _song = _game.Content.Load<Song>("Sound/Theseus");
 
+        MediaPlayer.Volume = 1f;
+        SoundEffect.MasterVolume = 1f;
+
+        MediaPlayer.IsRepeating = true;
 
         Debug.WriteLine("Done!");
     }
@@ -70,6 +77,17 @@ public sealed class SoundEngine {
     public void playGravelFootstep() {
         var pitch = (RnGsus.Instance.Next(3) - 1) / 8f;
         _gravelFootsteps[RnGsus.Instance.Next(20)].Play(0.6f, pitch, 0f);
+    }
+
+    public void playTheme()
+    {
+        if(MediaPlayer.State == MediaState.Stopped)
+            MediaPlayer.Play(_song);
+        MediaPlayer.Resume();
+    }
+    public void pauseTheme()
+    {
+        MediaPlayer.Pause();
     }
 
     public void ChestSound()
