@@ -38,6 +38,11 @@ public class Amphora : DrawableGameElement {
     private static Texture2D _amphoraTexture;
     private static Texture2D _explosionTexture;
 
+    public int overCliff = 0;
+    public Tile collidingCliff;
+    protected const int fallSpeed = 100; //pixels per second
+    protected float fallStart = 0;
+
     public Amphora(RopeGame game, World world, Vector2 position, float radius) {
         _game = game;
         _world = world;
@@ -137,17 +142,34 @@ public class Amphora : DrawableGameElement {
             slinged = false; //We want amphoras to be slung, not thrown
         }
         //if (!slinged) return true;
-        //Explode at this speed
-        if (_body.LinearVelocity.LengthSquared() < explosionSpeedThreshold) {
-            return true;
-        }
+        
+        
         //Explode on collision if slinged
         if (collider.Tag is Tile) {
-            if (!((Tile)collider.Tag).FinalPrototype.IsCliff) {
-                Explode();
+            if (_body.LinearVelocity.LengthSquared() < explosionSpeedThreshold) {
+                if (!((Tile)collider.Tag).FinalPrototype.IsCliff) {
+                    Explode();
+                }
+            }
+            if (((Tile)collider.Tag).FinalPrototype.IsCliff) {
+                if (collidingCliff == null) {
+                    collidingCliff = (Tile)collider.Tag;
+                } else {
+                    overCliff = 1;
+                }
+                return false;
+            }
+            if (overCliff == 1) {
+                return false;
             }
             return true;
         }
+        //Explode at this speed
+        //Also applies for tiles, but need special case there due to cliffs...
+        if (_body.LinearVelocity.LengthSquared() < explosionSpeedThreshold) {
+            return true;
+        }
+
         if (collider.Tag is Column) {
             Explode();
             return true;
@@ -176,6 +198,13 @@ public class Amphora : DrawableGameElement {
             }
             toBreak.Clear();
         }
+        if (fallStart > 0) {
+            if (gameTime.TotalGameTime.TotalSeconds - fallStart > 1) {
+                DestroyBody();
+                hasExploded = true;
+            }
+            return;
+        }
         if (exploding && explosionStart == 0) {
             explosionStart = gameTime.TotalGameTime.TotalSeconds;
         }
@@ -186,12 +215,23 @@ public class Amphora : DrawableGameElement {
         if (slinged && _body.LinearVelocity.Length() < VelocityDangerThreshold) {
             slinged = false;
         }
+
+        if (overCliff > 0) {
+            fallStart = (float)gameTime.TotalGameTime.TotalSeconds;
+            _body.Enabled = false;
+            return;
+        }
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         if (!isDestroyed) {
             Rectangle dstRec = camera.getSpriteRectangle(_body.Position.X - _radius, _body.Position.Y + _radius, _radius*2, _radius*3.2f);
-            batch.Draw(_amphoraTexture, dstRec, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
+            Color color = Color.White;
+            if (fallStart > 0) {
+                dstRec.Y += (int)((float)fallSpeed * (gameTime.TotalGameTime.TotalSeconds - fallStart));
+                color = Color.White * (float)(1 - (gameTime.TotalGameTime.TotalSeconds - fallStart));
+            }
+            batch.Draw(_amphoraTexture, dstRec, null, color, 0, Vector2.Zero, SpriteEffects.None, camera.getLayerDepth(dstRec.Y + dstRec.Height));
         }
         if (exploding && !hasExploded) {
             var explosionFrame = 6 - (int) Math.Round((explosionStart + ExplosionDuration - gameTime.TotalGameTime.TotalSeconds) /
