@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+// using System.Drawing;
 using System.Linq;
 using Meridian2.Columns;
 using Meridian2.GameElements;
@@ -219,11 +220,14 @@ public class Rope : DrawableGameElement {
         batch.Draw(_pixel, pos2, null, _ropeColor, angle, Vector2.Zero, new Vector2(distance, 2),
             SpriteEffects.None, camera.getLayerDepth(pos2.Y));
     }
-    
-    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+
+    public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
+    {
         // Draw each segment
-        foreach (var segment in _segments) {
-            if (segment.Next == null) {
+        foreach (var segment in _segments)
+        {
+            if (segment.Next == null)
+            {
                 continue;
             }
 
@@ -233,13 +237,61 @@ public class Rope : DrawableGameElement {
             float distance = Vector2.Distance(pos2, pos1);
             float angle = (float)Math.Atan2((double)pos1.Y - (double)pos2.Y, (double)pos1.X - (double)pos2.X);
 
+            // Lightning Effects
+
+            /*
+            // Option 1 : Change Rope Color, Same Shape
             Color color = _ropeColor;
             if (segment.ElecIntensity > 0) {
-                color = Color.Yellow;
+                // color = Color.Yellow;
+                color = new Color(200, 183, 234);
             }
             
             batch.Draw(_pixel, pos2, null, color, angle, Vector2.Zero, new Vector2(distance, 2),
                 SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+            */
+
+            
+            // Option 2 : "Parallel" lightning
+            Color color = _ropeColor;
+
+            batch.Draw(_pixel, pos2, null, color, angle, Vector2.Zero, new Vector2(distance, 2),
+                SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+
+            if (segment.ElecIntensity > 0)
+            {
+                color = new Color(200, 183, 234);
+                var intensity = 2 + 2 * segment.ElecIntensity / 5; // segment.ElecIntensity seems to be in between of 0 and 40 ?
+                if (intensity % 2 == 0)
+                {
+                    batch.Draw(_pixel, new Vector2(pos2.X + intensity, pos2.Y + intensity), null, color, angle, Vector2.Zero, new Vector2(distance, 2),
+                    SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+                    batch.Draw(_pixel, new Vector2(pos2.X - intensity / 3, pos2.Y - intensity / 2), null, color, angle, Vector2.Zero, new Vector2(distance, 2),
+                    SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+                }
+                else
+                {
+                    batch.Draw(_pixel, new Vector2(pos2.X - intensity, pos2.Y - intensity), null, color, angle, Vector2.Zero, new Vector2(distance, 2),
+                    SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+                    batch.Draw(_pixel, new Vector2(pos2.X + intensity / 2, pos2.Y + intensity / 3), null, color, angle, Vector2.Zero, new Vector2(distance, 2),
+                    SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+                }
+            }
+
+            /*
+            // Option 3 : Experiment with changing the angle of electric "sparks"
+            Color color = _ropeColor;
+            batch.Draw(_pixel, pos2, null, color, angle, Vector2.Zero, new Vector2(distance, 2), SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+
+            if (segment.ElecIntensity > 0)
+            {
+                color = new Color(200, 183, 234);
+                var intensity = 2 + 2 * segment.ElecIntensity / 4;
+                var angle_change = 3.14f / 4f * (1f - segment.ElecIntensity % 12f);
+                batch.Draw(_pixel, new Vector2(pos2.X, pos2.Y), null, color, angle_change + angle, Vector2.Zero, new Vector2(distance, 2),
+                    SpriteEffects.None, camera.getLayerDepth(pos2.Y));
+            }
+            */
         }
     }
 
