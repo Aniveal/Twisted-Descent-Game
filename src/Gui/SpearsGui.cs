@@ -146,10 +146,10 @@ public class SpearsGui : DrawableGameElement {
             batch.Draw(metal_sprite, pos_2, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
             batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X, pos_2.Y), active_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
             // Drawing Background behind font
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X - text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X - text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
+            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X - text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
+            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X - text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
+            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
+            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
         }
         else
         {
@@ -157,10 +157,10 @@ public class SpearsGui : DrawableGameElement {
             batch.Draw(metal_sprite, pos_2, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
             batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X, pos_2.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.985f);
             // Drawing Background behind font
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X - text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X - text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
+            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X - text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
+            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X - text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
+            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
+            batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
         }
 
         if (_controller.Selected == 2) // Wooden Spears at position 1 (left)
@@ -169,10 +169,10 @@ public class SpearsGui : DrawableGameElement {
             batch.Draw(wooden_sprite, pos_1, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
             batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X, pos_1.Y), active_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
             // Drawing Background behind font
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
         }
         else
         {
@@ -180,10 +180,10 @@ public class SpearsGui : DrawableGameElement {
             batch.Draw(wooden_sprite, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
             batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X, pos_1.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.95f);
             // Drawing Background behind font
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
-            batch.DrawString(_font, electric_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
         }
 
         // Draw controls
