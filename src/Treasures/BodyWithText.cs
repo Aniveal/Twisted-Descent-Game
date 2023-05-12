@@ -26,10 +26,8 @@ namespace Meridian2.Treasures {
             _body.OnCollision += OnCollision;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
-            if (onDisplay) {
-                //TODO draw text
-            }
+        public void Destroy() {
+            _world.Remove(_body);
         }
 
         private bool OnCollision(Fixture sender, Fixture other, Contact contact) {
@@ -42,6 +40,12 @@ namespace Meridian2.Treasures {
                 onDisplay = true;
             }
             return false;
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
+            if (onDisplay) {
+                //TODO draw text
+            }
         }
     }
 }

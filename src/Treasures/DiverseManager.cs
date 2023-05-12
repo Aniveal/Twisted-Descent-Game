@@ -50,7 +50,12 @@ namespace Meridian2.Treasures {
                 }
             }
             foreach (BodyWithText t in texts.ToList()) {
-                if (t.finished) { texts.Remove(t); }
+                if (t.onDisplay) {
+                    t.Destroy();
+                }
+                if (t.finished) { 
+                    texts.Remove(t);
+                }
             }
         }
 

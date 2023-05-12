@@ -6,6 +6,8 @@ namespace Meridian2;
 
 public class TutorialRoom : Room
 {
+    public List<Vector2> textPos = new List<Vector2>();
+    public List<string> texts = new List<string>();
     public TutorialRoom(MapGenerator mg, List<Prototype> protList) : base(mg, -9, -16, 80, 32, 1, protList, 0) {
     
         PlaceTiles();
@@ -136,10 +138,14 @@ public class TutorialRoom : Room
     private void PlaceElements() {
         //room 1
         EnemyPositions.Add(new Vector2 (20, 16.5f));
+        textPos.Add(new Vector2(16, 15.5f));
+        texts.Add("Dash with X to slam the enemy into the wall");
         //Room 2
         EnemyPositions.Add(new Vector2(29.5f, 15.5f));
         Columns.Add(new Vector2(28, 15.5f));
         columnTypes.Add(2);
+        textPos.Add(new Vector2(24, 15.5f));
+        texts.Add("Wrap the string around the electric column and use it to electrocute the enemy");
         //Room 3
         EnemyPositions.Add(new Vector2(42, 16));
         Columns.Add(new Vector2(36, 16));
@@ -149,10 +155,20 @@ public class TutorialRoom : Room
         Columns.Add(new Vector2(38, 18));
         columnTypes.Add(0);
         AmphoraPositions.Add(new Vector2(38, 16));
+        textPos.Add(new Vector2(33, 15.5f));
+        texts.Add("Prepare a sling by wrapping around the top, the middle and the bottom column. \n Then press RT to sling the amhora into the enemy");
         //room 4
         TreasurePositions.Add(new Vector2(49, 16));
         Columns.Add(new Vector2(51.5f, 16));
         columnTypes.Add(1);
         EnemyPositions.Add(new Vector2(53, 16));
+        textPos.Add(new Vector2(46,15.5f));
+        texts.Add("Open the chest to obtain some spears. Place them with X to build a sling as before and throw the enemy down the cliff");
+        //end room
+        textPos.Add(new Vector2(64, 15.5f));
+        texts.Add("Take the stairs to proceed to the first Level. \n Good Luck!");
+
     }
+
+    
 }
