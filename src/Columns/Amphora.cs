@@ -146,7 +146,7 @@ public class Amphora : DrawableGameElement {
         
         //Explode on collision if slinged
         if (collider.Tag is Tile) {
-            if (_body.LinearVelocity.LengthSquared() < explosionSpeedThreshold) {
+            if (_body.LinearVelocity.LengthSquared() > explosionSpeedThreshold) {
                 if (!((Tile)collider.Tag).FinalPrototype.IsCliff) {
                     Explode();
                 }
@@ -154,7 +154,7 @@ public class Amphora : DrawableGameElement {
             if (((Tile)collider.Tag).FinalPrototype.IsCliff) {
                 if (collidingCliff == null) {
                     collidingCliff = (Tile)collider.Tag;
-                } else {
+                } else if (_body.LinearVelocity.LengthSquared() < explosionSpeedThreshold) {
                     overCliff = 1;
                 }
                 return false;
@@ -166,7 +166,7 @@ public class Amphora : DrawableGameElement {
         }
         //Explode at this speed
         //Also applies for tiles, but need special case there due to cliffs...
-        if (_body.LinearVelocity.LengthSquared() < explosionSpeedThreshold) {
+        if (_body.LinearVelocity.LengthSquared() > explosionSpeedThreshold) {
             return true;
         }
 
