@@ -120,20 +120,6 @@ public class Player : DrawableGameElement {
         }
 
         var keyboard = Keyboard.GetState();
-        if ((keyboard.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) &&
-            DashTimer >= DashCoolDown) {
-            _dash = true;
-            DashTimer = 0;
-            _playerForce = 50f;
-            _footstepSoundDelayCurrent = 0;
-        }
-
-        if (_dash & (DashTimer >= DashUsageTime)) {
-            _dash = false;
-            _playerForce = 15f;
-            DashTimer = 0;
-        }
-
         if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D)) {
             _input.X += 1;
             _isWalking = true;
@@ -152,6 +138,20 @@ public class Player : DrawableGameElement {
         if (keyboard.IsKeyDown(Keys.Up) || keyboard.IsKeyDown(Keys.W)) {
             _input.Y -= 1;
             _isWalking = true;
+        }
+        
+        if (_isWalking && (keyboard.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) &&
+            DashTimer >= DashCoolDown) {
+            _dash = true;
+            DashTimer = 0;
+            _playerForce = 50f;
+            _footstepSoundDelayCurrent = 0;
+        }
+
+        if (_dash & (DashTimer >= DashUsageTime)) {
+            _dash = false;
+            _playerForce = 15f;
+            DashTimer = 0;
         }
 
 

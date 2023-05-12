@@ -34,8 +34,8 @@ public class Amphora : DrawableGameElement {
 
     private List<FragileColumn> toBreak = new List<FragileColumn>();
 
-    private Texture2D _amphoraTexture;
-    private Texture2D _explosionTexture;
+    private static Texture2D _amphoraTexture;
+    private static Texture2D _explosionTexture;
 
     public Amphora(RopeGame game, World world, Vector2 position, float radius) {
         _game = game;
@@ -54,8 +54,13 @@ public class Amphora : DrawableGameElement {
     }
 
     public void LoadContent() {
-        _amphoraTexture = _game.Content.Load<Texture2D>("Sprites/amphora");
-        _explosionTexture = _game.Content.Load<Texture2D>("Sprites/Effects/explosion");
+        if (_amphoraTexture == null) {
+            _amphoraTexture = _game.Content.Load<Texture2D>("Sprites/amphora");
+        }
+
+        if (_explosionTexture == null) {
+            _explosionTexture = _game.Content.Load<Texture2D>("Sprites/Effects/explosion");
+        }
     }
 
     // DO NOT CALL FROM A PHYSICS CALLBACK
@@ -183,9 +188,13 @@ public class Amphora : DrawableGameElement {
         if (exploding && !hasExploded) {
             var explosionFrame = 6 - (int) Math.Round((explosionStart + ExplosionDuration - gameTime.TotalGameTime.TotalSeconds) /
                 ExplosionDuration * 6);
-            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - currentExplosionSize, _body.Position.Y - currentExplosionSize*2, 
+
+            Rectangle dstRec = camera.getScreenRectangle(_body.Position.X - currentExplosionSize, _body.Position.Y - currentExplosionSize*2,
             currentExplosionSize*2, currentExplosionSize*2);
-            batch.Draw(_explosionTexture, dstRec, new Rectangle(explosionFrame * 2750, 0, 2750, 2700), Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.95f);
+
+            var frameWidth = (int)(_explosionTexture.Width / 7);
+
+            batch.Draw(_explosionTexture, dstRec, new Rectangle(explosionFrame * frameWidth, 0, frameWidth, _explosionTexture.Height), Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.95f);
         }
     }
 }

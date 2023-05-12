@@ -22,13 +22,13 @@ public class SpearsChest : Chest {
     public override void LoadContent() {
         switch (spearType) {
             case 0:
-                LootTexture = Game.Content.Load<Texture2D>("Sprites/UI/metal_spears_" + MathHelper.Min(3, _content[spearType]));
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_metal_" + MathHelper.Min(3, _content[spearType]));
                 break;
             case 1:
-                LootTexture = Game.Content.Load<Texture2D>("Sprites/UI/electric_spears_" + MathHelper.Min(3, _content[spearType]));
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_electric_" + MathHelper.Min(3, _content[spearType]));
                 break;
             case 2:
-                LootTexture = Game.Content.Load<Texture2D>("Sprites/UI/wooden_spears_" + MathHelper.Min(3, _content[spearType]));
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_wooden_" + MathHelper.Min(3, _content[spearType]));
                 break;
         }
 
