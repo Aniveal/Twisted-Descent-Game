@@ -65,8 +65,13 @@ public class MapGenerator {
                 }
             }
         }
+    }
 
-        
+    public void CreateTutorialMap() {
+
+        RoomList = new List<Room>();
+        Room tRoom = new TutorialRoom(this, RockPrototypes);
+        RoomList.Add(tRoom);
     }
 
 

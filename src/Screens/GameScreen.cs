@@ -31,6 +31,8 @@ public class GameScreen : Screen {
 
     public TheseusManager TheseusManager;
 
+    private bool _tutorial = false;
+
 
     public GameScreen(RopeGame game) : base(game) {
         Game = getGame();
@@ -57,10 +59,19 @@ public class GameScreen : Screen {
         _map = new Map(game, World, ColumnsManager, EnemyManager, diverseManager);
     }
 
+    public GameScreen(RopeGame game, bool tutorial) : this(game) {
+        _tutorial = tutorial;
+    } 
+
     public override void Initialize() {
         base.Initialize();
 
-        _map.Initialize();
+        if (_tutorial) {
+            _map.InitializeTutorialMap();
+        } else {
+            _map.Initialize();
+        }
+        
 
         TheseusManager.Initialize();
         EnemyManager.Initialize();
@@ -93,7 +104,7 @@ public class GameScreen : Screen {
         ColumnsManager.LoadContent();
 
         SpearsController.PlaceSpear(-0.1f, 0, 0);
-        
+        _tutorial = false;
     }
 
     public void FixedUpdate(GameTime gameTime) {

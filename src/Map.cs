@@ -305,6 +305,23 @@ public class Map : DrawableGameElement {
             CreateMapBody(t);
     }
 
+    public void InitializeTutorialMap() {
+        _mapGenerator = new MapGenerator(_game);
+
+        Debug.WriteLine("Initializing Map");
+
+        _mapGenerator.CreateTutorialMap();
+
+        RoomList = _mapGenerator.RoomList;
+
+        transferDataToManagers();
+
+        //create bodies for tiles
+        foreach (var r in RoomList)
+        foreach (var t in r.TileMap)
+            CreateMapBody(t);
+    }
+
     public void transferDataToManagers() {
         var columnTexture = _game.Content.Load<Texture2D>("Sprites/Columns/column");
         var elecTexture = _game.Content.Load<Texture2D>("Sprites/Columns/lightning_column");
@@ -316,6 +333,7 @@ public class Map : DrawableGameElement {
         foreach (var r in RoomList) {
             Debug.WriteLine("Sending coords to ColumnsManager: " + r.Columns.Count);
 
+            int j = 0;
             foreach (var v in r.Columns) {
                 var worldCoords = MapToWorld(v.X + r.PosX, v.Y + r.PosY);
 
@@ -324,6 +342,10 @@ public class Map : DrawableGameElement {
 
                 while (i < r.columnWeight.Length && rand > r.columnWeight[i])
                     i++;
+
+                if (r is TutorialRoom) {
+                    i = r.columnTypes[j];
+                }
 
                 switch (i) {
                     case 1:
@@ -337,12 +359,14 @@ public class Map : DrawableGameElement {
                         Cm.Add(new Column(_world, worldCoords, 1.5f, columnTexture));
                         break;
                 }
+                j++;
             }
 
             for (int i = 0; i < r.EnemyPositions.Count; i++) {
                 Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
                     _game.GameData.currentDifficulty); // pass map diff here as second arg
             }
+            
 
             foreach (Vector2 pos in r.AmphoraPositions) {
                 Amphora a = new Amphora(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), 0.5f);
@@ -351,11 +375,24 @@ public class Map : DrawableGameElement {
 
             foreach (Vector2 pos in r.TreasurePositions) {
                 Chest c;
-                if (RnGsus.Instance.NextDouble() > 0.5) {
+                if (r is TutorialRoom) {
+                    int[] loot = { 10, 0, 0 };
+                    c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), loot);
+                } else if (RnGsus.Instance.NextDouble() > 0.5) {
                     c = new HealthChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
                 } else c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
 
                 Dm.Add(c);
+            }
+
+            if (r is TutorialRoom) {
+                TutorialRoom tr = (TutorialRoom) r;
+                Em.SetTutorialMode();
+                for (int i = 0; i < tr.textPos.Count; i++) {
+                    SpriteFont font = _game.Content.Load<SpriteFont>("damn");
+                    BodyWithText text = new BodyWithText(_game, MapToWorld(tr.textPos[i].X + r.PosX, tr.textPos[i].Y + r.PosY), 3, _world, tr.texts[i], font);
+                    Dm.Add(text);
+                }
             }
         }
     }

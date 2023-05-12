@@ -6,7 +6,7 @@ namespace Meridian2.Treasures;
 
 public class SpearsChest : Chest {
     private int[] _content;
-    private int spearType;
+    private int spearType = 0;
 
     public SpearsChest(RopeGame game, World world, Vector2 position) : base(game, world, position) {
         GenerateLoot();
@@ -22,13 +22,13 @@ public class SpearsChest : Chest {
     public override void LoadContent() {
         switch (spearType) {
             case 0:
-                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_metal_" + _content[spearType]);
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_metal_" + MathHelper.Min(3, _content[spearType]));
                 break;
             case 1:
-                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_electric_" + _content[spearType]);
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_electric_" + MathHelper.Min(3, _content[spearType]));
                 break;
             case 2:
-                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_wooden_" + _content[spearType]);
+                LootTexture = Game.Content.Load<Texture2D>("Sprites/Chest/icon_wooden_" + MathHelper.Min(3, _content[spearType]));
                 break;
         }
 

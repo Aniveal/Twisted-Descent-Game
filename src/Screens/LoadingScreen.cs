@@ -24,7 +24,7 @@ public class LoadingScreen : Screen
     private Texture2D _bg;
 
     public Boolean gameLoaded;
-    double timer;
+    protected double timer;
     private SpriteFont font;
 
     private int w;

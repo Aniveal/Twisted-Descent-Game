@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2.Enemy; 
+namespace Meridian2.Enemy;
 
 public class EnemyManager {
     private readonly RopeGame _game;
@@ -38,6 +38,12 @@ public class EnemyManager {
         enemy.Initialize(pos, diff);
         enemy.LoadContent();
         Enemies.Add(enemy);
+    }
+
+    public void SetTutorialMode() {
+        foreach (Enemy e in Enemies) {
+            e.SetTutorialMode();
+        }
     }
 
     public void LoadContent() {
