@@ -34,6 +34,7 @@ public class Enemy : DrawableGameElement {
     protected Texture2D _runningF;
     protected Texture2D _runningL;
     protected Texture2D _runningR;
+    protected Texture2D _deathAnimation;
     protected readonly World _world;
 
     public Body Body;
@@ -44,7 +45,9 @@ public class Enemy : DrawableGameElement {
     public Tile collidingCliff;
     protected const int fallSpeed = 100; //pixels per second
     protected float fallStart = 0;
+    protected float deathStart = 0;
     public bool IsAlive = true;
+    public bool drawDeathAnimation = false;
     public Vector2 Orientation;
 
     private Boolean _canShoot = false;
@@ -109,6 +112,7 @@ public class Enemy : DrawableGameElement {
         _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_r");  // 4 frames, each one is 512 pixels wide
         _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_f");  // 4 frames, each one is 512 pixels wide
         _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_b");  // 4 frames, each one is 512 pixels wide
+        _deathAnimation = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_dying");  // 5 frames, each one is 512 pixels wide
     }
 
     public virtual void Electrify() {
@@ -122,28 +126,31 @@ public class Enemy : DrawableGameElement {
             SoundEngine.Instance.Squish(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
-            IsAlive = false;
+            drawDeathAnimation = true;
         }
         if (cause == 1 && !_isImmuneToElectricity) // electricity
         {
             SoundEngine.Instance.ElectroShock(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
-            IsAlive = false;
+            //IsAlive = false;
+            drawDeathAnimation = true;
         }
         if (cause == 2 && !_isImmuneToAmphoras) // apmohras
         {
             SoundEngine.Instance.Squish(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
-            IsAlive = false;
+            //IsAlive = false;
+            drawDeathAnimation = true;
         }
         if (cause == 3) // cliff
         {
             SoundEngine.Instance.WilhelmScream(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
-            IsAlive = false;
+            //IsAlive = false;
+            drawDeathAnimation = true;
         }
     }
 
@@ -207,6 +214,23 @@ public class Enemy : DrawableGameElement {
 
 
     public override void Update(GameTime gameTime) {
+        if (drawDeathAnimation)
+        {
+            Body.Enabled = false;
+            drawDeathAnimation = false;
+            deathStart = (float)gameTime.TotalGameTime.TotalMilliseconds;
+            return;
+        }
+
+        if (deathStart > 0)
+        {
+            if (gameTime.TotalGameTime.TotalMilliseconds - deathStart > 400)
+            {
+                IsAlive = false;
+            }
+            return;
+        }
+
         if (fallStart > 0) {
             if (gameTime.TotalGameTime.TotalSeconds - fallStart > 1) {
                 Kill(3);
@@ -304,6 +328,22 @@ public class Enemy : DrawableGameElement {
         int yPos = spritePos.Y;
         if (fallStart > 0) {
             spritePos.Y += (int)((float)fallSpeed * (gameTime.TotalGameTime.TotalSeconds - fallStart));
+        }
+
+        if (deathStart > 0)
+        {
+            var deathDuration = 400f; //ms
+            var deathFrameIdx = (int)(deathStart / deathDuration) % 5;
+            batch.Draw(
+            _deathAnimation,
+            spritePos,
+            new Rectangle(deathFrameIdx * 512, 0, 512, 768),
+            Color.White,
+            0f,
+            Vector2.Zero,
+            SpriteEffects.None,
+            camera.getLayerDepth(spritePos.Y + spritePos.Height));
+            return;
         }
 
         if (_isWalking){
