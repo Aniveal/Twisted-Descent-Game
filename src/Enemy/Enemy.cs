@@ -17,10 +17,10 @@ public class Enemy : DrawableGameElement {
     protected const float WallKillVelocity = 1.5f;
     protected readonly Point _enemySize = new(1, 2);
     protected readonly RopeGame _game;
-    protected readonly float _angerDistance = 7f;
+    protected readonly float _angerDistance = 8f;
     protected int _difficultyLevel;
-    protected float _enemyForce = 0.003f;
-    protected readonly float _followDistance = 3f;
+    protected float _enemyForce = 0.004f;
+    private int randomDir = new Random().Next(4);
     
     private int _reducedHealth = 1;
 
@@ -54,8 +54,7 @@ public class Enemy : DrawableGameElement {
     private Boolean _hasImmunity = false;
     private Boolean _isImmuneToElectricity = false;
     private Boolean _isImmuneToAmphoras = false;
-    private Boolean _canKite = false;
-    
+    private bool _chasing = false;
 
     public Enemy(RopeGame game, World world, Player player) {
         _game = game;
@@ -68,13 +67,11 @@ public class Enemy : DrawableGameElement {
         
         if(rng.Next(100) < diff * 2)
         {
-            _enemyForce /= 4;
+            _enemyForce /= 2;
             _reducedHealth *= 2;
             _hasImmunity = true;
             _isImmuneToAmphoras = true;
             _isImmuneToElectricity = true;
-            _canKite = true;
-
         }
         else
         {
@@ -86,8 +83,7 @@ public class Enemy : DrawableGameElement {
                 else
                     _isImmuneToAmphoras = true;
             }
-            if (rng.Next(100) < diff * 2 * 7 / 10)
-                _canKite = true;
+            
         }
 
         //if (rng.Next(100) > 50)
@@ -254,58 +250,58 @@ public class Enemy : DrawableGameElement {
 
         _input = Vector2.Zero;
         _isWalking = false;
-        if (!_canKite) // enemies chase you
-        {
-            var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
 
-            if (currentDistance < _angerDistance) {
-                if (Body.Position.X < _player.Body.Position.X) {
-                    _input.X += 0.1f;
-                    _isWalking = true;
-                }
+        var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
 
-                if (Body.Position.X > _player.Body.Position.X) {
-                    _input.X -= 0.1f;
-                    _isWalking = true;
-                }
+        if (currentDistance < _angerDistance || _chasing) {
 
-                if (Body.Position.Y < _player.Body.Position.Y) {
-                    _input.Y += 0.1f;
-                    _isWalking = true;
-                }
+            _chasing = true;
+            _enemyForce = 0.004f;
+            if (Body.Position.X < _player.Body.Position.X) {
+                _input.X += 0.1f;
+                _isWalking = true;
+            }
 
-                if (Body.Position.Y > _player.Body.Position.Y) {
-                    _input.Y -= 0.1f;
-                    _isWalking = true;
-                }
+            if (Body.Position.X > _player.Body.Position.X) {
+                _input.X -= 0.1f;
+                _isWalking = true;
+            }
+
+            if (Body.Position.Y < _player.Body.Position.Y) {
+                _input.Y += 0.1f;
+                _isWalking = true;
+            }
+
+            if (Body.Position.Y > _player.Body.Position.Y) {
+                _input.Y -= 0.1f;
+                _isWalking = true;
             }
         }
-
-        if (_canKite) // enemies chase you for a while
+        else
         {
-            var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
-            if ((currentDistance > _followDistance) & (currentDistance < _angerDistance)) {
-                if (Body.Position.X < _player.Body.Position.X) {
-                    _input.X += 0.1f;
-                    _isWalking = true;
-                }
+            _enemyForce = 0.001f;
+            int dir = (randomDir + (int)(gameTime.TotalGameTime.TotalSeconds / 3)) % 4;
+            
 
-                if (Body.Position.X > _player.Body.Position.X) {
-                    _input.X -= 0.1f;
-                    _isWalking = true;
-                }
-
-                if (Body.Position.Y < _player.Body.Position.Y) {
-                    _input.Y += 0.1f;
-                    _isWalking = true;
-                }
-
-                if (Body.Position.Y > _player.Body.Position.Y) {
-                    _input.Y -= 0.1f;
-                    _isWalking = true;
-                }
+            if (dir % 4 == 0)
+            {
+                _input.X += 0.1f;
             }
+            if (dir % 4 == 1)
+            {
+                _input.Y += 0.1f;
+            }
+            if (dir % 4 == 2)
+            {
+                _input.X -= 0.1f;
+            }
+            if (dir % 4 == 3)
+            {
+                _input.Y -= 0.1f;
+            }
+            _isWalking = true;
         }
+
 
 
         if (_input.LengthSquared() > 1) _input.Normalize();
