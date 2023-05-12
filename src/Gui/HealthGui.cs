@@ -49,7 +49,15 @@ public class HealthGui : DrawableGameElement
 
         var text_position = new Vector2(margin, (int)(5 * margin / 4 + stringSize.Y));
         var text_color = new Color(170, 54, 54);
+        var text_background_color = new Color(34, 35, 35);
+        var text_outline_size = 1; // pixels
+
         batch.DrawString(_font, text, text_position, text_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        // Drawing a black outline around the text:
+        batch.DrawString(_font, text, new Vector2(text_position.X - text_outline_size, text_position.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(_font, text, new Vector2(text_position.X - text_outline_size, text_position.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(_font, text, new Vector2(text_position.X + text_outline_size, text_position.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(_font, text, new Vector2(text_position.X + text_outline_size, text_position.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
 
         for (var i = 0; i < _data.Health; i++)
         {
