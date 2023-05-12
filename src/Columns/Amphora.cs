@@ -28,6 +28,7 @@ public class Amphora : DrawableGameElement {
     //flag indicating the explosion animation has finished and the item can be cleaned up
     public bool hasExploded = false;
 
+    private const float explosionSpeedThreshold = 1.5f;
     private const double ExplosionDuration = 0.5; //explosion in milliseconds
     private double explosionStart = 0;
     private bool exploding = false;
@@ -135,7 +136,11 @@ public class Amphora : DrawableGameElement {
         if (collider.Tag is Player) {
             slinged = false; //We want amphoras to be slung, not thrown
         }
-        if (!slinged) return true;
+        //if (!slinged) return true;
+        //Explode at this speed
+        if (_body.LinearVelocity.LengthSquared() < explosionSpeedThreshold) {
+            return true;
+        }
         //Explode on collision if slinged
         if (collider.Tag is Tile) {
             if (!((Tile)collider.Tag).FinalPrototype.IsCliff) {
@@ -152,6 +157,9 @@ public class Amphora : DrawableGameElement {
             return true;
         }
         if (collider.Tag is Amphora) {
+            if (isDestroyed) {
+                return true;
+            }
             ((Amphora)collider.Tag).isDestroyed = true;
             ((Amphora)collider.Tag).hasExploded = true;
             BiggerExplode();
