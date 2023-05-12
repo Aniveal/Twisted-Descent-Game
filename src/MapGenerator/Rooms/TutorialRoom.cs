@@ -139,7 +139,7 @@ public class TutorialRoom : Room
         //room 1
         EnemyPositions.Add(new Vector2 (20, 16.5f));
         textPos.Add(new Vector2(16, 15.5f));
-        texts.Add("Dash with X to slam the enemy into the wall");
+        texts.Add("Dash with A to slam the enemy into the wall");
         //Room 2
         EnemyPositions.Add(new Vector2(29.5f, 15.5f));
         Columns.Add(new Vector2(28, 15.5f));
@@ -150,13 +150,13 @@ public class TutorialRoom : Room
         EnemyPositions.Add(new Vector2(42, 16));
         Columns.Add(new Vector2(36, 16));
         columnTypes.Add(1);
-        Columns.Add(new Vector2(38, 14));
+        Columns.Add(new Vector2(39, 14));
         columnTypes.Add(0);
-        Columns.Add(new Vector2(38, 18));
+        Columns.Add(new Vector2(39, 18));
         columnTypes.Add(0);
         AmphoraPositions.Add(new Vector2(38, 16));
         textPos.Add(new Vector2(33, 15.5f));
-        texts.Add("Prepare a sling by wrapping around the top, the middle and the bottom column. \n Then press RT to sling the amhora into the enemy");
+        texts.Add("Prepare a sling by wrapping around the top, the middle and the bottom column. \n Then press RT to break the column and sling the amhora into the enemy");
         //room 4
         TreasurePositions.Add(new Vector2(49, 16));
         Columns.Add(new Vector2(51.5f, 16));

@@ -23,7 +23,7 @@ namespace Meridian2.Treasures {
         private SpriteFont _font;
         private int margin = 300;
         Vector2 stringSize;
-        private float duration = 3; //duration in seconds
+        private float duration = 2; //duration in seconds
         private double messageStart = 0;
 
         public BodyWithText(RopeGame game, Vector2 position, float radius, World world, String text, SpriteFont font) {
