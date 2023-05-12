@@ -50,6 +50,7 @@ namespace Meridian2.Treasures {
                 }
             }
             foreach (BodyWithText t in texts.ToList()) {
+                t.Update(gameTime);
                 if (t.onDisplay) {
                     t.Destroy();
                 }

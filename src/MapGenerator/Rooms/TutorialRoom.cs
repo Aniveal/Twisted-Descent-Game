@@ -145,7 +145,7 @@ public class TutorialRoom : Room
         Columns.Add(new Vector2(28, 15.5f));
         columnTypes.Add(2);
         textPos.Add(new Vector2(24, 15.5f));
-        texts.Add("Wrap the string around the electric column and use it to electrocute the enemy");
+        texts.Add("Wrap the string around the electric column \n and use it to electrocute the enemy");
         //Room 3
         EnemyPositions.Add(new Vector2(42, 16));
         Columns.Add(new Vector2(36, 16));
@@ -163,7 +163,7 @@ public class TutorialRoom : Room
         columnTypes.Add(1);
         EnemyPositions.Add(new Vector2(53, 16));
         textPos.Add(new Vector2(46,15.5f));
-        texts.Add("Open the chest to obtain some spears. Place them with X to build a sling as before and throw the enemy down the cliff");
+        texts.Add("Open the chest to obtain some spears. Place them with X to build a sling as before \n and throw the enemy down the cliff");
         //end room
         textPos.Add(new Vector2(64, 15.5f));
         texts.Add("Take the stairs to proceed to the first Level. \n Good Luck!");
