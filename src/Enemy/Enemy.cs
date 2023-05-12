@@ -335,8 +335,11 @@ public class Enemy : DrawableGameElement {
             Body.Position.Y - _enemySize.Y * 2 + (float)_enemySize.X / 4, 0.2f, 0.1f);
 
         int yPos = spritePos.Y;
+        Color color = Color.White;
+
         if (fallStart > 0) {
             spritePos.Y += (int)((float)fallSpeed * (gameTime.TotalGameTime.TotalSeconds - fallStart));
+            color = Color.White * (float)(1 - (gameTime.TotalGameTime.TotalSeconds - fallStart));
         }
 
         if (deathStart > 0)
@@ -347,7 +350,7 @@ public class Enemy : DrawableGameElement {
             _deathAnimation,
             spritePos,
             new Rectangle(deathFrameIdx * 512, 0, 512, 768),
-            Color.White,
+            color,
             0f,
             Vector2.Zero,
             SpriteEffects.None,
@@ -377,7 +380,7 @@ public class Enemy : DrawableGameElement {
                 runningSprite,
                 spritePos,
                 new Rectangle(runningFrameIdx * 512, 0, 512, 768),
-                Color.White,
+                color,
                 0f,
                 Vector2.Zero,
                 SpriteEffects.None,
@@ -417,7 +420,7 @@ public class Enemy : DrawableGameElement {
                 _idle,
                 spritePos,
                 new Rectangle(idleFrameIdx * 512, 0, 512, 768),
-                Color.White,
+                color,
                 0f,
                 Vector2.Zero,
                 SpriteEffects.None,
