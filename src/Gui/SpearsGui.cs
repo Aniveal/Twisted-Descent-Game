@@ -117,7 +117,8 @@ public class SpearsGui : DrawableGameElement {
         var text_background_color = new Color(34, 35, 35);
         var text_outline_size = 1; // pixels
 
-        if (_controller.Selected == 1)  // Electric Spears at position 3 (right)
+        // Drawing Electric Spear UI at position 3 (right)
+        if (_controller.Selected == 1)  // Electric Spear is selected (active)
         {
             batch.Draw(_spears_background, pos_3, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
             batch.Draw(electric_sprite, pos_3, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
@@ -128,7 +129,7 @@ public class SpearsGui : DrawableGameElement {
             batch.DrawString(_font, electric_spears_text, new Vector2(pos_3.X + text_outline_size, pos_3.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
             batch.DrawString(_font, electric_spears_text, new Vector2(pos_3.X + text_outline_size, pos_3.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
         }
-        else
+        else // Electric Spear is passive
         {
             batch.Draw(_spears_background, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.97f);
             batch.Draw(electric_sprite, pos_3, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
@@ -140,7 +141,8 @@ public class SpearsGui : DrawableGameElement {
             batch.DrawString(_font, electric_spears_text, new Vector2(pos_3.X + text_outline_size, pos_3.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
         }
 
-        if (_controller.Selected == 0) // Metal Spears at position 2 (middle)
+        // Drawing Metal Spear UI at position 2 (middle)
+        if (_controller.Selected == 0)  // Metal Spear is selected (active)
         {
             batch.Draw(_spears_background, pos_2, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
             batch.Draw(metal_sprite, pos_2, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
@@ -151,7 +153,7 @@ public class SpearsGui : DrawableGameElement {
             batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
             batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
         }
-        else
+        else // Metal Spear is passive
         {
             batch.Draw(_spears_background, pos_2, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.975f);
             batch.Draw(metal_sprite, pos_2, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
@@ -163,7 +165,8 @@ public class SpearsGui : DrawableGameElement {
             batch.DrawString(_font, metal_spears_text, new Vector2(pos_2.X + text_outline_size, pos_2.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.984f);
         }
 
-        if (_controller.Selected == 2) // Wooden Spears at position 1 (left)
+        // Drawing Wooden Spear UI at position 1 (left)
+        if (_controller.Selected == 2) // Wooden Spear is selected (active)
         {
             batch.Draw(_spears_background, pos_1, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
             batch.Draw(wooden_sprite, pos_1, null, active_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
@@ -174,11 +177,11 @@ public class SpearsGui : DrawableGameElement {
             batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
             batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X + text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
         }
-        else
+        else // Wooden Spear is passive
         {
             batch.Draw(_spears_background, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.97f);
             batch.Draw(wooden_sprite, pos_1, null, passive_color, 0f, Vector2.Zero, SpriteEffects.None, 0.98f);
-            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X, pos_1.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.95f);
+            batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X, pos_1.Y), passive_font_color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.985f);
             // Drawing Background behind font
             batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
             batch.DrawString(_font, wooden_spears_text, new Vector2(pos_1.X - text_outline_size, pos_1.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.955f);
