@@ -218,7 +218,10 @@ public class Amphora : DrawableGameElement {
 
         if (overCliff > 0) {
             fallStart = (float)gameTime.TotalGameTime.TotalSeconds;
-            _body.Enabled = false;
+            _body.Enabled = true;
+            foreach (Fixture f in _body.FixtureList) {
+                f.Friction = 5.0f;
+            }
             return;
         }
     }
