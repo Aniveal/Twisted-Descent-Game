@@ -26,8 +26,9 @@ public class FinalScreen : Screen {
 
     private int w;
     private int h;
+    private bool _timedOut;
 
-    public FinalScreen(RopeGame game, ContentManager content) : base(game)
+    public FinalScreen(RopeGame game, ContentManager content, bool timedOut) : base(game)
     {
         font = content.Load<SpriteFont>("Arial40");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
@@ -41,6 +42,7 @@ public class FinalScreen : Screen {
         h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
         gameLoaded = false;
         timer = 0;
+        _timedOut = timedOut;
 
     }
     
@@ -54,7 +56,11 @@ public class FinalScreen : Screen {
         int img_width = Math.Min(w / 2 - 150, (h - 200) / 2);
         int img_height = 2 * img_width;
         spriteBatch.Draw(_menu_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
-        spriteBatch.DrawString(font, "You Died!", new Vector2(w / 16, h / 9 * 2), Color.White);
+        if (_timedOut) {
+            spriteBatch.DrawString(font, "Your time ran out!", new Vector2(w / 16, h / 9 * 2), Color.White);
+        } else {
+            spriteBatch.DrawString(font, "You Died!", new Vector2(w / 16, h / 9 * 2), Color.White);
+        }
         spriteBatch.DrawString(font, "During the run, you killed " + (this.getGame().GameData.Kills) + " Enemies. Good Job!", new Vector2(w / 16, h / 9 * 3), Color.White);
         spriteBatch.End();
     }

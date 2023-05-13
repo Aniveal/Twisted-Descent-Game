@@ -41,7 +41,7 @@ public class GameData {
         TimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
         if (TimeLeft < 0) {
             TimeLeft = 0;
-            EndGame();
+            EndGame(true);
         }
     }
 
@@ -57,9 +57,9 @@ public class GameData {
         Health = MaxHealth;
     }
 
-    private void EndGame() {
+    private void EndGame(bool timeOut) {
         GameOver = true;
-        _game._finalScreen = new FinalScreen(_game, _game.Content);
+        _game._finalScreen = new FinalScreen(_game, _game.Content, timeOut);
         _game._finalScreen.Initialize();
         _game.ChangeState(RopeGame.State.Final);
         _game.ResetGame();
@@ -69,7 +69,7 @@ public class GameData {
         SoundEngine.Instance.SwordHit();
         Health -= 1;
         if (Health <= 0) {
-            EndGame();
+            EndGame(false);
         }
     }
 
