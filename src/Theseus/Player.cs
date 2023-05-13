@@ -43,7 +43,7 @@ public class Player : DrawableGameElement {
 
     public Body Body;
 
-    public double DashTimer;
+    public double DashTimer = 4000;
 
     public bool IsImmune;
 
