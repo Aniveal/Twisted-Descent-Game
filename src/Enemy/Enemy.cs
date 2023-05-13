@@ -149,7 +149,6 @@ public class Enemy : DrawableGameElement {
         }
         if (cause == 3) // cliff
         {
-            SoundEngine.Instance.WilhelmScream(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
             //IsAlive = false;
@@ -252,6 +251,7 @@ public class Enemy : DrawableGameElement {
         if (overCliff > 0) {
             fallStart = (float)gameTime.TotalGameTime.TotalSeconds;
             Body.Enabled = false;
+            SoundEngine.Instance.WilhelmScream(this.Body.Position);
             return;
         }
 
