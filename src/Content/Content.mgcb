@@ -3822,6 +3822,30 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Enemies/Minotaur/minotaur_idle.png
 
+#begin Sprites/EntranceExit/ground_level_entrance_l.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/EntranceExit/ground_level_entrance_l.png
+
+#begin Sprites/EntranceExit/ground_level_entrance_r.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/EntranceExit/ground_level_entrance_r.png
+
 #begin Sprites/EntranceExit/ground_level_entrance.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -3857,6 +3881,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/EntranceExit/level_entrance_2_3.png
+
+#begin Sprites/EntranceExit/level_entrance_l.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/EntranceExit/level_entrance_l.png
+
+#begin Sprites/EntranceExit/level_entrance_r.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/EntranceExit/level_entrance_r.png
 
 #begin Sprites/EntranceExit/level_entrance.png
 /importer:TextureImporter
