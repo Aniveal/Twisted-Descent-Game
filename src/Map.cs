@@ -379,7 +379,11 @@ public class Map : DrawableGameElement {
                     int[] loot = { 10, 0, 0 };
                     c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), loot);
                 } else if (RnGsus.Instance.NextDouble() > 0.5) {
-                    c = new HealthChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
+                    if (RnGsus.Instance.NextDouble() > 0.7) {
+                        c = new HealthChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), 1, 2);
+                    } else {
+                        c = new HealthChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY), 0, 1);
+                    }
                 } else c = new SpearsChest(_game, _world, MapToWorld(pos.X + r.PosX, pos.Y + r.PosY));
 
                 Dm.Add(c);

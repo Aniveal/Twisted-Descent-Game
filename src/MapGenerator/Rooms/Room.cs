@@ -107,7 +107,7 @@ public class Room {
 
         if (roomDifficulty > 0)
         {
-            int enemyBudget = (int)(roomDifficulty * (SizeX * SizeY) * 0.005f);
+            int enemyBudget = Math.Max(1, (int)(roomDifficulty * (SizeX * SizeY) * 0.005f));
             placeEnemies(RnGsus.Instance.Next(enemyBudget));
         }
 
