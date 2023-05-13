@@ -30,6 +30,7 @@ public class ActivableColumn : Column {
             NContacts++;
             segment.ColumnCallback(this, true, !Activated);
             Activated = true;
+            
         } else if (other.Body.Tag != null && other.Body.Tag is RopeSegment) {
             var segment = (RopeSegment)other.Body.Tag;
             NContacts++;

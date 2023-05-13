@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Meridian2.Columns;
 using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -112,6 +113,7 @@ public sealed class SoundEngine {
 
 
 
+
     //Calculates the volume based on distance
     public float CalculateIntensity(Vector2 position)
     {
@@ -120,7 +122,7 @@ public sealed class SoundEngine {
         if(distance <= 1) return 1;
 
         //Assume base sound is 100db loud
-        double reduction = Math.Abs(20f * Math.Log(distance));
+        double reduction = Math.Abs(20f * Math.Log(distance * 3));
 
         float intensity = Math.Min(1.0f, Math.Max(1f - (float)(reduction * 0.01), 0.1f));
 
@@ -129,6 +131,8 @@ public sealed class SoundEngine {
 
     public float CalculatePan(Vector2 position)
     {
+        //PAN DOES NOT WORK DUE TO MONOGAME BUG
+        return 1f;
         float difference = position.X - this.player.Body.Position.X;
 
         if (difference < -10)
@@ -145,7 +149,6 @@ public sealed class SoundEngine {
         i.Volume = CalculateIntensity(position);
         //i.Pan = CalculatePan(position);
         i.Play();
-        Debug.WriteLine("Volume: " + i.Volume + ", Pan:" + i.Pan);
     }
 
     public void ChestSound()
@@ -171,6 +174,7 @@ public sealed class SoundEngine {
     public void Amphora(Vector2 position)
     {
         PlayEffect(_amphora, position);
+        PlayEffect(_explosion, position);
     }
     
     public void ButtonClick()
@@ -178,9 +182,11 @@ public sealed class SoundEngine {
         _buttonHit.Play();
     }
 
-    public void ElectroColumn(Vector2 position)
+    public SoundEffectInstance GetElectroColumnInstance(Vector2 position)
     {
-        PlayEffect(_electricityColumn, position);
+        SoundEffectInstance i = _electricityColumn.CreateInstance();
+        i.Volume = CalculateIntensity(position);
+        return i;
     }
 
     public void ElectroShock(Vector2 position)

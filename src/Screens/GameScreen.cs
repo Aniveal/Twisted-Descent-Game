@@ -133,7 +133,7 @@ public class GameScreen : Screen {
         Diagnostics.Instance.Update(gameTime, TheseusManager.Player);
 
         //putting it here cuz otherwise we'll forget about it the day when columns actually need updating. same for gui
-        //columnsManager.Update(gameTime);
+        ColumnsManager.Update(gameTime);
         //guiManager.Update(gameTime);
         
         // Update Game Timer

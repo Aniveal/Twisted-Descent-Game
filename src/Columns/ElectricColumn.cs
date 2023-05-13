@@ -1,11 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Meridian2.Columns;
 
 internal class ElectricColumn : ActivableColumn {
     private readonly Texture2D _animationTexture;
+
+    SoundEffectInstance SoundEffect;
 
     public ElectricColumn(World world, Vector2 position, float width, Texture2D texture) : base(world, position, width,
         texture) {
@@ -27,6 +31,36 @@ internal class ElectricColumn : ActivableColumn {
         _animationTexture = animationTexture;
     }
 
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+
+        if(SoundEffect == null)
+        {
+            if (Activated)
+            {
+                SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(Body.Position);
+                SoundEffect.Play();  
+            }
+        }
+        else
+        {
+
+            if (Activated)
+            {
+                if (SoundEffect.State == SoundState.Stopped)
+                {
+                    SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(Body.Position);
+                    SoundEffect.Play();
+                }
+                SoundEffect.Volume = SoundEngine.Instance.CalculateIntensity(Body.Position);
+            }
+            else SoundEffect = null;
+        }
+            
+
+    }
+
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         if (!camera.IsVisible(Position)) return;
         var screenRec =
@@ -38,6 +72,7 @@ internal class ElectricColumn : ActivableColumn {
         
         // Draw animation if activated
         if (Activated && _animationTexture != null) {
+
             var totalTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
             var animationLength = 100f;
 
