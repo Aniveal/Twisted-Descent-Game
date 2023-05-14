@@ -393,7 +393,7 @@ public class Map : DrawableGameElement {
                 TutorialRoom tr = (TutorialRoom) r;
                 Em.SetTutorialMode();
                 for (int i = 0; i < tr.textPos.Count; i++) {
-                    SpriteFont font = _game.Content.Load<SpriteFont>("damn");
+                    SpriteFont font = _game.Content.Load<SpriteFont>("Fonts/tutorial_text");
                     BodyWithText text = new BodyWithText(_game, MapToWorld(tr.textPos[i].X + r.PosX, tr.textPos[i].Y + r.PosY), 3, _world, tr.texts[i], font);
                     Dm.Add(text);
                 }

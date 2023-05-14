@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Meridian2.Treasures {
     public class BodyWithText : DrawableGameElement {
@@ -20,11 +21,18 @@ namespace Meridian2.Treasures {
         public bool onDisplay = false;
         public bool finished = false;
         private bool destroyed = false;
-        private SpriteFont _font;
+        private SpriteFont _font;           // font set in map.cs, set to Fonts/tutorial_text
         private int margin = 300;
         Vector2 stringSize;
-        private float duration = 2; //duration in seconds
+        private float duration = 4; //duration in seconds
         private double messageStart = 0;
+
+        // Red color: new Color(170, 54, 54)
+        // Light Brown color: new Color(147, 124, 119)
+        private Color text_color = new Color(147, 124, 119);
+        private Color text_background_color = new Color(32, 33, 33);
+
+        private int text_outline_size = 1; // pixels, size of dark outline around the text
 
         public BodyWithText(RopeGame game, Vector2 position, float radius, World world, String text, SpriteFont font) {
             _world = world;
@@ -74,7 +82,15 @@ namespace Meridian2.Treasures {
             if (onDisplay) {
                 //TODO draw text
                 int viewportWidth = _game.GraphicsDevice.Viewport.Width;
-                batch.DrawString(_font, _text, new Vector2(viewportWidth / 2f - stringSize.X / 2, margin), new(170, 54, 54), 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+                Vector2 text_position = new Vector2(viewportWidth / 2f - stringSize.X / 2, margin);
+                batch.DrawString(_font, _text, text_position, text_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+
+                // Drawing a black outline around the text:
+                batch.DrawString(_font, _text, new Vector2(text_position.X - text_outline_size, text_position.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+                batch.DrawString(_font, _text, new Vector2(text_position.X - text_outline_size, text_position.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+                batch.DrawString(_font, _text, new Vector2(text_position.X + text_outline_size, text_position.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+                batch.DrawString(_font, _text, new Vector2(text_position.X + text_outline_size, text_position.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+
             }
         }
     }
