@@ -59,7 +59,6 @@ internal class ElectricColumn : ActivableColumn {
                 else
                 {
                     SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.3f, 0.1f);
-                    Debug.WriteLine(SoundEffect.Volume);
                 }
             }
             else SoundEffect = null;
