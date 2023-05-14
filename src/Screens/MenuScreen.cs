@@ -120,8 +120,8 @@ public class MenuScreen : Screen {
     }
 
     private void ControlsButton_Click(object sender, EventArgs e) {
-        base.getGame()._tutorialScreen = new TutorialScreen(base.getGame(), _content);
-        base.getGame()._tutorialScreen.Initialize();
+        base.getGame()._contorlScreen = new ControlScreen(base.getGame(), _content);
+        base.getGame()._contorlScreen.Initialize();
         base.getGame().ChangeState(RopeGame.State.Controls);
 
     }

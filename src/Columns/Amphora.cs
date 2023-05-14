@@ -83,7 +83,7 @@ public class Amphora : DrawableGameElement {
         }
         if (f.Body.Tag is Enemy.Enemy) {
             Enemy.Enemy e = (Enemy.Enemy)f.Body.Tag;
-            if ((_body.Position-e.Body.Position).Length() < currentExplosionSize) { // TODO add e.isImmuneToAmphoras();
+            if ((_body.Position-e.Body.Position).Length() < currentExplosionSize) {
                 e.Kill(2);
             }
             return true;

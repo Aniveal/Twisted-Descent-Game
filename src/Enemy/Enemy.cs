@@ -21,7 +21,12 @@ public class Enemy : DrawableGameElement {
     protected int _difficultyLevel;
     protected float _enemyForce = 0.004f;
     private int randomDir = new Random().Next(4);
-    
+
+    private const int DashCoolDown = 5000;
+    private const int DashUsageTime = 400;
+    private bool _dash;
+    public double DashTimer = 4000;
+
     private int _reducedHealth = 1;
 
     protected Texture2D _idle;
@@ -55,6 +60,7 @@ public class Enemy : DrawableGameElement {
     private Boolean _isImmuneToElectricity = false;
     private Boolean _isImmuneToAmphoras = false;
     private bool _chasing = false;
+    private bool _canDash = false;
     public bool tutorialEnemy = false;
 
     public Enemy(RopeGame game, World world, Player player) {
@@ -68,7 +74,7 @@ public class Enemy : DrawableGameElement {
         
         if(rng.Next(100) < diff * 2)
         {
-            _enemyForce /= 2;
+            _enemyForce = 0.003f;
             _reducedHealth *= 2;
             _hasImmunity = true;
             _isImmuneToAmphoras = true;
@@ -84,7 +90,10 @@ public class Enemy : DrawableGameElement {
                 else
                     _isImmuneToAmphoras = true;
             }
-            
+            if (rng.Next(100) < 0)
+            {
+                _canDash = true;
+            }
         }
 
         //if (rng.Next(100) > 50)
@@ -96,6 +105,7 @@ public class Enemy : DrawableGameElement {
         tutorialEnemy = true;
         _isImmuneToAmphoras = false;
         _isImmuneToElectricity = false;
+        _canDash = false;
     }
 
     public void Initialize(Vector2 initpos, int difficultyLevel) {
@@ -216,6 +226,7 @@ public class Enemy : DrawableGameElement {
 
 
     public override void Update(GameTime gameTime) {
+
         if (drawDeathAnimation)
         {
             Body.Enabled = false;
@@ -266,10 +277,35 @@ public class Enemy : DrawableGameElement {
 
         var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
 
+        
+
         if (currentDistance < _angerDistance || _chasing) {
 
             _chasing = true;
-            _enemyForce = 0.004f;
+
+            if (_canDash)
+            {
+                DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                DashTimer = Math.Min(DashTimer, 5000);
+                if (DashTimer >= DashCoolDown)
+                {
+                    _dash = true;
+                    DashTimer = 0;
+                    _enemyForce = 0.02f;
+                }
+                if (_dash && (DashTimer >= DashUsageTime))
+                {
+                    _dash = false;
+                    _enemyForce = 0.004f;
+                    DashTimer = 0;
+                }
+            }
+            else
+            {
+                _enemyForce = 0.004f;
+            }
+            
+            
             if (Body.Position.X < _player.Body.Position.X) {
                 _input.X += 0.1f;
                 _isWalking = true;
@@ -294,8 +330,6 @@ public class Enemy : DrawableGameElement {
         {
             _enemyForce = 0.001f;
             int dir = (randomDir + (int)(gameTime.TotalGameTime.TotalSeconds / 3)) % 4;
-            
-
             if (dir % 4 == 0)
             {
                 _input.X += 0.1f;

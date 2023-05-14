@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2.Screens; 
 
-public class TutorialScreen : Screen {
+public class ControlScreen : Screen {
     private readonly List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
@@ -27,7 +27,7 @@ public class TutorialScreen : Screen {
     private int w;
     private int h;
 
-    public TutorialScreen(RopeGame game, ContentManager content) : base(game)
+    public ControlScreen(RopeGame game, ContentManager content) : base(game)
     {
         font = content.Load<SpriteFont>("Arial40");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");

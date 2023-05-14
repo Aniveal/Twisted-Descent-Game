@@ -12,7 +12,7 @@ public class RopeGame : Game {
     public MapScreen _mapScreen;
     public GameScreen _gameScreen;
     public MenuScreen _menuScreen;
-    public TutorialScreen _tutorialScreen;
+    public ControlScreen _contorlScreen;
     public Screen _currentScreen;
     public LoadingScreen _loadingScreen;
     public TutorialLoadingScreen _tutorialLoadingScreen;
@@ -80,7 +80,7 @@ public class RopeGame : Game {
         }
         else if (state == State.Controls)
         {
-            _currentScreen = _tutorialScreen;
+            _currentScreen = _contorlScreen;
         }
         else if (state == State.Final)
         {
