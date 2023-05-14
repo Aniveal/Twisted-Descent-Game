@@ -61,6 +61,11 @@ public class GameScreen : Screen {
 
     public GameScreen(RopeGame game, bool tutorial) : this(game) {
         _tutorial = tutorial;
+        if (_tutorial)
+        {
+            base.getGame().GameData.TimeLeft = 1000f;
+            base.getGame().GameData.MaxTimeLeft = 1000f;
+        }
     } 
 
     public override void Initialize() {
