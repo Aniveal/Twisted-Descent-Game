@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Meridian2; 
@@ -51,8 +52,8 @@ public class MapGenerator {
         int size = 10000;
         int roomSize = 40;
 
-        //Number of rooms: 2 + difficulty / 2
-        int nRooms = difficulty / 2 + 2;
+        //Number of rooms: difficulty
+        int nRooms = difficulty - 1;
 
         bool generationFail = true;
         while(generationFail)
