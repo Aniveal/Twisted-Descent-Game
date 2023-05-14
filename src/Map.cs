@@ -156,6 +156,14 @@ public class Map : DrawableGameElement {
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 1.25f, -0.25f * MapScaling), (float)Math.PI / 4);
                 break;
+            case "StartL": //topright straight wall
+                tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
+                    p + new Vector2(MapScaling * 1.25f, -0.25f * MapScaling), (float)Math.PI / 4);
+                break;
+            case "StartR": //topright straight wall
+                tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
+                    p + new Vector2(MapScaling * 1.25f, -0.25f * MapScaling), (float)Math.PI / 4);
+                break;
             case "Wall2r": //bottom right straight wall
                 tile.Body = _world.CreateRectangle(l, 0.5f * l, 0,
                     p + new Vector2(MapScaling * 1.25f, 0.25f * MapScaling), (float)-Math.PI / 4);

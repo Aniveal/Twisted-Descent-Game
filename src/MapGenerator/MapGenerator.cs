@@ -11,6 +11,7 @@ public class MapGenerator {
     private List<Texture2D> _cliffTextures;
 
     public Prototype FinishPrototype;
+    public Prototype FinishPrototypeEmpty;
 
     //Graph of the rooms of this map, a graph consisting of rooms
     private DungeonGraph _graph;
@@ -20,6 +21,11 @@ public class MapGenerator {
 
     //All rock textures
     private List<Texture2D> _rockTextures;
+
+    private Texture2D _exitTexture;
+    
+
+    public List<Prototype> entranceExitPrototypes = new();
 
     private List<Texture2D> _wallTextures;
     public List<Prototype> CliffPrototypes = new();
@@ -45,7 +51,7 @@ public class MapGenerator {
         int size = 10000;
         int roomSize = 40;
 
-        //Number of rooms: 3 + difficulty
+        //Number of rooms: 2 + difficulty / 2
         int nRooms = difficulty / 2 + 2;
 
         bool generationFail = true;
@@ -76,10 +82,28 @@ public class MapGenerator {
 
 
     //Initializes the prototypes
-    private void createPrototypeLists() {
+    private void createPrototypeLists() 
+    {
 
-        Texture2D FinishTexture = _rg.Content.Load<Texture2D>("Sprites/GroundTiles/RockTile_01");
+        Texture2D _entranceTexture = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/level_entrance_l");
+        Texture2D _entranceTexture2 = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/level_entrance_r");
+        Texture2D _entranceTexture_ground = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/ground_level_entrance_l");
+        Texture2D _entranceTexture2_ground = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/ground_level_entrance_r");
+
+        Texture2D FinishTexture = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/level_entrance_2_2");
+
         FinishPrototype = new Prototype(FinishTexture, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true);
+
+        entranceExitPrototypes.Add(new Prototype(FinishTexture, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true));
+        entranceExitPrototypes.Add(new Prototype(null, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true));
+
+        //Texture2D _exitTexture = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/Level_entrance.png");
+        //Texture2D _entranceTexture = _rg.Content.Load<Texture2D>("Sprites/GroundTiles/RockTile_01");
+
+        entranceExitPrototypes.Add(new Prototype(_entranceTexture_ground, _entranceTexture, "StartL", new[] { 3, 0, 1, 1 }, 1, false));
+        entranceExitPrototypes.Add(new Prototype(_entranceTexture2_ground, _entranceTexture2, "StartR", new[] { 3, 0, 1, 1 }, 1, false));
+
+
 
         //Load the textures we want for the Prototypes
         _rockTextures = new List<Texture2D> {

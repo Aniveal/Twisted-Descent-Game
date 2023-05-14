@@ -226,6 +226,7 @@ internal class DungeonGraph {
 
         //Try connecting every room
         foreach (var r2 in Rooms) {
+
             if (r2 == r1)
                 continue;
 
@@ -261,6 +262,12 @@ internal class DungeonGraph {
 
             //if y direction touches
             else if (r1.PosY + r1.SizeY == r2.PosY || r2.PosY + r2.SizeY == r1.PosY) {
+
+                if (r2.GetType() == typeof(StartRoom))
+                {
+                    continue;
+                }
+
                 //find maching x coordinate
                 if (r1.PosY + r1.SizeY == r2.PosY) {
                     y1 = r1.SizeY - 1;
