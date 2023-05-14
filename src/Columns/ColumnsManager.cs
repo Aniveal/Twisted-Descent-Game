@@ -38,7 +38,7 @@ public class ColumnsManager {
 
     public void LoadContent() {
         FragileColumn.ControlsTexture =
-            _game.Content.Load<Texture2D>("Sprites/Controller/Triggers/button_xbox_analog_trigger_dark_2");
+            _game.Content.Load<Texture2D>("Sprites/Controller/RT");
     }
     
     public void Clear()
