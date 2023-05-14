@@ -469,7 +469,8 @@ public class Map : DrawableGameElement {
 
                     if (t.FinalPrototype.WallTex != null) {
                         if (t.FinalPrototype.Name == "Wall2l" || t.FinalPrototype.Name == "Wall2u" ||
-                            t.FinalPrototype.Name == "Wall1lu") {
+                            t.FinalPrototype.Name == "Wall1lu" || t.FinalPrototype.Name == "StartL" ||
+                            t.FinalPrototype.Name == "StartR") {
                             layerDepthWalls = camera.getLayerDepth(tilePos.Y + tilePos.Height * 0.625f);
                         } else if (t.FinalPrototype.Name == "Wall2r" || t.FinalPrototype.Name == "Wall2d" ||
                                    t.FinalPrototype.Name == "Wall1rd") {
