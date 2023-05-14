@@ -1,5 +1,6 @@
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
 namespace Meridian2;
@@ -9,10 +10,10 @@ public class TutorialRoom : Room
     public List<Vector2> textPos = new List<Vector2>();
     public List<string> texts = new List<string>();
     public TutorialRoom(MapGenerator mg, List<Prototype> protList) : base(mg, -9, -16, 80, 32, 1, protList, 0) {
-    
         PlaceTiles();
         PlaceElements();
     }
+
 
     private void Horizontal(int y, int x1, int x2, Prototype p) {
         for (int i = x1; i <= x2; i++) {
@@ -136,10 +137,22 @@ public class TutorialRoom : Room
     }
 
     private void PlaceElements() {
+        GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
+
+        bool uses_gamepad = false;
+        if (gamePadCapabilities.IsConnected)
+        {
+            uses_gamepad = true;
+        }
+
+        string dash = (uses_gamepad) ? "A" : "Space";
+        string pull = (uses_gamepad) ? "RT" : "P";
+        string place_spear = (uses_gamepad) ? "X" : "R";
+
         //room 1
         EnemyPositions.Add(new Vector2 (20, 16.5f));
         textPos.Add(new Vector2(16, 15.5f));
-        texts.Add("Dash with A to slam the enemy into the wall");
+        texts.Add("Dash with " + dash + " to slam the enemy into the wall");
         //Room 2
         EnemyPositions.Add(new Vector2(29.5f, 15.5f));
         Columns.Add(new Vector2(28, 15.5f));
@@ -156,14 +169,14 @@ public class TutorialRoom : Room
         columnTypes.Add(0);
         AmphoraPositions.Add(new Vector2(38, 16));
         textPos.Add(new Vector2(33, 15.5f));
-        texts.Add("Prepare a sling by wrapping around the top, the middle and the bottom column. \n Then press RT to break the column and sling the amhora into the enemy");
+        texts.Add("Prepare a sling by wrapping around the top, the middle and the bottom column. \n Then press " + pull + " to break the column and sling the amhora into the enemy");
         //room 4
         TreasurePositions.Add(new Vector2(49, 16));
         Columns.Add(new Vector2(51.5f, 16));
         columnTypes.Add(1);
         EnemyPositions.Add(new Vector2(53, 16));
         textPos.Add(new Vector2(46,15.5f));
-        texts.Add("Open the chest to obtain some spears. Place them with X to build a sling as before \n and throw the enemy down the cliff");
+        texts.Add("Open the chest to obtain some spears. Place them with " + place_spear + " to build a sling as before \n and throw the enemy down the cliff");
         //end room
         textPos.Add(new Vector2(64, 15.5f));
         texts.Add("Take the stairs to proceed to the first Level. \n Good Luck!");
