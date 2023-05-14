@@ -19,11 +19,17 @@ public class SpearsGui : DrawableGameElement {
     private const int gap_size = -20;
     private const int dash_ui_height = 80;
 
+    private const int controlsSize = 48;
+    private const int controlYMargin = 35; // used to be 45
+
     private Color active_color = Color.White;
     private Color passive_color = new Color(100, 100, 100, 150);
 
     private Color active_font_color = new Color(191, 161, 154);
     private Color passive_font_color = new Color(111, 94, 90);
+
+    private Color controls_color = new Color(220, 220, 220);
+    private Color controls_color_pressed = new Color(100, 100, 100);
 
     private SpriteFont _font;
 
@@ -64,10 +70,9 @@ public class SpearsGui : DrawableGameElement {
         _wooden_spears_2 = _game.Content.Load<Texture2D>("Sprites/UI/wooden_spears_2");
         _wooden_spears_3 = _game.Content.Load<Texture2D>("Sprites/UI/wooden_spears_3");
         
-        _controls_lb = _game.Content.Load<Texture2D>("Sprites/Controller/Buttons/Shoulder/button_xbox_digital_bumper_dark_1");
-        _controls_rb = _game.Content.Load<Texture2D>("Sprites/Controller/Buttons/Shoulder/button_xbox_digital_bumper_dark_2");
-        _controls_x = _game.Content.Load<Texture2D>("Sprites/Controller/Buttons/ABXY/button_xbox_digital_x_1");
-        _controls_x_pressed = _game.Content.Load<Texture2D>("Sprites/Controller/Buttons/ABXY/button_xbox_digital_x_2");
+        _controls_lb = _game.Content.Load<Texture2D>("Sprites/Controller/LB");
+        _controls_rb = _game.Content.Load<Texture2D>("Sprites/Controller/RB");
+        _controls_x = _game.Content.Load<Texture2D>("Sprites/Controller/X");
 
         _font = _game.Content.Load<SpriteFont>("damn_ui");
     }
@@ -190,20 +195,21 @@ public class SpearsGui : DrawableGameElement {
         }
 
         // Draw controls
-        var controlButton = _controls_x;
+        var controlColor = controls_color;
         if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed) {
-            controlButton = _controls_x_pressed;
+            controlColor = controls_color_pressed;
         }
 
-        var controlsSize = 48;
-        var controlYMargin = 45;
-        var controlRect = new Rectangle(pos_2.X + (int)((pos_2.Width - controlsSize) / 2f), pos_2.Y - controlYMargin, controlsSize, controlsSize);
-        batch.Draw(controlButton, controlRect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        // show X button at the right side of the spear selection icons (like dash)
+        var controlRect = new Rectangle(pos_3.X + icon_size + margin, pos_3.Y + (icon_size - controlsSize) / 2, controlsSize, controlsSize);
+        // show X button between shoulder buttons (above spear selection icons): 
+        //var controlRect = new Rectangle(pos_2.X + (int)((pos_2.Width - controlsSize) / 2f), pos_2.Y - controlYMargin, controlsSize, controlsSize);
+        batch.Draw(_controls_x, controlRect, null, controlColor, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
         
         var lbRect = new Rectangle(pos_1.X + (int)((pos_1.Width - controlsSize) / 2f), pos_1.Y - controlYMargin, controlsSize, controlsSize);
-        batch.Draw(_controls_lb, lbRect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        batch.Draw(_controls_lb, lbRect, null, controls_color, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
         
         var rbRect = new Rectangle(pos_3.X + (int)((pos_3.Width - controlsSize) / 2f), pos_3.Y - controlYMargin, controlsSize, controlsSize);
-        batch.Draw(_controls_rb, rbRect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        batch.Draw(_controls_rb, rbRect, null, controls_color, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
     }
 }

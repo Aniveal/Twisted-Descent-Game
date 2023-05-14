@@ -918,6 +918,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Columns/lightning_column.png
 
+#begin Sprites/Controller/A.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Controller/A.png
+
 #begin Sprites/Controller/Buttons/ABXY/button_xbox_digital_a_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -2406,6 +2418,30 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Controller/DPad/button_xboxone_dpad_light_7.png
 
+#begin Sprites/Controller/LB.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Controller/LB.png
+
+#begin Sprites/Controller/RB.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Controller/RB.png
+
 #begin Sprites/Controller/Sticks/Blank/button_xbox_analog_blank_direction_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -3653,6 +3689,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Controller/Triggers/button_xbox_analog_trigger_light_4.png
+
+#begin Sprites/Controller/X.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Controller/X.png
 
 #begin Sprites/Effects/explosion.png
 /importer:TextureImporter

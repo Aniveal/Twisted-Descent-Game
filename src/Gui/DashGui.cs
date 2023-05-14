@@ -16,7 +16,9 @@ public class DashGui : DrawableGameElement
     private Texture2D _dash_bar_background;
     private Texture2D _dash_bar;
     private Texture2D _controls;
-    private Texture2D _controlsPressed;
+
+    private Color controls_color = new Color(220, 220, 220);
+    private Color controls_color_pressed = new Color(100, 100, 100);
 
     public DashGui(RopeGame game, GameData data)
     {
@@ -30,8 +32,8 @@ public class DashGui : DrawableGameElement
         _active_running_icon = _game.Content.Load<Texture2D>("Sprites/UI/activate_running_icon");
         _dash_bar_background = _game.Content.Load<Texture2D>("Sprites/UI/dash_bar_background");
         _dash_bar = _game.Content.Load<Texture2D>("Sprites/UI/dash_bar");
-        _controls = _game.Content.Load<Texture2D>("Sprites/Controller/Buttons/ABXY/button_xbox_digital_a_1");
-        _controlsPressed = _game.Content.Load<Texture2D>("Sprites/Controller/Buttons/ABXY/button_xbox_digital_a_2");
+
+        _controls = _game.Content.Load<Texture2D>("Sprites/Controller/A");
     }
 
 
@@ -81,12 +83,14 @@ public class DashGui : DrawableGameElement
         var controlsRect =
             new Rectangle(position.X + position.Width + xMargin, position.Y + (int)yMargin, (int)controlsSize, (int)controlsSize);
 
-        var controlsTexture = _controls;
-        if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) {
-            controlsTexture = _controlsPressed;
+
+        var controlColor = controls_color;
+        if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
+        {
+            controlColor = controls_color_pressed;
         }
-        
-        batch.Draw(controlsTexture, controlsRect, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+
+        batch.Draw(_controls, controlsRect, null, controlColor, 0f, Vector2.Zero, SpriteEffects.None, 1f);
     }
 
 }
