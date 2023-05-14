@@ -69,7 +69,7 @@ public class Room {
         PosX = x;
         PosY = y;
         TileMap = new Tile[sizeX, sizeY];
-        NInnerOpenings = (int)Math.Sqrt(sizeX * sizeY) / 3;
+        NInnerOpenings = (int)Math.Sqrt(sizeX * sizeY);
         this.protList = protList;
         initializeTileMap();
         if (columnWeight == null)

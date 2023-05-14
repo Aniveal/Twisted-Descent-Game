@@ -50,7 +50,7 @@ public class MapGenerator {
         var graph = new DungeonGraph(this);
 
         int size = 10000;
-        int roomSize = 40;
+        int roomSize = 30;
 
         //Number of rooms: difficulty
         int nRooms = difficulty - 1;

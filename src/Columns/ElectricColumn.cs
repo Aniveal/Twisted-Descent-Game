@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Diagnostics;
 using tainicom.Aether.Physics2D.Dynamics;
 
@@ -40,6 +41,7 @@ internal class ElectricColumn : ActivableColumn {
             if (Activated)
             {
                 SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(Body.Position);
+                SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.3f, 0.1f);
                 SoundEffect.Play();  
             }
         }
@@ -51,9 +53,14 @@ internal class ElectricColumn : ActivableColumn {
                 if (SoundEffect.State == SoundState.Stopped)
                 {
                     SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(Body.Position);
+                    SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.3f, 0.1f);
                     SoundEffect.Play();
                 }
-                SoundEffect.Volume = SoundEngine.Instance.CalculateIntensity(Body.Position);
+                else
+                {
+                    SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.3f, 0.1f);
+                    Debug.WriteLine(SoundEffect.Volume);
+                }
             }
             else SoundEffect = null;
         }

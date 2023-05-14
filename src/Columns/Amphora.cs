@@ -28,7 +28,7 @@ public class Amphora : DrawableGameElement {
     //flag indicating the explosion animation has finished and the item can be cleaned up
     public bool hasExploded = false;
 
-    private const float explosionSpeedThreshold = 1.5f;
+    private const float explosionSpeedThreshold = 2.5f;
     private const double ExplosionDuration = 0.5; //explosion in milliseconds
     private double explosionStart = 0;
     private bool exploding = false;
