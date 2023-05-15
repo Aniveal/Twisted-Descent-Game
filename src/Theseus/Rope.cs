@@ -26,7 +26,7 @@ public class Rope : DrawableGameElement {
     private const int MinFps = 60;
     private int KeepActive = 400;
     private readonly RopeGame _game;
-    private readonly Vector2 _pos;
+    private Vector2 _pos;
     private readonly int _segmentCount;
     private readonly World _world;
 
@@ -55,6 +55,10 @@ public class Rope : DrawableGameElement {
         _suspendedSegments = new List<RopeSegment>();
     }
 
+    public void SetStartPosition(Vector2 pos) {
+        _pos = pos;
+    }
+    
     public Vector2 GetEndPosition() {
         return _segments.Last().Body.GetWorldPoint(new Vector2(TextureWidth / 2, TextureHeight));
     }

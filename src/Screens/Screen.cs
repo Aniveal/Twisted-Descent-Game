@@ -5,7 +5,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 namespace Meridian2.Screens; 
 
 public abstract class Screen {
-    private readonly RopeGame _game;
+    protected readonly RopeGame _game;
     public Camera Camera;
 
     public World World;

@@ -421,6 +421,24 @@ public class Map : DrawableGameElement {
         // Do nothing
     }
 
+    public Vector2 getRopeStartPosition() {
+        Tile startTile = null;
+        foreach (var r in RoomList) {
+            foreach (var t in r.TileMap) {
+                if (t.FinalPrototype.Name == "StartL") {
+                    startTile = t;
+                }
+            }
+        }
+        
+        if (startTile != null) {
+            var pos = MapToWorld(startTile.getX(), startTile.getY());
+            return new Vector2(pos.X + 0.6328125f * MapScaling * 2, pos.Y + 0.1875f * MapScaling * 4);
+        }
+
+        return Vector2.Zero;
+    }
+
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {
         var c = 0;
 
