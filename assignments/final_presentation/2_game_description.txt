@@ -1,10 +1,11 @@
 Our game is a single-player maze game where the objective is to navigate the maze, defeat enemies, and complete each level within a time limit.
-The player's weapon in our game is just a rope but the player can do so much with this rope! The rope can be used to fling enemies into walls, throw explosive cases at them, or electrocute them by wrapping them around electric columns.
-There is a time limit in which the player should finish the level. By killing the enemies, you will gain an additional time, making it easier to progress through the maze.
+The player's weapon in our game is just a rope but the player can do so much with this rope! The rope can be used to fling enemies into walls, making them fall of the cliffs, throw explosive cases at them, or electrocute them by wrapping them around electric columns.
+There is a time limit in which the player should finish the level. By killing the enemies or passes a level, you will gain an additional time, making it easier to reach higher level.
 As the player advances through the maze, the next level will be more challenging, which means the player have to encounter more and tougher enemies in a larger map.
 
-There are three types of columns in the game map: Basic, Fragile, and Electric. Basic columns have no special properties. Fragile columns can be broken by applying force to them
-, allowing the player to wrap the rope around them and pull to break the column, affecting objects in the map. Electric columns electrify the rope, enabling the player to kill enemies. 
+There are three types of columns in the game map: Basic, Fragile, and Electric. Basic columns have no special properties. Fragile columns can be broken by applying force to them, 
+allowing the player to wrap the rope around them and pull to break the column, affecting objects in the map. Electric columns electrify the rope, enabling the player to kill enemies. 
+
 While exploring the map, the player can discover treasure chests containing either health or spears. Spears can be placed anywhere by the player to create setups for killing enemies. Similar to columns, there are three different types of spears.
 
-Every level in the game is proceduarlly generated, which means every time the player have to go through a compeletly new map.
+Each game level is also procedurally generated, resulting in a unique map for the player to navigate each time.
