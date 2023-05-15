@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using Meridian2.GameElements;
-using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
+using TwistedDescent.GameElements;
+using TwistedDescent.Theseus;
 
-namespace Meridian2.Enemy; 
+namespace TwistedDescent.Enemy; 
 
 public class Enemy : DrawableGameElement {
     protected const int CrushDuration = 16;

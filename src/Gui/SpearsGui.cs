@@ -1,11 +1,11 @@
-using Meridian2.Columns;
-using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TwistedDescent.Columns;
+using TwistedDescent.GameElements;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Meridian2.Gui; 
+namespace TwistedDescent.Gui; 
 
 public class SpearsGui : DrawableGameElement {
 

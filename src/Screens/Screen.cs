@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2.Screens; 
+namespace TwistedDescent.Screens; 
 
 public abstract class Screen {
     protected readonly RopeGame _game;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2.GameElements; 
+namespace TwistedDescent.GameElements; 
 
 internal interface IDrawableObject {
     //TODO: we will probably want to add the camera tranform as an argument to the draw method

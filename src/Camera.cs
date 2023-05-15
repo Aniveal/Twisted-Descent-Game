@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public class Camera {
     private readonly GraphicsDevice _graphicsDevice;

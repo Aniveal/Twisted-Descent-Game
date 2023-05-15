@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 //This is the map generator creating rooms using wave function collapse. 
 //Put new Prototypes into the createPrototypeList
 //Might want to add later to use .json files

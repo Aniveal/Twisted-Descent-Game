@@ -1,10 +1,10 @@
 ﻿using System;
-using Meridian2.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TwistedDescent.Screens;
 
-namespace Meridian2;
+namespace TwistedDescent;
 
 public class RopeGame : Game {
     private const int TargetFrameRate = 144;

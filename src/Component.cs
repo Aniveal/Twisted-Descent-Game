@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public abstract class Component {
     public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);

@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 using Microsoft.Xna.Framework.Content;
 
-namespace Meridian2.Screens;
+namespace TwistedDescent.Screens;
 
 public class TutorialLoadingScreen : LoadingScreen
 {

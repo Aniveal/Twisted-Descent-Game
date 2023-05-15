@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Meridian2.GameElements; 
+namespace TwistedDescent.GameElements; 
 
 internal interface IUpdatableObject {
     public void Update(GameTime gameTime);

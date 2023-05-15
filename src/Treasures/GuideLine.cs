@@ -1,10 +1,10 @@
-using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Microsoft.Xna.Framework.Input;
+using TwistedDescent.GameElements;
 
-namespace Meridian2.Treasures;
+namespace TwistedDescent.Treasures;
 
 
 public class GuideLine : IDrawableObject {

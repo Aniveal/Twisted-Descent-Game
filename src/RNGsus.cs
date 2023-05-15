@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 //Use this class only for random numbers!!!
 public sealed class RnGsus {

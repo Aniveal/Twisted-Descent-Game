@@ -1,15 +1,15 @@
-﻿using Meridian2.GameElements;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
 using tainicom.Aether.Physics2D.Collision;
-using Meridian2.Theseus;
-using Meridian2.Enemy;
+using TwistedDescent.Theseus;
+using TwistedDescent.Enemy;
 using System;
+using TwistedDescent.GameElements;
 
-namespace Meridian2.Columns;
+namespace TwistedDescent.Columns;
 
 public class Amphora : DrawableGameElement {
     private const float Density = 0.1f;

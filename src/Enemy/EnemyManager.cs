@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
+using TwistedDescent.Theseus;
 
-namespace Meridian2.Enemy;
+namespace TwistedDescent.Enemy;
 
 public class EnemyManager {
     private readonly RopeGame _game;

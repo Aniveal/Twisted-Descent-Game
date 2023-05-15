@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public class StartRoom : Room{
 

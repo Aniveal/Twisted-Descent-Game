@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2.Treasures; 
+namespace TwistedDescent.Treasures; 
 
 public class SpearsChest : Chest {
     private int[] _content;

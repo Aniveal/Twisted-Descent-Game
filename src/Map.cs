@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Meridian2.Columns;
-using Meridian2.Enemy;
-using Meridian2.GameElements;
-using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
 using static System.Net.Mime.MediaTypeNames;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
-using Meridian2.Screens;
-using Meridian2.Treasures;
+using TwistedDescent.Screens;
+using TwistedDescent.Columns;
+using TwistedDescent.Enemy;
+using TwistedDescent.GameElements;
+using TwistedDescent.Theseus;
+using TwistedDescent.Treasures;
 
-namespace Meridian2;
+namespace TwistedDescent;
 
 public class Map : DrawableGameElement {
     private const float MapScaling = 2;

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
-namespace Meridian2;
+namespace TwistedDescent;
 
 public class TutorialRoom : Room
 {

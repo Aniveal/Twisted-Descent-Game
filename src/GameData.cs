@@ -1,9 +1,9 @@
-using Meridian2.Screens;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Microsoft.Xna.Framework;
+using TwistedDescent.Screens;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public class GameData {
     //health
