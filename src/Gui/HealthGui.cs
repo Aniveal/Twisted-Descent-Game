@@ -59,10 +59,11 @@ public class HealthGui : DrawableGameElement
         batch.DrawString(_font, text, new Vector2(text_position.X + text_outline_size, text_position.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
         batch.DrawString(_font, text, new Vector2(text_position.X + text_outline_size, text_position.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
 
-        for (var i = 0; i < _data.Health; i++)
+        for (var i = 0; i < _data.MaxHealth; i++)
         {
+            Color color = i < _data.Health ? Color.White : Color.Black;
             var pos = new Rectangle(2 * margin + text_width + i * heart_size, (int)text_position.Y, heart_size, heart_size);
-            batch.Draw(_heartTexture, pos, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+            batch.Draw(_heartTexture, pos, null, color, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
     }
 }
