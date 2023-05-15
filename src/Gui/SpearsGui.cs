@@ -48,8 +48,10 @@ public class SpearsGui : DrawableGameElement {
     private Texture2D _controls_lb;
     private Texture2D _controls_rb;
     private Texture2D _controls_x;
-    private Texture2D _controls_x_pressed;
 
+    private Texture2D _controls_q;
+    private Texture2D _controls_e;
+    private Texture2D _controls_r;
 
     public SpearsGui(RopeGame game, GameData data, SpearsController controller) {
         _game = game;
@@ -73,6 +75,10 @@ public class SpearsGui : DrawableGameElement {
         _controls_lb = _game.Content.Load<Texture2D>("Sprites/Controller/LB");
         _controls_rb = _game.Content.Load<Texture2D>("Sprites/Controller/RB");
         _controls_x = _game.Content.Load<Texture2D>("Sprites/Controller/X");
+
+        _controls_q = _game.Content.Load<Texture2D>("Sprites/Controller/Q");
+        _controls_e = _game.Content.Load<Texture2D>("Sprites/Controller/E");
+        _controls_r = _game.Content.Load<Texture2D>("Sprites/Controller/R");
 
         _font = _game.Content.Load<SpriteFont>("damn_ui");
     }
@@ -204,12 +210,22 @@ public class SpearsGui : DrawableGameElement {
         var controlRect = new Rectangle(pos_3.X + icon_size + margin, pos_3.Y + (icon_size - controlsSize) / 2, controlsSize, controlsSize);
         // show X button between shoulder buttons (above spear selection icons): 
         //var controlRect = new Rectangle(pos_2.X + (int)((pos_2.Width - controlsSize) / 2f), pos_2.Y - controlYMargin, controlsSize, controlsSize);
-        batch.Draw(_controls_x, controlRect, null, controlColor, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
-        
+
         var lbRect = new Rectangle(pos_1.X + (int)((pos_1.Width - controlsSize) / 2f), pos_1.Y - controlYMargin, controlsSize, controlsSize);
-        batch.Draw(_controls_lb, lbRect, null, controls_color, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
-        
         var rbRect = new Rectangle(pos_3.X + (int)((pos_3.Width - controlsSize) / 2f), pos_3.Y - controlYMargin, controlsSize, controlsSize);
-        batch.Draw(_controls_rb, rbRect, null, controls_color, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
+
+        if (_game.controller_connected)
+        {
+            batch.Draw(_controls_x, controlRect, null, controlColor, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
+            batch.Draw(_controls_lb, lbRect, null, controls_color, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
+            batch.Draw(_controls_rb, rbRect, null, controls_color, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
+        } else
+        {
+            batch.Draw(_controls_r, controlRect, null, controlColor, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
+            batch.Draw(_controls_q, lbRect, null, controls_color, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
+            batch.Draw(_controls_e, rbRect, null, controls_color, 0f, Vector2.Zero, SpriteEffects.None, 0.95f);
+        }
+
+        
     }
 }

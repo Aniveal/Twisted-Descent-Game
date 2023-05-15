@@ -16,6 +16,7 @@ public class DashGui : DrawableGameElement
     private Texture2D _dash_bar_background;
     private Texture2D _dash_bar;
     private Texture2D _controls;
+    private Texture2D _keyboard_controls;
 
     private Color controls_color = new Color(220, 220, 220);
     private Color controls_color_pressed = new Color(100, 100, 100);
@@ -34,6 +35,7 @@ public class DashGui : DrawableGameElement
         _dash_bar = _game.Content.Load<Texture2D>("Sprites/UI/dash_bar");
 
         _controls = _game.Content.Load<Texture2D>("Sprites/Controller/A");
+        _keyboard_controls = _game.Content.Load<Texture2D>("Sprites/Controller/Space");
     }
 
 
@@ -80,8 +82,7 @@ public class DashGui : DrawableGameElement
         var controlsSize = 48;
         var yMargin = (position.Height - controlsSize) / 2f;
         var xMargin = 10;
-        var controlsRect =
-            new Rectangle(position.X + position.Width + xMargin, position.Y + (int)yMargin, (int)controlsSize, (int)controlsSize);
+        
 
 
         var controlColor = controls_color;
@@ -90,11 +91,19 @@ public class DashGui : DrawableGameElement
             controlColor = controls_color_pressed;
         }
 
-        batch.Draw(_controls, controlsRect, null, controlColor, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        if (_game.controller_connected)
+        {
+            var controlsRect =
+                new Rectangle(position.X + position.Width + xMargin, position.Y + (int)yMargin, (int)controlsSize, (int)controlsSize);
+            batch.Draw(_controls, controlsRect, null, controlColor, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        }
+        else
+        {       
+            var controlsRect =
+                new Rectangle(position.X + position.Width + xMargin, position.Y + (int)yMargin, 3 * (int)controlsSize / 2, (int)controlsSize);
+            batch.Draw(_keyboard_controls, controlsRect, null, controlColor, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+        }
+        
     }
 
 }
-
-
-// ignore first 2 / 10 of dash bar
-

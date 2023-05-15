@@ -37,8 +37,16 @@ public class ColumnsManager {
     }
 
     public void LoadContent() {
-        FragileColumn.ControlsTexture =
-            _game.Content.Load<Texture2D>("Sprites/Controller/RT");
+        if (_game.controller_connected)
+        {
+            FragileColumn.ControlsTexture =
+                _game.Content.Load<Texture2D>("Sprites/Controller/RT");
+        } else
+        {
+            FragileColumn.ControlsTexture =
+                _game.Content.Load<Texture2D>("Sprites/Controller/P");
+        }
+
     }
     
     public void Clear()

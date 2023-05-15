@@ -36,6 +36,7 @@ public class RopeGame : Game {
     private int currentHeight;
 
     bool isFullscreen = false;
+    public bool controller_connected = true;
 
     public enum State {
         Running,
@@ -147,6 +148,10 @@ public class RopeGame : Game {
         if (Input.IsKeyPressed(Keys.F11, true)) {
             ToggleFullscreen();
         }
+
+        // test if a controller is connected
+        GamePadCapabilities gamePadCapabilities = GamePad.GetCapabilities(PlayerIndex.One);
+        controller_connected = gamePadCapabilities.IsConnected;
 
         // If the resolution changed, redraw main menu
         if (currentWidth != GraphicsDevice.PresentationParameters.BackBufferWidth || 
