@@ -18,6 +18,8 @@ public class TheseusManager {
     }
 
     public void Initialize() {
+        Rope.SetStartPosition(_game._gameScreen._map.getRopeStartPosition());
+        
         Rope.Initialize();
         Player.Initialize();
     }

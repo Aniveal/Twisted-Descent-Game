@@ -107,8 +107,7 @@ public class GameScreen : Screen {
         SpearsController.LoadContent();
         diverseManager.LoadContent();
         ColumnsManager.LoadContent();
-
-        SpearsController.PlaceSpear(-0.1f, 0, 0);
+        
         _tutorial = false;
     }
 
