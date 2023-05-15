@@ -12,6 +12,7 @@ public class MapGenerator {
     private List<Texture2D> _cliffTextures;
 
     public Prototype FinishPrototype;
+    public Prototype FinishSmallPrototype;
     public Prototype FinishPrototypeEmpty;
 
     //Graph of the rooms of this map, a graph consisting of rooms
@@ -92,9 +93,11 @@ public class MapGenerator {
         Texture2D _entranceTexture2_ground = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/ground_level_entrance_r");
 
         Texture2D FinishTexture = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/level_entrance_2_2");
+        Texture2D FinishSmallTexture = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/level_exit_1_1");
 
         FinishPrototype = new Prototype(FinishTexture, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true);
-
+        FinishSmallPrototype = new Prototype(FinishSmallTexture, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true);
+        
         entranceExitPrototypes.Add(new Prototype(FinishTexture, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true));
         entranceExitPrototypes.Add(new Prototype(null, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true));
 
