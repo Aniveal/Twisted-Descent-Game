@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -88,20 +89,24 @@ public class TimeBarGui : DrawableGameElement
         // Drawing the upper sand:
         var upper_sand_height = (int)((7 * hourglas_height * _data.TimeLeft) / (16 * hourglas_maxtime));
 
+        var upper_sand_width_factor = Math.Sqrt(_data.TimeLeft / hourglas_maxtime);
+        var upper_sand_x_offset = (int) ((hourglas_width - hourglas_width * upper_sand_width_factor) / 2f);
         var upper_sand_position = new Rectangle(
-            hourglas_position.X,
+            hourglas_position.X + upper_sand_x_offset,
             hourglas_position.Y + hourglas_position.Height / 2 - upper_sand_height,
-            hourglas_width,
+            (int) (hourglas_width * upper_sand_width_factor),
             upper_sand_height
             );
         batch.Draw(_sandglas_upper_sand, upper_sand_position, null, sprite_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
 
         // Drawing the lower sand:
+        var lower_sand_width_factor = Math.Min(Math.Max(1f - upper_sand_width_factor + 0.5f, 0.5f), 1f);
+        var lower_sand_x_offset = (int) ((hourglas_width - hourglas_width * lower_sand_width_factor) / 2f);
         var lower_sand_height = (int)((7 * hourglas_height * (hourglas_maxtime - _data.TimeLeft)) / (16 * hourglas_maxtime));
         var lower_sand_position = new Rectangle(
-            hourglas_position.X,
+            hourglas_position.X + lower_sand_x_offset,
             hourglas_position.Y + 15 * hourglas_position.Height / 16 - lower_sand_height,
-            hourglas_width,
+            (int) (hourglas_width * lower_sand_width_factor),
             lower_sand_height
             );
         batch.Draw(_sandglas_lower_sand, lower_sand_position, null, sprite_color, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
