@@ -35,7 +35,7 @@ public class RopeGame : Game {
     private int currentWidth;
     private int currentHeight;
 
-    bool isFullscreen = false;
+    bool isFullscreen = true;
     public bool controller_connected = true;
 
     public enum State {
@@ -124,15 +124,15 @@ public class RopeGame : Game {
     }
 
     private void ToggleFullscreen() {
-        if (Graphics.IsFullScreen) {
-            Graphics.IsFullScreen = false;
-            Graphics.HardwareModeSwitch = true;
-        } else {
-            Graphics.IsFullScreen = true;
-            Graphics.HardwareModeSwitch = false;
-        }
-
-        Graphics.ApplyChanges();
+        // if (Graphics.IsFullScreen) {
+        //     Graphics.IsFullScreen = false;
+        //     Graphics.HardwareModeSwitch = true;
+        // } else {
+        //     Graphics.IsFullScreen = true;
+        //     Graphics.HardwareModeSwitch = false;
+        // }
+        //
+        // Graphics.ApplyChanges();
     }
     
     protected override void Update(GameTime gameTime) {
