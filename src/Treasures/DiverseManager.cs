@@ -12,6 +12,7 @@ namespace Meridian2.Treasures {
         private List<Chest> treasures;
         private List<BodyWithText> texts;
         private List<GuideLine> lines;
+        private BodyWithText activeText;
 
         public DiverseManager() {
             amphoras = new List<Amphora>();
@@ -29,6 +30,7 @@ namespace Meridian2.Treasures {
         }
 
         public void Add(BodyWithText body) {
+            body.SetManager(this);
             texts.Add(body);
         }
 
@@ -43,6 +45,10 @@ namespace Meridian2.Treasures {
             foreach(Amphora a in amphoras) {
                 a.LoadContent();
             }
+        }
+
+        public void SetActiveText(BodyWithText body) {
+            activeText = body;
         }
 
         public void Update(GameTime gameTime) {
@@ -77,10 +83,8 @@ namespace Meridian2.Treasures {
                     c.Draw(gameTime, batch, camera);
                 }
             }
-            foreach (BodyWithText t in texts) {
-                if (t.onDisplay) {
-                    t.Draw(gameTime, batch, camera);
-                }
+            if (activeText != null && activeText.onDisplay) {
+                activeText.Draw(gameTime, batch, camera);
             }
             foreach(GuideLine l in lines) {
                 l.Draw(gameTime, batch, camera);

@@ -17,6 +17,7 @@ namespace Meridian2.Treasures {
         private RopeGame _game;
         private World _world;
         private Body _body;
+        private DiverseManager dm;
         private String _text;
         public bool onDisplay = false;
         public bool finished = false;
@@ -46,6 +47,10 @@ namespace Meridian2.Treasures {
             stringSize = _font.MeasureString(text);
         }
 
+        public void SetManager(DiverseManager manager) {
+            dm = manager;
+        }
+
         public void Destroy() {
             if (destroyed) return;
             _world.Remove(_body);
@@ -60,6 +65,7 @@ namespace Meridian2.Treasures {
                 collider = sender.Body;
             if (collider.Tag is Player) {
                 onDisplay = true;
+                dm.SetActiveText(this);
             }
             return false;
         }
