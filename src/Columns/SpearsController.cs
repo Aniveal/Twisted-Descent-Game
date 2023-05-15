@@ -1,10 +1,10 @@
 using System;
-using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TwistedDescent.Theseus;
 
-namespace Meridian2.Columns;
+namespace TwistedDescent.Columns;
 
 public class SpearsController
 {

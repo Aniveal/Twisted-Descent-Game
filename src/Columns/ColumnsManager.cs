@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TwistedDescent.GameElements;
 
-namespace Meridian2.Columns; 
+namespace TwistedDescent.Columns; 
 
 /**
  * Propagates Update(), DrawFirst(), DrawSecond() to all columns

@@ -1,8 +1,8 @@
-﻿using Meridian2.Columns;
-using Meridian2.Enemy;
-using Meridian2.Gui;
-using Meridian2.Theseus;
-using Meridian2.Treasures;
+﻿using TwistedDescent.Columns;
+using TwistedDescent.Enemy;
+using TwistedDescent.Gui;
+using TwistedDescent.Theseus;
+using TwistedDescent.Treasures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -11,7 +11,7 @@ using System.Timers;
 using System.Xml.Linq;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2.Screens;
+namespace TwistedDescent.Screens;
 
 public class GameScreen : Screen {
     private const float FixedTimeStep = 1 / 60f;

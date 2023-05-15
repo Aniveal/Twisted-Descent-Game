@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public class Button : Component {
     #region Fields

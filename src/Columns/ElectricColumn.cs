@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2.Columns;
+namespace TwistedDescent.Columns;
 
 internal class ElectricColumn : ActivableColumn {
     private readonly Texture2D _animationTexture;

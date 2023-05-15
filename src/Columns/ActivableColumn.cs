@@ -1,10 +1,10 @@
-﻿using Meridian2.Theseus;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
+using TwistedDescent.Theseus;
 
-namespace Meridian2.Columns; 
+namespace TwistedDescent.Columns; 
 
 public class ActivableColumn : Column {
     protected bool Activated;

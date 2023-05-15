@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Meridian2.Columns;
-using Meridian2.Theseus;
+using TwistedDescent.Columns;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using tainicom.Aether.Physics2D.Collision;
+using TwistedDescent.Theseus;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public sealed class SoundEngine {
 

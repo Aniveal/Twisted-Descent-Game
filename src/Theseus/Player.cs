@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
-using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Joints;
+using TwistedDescent.GameElements;
 
-namespace Meridian2.Theseus; 
+namespace TwistedDescent.Theseus; 
 
 public class Player : DrawableGameElement {
     private const int DashCoolDown = 5000;

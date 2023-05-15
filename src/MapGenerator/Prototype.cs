@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public class Prototype {
     //Thist class stores information about tiles on the world map.

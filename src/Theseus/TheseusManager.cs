@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2.Theseus; 
+namespace TwistedDescent.Theseus; 
 
 public class TheseusManager {
     private readonly RopeGame _game;

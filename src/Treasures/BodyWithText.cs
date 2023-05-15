@@ -1,6 +1,4 @@
-﻿using Meridian2.GameElements;
-using Meridian2.Theseus;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -9,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
+using TwistedDescent.GameElements;
+using TwistedDescent.Theseus;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Meridian2.Treasures {
+namespace TwistedDescent.Treasures {
     public class BodyWithText : DrawableGameElement {
 
         private RopeGame _game;

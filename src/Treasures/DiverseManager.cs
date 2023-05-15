@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Meridian2.Columns; //TODO: move amphoras into treasures and refactor it to diverse?
+using TwistedDescent.Columns; //TODO: move amphoras into treasures and refactor it to diverse?
 
-namespace Meridian2.Treasures {
+namespace TwistedDescent.Treasures {
 
     public class DiverseManager {
 

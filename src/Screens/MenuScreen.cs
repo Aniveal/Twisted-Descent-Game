@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Meridian2.Screens;
+namespace TwistedDescent.Screens;
 
 public class MenuScreen : Screen {
     private readonly List<Component> _components;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 internal class Node {
     //A list of all neighbours (adjacency list)

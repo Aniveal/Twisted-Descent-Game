@@ -1,8 +1,8 @@
-using Meridian2.Columns;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TwistedDescent.Columns;
 
-namespace Meridian2.Gui;
+namespace TwistedDescent.Gui;
 
 public class GuiManager {
     private readonly RopeGame _game;

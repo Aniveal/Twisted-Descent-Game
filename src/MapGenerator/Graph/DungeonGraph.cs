@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Meridian2;
+namespace TwistedDescent;
 
 internal class DungeonGraph {
     private const int MinRoomSize = 10;

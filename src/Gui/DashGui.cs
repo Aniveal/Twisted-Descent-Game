@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
-using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TwistedDescent.GameElements;
 
-namespace Meridian2.Gui;
+namespace TwistedDescent.Gui;
 
 public class DashGui : DrawableGameElement
 {

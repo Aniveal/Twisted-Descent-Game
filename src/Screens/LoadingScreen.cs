@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Meridian2.Screens;
+namespace TwistedDescent.Screens;
 
 public class LoadingScreen : Screen
 {

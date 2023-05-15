@@ -1,9 +1,9 @@
-﻿using Meridian2.Theseus;
+﻿using TwistedDescent.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Meridian2.Columns;
+namespace TwistedDescent.Columns;
 
 public class FragileColumn : ActivableColumn {
     private readonly Texture2D _brokenTexture;

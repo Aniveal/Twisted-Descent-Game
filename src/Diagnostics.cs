@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Xml.Linq;
-using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TwistedDescent.Theseus;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public sealed class Diagnostics {
     private const double MsgFrequency = 1.0f;

@@ -1,11 +1,11 @@
-using Meridian2.GameElements;
-using Meridian2.Theseus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Contacts;
+using TwistedDescent.GameElements;
+using TwistedDescent.Theseus;
 
-namespace Meridian2.Treasures; 
+namespace TwistedDescent.Treasures; 
 
 public class Chest : IDrawableObject {
     public Body Body;

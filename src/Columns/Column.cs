@@ -1,9 +1,9 @@
-﻿using Meridian2.GameElements;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
+using TwistedDescent.GameElements;
 
-namespace Meridian2.Columns;
+namespace TwistedDescent.Columns;
 
 public class Column : DrawableGameElement {
     public Body Body;

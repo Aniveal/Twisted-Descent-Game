@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Meridian2
+namespace TwistedDescent
 {
     internal class TreasureRoom : Room
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Meridian2; 
+namespace TwistedDescent; 
 
 public class EndRoom : Room{
 

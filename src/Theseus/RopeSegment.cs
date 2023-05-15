@@ -1,11 +1,11 @@
 ﻿using System;
-using Meridian2.Columns;
-using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
+using TwistedDescent.Columns;
+using TwistedDescent.GameElements;
 
-namespace Meridian2.Theseus;
+namespace TwistedDescent.Theseus;
 
 public class RopeSegment : DrawableGameElement {
     private const float RopeDensity = 0.2f;

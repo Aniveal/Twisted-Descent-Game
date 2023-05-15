@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 // using System.Drawing;
 using System.Linq;
-using Meridian2.Columns;
-using Meridian2.GameElements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Joints;
+using TwistedDescent.Columns;
+using TwistedDescent.GameElements;
 
-namespace Meridian2.Theseus;
+namespace TwistedDescent.Theseus;
 
 public class Rope : DrawableGameElement {
     public const float TextureHeight = 0.1f;

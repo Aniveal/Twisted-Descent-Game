@@ -1,11 +1,11 @@
-﻿using Meridian2.Columns;
-using Meridian2.Enemy;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Dynamics;
+using TwistedDescent.Columns;
+using TwistedDescent.Enemy;
 
-namespace Meridian2.Screens; 
+namespace TwistedDescent.Screens; 
 
 public class MapScreen : Screen {
     private readonly SpriteBatch _batch;
