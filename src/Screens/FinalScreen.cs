@@ -13,8 +13,6 @@ public class FinalScreen : Screen {
     private readonly List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
-    private Texture2D _playerModel;
-    private Texture2D _enemyModel;
 
     private Texture2D _bg;
     private Texture2D _menu_img;
@@ -28,11 +26,11 @@ public class FinalScreen : Screen {
     private int h;
     private bool _timedOut;
 
+    private Color font_color = new Color(154, 134, 129);
+
     public FinalScreen(RopeGame game, ContentManager content, bool timedOut) : base(game)
     {
-        font = content.Load<SpriteFont>("Fonts/Arial40");
-        _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
-        _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle_flip");
+        font = content.Load<SpriteFont>("Fonts/damn");
 
         _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
         _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
@@ -57,11 +55,20 @@ public class FinalScreen : Screen {
         int img_height = 2 * img_width;
         spriteBatch.Draw(_menu_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
         if (_timedOut) {
-            spriteBatch.DrawString(font, "Your time ran out!", new Vector2(w / 16, h / 9 * 2), Color.White);
+            spriteBatch.DrawString(font, "Your time ran out!", new Vector2(w / 16, h / 9 * 2), font_color);
         } else {
-            spriteBatch.DrawString(font, "You Died!", new Vector2(w / 16, h / 9 * 2), Color.White);
+            spriteBatch.DrawString(font, "You Died!", new Vector2(w / 16, h / 9 * 2), font_color);
         }
-        spriteBatch.DrawString(font, "During the run, you killed " + (this.getGame().GameData.Kills) + " Enemies. Good Job!", new Vector2(w / 16, h / 9 * 3), Color.White);
+
+        int n_kills = this.getGame().GameData.Kills;
+        if (n_kills <= 0)
+        {
+            spriteBatch.DrawString(font, "During the run, you killed " + n_kills + " Enemies. Better luck next time!", new Vector2(w / 16, h / 9 * 3), font_color);
+        } else
+        {
+            spriteBatch.DrawString(font, "During the run, you killed " + n_kills + " Enemies. Good Job!", new Vector2(w / 16, h / 9 * 3), font_color);
+        }
+        
         spriteBatch.End();
     }
 
