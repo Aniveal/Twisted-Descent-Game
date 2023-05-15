@@ -133,7 +133,7 @@ public class TutorialRoom : Room
         //Corridor ground
         Horizontal(16, 11, 68, ground);
         //end tile
-        TileMap[67, 16].FinalPrototype = Mg.FinishPrototype;
+        TileMap[67, 16].FinalPrototype = Mg.FinishSmallPrototype;
         CliffSquare(55, 59, 14, 18);
     }
 

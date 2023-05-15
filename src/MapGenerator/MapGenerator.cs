@@ -12,6 +12,7 @@ public class MapGenerator {
     private List<Texture2D> _cliffTextures;
 
     public Prototype FinishPrototype;
+    public Prototype FinishSmallPrototype;
     public Prototype FinishPrototypeEmpty;
 
     //Graph of the rooms of this map, a graph consisting of rooms
