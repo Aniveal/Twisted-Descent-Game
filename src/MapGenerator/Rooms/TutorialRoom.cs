@@ -181,7 +181,7 @@ public class TutorialRoom : Room
         linePos.Add(new Vector2(39, 18.2f));
         linePos.Add(new Vector2(37, 18.2f));
         textPos.Add(new Vector2(33, 15.5f));
-        texts.Add("Prepare a sling by wrapping the string around the columns following the blue lines. \n Then press " + pull + " to break the column and sling the amhora into the enemy");
+        texts.Add("Prepare a sling by wrapping the string around the columns following the blue lines. \n Then press " + pull + " to break the column and sling the amphora into the enemy");
         //room 4
         TreasurePositions.Add(new Vector2(49, 16));
         Columns.Add(new Vector2(51.5f, 16));
