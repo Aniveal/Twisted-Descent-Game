@@ -189,7 +189,7 @@ public class Room {
             if (TileMap[(int)x, (int)y].FinalPrototype.Walkable)
             {
                 y = y - 1f;
-                if (noColumnsNear(x, y, 0.5f) && noTreasuresNear(x, y, 0.5f) && noAmphoraNear(x,y, 0.2f))
+                if (noColumnsNear(x, y, 0.5f) && noTreasuresNear(x, y, 0.5f) && noAmphoraNear(x,y, 0.4f))
                 {
                     AmphoraPositions.Add(new Vector2(x, y));
                     i++;

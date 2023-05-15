@@ -96,7 +96,7 @@ public class MapGenerator {
         Texture2D FinishTexture3 = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/exit_upperleft");
         Texture2D FinishTexture4 = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/exit_upperright");
 
-        FinishPrototype = new Prototype(FinishTexture1, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true);
+        FinishPrototype = new Prototype(FinishTexture1, null, "finish", new int[] { 0, 0, 0, 0 }, 0, false);
 
         //Texture2D _exitTexture = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/Level_entrance.png");
         //Texture2D _entranceTexture = _rg.Content.Load<Texture2D>("Sprites/GroundTiles/RockTile_01");
@@ -104,10 +104,10 @@ public class MapGenerator {
         entranceExitPrototypes.Add(new Prototype(_entranceTexture_ground, _entranceTexture, "StartL", new[] { 3, 0, 1, 1 }, 1, false));
         entranceExitPrototypes.Add(new Prototype(_entranceTexture2_ground, _entranceTexture2, "StartR", new[] { 3, 0, 1, 1 }, 1, false));
 
-        entranceExitPrototypes.Add(new Prototype(FinishTexture1, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true));
-        entranceExitPrototypes.Add(new Prototype(FinishTexture2, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true));
-        entranceExitPrototypes.Add(new Prototype(FinishTexture3, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true));
-        entranceExitPrototypes.Add(new Prototype(FinishTexture4, null, "finish", new int[] { 0, 0, 0, 0 }, 0, true));
+        entranceExitPrototypes.Add(new Prototype(FinishTexture1, null, "finish", new int[] { 0, 0, 0, 0 }, 0, false));
+        entranceExitPrototypes.Add(new Prototype(FinishTexture2, null, "finish", new int[] { 0, 0, 0, 0 }, 0, false));
+        entranceExitPrototypes.Add(new Prototype(FinishTexture3, null, "finish", new int[] { 0, 0, 0, 0 }, 0, false));
+        entranceExitPrototypes.Add(new Prototype(FinishTexture4, null, "finish", new int[] { 0, 0, 0, 0 }, 0, false));
 
 
         //Load the textures we want for the Prototypes
