@@ -164,6 +164,8 @@ public class TutorialRoom : Room
         texts.Add("Wrap the string around the electric column \n and use it to electrocute the enemy");
         //Room 3
         EnemyPositions.Add(new Vector2(41, 16));
+        linePos.Add(new Vector2(37, 14));
+        linePos.Add(new Vector2(39, 14));
         Columns.Add(new Vector2(36, 16));
         columnTypes.Add(1);
         Columns.Add(new Vector2(39, 14));
@@ -174,10 +176,12 @@ public class TutorialRoom : Room
         linePos.Add(new Vector2(36f, 16));
 
         linePos.Add(new Vector2(36, 16.3f));
-        linePos.Add(new Vector2(39, 17.8f));
+        linePos.Add(new Vector2(38.8f, 17.8f));
         AmphoraPositions.Add(new Vector2(37, 16));
+        linePos.Add(new Vector2(39, 18.2f));
+        linePos.Add(new Vector2(37, 18.2f));
         textPos.Add(new Vector2(33, 15.5f));
-        texts.Add("Prepare a sling by wrapping around the top, the middle and the bottom column. \n Then press " + pull + " to break the column and sling the amhora into the enemy");
+        texts.Add("Prepare a sling by wrapping the string around the columns following the blue lines. \n Then press " + pull + " to break the column and sling the amhora into the enemy");
         //room 4
         TreasurePositions.Add(new Vector2(49, 16));
         Columns.Add(new Vector2(51.5f, 16));
