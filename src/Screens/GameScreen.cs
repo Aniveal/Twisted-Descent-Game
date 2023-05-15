@@ -61,7 +61,7 @@ public class GameScreen : Screen {
 
     public GameScreen(RopeGame game, bool tutorial) : this(game) {
         _tutorial = tutorial;
-        if (_tutorial)
+        if (_tutorial && _map.mapLevel == 1)
         {
             base.getGame().GameData.TimeLeft = 1000f;
             base.getGame().GameData.MaxTimeLeft = 1000f;
@@ -198,6 +198,12 @@ public class GameScreen : Screen {
 
         _map = new Map(Game, World, ColumnsManager, EnemyManager, diverseManager);
         _map.mapLevel = maplvl + 1;
+        if (_map.mapLevel == 2 && base.getGame().GameData.MaxTimeLeft == 1000f)
+        {
+            base.getGame().GameData.MaxTimeLeft = 120f;
+            base.getGame().GameData.TimeLeft = 60f;
+
+        }
         _map.levelFinished = false;
         this.Initialize();
         
