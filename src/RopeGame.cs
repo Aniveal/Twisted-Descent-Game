@@ -119,7 +119,7 @@ public class RopeGame : Game {
     protected override void LoadContent() {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        Font = Content.Load<SpriteFont>("Arial");
+        Font = Content.Load<SpriteFont>("Fonts/Arial");
         ColumnTexture = Content.Load<Texture2D>("circle");
     }
 

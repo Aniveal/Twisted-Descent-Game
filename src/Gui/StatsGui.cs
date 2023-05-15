@@ -39,7 +39,7 @@ public class StatsGui : DrawableGameElement
         _skull = _game.Content.Load<Texture2D>("Sprites/UI/skull_icon");
         _skull_1 = _game.Content.Load<Texture2D>("Sprites/UI/skull_icon_1");
         _skull_2 = _game.Content.Load<Texture2D>("Sprites/UI/skull_icon_2");
-        _font = _game.Content.Load<SpriteFont>("damn_ui");
+        _font = _game.Content.Load<SpriteFont>("Fonts/damn_ui");
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)

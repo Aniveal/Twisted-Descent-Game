@@ -33,7 +33,7 @@ public class TransitionScreen : Screen {
         w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
         h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
 
-        font = content.Load<SpriteFont>("Damn");
+        font = content.Load<SpriteFont>("Fonts/damn");
 
         _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
         _loading_img = content.Load<Texture2D>("Sprites/UI/loading_img");

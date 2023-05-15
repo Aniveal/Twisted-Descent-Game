@@ -80,7 +80,7 @@ public class SpearsGui : DrawableGameElement {
         _controls_e = _game.Content.Load<Texture2D>("Sprites/Controller/E");
         _controls_r = _game.Content.Load<Texture2D>("Sprites/Controller/R");
 
-        _font = _game.Content.Load<SpriteFont>("damn_ui");
+        _font = _game.Content.Load<SpriteFont>("Fonts/damn_ui");
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera) {

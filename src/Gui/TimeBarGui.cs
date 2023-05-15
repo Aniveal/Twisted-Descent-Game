@@ -45,7 +45,7 @@ public class TimeBarGui : DrawableGameElement
         _sandglas_lower_sand = _game.Content.Load<Texture2D>("Sprites/UI/sandglas_lower_sand");
         _sandglas_light_effect = _game.Content.Load<Texture2D>("Sprites/UI/sandglas_light_effect");
 
-        _font = _game.Content.Load<SpriteFont>("damn_ui");
+        _font = _game.Content.Load<SpriteFont>("Fonts/damn_ui");
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)

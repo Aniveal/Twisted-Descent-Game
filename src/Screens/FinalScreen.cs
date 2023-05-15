@@ -30,7 +30,7 @@ public class FinalScreen : Screen {
 
     public FinalScreen(RopeGame game, ContentManager content, bool timedOut) : base(game)
     {
-        font = content.Load<SpriteFont>("Arial40");
+        font = content.Load<SpriteFont>("Fonts/Arial40");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
         _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle_flip");
 

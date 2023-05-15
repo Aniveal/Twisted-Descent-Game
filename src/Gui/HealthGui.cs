@@ -29,7 +29,7 @@ public class HealthGui : DrawableGameElement
     public void LoadContent()
     {
         _heartTexture = _game.Content.Load<Texture2D>("Sprites/UI/hearth_icon");
-        _font = _game.Content.Load<SpriteFont>("damn_ui");
+        _font = _game.Content.Load<SpriteFont>("Fonts/damn_ui");
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)

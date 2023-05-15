@@ -28,7 +28,7 @@ public class MenuScreen : Screen {
 
     public MenuScreen(RopeGame game, GraphicsDevice graphicsDevice, ContentManager content) : base(game) {
         var buttonTexture = content.Load<Texture2D>("Sprites/UI/menu_selection_highlight");
-        var buttonFont = content.Load<SpriteFont>("damn");
+        var buttonFont = content.Load<SpriteFont>("Fonts/damn");
 
         _content = content;
 

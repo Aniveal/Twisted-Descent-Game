@@ -37,7 +37,7 @@ public class LoadingScreen : Screen
         w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
         h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
 
-        font = content.Load<SpriteFont>("Damn");
+        font = content.Load<SpriteFont>("Fonts/damn");
         _playerModel = content.Load<Texture2D>("Sprites/Theseus/model");
         _enemyModel = content.Load<Texture2D>("Sprites/Enemies/Minotaur/minotaur_idle_flip");
 
