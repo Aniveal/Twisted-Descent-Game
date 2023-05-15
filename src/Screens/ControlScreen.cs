@@ -93,24 +93,54 @@ public class ControlScreen : Screen {
         spriteBatch.DrawString(font, "proceed to the Exit Point.", new Vector2(horizontal_margin, vertical_margin + 2 * font_height), font_color);
         
 
+        
+        int x_pos = 8 * horizontal_margin;
+        int empty_space = 4;
+        int slash_length = (int) font.MeasureString("/").X;
+
         spriteBatch.DrawString(font, "Player Movement : ", new Vector2(horizontal_margin, vertical_margin + 4 * font_height), font_color);
-        spriteBatch.DrawString(font, "WASD / left stick", new Vector2(8 * horizontal_margin, vertical_margin + 4 * font_height), font_color);
+
+        int y_pos = vertical_margin + 4 * font_height;
+        spriteBatch.Draw(Left_Stick, new Rectangle(x_pos, y_pos, font_height, font_height), Color.White);
+
+        spriteBatch.DrawString(font, "(Left Stick) /", new Vector2(x_pos + font_height + empty_space, y_pos), font_color);
+        int string_length = (int)font.MeasureString("(Left Stick) /").X;
+        spriteBatch.Draw(WASD, new Rectangle(x_pos + font_height + 2 * empty_space + string_length, y_pos, font_height, font_height), Color.White);
+        spriteBatch.Draw(Arrow_Keys, new Rectangle(x_pos + 2 * font_height + 3 * empty_space  + string_length, y_pos, font_height, font_height), Color.White);
 
         spriteBatch.DrawString(font, "Pull the Rope : ", new Vector2(horizontal_margin, vertical_margin + 5 * font_height), font_color);
-        spriteBatch.DrawString(font, "P / RT", new Vector2(8 * horizontal_margin, vertical_margin + 5 * font_height), font_color);
+
+        y_pos = vertical_margin + 5 * font_height;
+        spriteBatch.Draw(RT, new Rectangle(x_pos, y_pos, font_height, font_height), Color.White);
+        spriteBatch.DrawString(font, "/", new Vector2(x_pos + font_height + empty_space, y_pos), font_color);
+        spriteBatch.Draw(P, new Rectangle(x_pos + font_height + 2 * empty_space + slash_length, y_pos, font_height, font_height), Color.White);
+        
 
         spriteBatch.DrawString(font, "Dash : ", new Vector2(horizontal_margin, vertical_margin + 6 * font_height), font_color);
-        spriteBatch.DrawString(font, "Space / A", new Vector2(8 * horizontal_margin, vertical_margin + 6 * font_height), font_color);
+
+        y_pos = vertical_margin + 6 * font_height;
+        spriteBatch.Draw(A, new Rectangle(x_pos, y_pos, font_height, font_height), Color.White);
+        spriteBatch.DrawString(font, "/", new Vector2(x_pos + font_height + empty_space, y_pos), font_color);
+        spriteBatch.Draw(Space, new Rectangle(x_pos + font_height + 2 * empty_space + slash_length, y_pos, font_height, font_height), Color.White);
 
         spriteBatch.DrawString(font, "Change between Spears : ", new Vector2(horizontal_margin, vertical_margin + 7 * font_height), font_color);
-        spriteBatch.DrawString(font, "Q, E / LB, RB", new Vector2(8 * horizontal_margin, vertical_margin + 7 * font_height), font_color);
+
+        y_pos = vertical_margin + 7 * font_height;
+        spriteBatch.Draw(LB, new Rectangle(x_pos, y_pos, font_height, font_height), Color.White);
+        spriteBatch.Draw(RB, new Rectangle(x_pos + font_height + empty_space, y_pos, font_height, font_height), Color.White);
+        spriteBatch.DrawString(font, "/", new Vector2(x_pos + 2 * font_height + 2 * empty_space, y_pos), font_color);
+        spriteBatch.Draw(Q, new Rectangle(x_pos + 2 * font_height + 3 * empty_space + slash_length, y_pos, font_height, font_height), Color.White);
+        spriteBatch.Draw(E, new Rectangle(x_pos + 3 * font_height + 4 * empty_space + slash_length, y_pos, font_height, font_height), Color.White);
 
         spriteBatch.DrawString(font, "Place a Spear: ", new Vector2(horizontal_margin, vertical_margin + 8 * font_height), font_color);
-        spriteBatch.DrawString(font, "R / X", new Vector2(8 * horizontal_margin, vertical_margin + 8 * font_height), font_color);
+
+        y_pos = vertical_margin + 8 * font_height;
+        spriteBatch.Draw(X, new Rectangle(x_pos, y_pos, font_height, font_height), Color.White);
+        spriteBatch.DrawString(font, "/", new Vector2(x_pos + font_height + empty_space, y_pos), font_color);
+        spriteBatch.Draw(R, new Rectangle(x_pos + font_height + 2 * empty_space + slash_length, y_pos, font_height, font_height), Color.White);
 
         spriteBatch.DrawString(font, "Pause/Back to Menu: ", new Vector2(horizontal_margin, vertical_margin + 9 * font_height), font_color);
-        spriteBatch.DrawString(font, "Esc / start", new Vector2(8 * horizontal_margin, vertical_margin + 9 * font_height), font_color);
-
+        spriteBatch.DrawString(font, "Start / Esc", new Vector2(8 * horizontal_margin, vertical_margin + 9 * font_height), font_color);
 
         spriteBatch.End();
     }
