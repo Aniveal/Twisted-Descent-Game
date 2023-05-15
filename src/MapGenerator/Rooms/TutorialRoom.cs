@@ -153,7 +153,9 @@ public class TutorialRoom : Room
         //room 1
         EnemyPositions.Add(new Vector2 (20, 16.5f));
         textPos.Add(new Vector2(16, 15.5f));
-        texts.Add("Dash with " + dash + " to throw the enemy into the wall with the rope");
+        texts.Add("Dash with " + dash + " along the blue line to throw the enemy into the wall with the rope");
+        linePos.Add(new Vector2(21, 15.5f));
+        linePos.Add(new Vector2(21, 17));
         //Room 2
         EnemyPositions.Add(new Vector2(29.5f, 15.5f));
         Columns.Add(new Vector2(28, 15.5f));
