@@ -8,10 +8,10 @@ public class EndRoom : Room{
 
     public EndRoom(MapGenerator mg, List<Prototype> protList, int index) : base(mg, 0, 0, 8, 8, index, protList, 0)
     {
-        setTile(4, 3, mg.entranceExitPrototypes[1]);
-        setTile(3, 3, mg.entranceExitPrototypes[1]);
-        setTile(4, 4, mg.entranceExitPrototypes[0]);
-        setTile(3, 4, mg.entranceExitPrototypes[1]);
+        setTile(4, 3, mg.entranceExitPrototypes[3]);
+        setTile(3, 3, mg.entranceExitPrototypes[5]);
+        setTile(4, 4, mg.entranceExitPrototypes[2]);
+        setTile(3, 4, mg.entranceExitPrototypes[4]);
 
         for (int x = 2; x < 6; x++)
             for (int y = 2; y < 6; y++)

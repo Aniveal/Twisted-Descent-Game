@@ -17,8 +17,8 @@ public class StartRoom : Room{
                 setWalkable(x, y);
         innerOpening(3, 3);
 
-        this.setTile(3, 1, mg.entranceExitPrototypes[2]);
-        this.setTile(4, 1, mg.entranceExitPrototypes[3]);
+        this.setTile(3, 1, mg.entranceExitPrototypes[0]);
+        this.setTile(4, 1, mg.entranceExitPrototypes[1]);
 
         this.PosX = pX;
         this.PosY = pY;
