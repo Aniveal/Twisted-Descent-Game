@@ -104,6 +104,8 @@ public class Map : DrawableGameElement {
             _game._transitionScreen.gameLoaded = false;
             _game._transitionScreen.timer = 0;
             _game.ChangeState(RopeGame.State.Transition);
+            //adding time when reaching level end
+            _game.GameData.AddTime(10);
 
             return false;
         }
