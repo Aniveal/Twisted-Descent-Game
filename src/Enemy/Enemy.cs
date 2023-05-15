@@ -296,13 +296,13 @@ public class Enemy : DrawableGameElement {
                 if (_dash && (DashTimer >= DashUsageTime))
                 {
                     _dash = false;
-                    _enemyForce = 0.004f;
+                    _enemyForce = 0.003f;
                     DashTimer = 0;
                 }
             }
             else
             {
-                _enemyForce = 0.004f;
+                _enemyForce = 0.003f;
             }
             
             
