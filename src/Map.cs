@@ -405,6 +405,11 @@ public class Map : DrawableGameElement {
                     BodyWithText text = new BodyWithText(_game, MapToWorld(tr.textPos[i].X + r.PosX, tr.textPos[i].Y + r.PosY), 3, _world, tr.texts[i], font);
                     Dm.Add(text);
                 }
+                for (int i = 0; i < tr.linePos.Count; i+=2) {
+                    GuideLine line = new GuideLine(_game, MapToWorld(tr.linePos[i].X + r.PosX, tr.linePos[i].Y + r.PosY), 
+                        MapToWorld(tr.linePos[i+1].X + r.PosX, tr.linePos[i+1].Y + r.PosY));
+                    Dm.Add(line);
+                }
             }
         }
     }

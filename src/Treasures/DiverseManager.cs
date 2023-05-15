@@ -11,11 +11,13 @@ namespace Meridian2.Treasures {
         private List<Amphora> amphoras;
         private List<Chest> treasures;
         private List<BodyWithText> texts;
+        private List<GuideLine> lines;
 
         public DiverseManager() {
             amphoras = new List<Amphora>();
             treasures = new List<Chest>();
             texts = new List<BodyWithText>();
+            lines = new List<GuideLine>();
         }
 
         public void Add(Amphora amphora) {
@@ -28,6 +30,10 @@ namespace Meridian2.Treasures {
 
         public void Add(BodyWithText body) {
             texts.Add(body);
+        }
+
+        public void Add(GuideLine line) {
+            lines.Add(line);
         }
 
         public void LoadContent() {
@@ -75,6 +81,9 @@ namespace Meridian2.Treasures {
                 if (t.onDisplay) {
                     t.Draw(gameTime, batch, camera);
                 }
+            }
+            foreach(GuideLine l in lines) {
+                l.Draw(gameTime, batch, camera);
             }
         }
     }

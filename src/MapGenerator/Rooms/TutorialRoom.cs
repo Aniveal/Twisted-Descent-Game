@@ -9,6 +9,7 @@ public class TutorialRoom : Room
 {
     public List<Vector2> textPos = new List<Vector2>();
     public List<string> texts = new List<string>();
+    public List<Vector2> linePos = new List<Vector2>();
     public TutorialRoom(MapGenerator mg, List<Prototype> protList) : base(mg, -9, -16, 80, 32, 1, protList, 0) {
         PlaceTiles();
         PlaceElements();
@@ -152,7 +153,7 @@ public class TutorialRoom : Room
         //room 1
         EnemyPositions.Add(new Vector2 (20, 16.5f));
         textPos.Add(new Vector2(16, 15.5f));
-        texts.Add("Dash with " + dash + " to slam the enemy into the wall");
+        texts.Add("Dash with " + dash + " to throw the enemy into the wall with the rope");
         //Room 2
         EnemyPositions.Add(new Vector2(29.5f, 15.5f));
         Columns.Add(new Vector2(28, 15.5f));
@@ -160,14 +161,19 @@ public class TutorialRoom : Room
         textPos.Add(new Vector2(24, 15.5f));
         texts.Add("Wrap the string around the electric column \n and use it to electrocute the enemy");
         //Room 3
-        EnemyPositions.Add(new Vector2(42, 16));
+        EnemyPositions.Add(new Vector2(41, 16));
         Columns.Add(new Vector2(36, 16));
         columnTypes.Add(1);
         Columns.Add(new Vector2(39, 14));
         columnTypes.Add(0);
         Columns.Add(new Vector2(39, 18));
         columnTypes.Add(0);
-        AmphoraPositions.Add(new Vector2(38, 16));
+        linePos.Add(new Vector2(39, 14.3f));
+        linePos.Add(new Vector2(36f, 16));
+
+        linePos.Add(new Vector2(36, 16.3f));
+        linePos.Add(new Vector2(39, 17.8f));
+        AmphoraPositions.Add(new Vector2(37, 16));
         textPos.Add(new Vector2(33, 15.5f));
         texts.Add("Prepare a sling by wrapping around the top, the middle and the bottom column. \n Then press " + pull + " to break the column and sling the amhora into the enemy");
         //room 4
