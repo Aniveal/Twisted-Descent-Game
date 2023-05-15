@@ -40,6 +40,8 @@ public class MapGenerator {
 
     public List<Prototype> WallPrototypes = new();
 
+    public Prototype finishSmallPrototype;
+
     public MapGenerator(RopeGame ropeGame) {
         _rg = ropeGame;
         createPrototypeLists();
@@ -92,6 +94,7 @@ public class MapGenerator {
         Texture2D _entranceTexture_ground = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/ground_level_entrance_l");
         Texture2D _entranceTexture2_ground = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/ground_level_entrance_r");
 
+        Texture2D FinishTextureSmall = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/level_exit_1_1");
         Texture2D FinishTexture1 = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/exit_lowerleft");
         Texture2D FinishTexture2 = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/exit_lowerright");
         Texture2D FinishTexture3 = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/exit_upperleft");
@@ -101,6 +104,8 @@ public class MapGenerator {
 
         //Texture2D _exitTexture = _rg.Content.Load<Texture2D>("Sprites/EntranceExit/Level_entrance.png");
         //Texture2D _entranceTexture = _rg.Content.Load<Texture2D>("Sprites/GroundTiles/RockTile_01");
+
+        FinishSmallPrototype = new Prototype(FinishTextureSmall, null, "finish", new[] { 0, 0, 0, 0 }, 1, false);
 
         entranceExitPrototypes.Add(new Prototype(_entranceTexture_ground, _entranceTexture, "StartL", new[] { 3, 0, 1, 1 }, 1, false));
         entranceExitPrototypes.Add(new Prototype(_entranceTexture2_ground, _entranceTexture2, "StartR", new[] { 3, 0, 1, 1 }, 1, false));
