@@ -9,7 +9,7 @@ namespace Meridian2.Theseus;
 
 public class RopeSegment : DrawableGameElement {
     private const float RopeDensity = 0.2f;
-    private const int ElecRange = 30; //range in segments
+    private const int ElecRange = 35; //range in segments
     private readonly Vector2 _position;
     private readonly Rope _rope;
     private readonly Vector2 _size;
