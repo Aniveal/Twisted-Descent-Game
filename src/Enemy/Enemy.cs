@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -379,16 +380,19 @@ public class Enemy : DrawableGameElement {
         if (deathStart > 0)
         {
             var deathDuration = 400f; //ms
-            var deathFrameIdx = (int)(deathStart / deathDuration) % 5;
+            var TimeSinceDeath = gameTime.TotalGameTime.TotalMilliseconds - deathStart;
+            var deathFrameIdx = (int)((5 * TimeSinceDeath / deathDuration) % 5);
+
             batch.Draw(
-            _deathAnimation,
-            spritePos,
-            new Rectangle(deathFrameIdx * 512, 0, 512, 768),
-            color,
-            0f,
-            Vector2.Zero,
-            SpriteEffects.None,
-            camera.getLayerDepth(spritePos.Y + spritePos.Height));
+                _deathAnimation,
+                spritePos,
+                new Rectangle(deathFrameIdx * 512, 0, 512, 768),
+                color,
+                0f,
+                Vector2.Zero,
+                SpriteEffects.None,
+                camera.getLayerDepth(spritePos.Y + spritePos.Height)
+            );
             return;
         }
 
