@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Microsoft.Xna.Framework;
 using TwistedDescent.Screens;
+using System.Diagnostics;
 
 namespace TwistedDescent; 
 
@@ -14,6 +15,11 @@ public class GameData {
 
     public int Score = 0;
     public int Kills = 0;
+
+    private int previousKills = 0;
+    private int KillStreak = 0;
+    private double LastKillms = 0;
+    private double KillStreakTimeWindow = 1000; // ms, if next kill happens within this many milliseconds, it counts towards current killstreak
 
     public double TimeLeft = 60f;
     public double MaxTimeLeft = 120f;
@@ -50,6 +56,34 @@ public class GameData {
         if (TimeLeft > MaxTimeLeft) {
             TimeLeft = MaxTimeLeft;
         }
+    }
+
+    public int updateKillStreak(Double totalMilliseconds)
+    {
+        bool killStreakContinues = (LastKillms + KillStreakTimeWindow >= totalMilliseconds); // true if we are still within killstreak timewindow
+        var killDifference = Kills - previousKills; // how many kills happend since last call
+
+        previousKills = Kills;
+
+        if (killDifference > 0)     // a kill happend
+        {
+            LastKillms = totalMilliseconds;   // update time of last kill
+
+            if (killStreakContinues)   // kill happend within killstreak
+            {
+                KillStreak += killDifference;
+            }
+            else  // start a new killstreak
+            {           
+                KillStreak = killDifference;
+            }
+        }
+        else if (!killStreakContinues)  // no new kill and time on killstreak run out
+        {
+            KillStreak = 0;
+        }
+
+        return KillStreak;
     }
     
     public void resetHealth() {

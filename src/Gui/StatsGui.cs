@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TwistedDescent.GameElements;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TwistedDescent.Gui;
 
@@ -16,16 +17,20 @@ public class StatsGui : DrawableGameElement
     private Texture2D _skull_1;
     private Texture2D _skull_2;
     private SpriteFont _font;
+    private SpriteFont _msg_font;
 
     private int max_skulls;
-    private int skull_size;
+    private int skull_size = 42 + 5;
+    private int margin = 10;
+
+    private Color text_color = new Color(154, 139, 141);
+    private Color text_background_color = new Color(34, 35, 35);
+    private int text_outline_size = 1; // pixels
 
     public StatsGui(RopeGame game, GameData data)
     {
         _game = game;
         _data = data;
-
-        skull_size = 42 + 5;
 
         // maximum number of skulls shown depends on the width of the screen
         var viewportWidth = _game.GraphicsDevice.Viewport.Width;
@@ -40,18 +45,30 @@ public class StatsGui : DrawableGameElement
         _skull_1 = _game.Content.Load<Texture2D>("Sprites/UI/skull_icon_1");
         _skull_2 = _game.Content.Load<Texture2D>("Sprites/UI/skull_icon_2");
         _font = _game.Content.Load<SpriteFont>("Fonts/damn_ui");
+        _msg_font = _game.Content.Load<SpriteFont>("Fonts/damn");
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
     {
         var viewportWidth = _game.GraphicsDevice.Viewport.Width;
-        var margin = 10;
-
+        
         // Write the level
         var text = "Level " + _game._gameScreen._map.mapLevel;
         var stringSize = _font.MeasureString(text);
         batch.DrawString(_font, text, new Vector2(viewportWidth / 2f - stringSize.X / 2, margin), new(170, 54, 54), 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+
+        // Killstreak
+        var killstreak = _data.updateKillStreak(gameTime.TotalGameTime.TotalMilliseconds);
         
+        if (killstreak > 0)
+        {
+            var msg = KillstreakMessage(killstreak);
+            var msgSize = _font.MeasureString(msg);
+            // old Color: new(170, 54, 54)
+            DrawStringWithOutline(batch, _msg_font, msg, new Vector2(viewportWidth / 2f - msgSize.X / 2, margin + msgSize.Y), 2, new(170, 54, 54), text_background_color);
+            
+        }
+
         // Writing the number of Skills as a number
         text = _data.Kills.ToString();
         stringSize = _font.MeasureString(text);
@@ -61,17 +78,8 @@ public class StatsGui : DrawableGameElement
             text = " " + text;
 
         var text_position = new Vector2(margin, margin);
-        var text_color = new Color(154, 139, 141);
-        var text_background_color = new Color(34, 35, 35);
-        var text_outline_size = 1; // pixels
 
-        batch.DrawString(_font, text, text_position, text_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-        // Drawing a black outline around the text:
-        batch.DrawString(_font, text, new Vector2(text_position.X - text_outline_size, text_position.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
-        batch.DrawString(_font, text, new Vector2(text_position.X - text_outline_size, text_position.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
-        batch.DrawString(_font, text, new Vector2(text_position.X + text_outline_size, text_position.Y - text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
-        batch.DrawString(_font, text, new Vector2(text_position.X + text_outline_size, text_position.Y + text_outline_size), text_background_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
-
+        DrawStringWithOutline(batch, _font, text, text_position, text_outline_size, text_color, text_background_color);
 
         // Drawing Skull Icons
         var n_skulls = Math.Min(max_skulls, _data.Kills);
@@ -100,5 +108,45 @@ public class StatsGui : DrawableGameElement
                 batch.Draw(skull_sprite, skull_pos, null, skull_color, 0f, Vector2.Zero, SpriteEffects.None, 1f - i * 0.001f);
             }
         }
+    }
+
+    private void DrawStringWithOutline(SpriteBatch batch, SpriteFont font, String text, Vector2 position, int outlineSize, Color fontColor, Color outlineColor)
+    {
+        batch.DrawString(font, text, position, fontColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        // Drawing a black outline around the text:
+        batch.DrawString(font, text, new Vector2(position.X - outlineSize, position.Y - outlineSize), outlineColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(font, text, new Vector2(position.X - outlineSize, position.Y + outlineSize), outlineColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(font, text, new Vector2(position.X + outlineSize, position.Y - outlineSize), outlineColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(font, text, new Vector2(position.X + outlineSize, position.Y + outlineSize), outlineColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+    }
+
+    private String KillstreakMessage(int killstreak)
+    {
+        var msg = "";
+        switch (killstreak)
+        {
+            case 1:
+                msg = "Nice Kill!";
+                break;
+            case 2:
+                msg = "Double-Kill!";
+                break;
+            case 3:
+                msg = "Tetra-Kill!";
+                break;
+            case 4:
+                msg = "Quad-Kill!";
+                break;
+            case 5:
+                msg = "Penta-Kill!";
+                break;
+            case 6:
+                msg = "Hexa-Kill!";
+                break;
+            case > 6:
+                msg = killstreak + "-Kills!";
+                break;
+        }
+        return msg;
     }
 }
