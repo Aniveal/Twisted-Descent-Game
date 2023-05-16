@@ -36,7 +36,7 @@ public class TransitionScreen : Screen {
         font = content.Load<SpriteFont>("Fonts/damn");
 
         _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
-        _loading_img = content.Load<Texture2D>("Sprites/UI/loading_img");
+        _loading_img = content.Load<Texture2D>("Sprites/UI/loading_img_cyclop");
         _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
 
         gameLoaded = true;
@@ -54,6 +54,7 @@ public class TransitionScreen : Screen {
         spriteBatch.Draw(_menu_title, new Rectangle(100, h - title_height - 100, title_width, title_height), Color.White);
         int img_width = Math.Min(w / 2 - 150, (h - 200) / 2);
         int img_height = 2 * img_width;
+        img_width = (int)(5 * img_width / 4);
         spriteBatch.Draw(_loading_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
 
         String text = "Press Space/A  to Continue ...";
