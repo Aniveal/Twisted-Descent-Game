@@ -47,7 +47,7 @@ public class MenuScreen : Screen {
         text_box_height = Math.Max(text_box_height, 300); // Fixing overlapping 
 
         _continueButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 5 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 6 * (text_box_height / 4)),
             Text = "Continue",
             Disabled = true
         };
@@ -55,25 +55,33 @@ public class MenuScreen : Screen {
         _continueButton.Click += ContinueButton_Click;
 
         Button tutorialButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 5 * (text_box_height / 4)),
             Text = "Tutorial"
         };
 
         tutorialButton.Click += TutorialButton_Click;
 
         var newGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 3 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
             Text = "New Game"
         };
 
         newGameButton.Click += NewGameButton_Click;
 
-        var controlsButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 2 * (text_box_height / 4)),
+        var controlsButton = new Button(buttonTexture, buttonFont)
+        {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 3 * (text_box_height / 4)),
             Text = "Controls",
         };
 
         controlsButton.Click += ControlsButton_Click;
+
+        var optionsButton = new Button(buttonTexture, buttonFont) {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 2 * (text_box_height / 4)),
+            Text = "Options",
+        };
+
+        optionsButton.Click += OptionsButton_Click;
 
         var quitGameButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(w - 100 - text_box_width, h - 120 - 1 * (text_box_height / 4)),
@@ -86,6 +94,7 @@ public class MenuScreen : Screen {
             _continueButton,
             tutorialButton,
             newGameButton,
+            optionsButton,
             controlsButton,
             quitGameButton
         };
@@ -128,6 +137,13 @@ public class MenuScreen : Screen {
 
     private void QuitGameButton_Click(object sender, EventArgs e) {
         base.getGame().Exit();
+    }
+
+    private void OptionsButton_Click(object sender, EventArgs e)
+    {
+        base.getGame()._optionsScreen = new OptionsScreen(base.getGame(), _content);
+        base.getGame()._optionsScreen.Initialize();
+        base.getGame().ChangeState(RopeGame.State.Options);
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {

@@ -9,6 +9,7 @@ namespace TwistedDescent;
 public class RopeGame : Game {
     private const int TargetFrameRate = 144;
 
+    public OptionsScreen _optionsScreen;
     public MapScreen _mapScreen;
     public GameScreen _gameScreen;
     public MenuScreen _menuScreen;
@@ -28,6 +29,9 @@ public class RopeGame : Game {
 
     public GameData GameData;
 
+    public int displayWidth;
+    public int displayHeight;
+
     private State _currentState;
     private bool gameScreen = true;
 
@@ -35,7 +39,7 @@ public class RopeGame : Game {
     private int currentWidth;
     private int currentHeight;
 
-    bool isFullscreen = true;
+    public bool isFullscreen = false;
     public bool controller_connected = true;
 
     public enum State {
@@ -46,7 +50,8 @@ public class RopeGame : Game {
         Tutorial,
         Controls,
         Transition,
-        Final
+        Final,
+        Options
     }
 
     public RopeGame() {
@@ -87,8 +92,22 @@ public class RopeGame : Game {
         {
             _currentScreen = _finalScreen;
         }
+        else if (state == State.Options)
+        {
+            _currentScreen = _optionsScreen;
+        }
 
         _currentState = state;
+    }
+
+    public void setFullscreen(bool fullscreen)
+    {
+        isFullscreen = fullscreen;
+        Graphics.PreferredBackBufferWidth = displayWidth;
+        Graphics.PreferredBackBufferHeight = displayHeight;
+        Graphics.IsFullScreen = isFullscreen;
+        Graphics.ApplyChanges();
+        this.Window.Position = new Point(50, 50);
     }
 
     protected override void Initialize() {
@@ -99,10 +118,11 @@ public class RopeGame : Game {
         TargetElapsedTime = new TimeSpan((long)temp);
 
         // Set resolution
-        Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-        Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-        Graphics.IsFullScreen = isFullscreen;
-        Graphics.ApplyChanges();
+        displayWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        displayHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        Graphics.PreferredBackBufferWidth = displayWidth;
+        Graphics.PreferredBackBufferHeight = displayHeight;
+        setFullscreen(isFullscreen);
 
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
