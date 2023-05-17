@@ -17,8 +17,8 @@ public sealed class SoundEngine {
 
     }
 
-    public float musicVolume = 1f;
-    public float effectVolume = 1f;
+    public float musicVolume;
+    public float effectVolume;
     
     RopeGame _game;
 

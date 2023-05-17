@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using tainicom.Aether.Physics2D.Common;
 
 namespace TwistedDescent.Screens;
 
@@ -82,6 +84,8 @@ public class OptionsScreen : Screen
 
         effectVolumeButton.Click += EffectVolume_Clicked;
 
+        
+
         _components = new List<Component> {
             backButton,
             fullscreenButton,
@@ -92,6 +96,8 @@ public class OptionsScreen : Screen
 
     private void BackButton_Clicked(object sender, EventArgs e)
     {
+        _game.SaveSettings();
+
         base.getGame()._menuScreen = new MenuScreen(base.getGame(), base.getGame().GraphicsDevice, _content);
         base.getGame()._menuScreen.Initialize();
         base.getGame().ChangeState(RopeGame.State.MainMenu);

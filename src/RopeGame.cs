@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using tainicom.Aether.Physics2D;
 using TwistedDescent.Screens;
 
 namespace TwistedDescent;
@@ -39,7 +42,7 @@ public class RopeGame : Game {
     private int currentWidth;
     private int currentHeight;
 
-    public bool isFullscreen = false;
+    public bool isFullscreen;
     public bool controller_connected = true;
 
     public enum State {
@@ -143,16 +146,44 @@ public class RopeGame : Game {
         ColumnTexture = Content.Load<Texture2D>("circle");
     }
 
-    private void ToggleFullscreen() {
-        // if (Graphics.IsFullScreen) {
-        //     Graphics.IsFullScreen = false;
-        //     Graphics.HardwareModeSwitch = true;
-        // } else {
-        //     Graphics.IsFullScreen = true;
-        //     Graphics.HardwareModeSwitch = false;
-        // }
-        //
-        // Graphics.ApplyChanges();
+    public void LoadSettings()
+    {
+        string dir = Directory.GetCurrentDirectory() + "/settings.ini";
+
+        if (!File.Exists(dir))
+        {
+            setFullscreen(false);
+            SoundEngine.Instance.SetEffectVolume(1f);
+            SoundEngine.Instance.SetMusicVolume(1f);
+            return;
+        }
+
+        using (StreamReader settings = File.OpenText(dir))
+        {
+            setFullscreen(bool.Parse(settings.ReadLine()));
+            SoundEngine.Instance.SetEffectVolume(float.Parse(settings.ReadLine()));
+            SoundEngine.Instance.SetMusicVolume(float.Parse(settings.ReadLine()));
+        }
+    }
+
+    public void SaveSettings()
+    {
+        string dir = Directory.GetCurrentDirectory() + "/settings.ini";
+
+        using (StreamWriter settings = File.CreateText(dir))
+        {
+            settings.WriteLine(isFullscreen);
+            settings.WriteLine(SoundEngine.Instance.effectVolume);
+            settings.WriteLine(SoundEngine.Instance.musicVolume);
+        }
+    }
+
+
+
+    private void ToggleFullscreen() 
+    {
+        isFullscreen = !isFullscreen;
+        setFullscreen(isFullscreen);
     }
     
     protected override void Update(GameTime gameTime) {

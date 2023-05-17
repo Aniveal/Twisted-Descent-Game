@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
@@ -31,6 +32,8 @@ public class MenuScreen : Screen {
         var buttonFont = content.Load<SpriteFont>("Fonts/damn");
 
         _content = content;
+
+        _game.LoadSettings();
 
         _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
         _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
