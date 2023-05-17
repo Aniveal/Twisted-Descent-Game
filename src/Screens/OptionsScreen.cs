@@ -66,9 +66,27 @@ public class OptionsScreen : Screen
 
         fullscreenButton.Click += FullscreenButton_Clicked;
 
+        var musicVolumeButton = new Button(buttonTexture, buttonFont)
+        {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 5 * (text_box_height / 4)),
+            Text = "Music Volume: " + SoundEngine.Instance.musicVolume.ToString("F1")
+        };
+
+        musicVolumeButton.Click += MusicVolume_Clicked;
+
+        var effectVolumeButton = new Button(buttonTexture, buttonFont)
+        {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
+            Text = "Effect Volume: " + SoundEngine.Instance.effectVolume.ToString("F1")
+        };
+
+        effectVolumeButton.Click += EffectVolume_Clicked;
+
         _components = new List<Component> {
             backButton,
-            fullscreenButton
+            fullscreenButton,
+            effectVolumeButton, 
+            musicVolumeButton
         };
     }
 
@@ -77,6 +95,30 @@ public class OptionsScreen : Screen
         base.getGame()._menuScreen = new MenuScreen(base.getGame(), base.getGame().GraphicsDevice, _content);
         base.getGame()._menuScreen.Initialize();
         base.getGame().ChangeState(RopeGame.State.MainMenu);
+    }
+
+    private void EffectVolume_Clicked(object sender, EventArgs e)
+    {
+        float vol = SoundEngine.Instance.effectVolume;
+        vol += 0.1f;
+        vol = (float)Math.Round(vol, 1);
+        if (vol > 1f)
+            vol = 0f;
+        SoundEngine.Instance.SetEffectVolume(vol);
+        Button s = sender as Button;
+        s.Text = "Effect Volume: " + SoundEngine.Instance.effectVolume.ToString("F1");
+    }
+
+    private void MusicVolume_Clicked(object sender, EventArgs e)
+    {
+        float vol = SoundEngine.Instance.musicVolume;
+        vol += 0.1f;
+        vol = (float)Math.Round(vol, 1);
+        if (vol > 1f)
+            vol = 0f;
+        SoundEngine.Instance.SetMusicVolume(vol);
+        Button s = sender as Button;
+        s.Text = "Music Volume: " + SoundEngine.Instance.musicVolume.ToString("F1");
     }
 
     private void FullscreenButton_Clicked(object sender, EventArgs e)

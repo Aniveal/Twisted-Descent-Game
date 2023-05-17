@@ -16,6 +16,9 @@ public sealed class SoundEngine {
     {
 
     }
+
+    public float musicVolume = 1f;
+    public float effectVolume = 1f;
     
     RopeGame _game;
 
@@ -77,8 +80,8 @@ public sealed class SoundEngine {
         _wilhelmScream = _game.Content.Load<SoundEffect>("Sound/WilhelmScream");
         _song = _game.Content.Load<Song>("Sound/Theseus");
 
-        MediaPlayer.Volume = 1f;
-        SoundEffect.MasterVolume = 1f;
+        MediaPlayer.Volume = musicVolume;
+        SoundEffect.MasterVolume = effectVolume;
 
         MediaPlayer.IsRepeating = true;
 
@@ -103,11 +106,13 @@ public sealed class SoundEngine {
 
     public void SetEffectVolume(float volume)
     {
+        this.effectVolume = volume;
         SoundEffect.MasterVolume = volume;
     }
 
     public void SetMusicVolume(float volume)
     {
+        this.musicVolume = volume;
         MediaPlayer.Volume = volume;
     }
 
