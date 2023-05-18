@@ -3,6 +3,7 @@ using System;
 using Microsoft.Xna.Framework;
 using TwistedDescent.Screens;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace TwistedDescent; 
 
@@ -37,6 +38,8 @@ public class GameData {
         GameOver = false;
         _game = game;
         Spears = new int[3] { 5, 0, 0 }; //define initial spears amount, basic/electric/fragile
+
+        
     }
 
     public int Health { private set; get; }

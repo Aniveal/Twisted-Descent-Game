@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
@@ -43,6 +44,10 @@ public class RopeGame : Game {
     private int currentHeight;
 
     public bool isFullscreen;
+    public int resolutionIndex; //refers to the different resolutions in GameData
+    public List<Point> resolutions;
+    public List<string> resolutionTexts;
+
     public bool controller_connected = true;
 
     public enum State {
@@ -61,6 +66,34 @@ public class RopeGame : Game {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+
+        resolutions = new List<Point>()
+        {
+            new Point(1280, 720), //0
+            new Point(1280, 1024), //1
+            new Point(1440, 900), //2
+            new Point(1600, 900), //3
+            new Point(1600, 1200), //4
+            new Point(1920, 1080), //5
+            new Point(2560, 1080), //6 
+            new Point(2560, 1440), //7
+            new Point(2560, 1600), //8
+            new Point(3840, 2160) //9
+        };
+
+        resolutionTexts = new List<string>()
+        {
+            "1280 x 720",
+            "1280 x 1024",
+            "1440 x 900",
+            "1600 x 900",
+            "1600 x 1200",
+            "1920 x 1080",
+            "2560 x 1080",
+            "2560 x 1440",
+            "2560 x 1600",
+            "3048 x 2160"
+        };
     }
 
     public void ResetGame() {
@@ -106,8 +139,8 @@ public class RopeGame : Game {
     public void setFullscreen(bool fullscreen)
     {
         isFullscreen = fullscreen;
-        Graphics.PreferredBackBufferWidth = displayWidth;
-        Graphics.PreferredBackBufferHeight = displayHeight;
+        Graphics.PreferredBackBufferWidth = resolutions[resolutionIndex].X;
+        Graphics.PreferredBackBufferHeight = resolutions[resolutionIndex].Y;
         Graphics.IsFullScreen = isFullscreen;
         Graphics.ApplyChanges();
         this.Window.Position = new Point(50, 50);
@@ -125,7 +158,7 @@ public class RopeGame : Game {
         displayHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
         Graphics.PreferredBackBufferWidth = displayWidth;
         Graphics.PreferredBackBufferHeight = displayHeight;
-        setFullscreen(isFullscreen);
+        
 
         _menuScreen = new MenuScreen(this, GraphicsDevice, Content);
         _menuScreen.Initialize();
@@ -134,6 +167,8 @@ public class RopeGame : Game {
 
         currentWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
         currentHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
+
+        setFullscreen(isFullscreen);
 
         SoundEngine.Instance.SetRopeGame(this);
         SoundEngine.Instance.playTheme();
@@ -150,19 +185,24 @@ public class RopeGame : Game {
     {
         string dir = Directory.GetCurrentDirectory() + "/settings.ini";
 
-        if (!File.Exists(dir))
+        try
         {
+            using (StreamReader settings = File.OpenText(dir))
+            {
+                resolutionIndex = int.Parse(settings.ReadLine());
+                setFullscreen(bool.Parse(settings.ReadLine()));
+                SoundEngine.Instance.SetEffectVolume(float.Parse(settings.ReadLine()));
+                SoundEngine.Instance.SetMusicVolume(float.Parse(settings.ReadLine()));
+            }
+        }
+
+        catch
+        {
+            resolutionIndex = 0;
             setFullscreen(false);
             SoundEngine.Instance.SetEffectVolume(1f);
             SoundEngine.Instance.SetMusicVolume(1f);
             return;
-        }
-
-        using (StreamReader settings = File.OpenText(dir))
-        {
-            setFullscreen(bool.Parse(settings.ReadLine()));
-            SoundEngine.Instance.SetEffectVolume(float.Parse(settings.ReadLine()));
-            SoundEngine.Instance.SetMusicVolume(float.Parse(settings.ReadLine()));
         }
     }
 
@@ -172,6 +212,7 @@ public class RopeGame : Game {
 
         using (StreamWriter settings = File.CreateText(dir))
         {
+            settings.WriteLine(resolutionIndex);
             settings.WriteLine(isFullscreen);
             settings.WriteLine(SoundEngine.Instance.effectVolume);
             settings.WriteLine(SoundEngine.Instance.musicVolume);
@@ -183,6 +224,11 @@ public class RopeGame : Game {
     private void ToggleFullscreen() 
     {
         isFullscreen = !isFullscreen;
+        setFullscreen(isFullscreen);
+    }
+
+    public void ApplyResolution()
+    {
         setFullscreen(isFullscreen);
     }
     

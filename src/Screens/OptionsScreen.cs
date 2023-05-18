@@ -8,12 +8,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using tainicom.Aether.Physics2D.Common;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TwistedDescent.Screens;
 
 public class OptionsScreen : Screen
 {
-    private readonly List<Component> _components;
+    private List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
 
@@ -26,22 +27,19 @@ public class OptionsScreen : Screen
 
     private Button _activeButton;
 
+
     private int w;
     private int h;
 
-    public OptionsScreen(RopeGame game, ContentManager content) : base(game)
+    public override void Initialize()
     {
-        var buttonTexture = content.Load<Texture2D>("Sprites/UI/menu_selection_highlight");
-        var buttonFont = content.Load<SpriteFont>("Fonts/damn");
+        base.Initialize();
 
-        _content = content;
+        var buttonTexture = base.getGame().Content.Load<Texture2D>("Sprites/UI/menu_selection_highlight");
+        var buttonFont = base.getGame().Content.Load<SpriteFont>("Fonts/damn");
 
-        _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
-        _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
-        _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
-
-        w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
-        h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
+        w = base.getGame().GraphicsDevice.PresentationParameters.BackBufferWidth;
+        h = base.getGame().GraphicsDevice.PresentationParameters.BackBufferHeight;
 
         // The Buttons are aligned within a "Box" on the right half of the menu screen. 100 pixels margin to the right / bottom are left
         // The Boxes Height : Width Ratio is 2 : 3 (same as the logo). Computing the maximal size of the box:
@@ -53,7 +51,7 @@ public class OptionsScreen : Screen
 
         var backButton = new Button(buttonTexture, buttonFont)
         {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 1 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 0 * (text_box_height / 4)),
             Text = "Back"
         };
 
@@ -61,7 +59,7 @@ public class OptionsScreen : Screen
 
         var fullscreenButton = new Button(buttonTexture, buttonFont)
         {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 2 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 1 * (text_box_height / 4)),
             Text = "Fullscreen"
         };
         if (base.getGame().isFullscreen) fullscreenButton.Text = "Windowed";
@@ -70,7 +68,7 @@ public class OptionsScreen : Screen
 
         var musicVolumeButton = new Button(buttonTexture, buttonFont)
         {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 5 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
             Text = "Music Volume: " + SoundEngine.Instance.musicVolume.ToString("F1")
         };
 
@@ -78,20 +76,68 @@ public class OptionsScreen : Screen
 
         var effectVolumeButton = new Button(buttonTexture, buttonFont)
         {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 3 * (text_box_height / 4)),
             Text = "Effect Volume: " + SoundEngine.Instance.effectVolume.ToString("F1")
         };
-
         effectVolumeButton.Click += EffectVolume_Clicked;
 
-        
 
-        _components = new List<Component> {
+
+        var resolutionButton = new Button(buttonTexture, buttonFont)
+        {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 7 * (text_box_height / 4)),
+            Text = _game.resolutionTexts[_game.resolutionIndex]
+        };
+
+        resolutionButton.Click += ResolutionButton_Clicked;
+
+        var applyButton = new Button(buttonTexture, buttonFont)
+        {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 6 * (text_box_height / 4)),
+            Text = "Apply Resolution"
+        };
+
+        applyButton.Click += ApplyButton_Clicked;
+
+
+
+
+
+        this._components = new List<Component> {
             backButton,
             fullscreenButton,
-            effectVolumeButton, 
-            musicVolumeButton
+            effectVolumeButton,
+            musicVolumeButton,
+            resolutionButton,
+            applyButton
         };
+    }
+
+    public OptionsScreen(RopeGame game, ContentManager content) : base(game)
+    {
+        _content = content;
+
+        _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
+        _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
+        _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
+
+        Initialize();
+
+    }
+
+    private void ResolutionButton_Clicked(object sender, EventArgs e)
+    {
+        _game.resolutionIndex += 1;
+        if (_game.resolutionIndex >= _game.resolutions.Count) _game.resolutionIndex = 0;
+        Button b = sender as Button;
+        b.Text = _game.resolutionTexts[_game.resolutionIndex];
+    }
+
+    private void ApplyButton_Clicked(Object sender, EventArgs e)
+    {
+        _game.ApplyResolution();
+        _game.SaveSettings();
+        Initialize();
     }
 
     private void BackButton_Clicked(object sender, EventArgs e)
@@ -131,9 +177,7 @@ public class OptionsScreen : Screen
     {
         _game.isFullscreen = !_game.isFullscreen;
         _game.setFullscreen(_game.isFullscreen);
-        Button s = sender as Button;
-        if (_game.isFullscreen) s.Text = "Windowed";
-        else s.Text = "Fullscreen";
+        Initialize();
     }
 
 
