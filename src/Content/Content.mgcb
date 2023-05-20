@@ -3896,6 +3896,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Enemies/cyclop_idle_r.png
 
+#begin Sprites/Enemies/cyclop_skeleton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Enemies/cyclop_skeleton.png
+
 #begin Sprites/Enemies/cyclop_walk_b.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -4087,6 +4099,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Enemies/minotaur_idle.png
+
+#begin Sprites/Enemies/minotaur_skeleton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Enemies/minotaur_skeleton.png
 
 #begin Sprites/Enemies/minotaur_walk_b.png
 /importer:TextureImporter

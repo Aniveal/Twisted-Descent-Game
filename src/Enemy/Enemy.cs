@@ -45,6 +45,7 @@ public class Enemy : DrawableGameElement {
     private Texture2D _angryR;
     private Texture2D _angryF;
     private Texture2D _angryB;
+    private Texture2D _skeleton;
     protected readonly World _world;
 
     private int _enemySpriteWidth = 512;
@@ -61,6 +62,7 @@ public class Enemy : DrawableGameElement {
     protected float deathStart = 0;
     public bool IsAlive = true;
     public bool drawDeathAnimation = false;
+    public bool drawElectrify = false;
     public Vector2 Orientation;
 
     private Boolean _canShoot = false;
@@ -154,7 +156,7 @@ public class Enemy : DrawableGameElement {
             _angryR = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_angry_r");  // 8 frames, each one is 2000 pixels wide
             _angryF = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_angry_f");  // 8 frames, each one is 2000 pixels wide
             _angryB = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_angry_b");  // 8 frames, each one is 2000 pixels wide
-            
+            _skeleton = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_skeleton");  
         }
         else
         {
@@ -164,6 +166,7 @@ public class Enemy : DrawableGameElement {
             _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_f");  // 4 frames, each one is 512 pixels wide
             _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_b");  // 4 frames, each one is 512 pixels wide
             _deathAnimation = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_dying");  // 5 frames, each one is 512 pixels wide
+            _skeleton = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_skeleton");
         }
     }
 
@@ -187,6 +190,7 @@ public class Enemy : DrawableGameElement {
             _game.GameData.AddTime(10f);
             //IsAlive = false;
             drawDeathAnimation = true;
+            drawElectrify = true;
         }
         if (cause == 2 && !_isImmuneToAmphoras) // apmohras
         {
@@ -445,16 +449,33 @@ public class Enemy : DrawableGameElement {
             var TimeSinceDeath = gameTime.TotalGameTime.TotalMilliseconds - deathStart;
             var deathFrameIdx = (int)((5 * TimeSinceDeath / deathDuration) % 5);
 
-            batch.Draw(
-                _deathAnimation,
-                spritePos,
-                new Rectangle(deathFrameIdx * _enemySpriteWidth, 0, _enemySpriteWidth, _enemySpriteHeight),
-                color,
-                0f,
-                Vector2.Zero,
-                SpriteEffects.None,
-                camera.getLayerDepth(spritePos.Y + spritePos.Height)
-            );
+            if (drawElectrify)
+            {
+                var oppacity = (int)((TimeSinceDeath < deathDuration - 100) ? 255 : 255 * (deathDuration - TimeSinceDeath) / 100);
+                batch.Draw(
+                    _skeleton,
+                    spritePos,
+                    new Rectangle(deathFrameIdx * _enemySpriteWidth, 0, _enemySpriteWidth, _enemySpriteHeight),
+                    new Color(color, oppacity),
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(spritePos.Y + spritePos.Height)
+                );
+            }
+            else
+            {
+                batch.Draw(
+                    _deathAnimation,
+                    spritePos,
+                    new Rectangle(deathFrameIdx * _enemySpriteWidth, 0, _enemySpriteWidth, _enemySpriteHeight),
+                    color,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(spritePos.Y + spritePos.Height)
+                );
+            }
             return;
         }
 
