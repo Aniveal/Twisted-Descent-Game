@@ -23,10 +23,10 @@ public class Enemy : DrawableGameElement {
     protected float _enemyForce = 0.004f;
     private int randomDir = new Random().Next(4);
 
-    private const int DashCoolDown = 5000;
+    private const int DashCoolDown = 4000;
     private const int DashUsageTime = 400;
     private bool _dash;
-    public double DashTimer = 4000;
+    public double DashTimer = 3000;
 
     private int _reducedHealth = 1;
 
@@ -41,7 +41,14 @@ public class Enemy : DrawableGameElement {
     protected Texture2D _runningL;
     protected Texture2D _runningR;
     protected Texture2D _deathAnimation;
+    private Texture2D _angryL;
+    private Texture2D _angryR;
+    private Texture2D _angryF;
+    private Texture2D _angryB;
     protected readonly World _world;
+
+    private int _enemySpriteWidth = 512;
+    private int _enemySpriteHeight = 768;
 
     public Body Body;
     public int Colliding;
@@ -61,8 +68,9 @@ public class Enemy : DrawableGameElement {
     private Boolean _isImmuneToElectricity = false;
     private Boolean _isImmuneToAmphoras = false;
     private bool _chasing = false;
-    private bool _canDash = false;
+    private bool _DashEnemies = false;
     public bool tutorialEnemy = false;
+    private bool _isAngry = false;
 
     public Enemy(RopeGame game, World world, Player player) {
         _game = game;
@@ -72,18 +80,12 @@ public class Enemy : DrawableGameElement {
     public void generateRandomAbilities(int diff)
     {
         Random rng = new Random();
-        
-        if(rng.Next(100) < diff * 2)
+        if (rng.Next(100) < 1000) // 50 percent dash enemies, 50 percent normal
         {
-            _enemyForce = 0.003f;
-            _reducedHealth *= 2;
-            _hasImmunity = true;
-            _isImmuneToAmphoras = true;
-            _isImmuneToElectricity = true;
-        }
-        else
-        {
-            if (rng.Next(100) < diff * 2 * 7 / 10)
+            _DashEnemies = true;
+            _enemyForce = 0.015f;
+
+            if (rng.Next(100) < diff * 2 * 7 / 10) // dash enemies has a chance to have one immunitiybut they are immune to squish
             {
                 _hasImmunity = true;
                 if (rng.Next(100) > 50)
@@ -91,14 +93,28 @@ public class Enemy : DrawableGameElement {
                 else
                     _isImmuneToAmphoras = true;
             }
-            if (rng.Next(100) < 0)
+        }
+        else // normal enemies
+        {
+            if (rng.Next(100) < diff * 2)
             {
-                _canDash = true;
+                _hasImmunity = true;
+                _isImmuneToAmphoras = true;
+                _isImmuneToElectricity = true;
+            }
+            else
+            {
+                if (rng.Next(100) < diff * 2 * 7 / 10)
+                {
+                    _hasImmunity = true;
+                    if (rng.Next(100) > 50)
+                        _isImmuneToElectricity = true;
+                    else
+                        _isImmuneToAmphoras = true;
+                }
             }
         }
 
-        //if (rng.Next(100) > 50)
-        //    _canShoot = true;
 
     }
 
@@ -106,7 +122,7 @@ public class Enemy : DrawableGameElement {
         tutorialEnemy = true;
         _isImmuneToAmphoras = false;
         _isImmuneToElectricity = false;
-        _canDash = false;
+        _DashEnemies = false;
     }
 
     public void Initialize(Vector2 initpos, int difficultyLevel) {
@@ -121,12 +137,33 @@ public class Enemy : DrawableGameElement {
     }
 
     public virtual void LoadContent() {
-        _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_idle_f");  // 2 frames, each one is 512 pixels wide
-        _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_l");  // 4 frames, each one is 512 pixels wide
-        _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_r");  // 4 frames, each one is 512 pixels wide
-        _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_f");  // 4 frames, each one is 512 pixels wide
-        _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_b");  // 4 frames, each one is 512 pixels wide
-        _deathAnimation = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_dying");  // 5 frames, each one is 512 pixels wide
+        if (_DashEnemies)
+        {
+            _enemySpriteWidth = 2000;
+            _enemySpriteHeight = 1700;
+            _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_idle");  // 2 frames, each one is 2000 pixels wide
+            _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_attack_l");  // 4 frames, each one is 2000 pixels wide
+            _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_attack_r");  // 4 frames, each one is 2000 pixels wide
+            _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_attack_f");  // 4 frames, each one is 2000 pixels wide
+            _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_attack_b");  // 4 frames, each one is 2000 pixels wide
+
+            _deathAnimation = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_dying");  // 5 frames, each one is 2000 pixels wide
+
+            _angryL = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_angry_l");  // 8 frames, each one is 2000 pixels wide
+            _angryR = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_angry_r");  // 8 frames, each one is 2000 pixels wide
+            _angryF = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_angry_f");  // 8 frames, each one is 2000 pixels wide
+            _angryB = _game.Content.Load<Texture2D>("Sprites/Enemies/minotaur_angry_b");  // 8 frames, each one is 2000 pixels wide
+            
+        }
+        else
+        {
+            _idle = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_idle_f");  // 2 frames, each one is 512 pixels wide
+            _runningL = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_l");  // 4 frames, each one is 512 pixels wide
+            _runningR = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_r");  // 4 frames, each one is 512 pixels wide
+            _runningF = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_f");  // 4 frames, each one is 512 pixels wide
+            _runningB = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_walk_b");  // 4 frames, each one is 512 pixels wide
+            _deathAnimation = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_dying");  // 5 frames, each one is 512 pixels wide
+        }
     }
 
     public virtual void Electrify() {
@@ -135,7 +172,7 @@ public class Enemy : DrawableGameElement {
     }
 
     public void Kill(int cause) {
-        if (cause == 0) // normal
+        if (cause == 0 && !_DashEnemies) // normal
         {
             SoundEngine.Instance.Squish(this.Body.Position);
             _game.GameData.Kills += 1;
@@ -278,78 +315,102 @@ public class Enemy : DrawableGameElement {
 
         var currentDistance = Vector2.Distance(Body.Position, _player.Body.Position);
 
-        
-
-        if (currentDistance < _angerDistance || _chasing) {
-
-            _chasing = true;
-
-            if (_canDash)
+        if (_DashEnemies)
+        {
+            if (currentDistance < _angerDistance || _chasing)
             {
+                _chasing = true;
                 DashTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                DashTimer = Math.Min(DashTimer, 5000);
+                DashTimer = Math.Min(DashTimer, 4000);
+                _isAngry = !_dash;
                 if (DashTimer >= DashCoolDown)
                 {
                     _dash = true;
+                    _isAngry = !_dash;
                     DashTimer = 0;
-                    _enemyForce = 0.02f;
                 }
-                if (_dash && (DashTimer >= DashUsageTime))
+                if (_dash)
                 {
-                    _dash = false;
-                    _enemyForce = 0.003f;
-                    DashTimer = 0;
+                    if (Body.Position.X < _player.Body.Position.X)
+                    {
+                        _input.X += 0.1f;
+                        _isWalking = true;
+                    }
+
+                    if (Body.Position.X > _player.Body.Position.X)
+                    {
+                        _input.X -= 0.1f;
+                        _isWalking = true;
+                    }
+
+                    if (Body.Position.Y < _player.Body.Position.Y)
+                    {
+                        _input.Y += 0.1f;
+                        _isWalking = true;
+                    }
+
+                    if (Body.Position.Y > _player.Body.Position.Y)
+                    {
+                        _input.Y -= 0.1f;
+                        _isWalking = true;
+                    }
                 }
-            }
-            else
-            {
-                _enemyForce = 0.003f;
-            }
-            
-            
-            if (Body.Position.X < _player.Body.Position.X) {
-                _input.X += 0.1f;
-                _isWalking = true;
-            }
-
-            if (Body.Position.X > _player.Body.Position.X) {
-                _input.X -= 0.1f;
-                _isWalking = true;
-            }
-
-            if (Body.Position.Y < _player.Body.Position.Y) {
-                _input.Y += 0.1f;
-                _isWalking = true;
-            }
-
-            if (Body.Position.Y > _player.Body.Position.Y) {
-                _input.Y -= 0.1f;
-                _isWalking = true;
+                if (DashTimer >= DashUsageTime && _dash)
+                {
+                    DashTimer = 0;
+                    _dash = false;
+                    _isAngry = !_dash;
+                }
             }
         }
         else
         {
-            _enemyForce = 0.001f;
-            int dir = (randomDir + (int)(gameTime.TotalGameTime.TotalSeconds / 3)) % 4;
-            if (dir % 4 == 0)
-            {
-                _input.X += 0.1f;
-            }
-            if (dir % 4 == 1)
-            {
-                _input.Y += 0.1f;
-            }
-            if (dir % 4 == 2)
-            {
-                _input.X -= 0.1f;
-            }
-            if (dir % 4 == 3)
-            {
-                _input.Y -= 0.1f;
-            }
-            _isWalking = true;
-        }
+            if (currentDistance < _angerDistance || _chasing) {
 
+                _chasing = true;
+                if (Body.Position.X < _player.Body.Position.X) {
+                    _input.X += 0.1f;
+                    _isWalking = true;
+                }
+
+                if (Body.Position.X > _player.Body.Position.X) {
+                    _input.X -= 0.1f;
+                    _isWalking = true;
+                }
+
+                if (Body.Position.Y < _player.Body.Position.Y) {
+                    _input.Y += 0.1f;
+                    _isWalking = true;
+                }
+
+                if (Body.Position.Y > _player.Body.Position.Y) {
+                    _input.Y -= 0.1f;
+                    _isWalking = true;
+                }
+            }
+            else
+            {
+                _enemyForce = 0.001f;
+                int dir = (randomDir + (int)(gameTime.TotalGameTime.TotalSeconds / 3)) % 4;
+                if (dir % 4 == 0)
+                {
+                    _input.X += 0.1f;
+                }
+                if (dir % 4 == 1)
+                {
+                    _input.Y += 0.1f;
+                }
+                if (dir % 4 == 2)
+                {
+                    _input.X -= 0.1f;
+                }
+                if (dir % 4 == 3)
+                {
+                    _input.Y -= 0.1f;
+                }
+                _isWalking = true;
+            }
+        }
 
 
         if (_input.LengthSquared() > 1) _input.Normalize();
@@ -386,7 +447,7 @@ public class Enemy : DrawableGameElement {
             batch.Draw(
                 _deathAnimation,
                 spritePos,
-                new Rectangle(deathFrameIdx * 512, 0, 512, 768),
+                new Rectangle(deathFrameIdx * _enemySpriteWidth, 0, _enemySpriteWidth, _enemySpriteHeight),
                 color,
                 0f,
                 Vector2.Zero,
@@ -396,7 +457,7 @@ public class Enemy : DrawableGameElement {
             return;
         }
 
-        if (_isWalking){
+        if (_isWalking) {
 
             var runningDuration = 400f; //ms
             var runningFrameIdx = (int)(totalTime / runningDuration) % 4;
@@ -417,7 +478,7 @@ public class Enemy : DrawableGameElement {
             batch.Draw(
                 runningSprite,
                 spritePos,
-                new Rectangle(runningFrameIdx * 512, 0, 512, 768),
+                new Rectangle(runningFrameIdx * _enemySpriteWidth, 0, _enemySpriteWidth, _enemySpriteHeight),
                 color,
                 0f,
                 Vector2.Zero,
@@ -450,20 +511,52 @@ public class Enemy : DrawableGameElement {
         }
         else {
 
-            var idleDuration = 400f; //ms
-            var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
+            if (_isAngry)
+            {
+                var angryDuration = 100f; //ms
+                var angryFrameIdx = (int)(totalTime / angryDuration) % 8;
 
-            //Color test = overCliff > 0 ? Color.Red : Color.White;
-            batch.Draw(
-                _idle,
-                spritePos,
-                new Rectangle(idleFrameIdx * 512, 0, 512, 768),
-                color,
-                0f,
-                Vector2.Zero,
-                SpriteEffects.None,
-                camera.getLayerDepth(yPos + spritePos.Height)
-            );
+                Vector2 dir = Body.LinearVelocity;
+
+                dir.Normalize();
+
+                var angrySprite = _angryR;
+                if (Body.Position.X > _player.Body.Position.X && Body.Position.Y < _player.Body.Position.Y)
+                    angrySprite = _angryF;
+                if (Body.Position.X <= _player.Body.Position.X && Body.Position.Y < _player.Body.Position.Y)
+                    angrySprite = _angryL;
+                if (Body.Position.X <= _player.Body.Position.X && Body.Position.Y > _player.Body.Position.Y)
+                    angrySprite = _angryB;
+
+                batch.Draw(
+                    angrySprite,
+                    spritePos,
+                    new Rectangle(angryFrameIdx * _enemySpriteWidth, 0, _enemySpriteWidth, _enemySpriteHeight),
+                    color,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(spritePos.Y + spritePos.Height)
+                );
+            }
+            else
+            {
+                var idleDuration = 400f; //ms
+                var idleFrameIdx = (int)(totalTime / idleDuration) % 2;
+                //Color test = overCliff > 0 ? Color.Red : Color.White;
+
+                batch.Draw(
+                    _idle,
+                    spritePos,
+                    new Rectangle(idleFrameIdx * _enemySpriteWidth, 0, _enemySpriteWidth, _enemySpriteHeight),
+                    color,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(yPos + spritePos.Height)
+                );
+            }
+            
 
             if (_isImmuneToAmphoras)
             {
