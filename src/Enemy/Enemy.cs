@@ -16,7 +16,7 @@ public class Enemy : DrawableGameElement {
     protected const int CrushDuration = 16;
     protected const int CrushThreshold = 4;
     protected const float WallKillVelocity = 1.5f;
-    protected readonly Point _enemySize = new(1, 2);
+    protected Point _enemySize = new(1, 2);
     protected readonly RopeGame _game;
     protected readonly float _angerDistance = 8f;
     protected int _difficultyLevel;
@@ -24,7 +24,7 @@ public class Enemy : DrawableGameElement {
     private int randomDir = new Random().Next(4);
 
     private const int DashCoolDown = 4000;
-    private const int DashUsageTime = 400;
+    private const int DashUsageTime = 500;
     private bool _dash;
     public double DashTimer = 3000;
 
@@ -80,10 +80,11 @@ public class Enemy : DrawableGameElement {
     public void generateRandomAbilities(int diff)
     {
         Random rng = new Random();
-        if (rng.Next(100) < 1000) // 50 percent dash enemies, 50 percent normal
+        if (rng.Next(100) < 50) // 50 percent dash enemies, 50 percent normal
         {
             _DashEnemies = true;
-            _enemyForce = 0.015f;
+            _enemyForce = 0.09f;
+            _enemySize = new Point(2, 2);
 
             if (rng.Next(100) < diff * 2 * 7 / 10) // dash enemies has a chance to have one immunitiybut they are immune to squish
             {
