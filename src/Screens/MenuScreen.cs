@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 
 namespace TwistedDescent.Screens;
 
@@ -19,7 +21,7 @@ public class MenuScreen : Screen {
     private Texture2D _menu_title;
 
     private Texture2D _bg;
-    private Button _continueButton;
+    public Button _continueButton;
     private ContentManager _content;
 
     private Button _activeButton;
@@ -50,12 +52,20 @@ public class MenuScreen : Screen {
         text_box_height = Math.Max(text_box_height, 300); // Fixing overlapping 
 
         _continueButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 6 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 7 * (text_box_height / 4)),
             Text = "Continue",
             Disabled = true
         };
 
         _continueButton.Click += ContinueButton_Click;
+
+        Button newGameButton = new Button(buttonTexture, buttonFont)
+        {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 6 * (text_box_height / 4)),
+            Text = "New Game"
+        };
+
+        newGameButton.Click += NewGameButton_Click;
 
         Button tutorialButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(w - 100 - text_box_width, h - 120 - 5 * (text_box_height / 4)),
@@ -64,29 +74,31 @@ public class MenuScreen : Screen {
 
         tutorialButton.Click += TutorialButton_Click;
 
-        var newGameButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
-            Text = "New Game"
-        };
 
-        newGameButton.Click += NewGameButton_Click;
-
-        var controlsButton = new Button(buttonTexture, buttonFont)
+        Button controlsButton = new Button(buttonTexture, buttonFont)
         {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 3 * (text_box_height / 4)),
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 4 * (text_box_height / 4)),
             Text = "Controls",
         };
 
         controlsButton.Click += ControlsButton_Click;
 
-        var optionsButton = new Button(buttonTexture, buttonFont) {
-            Position = new Vector2(w - 100 - text_box_width, h - 120 - 2 * (text_box_height / 4)),
+        Button optionsButton = new Button(buttonTexture, buttonFont) {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 3 * (text_box_height / 4)),
             Text = "Options",
         };
 
         optionsButton.Click += OptionsButton_Click;
 
-        var quitGameButton = new Button(buttonTexture, buttonFont) {
+        Button highScoreButton = new Button(buttonTexture, buttonFont)
+        {
+            Position = new Vector2(w - 100 - text_box_width, h - 120 - 2 * (text_box_height / 4)),
+            Text = "HighScore",
+        };
+
+        highScoreButton.Click += HighScoreButton_Click;
+
+        Button quitGameButton = new Button(buttonTexture, buttonFont) {
             Position = new Vector2(w - 100 - text_box_width, h - 120 - 1 * (text_box_height / 4)),
             Text = "Quit Game"
         };
@@ -99,6 +111,7 @@ public class MenuScreen : Screen {
             newGameButton,
             optionsButton,
             controlsButton,
+            highScoreButton,
             quitGameButton
         };
     }
@@ -137,8 +150,15 @@ public class MenuScreen : Screen {
         base.getGame().ChangeState(RopeGame.State.Controls);
 
     }
-
+    private void HighScoreButton_Click(object sender, EventArgs e)
+    {
+        base.getGame()._highScoreScreen = new HighScoreScreen(base.getGame(), _content);
+        base.getGame()._highScoreScreen.Initialize();
+        base.getGame().ChangeState(RopeGame.State.HighScore);
+    }
     private void QuitGameButton_Click(object sender, EventArgs e) {
+
+        File.WriteAllLines("leaderBoard.txt", base.getGame().leaderBoard.Select(x => $"{x.Key},{x.Value}"));
         base.getGame().Exit();
     }
 

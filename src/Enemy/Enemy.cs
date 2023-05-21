@@ -181,6 +181,7 @@ public class Enemy : DrawableGameElement {
             SoundEngine.Instance.Squish(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
+            _game.GameData.Score += 1000;
             drawDeathAnimation = true;
         }
         if (cause == 1 && !_isImmuneToElectricity) // electricity
@@ -188,7 +189,7 @@ public class Enemy : DrawableGameElement {
             SoundEngine.Instance.ElectroShock(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
-            //IsAlive = false;
+            _game.GameData.Score += 1000;
             drawDeathAnimation = true;
             drawElectrify = true;
         }
@@ -197,14 +198,14 @@ public class Enemy : DrawableGameElement {
             SoundEngine.Instance.Squish(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
-            //IsAlive = false;
+            _game.GameData.Score += 1000;
             drawDeathAnimation = true;
         }
         if (cause == 3) // cliff
         {
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
-            //IsAlive = false;
+            _game.GameData.Score += 1000;
             drawDeathAnimation = true;
         }
     }

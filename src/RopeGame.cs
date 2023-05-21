@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +12,8 @@ using TwistedDescent.Screens;
 namespace TwistedDescent;
 
 public class RopeGame : Game {
+
+    public Dictionary<string, int> leaderBoard = new Dictionary<string, int>();
     private const int TargetFrameRate = 144;
 
     public OptionsScreen _optionsScreen;
@@ -23,6 +26,7 @@ public class RopeGame : Game {
     public TutorialLoadingScreen _tutorialLoadingScreen;
     public FinalScreen _finalScreen;
     public TransitionScreen _transitionScreen;
+    public HighScoreScreen _highScoreScreen;
 
     private SpriteBatch _spriteBatch;
 
@@ -59,10 +63,19 @@ public class RopeGame : Game {
         Controls,
         Transition,
         Final,
-        Options
+        Options,
+        HighScore
     }
 
     public RopeGame() {
+        if (File.Exists("leaderBoard.txt")) {
+            var lines = File.ReadLines("leaderBoard.txt");
+            foreach (var line in lines)
+            {
+                string[] arr = line.Split(',');
+                leaderBoard.Add(arr[0], Int16.Parse(String.Join(",", arr.Skip(1))));
+            } 
+        }
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
@@ -131,6 +144,10 @@ public class RopeGame : Game {
         else if (state == State.Options)
         {
             _currentScreen = _optionsScreen;
+        }
+        else if (state == State.HighScore)
+        {
+            _currentScreen = _highScoreScreen;
         }
 
         _currentState = state;

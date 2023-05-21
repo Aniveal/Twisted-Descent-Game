@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using TwistedDescent.Screens;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TwistedDescent; 
 
@@ -16,6 +17,7 @@ public class GameData {
 
     public int Score = 0;
     public int Kills = 0;
+    public string playerName = "PL1";
 
     private int previousKills = 0;
     private int KillStreak = 0;
@@ -96,6 +98,10 @@ public class GameData {
 
     private void EndGame(bool timeOut) {
         GameOver = true;
+        _game.leaderBoard.Add(playerName, Score);
+        var top5 = _game.leaderBoard.OrderByDescending(pair => pair.Value).Take(5)
+               .ToDictionary(pair => pair.Key, pair => pair.Value);
+        _game.leaderBoard = top5;
         _game._finalScreen = new FinalScreen(_game, _game.Content, timeOut);
         _game._finalScreen.Initialize();
         _game.ChangeState(RopeGame.State.Final);

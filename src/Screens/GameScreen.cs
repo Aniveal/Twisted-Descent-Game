@@ -197,6 +197,7 @@ public class GameScreen : Screen {
 
 
         _map = new Map(Game, World, ColumnsManager, EnemyManager, diverseManager);
+        Game.GameData.Score += _map.mapLevel * 3000;
         _map.mapLevel = maplvl + 1;
         if (_map.mapLevel == 2 && base.getGame().GameData.MaxTimeLeft == 1000f)
         {
