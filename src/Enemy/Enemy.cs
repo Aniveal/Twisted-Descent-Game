@@ -176,6 +176,9 @@ public class Enemy : DrawableGameElement {
     }
 
     public void Kill(int cause) {
+        if (drawDeathAnimation) {
+            return;
+        }
         if (cause == 0 && !_DashEnemies) // normal
         {
             SoundEngine.Instance.Squish(this.Body.Position);
