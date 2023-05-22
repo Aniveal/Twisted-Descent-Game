@@ -27,6 +27,7 @@ public class RopeGame : Game {
     public FinalScreen _finalScreen;
     public TransitionScreen _transitionScreen;
     public HighScoreScreen _highScoreScreen;
+    public NameScreen _nameScreen;
 
     private SpriteBatch _spriteBatch;
 
@@ -64,7 +65,8 @@ public class RopeGame : Game {
         Transition,
         Final,
         Options,
-        HighScore
+        HighScore, 
+        NameScreen
     }
 
     public RopeGame() {
@@ -148,6 +150,10 @@ public class RopeGame : Game {
         else if (state == State.HighScore)
         {
             _currentScreen = _highScoreScreen;
+        }
+        else if (state == State.NameScreen)
+        {
+            _currentScreen = _nameScreen;
         }
 
         _currentState = state;

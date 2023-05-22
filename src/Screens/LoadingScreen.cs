@@ -81,6 +81,7 @@ public class LoadingScreen : Screen
         {
             gameLoaded = true;
             base.getGame().GameData = new GameData(base.getGame());
+            base.getGame().GameData.playerName = base.getGame()._nameScreen.playerName;
             base.getGame()._gameScreen = new GameScreen(base.getGame());
             base.getGame()._mapScreen = new MapScreen(base.getGame());
             base.getGame()._gameScreen.Initialize();
