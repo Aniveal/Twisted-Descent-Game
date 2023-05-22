@@ -19,6 +19,8 @@ public class NameScreen : Screen {
     
     private Texture2D _menu_img;
     private Texture2D _menu_title;
+    private Texture2D _arrow_up;
+    private Texture2D _arrow_down;
 
     private Texture2D _bg;
     private ContentManager _content;
@@ -44,6 +46,8 @@ public class NameScreen : Screen {
         _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
         _menu_img = content.Load<Texture2D>("Sprites/UI/menu_img");
         _menu_title = content.Load<Texture2D>("Sprites/UI/menu_title");
+        _arrow_up = content.Load<Texture2D>("Sprites/UI/metal_spears_1");
+        _arrow_down = content.Load<Texture2D>("Sprites/UI/metal_spears_1_upside");
         
         w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
         h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
@@ -113,6 +117,14 @@ public class NameScreen : Screen {
         int img_width = Math.Min(w / 2 - 150,  (h - 200) / 2);
         int img_height = 2 * img_width;
         spriteBatch.Draw(_menu_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
+
+        spriteBatch.Draw(_arrow_up, new Rectangle((int)letter1.Rectangle.X + 18, (int)(letter1.Position.Y - 80), 80, 80), Color.White);
+        spriteBatch.Draw(_arrow_up, new Rectangle((int)letter2.Rectangle.X + 18, (int)(letter2.Position.Y - 80), 80, 80), Color.White);
+        spriteBatch.Draw(_arrow_up, new Rectangle((int)letter3.Rectangle.X + 18, (int)(letter3.Position.Y - 80), 80, 80), Color.White);
+
+        spriteBatch.Draw(_arrow_down, new Rectangle((int)letter1.Rectangle.X + 8, (int)(letter1.Position.Y + 80), 80, 80), Color.White);
+        spriteBatch.Draw(_arrow_down, new Rectangle((int)letter2.Rectangle.X + 8, (int)(letter2.Position.Y + 80), 80, 80), Color.White);
+        spriteBatch.Draw(_arrow_down, new Rectangle((int)letter3.Rectangle.X + 8, (int)(letter3.Position.Y + 80), 80, 80), Color.White);
 
         foreach (var component in _components)
             component.Draw(gameTime, spriteBatch);
