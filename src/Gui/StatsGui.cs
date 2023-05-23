@@ -16,6 +16,7 @@ public class StatsGui : DrawableGameElement
     private Texture2D _skull;
     private Texture2D _skull_1;
     private Texture2D _skull_2;
+    private Texture2D _level_background;
     private SpriteFont _font;
     private SpriteFont _msg_font;
 
@@ -26,6 +27,14 @@ public class StatsGui : DrawableGameElement
     private Color text_color = new Color(154, 139, 141);
     private Color text_background_color = new Color(34, 35, 35);
     private int text_outline_size = 1; // pixels
+
+    private double level_msg_duration = 5000;
+    private double level_animation_duration = 700;
+    private int level_msg_box_margin = 6;
+    private int level_box_vertical_offset = 50;
+
+    private Color level_msg_color = new Color(207, 180, 177);
+
 
     public StatsGui(RopeGame game, GameData data)
     {
@@ -46,21 +55,55 @@ public class StatsGui : DrawableGameElement
         _skull_2 = _game.Content.Load<Texture2D>("Sprites/UI/skull_icon_2");
         _font = _game.Content.Load<SpriteFont>("Fonts/damn_ui");
         _msg_font = _game.Content.Load<SpriteFont>("Fonts/damn");
+        _level_background = _game.Content.Load<Texture2D>("Sprites/UI/level_msg_background");
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
     {
         var viewportWidth = _game.GraphicsDevice.Viewport.Width;
-        
+
         // Write the level
-        var text = "Level " + _game._gameScreen._map.mapLevel;
-        var stringSize = _font.MeasureString(text);
-        batch.DrawString(_font, text, new Vector2(viewportWidth / 2f - stringSize.X / 2, margin), new(170, 54, 54), 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        
+        var TimeDelta = gameTime.TotalGameTime.TotalMilliseconds - (_game.GameData.levelStartTime + 1000);
+        if (TimeDelta < level_msg_duration && TimeDelta > 0)
+        {
+            var level_text = "Level " + _game._gameScreen._map.mapLevel;
+            var level_stringSize = _font.MeasureString(level_text);
+            
+            var box_width = (int)(level_stringSize.X + 2 * level_msg_box_margin);
+            if (TimeDelta < level_animation_duration)
+            {
+                
+                var animation_factor = Math.Min(1f, TimeDelta / level_animation_duration);
+                box_width = (int)(animation_factor * (float) box_width);
+            }
+
+            var level_msg_box_position = new Rectangle(
+                    (int)(viewportWidth / 2f - box_width / 2),
+                    level_box_vertical_offset + level_msg_box_margin,
+                    box_width,
+                    (int)level_stringSize.Y + 2 * level_msg_box_margin
+                );
+
+            var level_msg_string_pos = new Vector2(
+                    (int)(viewportWidth / 2f - level_stringSize.X / 2),
+                    level_box_vertical_offset + level_msg_box_margin + 14
+                );
+
+            batch.Draw(_level_background, level_msg_box_position, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
+
+            if (TimeDelta >= level_animation_duration / 4)
+            {
+                batch.DrawString(_font, level_text, level_msg_string_pos, level_msg_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+                //DrawStringWithOutline(batch, _font, level_text, level_msg_string_pos, 2, new Color(207, 180, 177), text_background_color);
+            }
+
+        }
 
         // Killstreak
         var killstreak = _data.updateKillStreak(gameTime.TotalGameTime.TotalMilliseconds);
         
-        if (killstreak > 0)
+        if (killstreak > 1)
         {
             var msg = KillstreakMessage(killstreak);
             var msgSize = _font.MeasureString(msg);
@@ -70,8 +113,8 @@ public class StatsGui : DrawableGameElement
         }
 
         // Writing the number of Skills as a number
-        text = _data.Kills.ToString();
-        stringSize = _font.MeasureString(text);
+        var text = _data.Kills.ToString();
+        var stringSize = _font.MeasureString(text);
         var text_width = (int) Math.Max(stringSize.X, _font.MeasureString("42").X); // leaving space for up to 99 kills
 
         if (text.Length < 2)    // right align text (after measuring its size!)
