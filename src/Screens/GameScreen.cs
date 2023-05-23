@@ -33,6 +33,7 @@ public class GameScreen : Screen {
     public TheseusManager TheseusManager;
 
     private bool _tutorial = false;
+    private bool _startTimeSet = false;
 
 
     public GameScreen(RopeGame game) : base(game) {
@@ -143,6 +144,12 @@ public class GameScreen : Screen {
         
         // Update Game Timer
         Game.GameData.DecayTime(gameTime);
+
+        if (!_startTimeSet)
+        {
+            _startTimeSet = true;
+            Game.GameData.levelStartTime = gameTime.TotalGameTime.TotalMilliseconds;
+        }
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch = null)
@@ -206,6 +213,8 @@ public class GameScreen : Screen {
 
         }
         _map.levelFinished = false;
+        _startTimeSet = false;
+        //Game.GameData.levelStartTime = GameTime.
         this.Initialize();
         
     }

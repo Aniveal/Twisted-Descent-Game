@@ -32,6 +32,8 @@ public class GameData {
     public int currentDifficulty = 2;
     public float levelScaling = 1.5f;
 
+    public double levelStartTime = 0;
+
     //Spears data
     public int[] Spears; //basic, electric, fragile spears
 
