@@ -61,7 +61,8 @@ public class TimeBarGui : DrawableGameElement
 
         // Drawing the remaining time in seconds as text:
 
-        var text = ((int)_data.TimeLeft).ToString();
+        var timeLeft = (int) Math.Max(0, _data.TimeLeft);
+        var text = (timeLeft).ToString();
         var textSize = _font.MeasureString(text);
         var text_position = new Vector2(viewportWidth - margin - textSize.X, margin);
 

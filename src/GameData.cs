@@ -5,6 +5,7 @@ using TwistedDescent.Screens;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace TwistedDescent; 
 
@@ -25,7 +26,7 @@ public class GameData {
     private double KillStreakTimeWindow = 1000; // ms, if next kill happens within this many milliseconds, it counts towards current killstreak
 
 
-    public bool DeathByTimeOut = false;
+    public bool DeathByTimeOut = true;
     public double TimeLeft = 60f;
     public double MaxTimeLeft = 120f;
 
@@ -58,7 +59,6 @@ public class GameData {
         TimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
         if (TimeLeft < 0) {
             //TimeLeft = 0;
-            DeathByTimeOut = true;
             EndGame(true);
         }
     }
@@ -107,6 +107,7 @@ public class GameData {
         if (TimeLeft >= 0)
             TimeLeft = 0;
 
+        
         GameOver = true;
         if (TimeLeft < finalScreenDelay)
         {
