@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using tainicom.Aether.Physics2D.Collision.Shapes;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Joints;
 using TwistedDescent.GameElements;
@@ -37,6 +38,8 @@ public class Player : DrawableGameElement {
     private Texture2D _runningF;
     private Texture2D _runningL;
     private Texture2D _runningR;
+    private Texture2D _dead;
+    private Texture2D _whitePixel;
     private readonly World _world;
 
     private Texture2D currentSprite;
@@ -79,6 +82,8 @@ public class Player : DrawableGameElement {
         _runningR = _game.Content.Load<Texture2D>("Sprites/Theseus/running_r");
         _runningF = _game.Content.Load<Texture2D>("Sprites/Theseus/running_f");
         _runningB = _game.Content.Load<Texture2D>("Sprites/Theseus/running_b");
+        _dead = _game.Content.Load<Texture2D>("Sprites/Theseus/dead");
+        _whitePixel = _game.Content.Load<Texture2D>("Sprites/UI/white_pixel");
     }
 
     private Vector2 ScreenToIsometric(Vector2 vector) {
@@ -223,6 +228,37 @@ public class Player : DrawableGameElement {
             var shift = Math.Sin(totalTime / 70) + 1;
             playerColor = Color.Lerp(playerColor, _immunityColor, (float)shift);
         }
+
+        if (_game.GameData.GameOver)
+        {
+            var height_dead = 512 * spritePos.Height / 768;
+            var width_dead = 932 * spritePos.Width / 512;
+            batch.Draw(
+                _dead,
+                new Rectangle(spritePos.X, spritePos.Y + 2 * height_dead / 3, width_dead, height_dead),
+                new Rectangle(0, 0, 923, 512),
+                _immunityColor,
+                0f,
+                Vector2.Zero,
+                SpriteEffects.None,
+                camera.getLayerDepth(spritePos.Y + spritePos.Height)
+            );
+
+            var timeSinceDeath = -1 * _game.GameData.TimeLeft;
+            var animationFactor = (timeSinceDeath > 1f) ? 1f : timeSinceDeath;
+
+            batch.Draw(
+                _whitePixel,
+                new Rectangle(0,0, _game.GraphicsDevice.Viewport.Width, _game.GraphicsDevice.Viewport.Height),
+                new Rectangle(0, 0, 1, 1),
+                new Color(0,0,0, 0.6f * (float) animationFactor),
+                0f,
+                Vector2.Zero,
+                SpriteEffects.None,
+                0.989f //camera.getLayerDepth(spritePos.Y + spritePos.Height)
+            );
+            return;
+        }
         
         if (_isWalking) {
             var runDuration = 200f;
@@ -242,6 +278,28 @@ public class Player : DrawableGameElement {
                 runningSprite = _runningB;
             //running_sprite = (input.X > 0 && input.X > input.Y) ? running_r : running_l;
 
+
+            
+
+            if (_dash)
+            {
+                var scale_amount = 10;
+                var scale_factor = 1f;
+
+                if (DashTimer < 200)
+                {
+                    scale_factor = (float)(1f / (1 + Math.Exp(-0.05f * (DashTimer - 100f))));   // Sigmoid Function, S-curve between 0 and 200, center at 100. 
+
+                }
+                else if (DashTimer > DashUsageTime - 200)
+                {
+                    var slowdownTimer = -1 * (DashTimer - DashUsageTime);
+                    scale_factor = (float)(1f / (1 + Math.Exp(-0.08f * (slowdownTimer - 100f))));
+                }
+                scale_amount = (int)(scale_amount * scale_factor);
+
+                 spritePos = new Rectangle(spritePos.X - scale_amount / 2, spritePos.Y + scale_amount / 2, spritePos.Width + scale_amount / 3, spritePos.Height - scale_amount); 
+            }
             batch.Draw(
                 runningSprite,
                 spritePos,

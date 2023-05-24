@@ -27,6 +27,8 @@ public class GameData {
     public double TimeLeft = 60f;
     public double MaxTimeLeft = 120f;
 
+    private double finalScreenDelay = -3f;
+
     //The current game difficulty level. Starting at 1, goes to infinity (or overflow i guess xD)>
     //The higher the more enemies spawn, they are harder, better loot, larger levels
     public int currentDifficulty = 2;
@@ -53,7 +55,7 @@ public class GameData {
     public void DecayTime(GameTime gameTime) {
         TimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
         if (TimeLeft < 0) {
-            TimeLeft = 0;
+            //TimeLeft = 0;
             EndGame(true);
         }
     }
@@ -99,13 +101,19 @@ public class GameData {
     }
 
     private void EndGame(bool timeOut) {
+        if (TimeLeft >= 0)
+            TimeLeft = 0;
+
         GameOver = true;
-        _game.leaderBoard.Add(new KeyValuePair<string, int>(playerName, Score));
-        _game.leaderBoard = _game.leaderBoard.OrderByDescending(x => x.Value).ToList().GetRange(0, Math.Min(5, _game.leaderBoard.Count()));
-        _game._finalScreen = new FinalScreen(_game, _game.Content, timeOut);
-        _game._finalScreen.Initialize();
-        _game.ChangeState(RopeGame.State.Final);
-        _game.ResetGame();
+        if (TimeLeft < finalScreenDelay)
+        {
+            _game.leaderBoard.Add(new KeyValuePair<string, int>(playerName, Score));
+            _game.leaderBoard = _game.leaderBoard.OrderByDescending(x => x.Value).ToList().GetRange(0, Math.Min(5, _game.leaderBoard.Count()));
+            _game._finalScreen = new FinalScreen(_game, _game.Content, timeOut);
+            _game._finalScreen.Initialize();
+            _game.ChangeState(RopeGame.State.Final);
+            _game.ResetGame();
+        }
     }
     
     public void RemoveHealth(int amount) {

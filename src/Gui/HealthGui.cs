@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TwistedDescent.GameElements;
@@ -12,6 +13,7 @@ public class HealthGui : DrawableGameElement
 
     private Texture2D _heartTexture;
     private SpriteFont _font;
+    private SpriteFont _DeathMessageFont;
 
     private Color text_color = new Color(170, 54, 54);
     private Color text_outline_color = new Color(34, 35, 35);
@@ -30,15 +32,18 @@ public class HealthGui : DrawableGameElement
     {
         _heartTexture = _game.Content.Load<Texture2D>("Sprites/UI/hearth_icon");
         _font = _game.Content.Load<SpriteFont>("Fonts/damn_ui");
+        _DeathMessageFont = _game.Content.Load<SpriteFont>("Fonts/death_message_font");
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch batch, Camera camera)
     {
-        if (_data.GameOver)
+        if (_data.GameOver && _game.GameData.TimeLeft < -0.5f)
         {
+            var msg = "You Died";
+            var msgSize = _font.MeasureString(msg);
             var ropeRed = new Color(170, 54, 54);
-            batch.DrawString(_game.Font, "GAME  OVER", new Vector2(300, 300), ropeRed, 0f, Vector2.Zero, 1f,
-                SpriteEffects.None, 1f);
+            var deathMessagePos = new Vector2((_game.GraphicsDevice.Viewport.Width - msgSize.X) / 2, _game.GraphicsDevice.Viewport.Height / 4);
+            DrawStringWithOutline(batch, _font, msg, deathMessagePos, 3, ropeRed, text_outline_color);
             return;
         }
 
@@ -66,5 +71,15 @@ public class HealthGui : DrawableGameElement
 
             batch.Draw(_heartTexture, pos, null, texture_color, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
+    }
+
+    private void DrawStringWithOutline(SpriteBatch batch, SpriteFont font, String text, Vector2 position, int outlineSize, Color fontColor, Color outlineColor)
+    {
+        batch.DrawString(font, text, position, fontColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        // Drawing a black outline around the text:
+        batch.DrawString(font, text, new Vector2(position.X - outlineSize, position.Y - outlineSize), outlineColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(font, text, new Vector2(position.X - outlineSize, position.Y + outlineSize), outlineColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(font, text, new Vector2(position.X + outlineSize, position.Y - outlineSize), outlineColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
+        batch.DrawString(font, text, new Vector2(position.X + outlineSize, position.Y + outlineSize), outlineColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0.99f);
     }
 }
