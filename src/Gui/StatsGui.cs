@@ -26,6 +26,7 @@ public class StatsGui : DrawableGameElement
 
     private Color text_color = new Color(154, 139, 141);
     private Color text_background_color = new Color(34, 35, 35);
+    private Color level_msg_color = new Color(207, 180, 177);
     private int text_outline_size = 1; // pixels
 
     private double level_msg_duration = 5000;
@@ -33,7 +34,6 @@ public class StatsGui : DrawableGameElement
     private int level_msg_box_margin = 6;
     private int level_box_vertical_offset = 50;
 
-    private Color level_msg_color = new Color(207, 180, 177);
 
 
     public StatsGui(RopeGame game, GameData data)
@@ -62,7 +62,8 @@ public class StatsGui : DrawableGameElement
     {
         var viewportWidth = _game.GraphicsDevice.Viewport.Width;
 
-        // Write the level
+        // Write the Level
+        // When starting a new level, a box with message "Level 1" appears. 
         
         var TimeDelta = gameTime.TotalGameTime.TotalMilliseconds - (_game.GameData.levelStartTime + 1000);
         if (TimeDelta < level_msg_duration && TimeDelta > 0)
@@ -70,14 +71,26 @@ public class StatsGui : DrawableGameElement
             var level_text = "Level " + _game._gameScreen._map.mapLevel;
             var level_stringSize = _font.MeasureString(level_text);
             
-            var box_width = (int)(level_stringSize.X + 2 * level_msg_box_margin);
-            if (TimeDelta < level_animation_duration)
+            var box_width = (int)(level_stringSize.X + 2 * level_msg_box_margin);   // box width when animation is done
+            Color animated_level_msg_color = level_msg_color;                       // font color when animation is done   
+
+            // Animate Level Message:
+            if (TimeDelta < level_animation_duration)   // fade in animation: box stretches outwards (x-axis), color lerps from background grey to font color
             {
-                
-                var animation_factor = Math.Min(1f, TimeDelta / level_animation_duration);
-                box_width = (int)(animation_factor * (float) box_width);
+                var animation_factor = (float) Math.Min(1f, TimeDelta / level_animation_duration);  // 0f to 1f, how far we're in animation (linear)
+                box_width = (int)(animation_factor * (float) box_width);    // new width of the message box
+                animated_level_msg_color = Color.Lerp(text_background_color, level_msg_color, animation_factor); // new color
             }
 
+            else if (TimeDelta > level_msg_duration - level_animation_duration) // fade out animation: box collapses inwards (x-axis), color lerps back to background grey
+            {
+                var animation_time = level_msg_duration - TimeDelta;
+                var animation_factor = (float) Math.Min(1f, animation_time / level_animation_duration); // 1f to 0f, how far we're in animation (linear)
+                box_width = (int)(animation_factor * (float)box_width); // new width of the message box
+                animated_level_msg_color = Color.Lerp(text_background_color, level_msg_color, animation_factor); // new color
+            }
+
+            // Level Message Positions:
             var level_msg_box_position = new Rectangle(
                     (int)(viewportWidth / 2f - box_width / 2),
                     level_box_vertical_offset + level_msg_box_margin,
@@ -90,14 +103,9 @@ public class StatsGui : DrawableGameElement
                     level_box_vertical_offset + level_msg_box_margin + 14
                 );
 
+            // Drawing level message:
             batch.Draw(_level_background, level_msg_box_position, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
-
-            if (TimeDelta >= level_animation_duration / 4)
-            {
-                batch.DrawString(_font, level_text, level_msg_string_pos, level_msg_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-                //DrawStringWithOutline(batch, _font, level_text, level_msg_string_pos, 2, new Color(207, 180, 177), text_background_color);
-            }
-
+            batch.DrawString(_font, level_text, level_msg_string_pos, animated_level_msg_color, 0, Vector2.Zero, 1f, SpriteEffects.None, 1f);
         }
 
         // Killstreak
