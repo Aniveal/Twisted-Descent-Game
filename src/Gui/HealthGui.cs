@@ -39,9 +39,17 @@ public class HealthGui : DrawableGameElement
     {
         if (_data.GameOver && _game.GameData.TimeLeft < -0.5f)
         {
-            var msg = "You Died";
-            var msgSize = _font.MeasureString(msg);
+            
+            var msg = "You Died!";
             var ropeRed = new Color(170, 54, 54);
+
+            if (_game.GameData.DeathByTimeOut)
+            {
+                msg = "Your time ran out!";
+                ropeRed = new Color(164, 154, 180);
+            }
+
+            var msgSize = _font.MeasureString(msg);
             var deathMessagePos = new Vector2((_game.GraphicsDevice.Viewport.Width - msgSize.X) / 2, _game.GraphicsDevice.Viewport.Height / 4);
             DrawStringWithOutline(batch, _font, msg, deathMessagePos, 3, ropeRed, text_outline_color);
             return;

@@ -24,6 +24,8 @@ public class GameData {
     private double LastKillms = 0;
     private double KillStreakTimeWindow = 1000; // ms, if next kill happens within this many milliseconds, it counts towards current killstreak
 
+
+    public bool DeathByTimeOut = false;
     public double TimeLeft = 60f;
     public double MaxTimeLeft = 120f;
 
@@ -56,6 +58,7 @@ public class GameData {
         TimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
         if (TimeLeft < 0) {
             //TimeLeft = 0;
+            DeathByTimeOut = true;
             EndGame(true);
         }
     }
@@ -120,6 +123,7 @@ public class GameData {
         SoundEngine.Instance.SwordHit();
         Health -= 1;
         if (Health <= 0) {
+            DeathByTimeOut = false;
             EndGame(false);
         }
     }
