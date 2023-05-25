@@ -25,7 +25,7 @@ public class GameData {
     private double LastKillms = 0;
     private double KillStreakTimeWindow = 1000; // ms, if next kill happens within this many milliseconds, it counts towards current killstreak
 
-
+    public bool tutorial = false;
     public bool DeathByTimeOut = true;
     public double TimeLeft = 60f;
     public double MaxTimeLeft = 120f;
