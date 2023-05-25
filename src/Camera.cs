@@ -55,12 +55,13 @@ public class Camera {
 
 
     /// <summary>
-    ///     Returns layer depth between 0.25 and 0.75. This range is that there is space up and downwards (for example cliffs)
+    ///     Returns layer depth between 0.25 and 0.95. This range is that there is space up and downwards (for example cliffs)
+    ///     layer depths from 0.75 to 0.95 are used for elements based below the screen in order to limit aliasing
     /// </summary>
     public float getLayerDepth(float yScreen) {
         var screenFrac = yScreen / _graphicsDevice.Viewport.Height + float.Epsilon;
 
-        if (screenFrac >= 1) screenFrac = 1.0f - float.Epsilon;
+        if (screenFrac >= 1.4) screenFrac = 1.4f - float.Epsilon;
 
         screenFrac = screenFrac / 2.0f + 0.25f;
 
