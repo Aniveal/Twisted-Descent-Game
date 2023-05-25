@@ -65,6 +65,7 @@ public class GameScreen : Screen {
         _tutorial = tutorial;
         if (_tutorial && _map.mapLevel == 1)
         {
+            base.getGame().GameData.tutorial = true;
             base.getGame().GameData.TimeLeft = 1000f;
             base.getGame().GameData.MaxTimeLeft = 1000f;
         }

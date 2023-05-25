@@ -35,7 +35,6 @@ public class StatsGui : DrawableGameElement
     private int level_box_vertical_offset = 50;
 
 
-
     public StatsGui(RopeGame game, GameData data)
     {
         _game = game;
@@ -69,6 +68,9 @@ public class StatsGui : DrawableGameElement
         if (TimeDelta < level_msg_duration && TimeDelta > 0)
         {
             var level_text = "Level " + _game._gameScreen._map.mapLevel;
+            if (_game.GameData.tutorial)
+                level_text = "Tutorial";
+
             var level_stringSize = _font.MeasureString(level_text);
             
             var box_width = (int)(level_stringSize.X + 2 * level_msg_box_margin);   // box width when animation is done
