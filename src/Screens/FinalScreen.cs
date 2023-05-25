@@ -26,6 +26,7 @@ public class FinalScreen : Screen {
     private Texture2D _name_selection_arrow;
     private Texture2D _name_selection_arrow_down;
     private Texture2D _menu_selection_highlight;
+    private Texture2D _skull_pile;
 
     private SpriteFont font;
 
@@ -38,6 +39,7 @@ public class FinalScreen : Screen {
     private int arrows_vertical_margin = 4; // pixels, (vertical) distance between arrows and box
     private int name_selection_size = 80;
     private int letter_width;
+    private int pile_img_size;
 
     private int thumstick_direction = 0;
     private int thumbstick_slowdown = 0;
@@ -49,9 +51,9 @@ public class FinalScreen : Screen {
     private Color name_active_color = new Color(150, 150, 150); // color used for name selection box / arrows when its selected (active)
 
     public String playerName;
-    private String letter0 = "B";
-    private String letter1 = "E";
-    private String letter2 = "N";
+    private String letter0 = "A";
+    private String letter1 = "B";
+    private String letter2 = "C";
     private int active_letter = 1;      // == 0, 1, 2 for letters 3 for Save button
 
 
@@ -60,12 +62,17 @@ public class FinalScreen : Screen {
         font = content.Load<SpriteFont>("Fonts/damn");
         _content = content;
 
+        n_kills = this.getGame().GameData.Kills;
+        int pile_size = Math.Min(n_kills, 6);
+        pile_size = Math.Max(pile_size, 1);
+
         _bg = content.Load<Texture2D>("Sprites/UI/menu_background");
         _skull_img = content.Load<Texture2D>("Sprites/UI/skull_icon");
         _name_selection_box = content.Load<Texture2D>("Sprites/UI/name_selection_background");
         _name_selection_arrow = content.Load<Texture2D>("Sprites/UI/name_selection_arrow");
         _name_selection_arrow_down = content.Load<Texture2D>("Sprites/UI/name_selection_arrow_down");
         _menu_selection_highlight = content.Load<Texture2D>("Sprites/UI/menu_selection_highlight");
+        _skull_pile = content.Load<Texture2D>("Sprites/UI/SkullPile/skull_pile_" + pile_size);
 
         w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
         h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
@@ -75,6 +82,7 @@ public class FinalScreen : Screen {
         letter_width = (int) font.MeasureString(letter0).X;
 
         _timedOut = timedOut;
+        pile_img_size = (int)((w - margin.X) / 3);
     }
     
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -92,6 +100,20 @@ public class FinalScreen : Screen {
 
         spriteBatch.DrawString(font, death_count_msg, new Vector2(margin.X, margin.Y), font_color);
         spriteBatch.DrawString(font, enter_name_msg, new Vector2(margin.X, margin.Y + font_height), font_color);
+
+        // Draw a pile of skulls in the background:
+        if (n_kills > 0)
+        {
+            Color skullsColor = Color.White;
+            var skullsPos = new Rectangle(
+                (int)(w - margin.X - pile_img_size),
+                (int)(h - margin.Y - pile_img_size),
+                pile_img_size,
+                pile_img_size
+            );
+            spriteBatch.Draw(_skull_pile, skullsPos, null, skullsColor, 0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+        }
+            
 
         // Name Selection UI:
         String save_str = "Save";
