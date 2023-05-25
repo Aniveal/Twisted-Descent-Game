@@ -135,9 +135,13 @@ public class MenuScreen : Screen {
 
     private void NewGameButton_Click(object sender, EventArgs e) {
         base.getGame().ResetGame();
-        base.getGame()._nameScreen = new NameScreen(base.getGame(), _content);
-        base.getGame()._nameScreen.Initialize();
-        base.getGame().ChangeState(RopeGame.State.NameScreen);
+        base.getGame()._loadingScreen = new LoadingScreen(base.getGame(), _content);
+        base.getGame()._loadingScreen.Initialize();
+        base.getGame()._transitionScreen = new TransitionScreen(base.getGame(), _content);
+        base.getGame()._transitionScreen.Initialize();
+        base.getGame().ChangeState(RopeGame.State.Loading);
+
+        _continueButton.Disabled = false;
     }
 
     private void ControlsButton_Click(object sender, EventArgs e) {
