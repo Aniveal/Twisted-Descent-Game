@@ -373,8 +373,14 @@ public class Map : DrawableGameElement {
             }
 
             for (int i = 0; i < r.EnemyPositions.Count; i++) {
-                Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
-                    _game.GameData.currentDifficulty); // pass map diff here as second arg
+                if (r is TutorialRoom) {
+                    Em.AddTutorialEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
+                   _game.GameData.currentDifficulty); // pass map diff here as second arg
+                } else {
+                    Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
+                        _game.GameData.currentDifficulty); // pass map diff here as second arg
+                }
+               
             }
             
 
@@ -401,7 +407,6 @@ public class Map : DrawableGameElement {
 
             if (r is TutorialRoom) {
                 TutorialRoom tr = (TutorialRoom) r;
-                Em.SetTutorialMode();
                 for (int i = 0; i < tr.textPos.Count; i++) {
                     SpriteFont font = _game.Content.Load<SpriteFont>("Fonts/tutorial_text");
                     BodyWithText text = new BodyWithText(_game, MapToWorld(tr.textPos[i].X + r.PosX, tr.textPos[i].Y + r.PosY), 3, _world, tr.texts[i], font);

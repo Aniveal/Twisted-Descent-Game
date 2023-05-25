@@ -40,10 +40,12 @@ public class EnemyManager {
         Enemies.Add(enemy);
     }
 
-    public void SetTutorialMode() {
-        foreach (Enemy e in Enemies) {
-            e.SetTutorialMode();
-        }
+    public void AddTutorialEnemy(Vector2 pos, int diff) {
+        Enemy enemy = new Enemy(_game, _world, _player);
+        enemy.SetTutorialMode();
+        enemy.Initialize(pos, diff);
+        enemy.LoadContent();
+        Enemies.Add(enemy);
     }
 
     public void LoadContent() {
