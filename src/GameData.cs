@@ -111,8 +111,8 @@ public class GameData {
         GameOver = true;
         if (TimeLeft < finalScreenDelay)
         {
-            _game.leaderBoard.Add(new KeyValuePair<string, int>(playerName, Score));
-            _game.leaderBoard = _game.leaderBoard.OrderByDescending(x => x.Value).ToList().GetRange(0, Math.Min(5, _game.leaderBoard.Count()));
+            //_game.leaderBoard.Add(new KeyValuePair<string, int>(playerName, Score));
+            //_game.leaderBoard = _game.leaderBoard.OrderByDescending(x => x.Value).ToList().GetRange(0, Math.Min(5, _game.leaderBoard.Count()));
             _game._finalScreen = new FinalScreen(_game, _game.Content, timeOut);
             _game._finalScreen.Initialize();
             _game.ChangeState(RopeGame.State.Final);
