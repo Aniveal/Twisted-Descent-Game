@@ -182,11 +182,11 @@ public sealed class SoundEngine {
     public void Amphora(Vector2 position)
     {
         SoundEffectInstance a = _amphora.CreateInstance();
-        a.Volume = Math.Max(CalculateIntensity(position) - 0.2f, 0.1f);
+        a.Volume = Math.Max(CalculateIntensity(position) - 0.1f, 0.01f);
         //i.Pan = CalculatePan(position);
         a.Play();
         SoundEffectInstance b = _explosion.CreateInstance();
-        b.Volume = Math.Max(CalculateIntensity(position) - 0.2f, 0.1f);
+        b.Volume = Math.Max(CalculateIntensity(position) - 0.1f, 0.01f);
         //i.Pan = CalculatePan(position);
         b.Play();
     }

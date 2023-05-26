@@ -41,7 +41,7 @@ internal class ElectricColumn : ActivableColumn {
             if (Activated)
             {
                 SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(this.Body.Position);
-                SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.1f, 0.1f);
+                SoundEffect.Volume = SoundEngine.Instance.CalculateIntensity(Body.Position);
                 SoundEffect.Play();  
             }
         }
@@ -53,12 +53,12 @@ internal class ElectricColumn : ActivableColumn {
                 if (SoundEffect.State == SoundState.Stopped)
                 {
                     SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(this.Body.Position);
-                    SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(this.Body.Position) - 0.1f, 0.1f);
+                    SoundEffect.Volume = SoundEngine.Instance.CalculateIntensity(this.Body.Position);
                     SoundEffect.Play();
                 }
                 else
                 {
-                    SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(this.Body.Position) - 0.1f, 0.1f);
+                    SoundEffect.Volume = SoundEngine.Instance.CalculateIntensity(this.Body.Position);
                 }
             }
             else if (SoundEffect != null)
