@@ -487,7 +487,8 @@ public class Map : DrawableGameElement {
                         screenPos = camera.getScreenPoint(new Vector2(pos.X, pos.Y));
                     }
 
-                    if (!camera.IsVisible(pos)) {
+                    if (!camera.IsVisible(pos) && _game._currentScreen.GetType() != typeof(MapScreen))
+                    {
                         continue;
                     }
 

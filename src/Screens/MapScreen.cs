@@ -13,11 +13,11 @@ namespace TwistedDescent.Screens;
 
 public class MapScreen : Screen
 {
-    private readonly SpriteBatch _batch;
+    private SpriteBatch _batch;
 
     private readonly float _camMovementSpeed = 200;
 
-    private readonly Map _map;
+    private Map _map;
     public ColumnsManager ColumnsManager;
     public RopeGame Game;
     //public List<DummyRectangle> walls = new List<DummyRectangle>();
@@ -45,6 +45,26 @@ public class MapScreen : Screen
 
 
         _map = new Map(game, World, ColumnsManager, null, diverseManager);
+    }
+
+    public void createNewLevel(int difficulty)
+    {
+
+        _batch = new SpriteBatch(Game.GraphicsDevice);
+
+        World = new World(Vector2.Zero);
+        ColumnsManager = new ColumnsManager(Game);
+        diverseManager = new DiverseManager();
+
+        Game.GameData.currentDifficulty = difficulty;
+
+        _map = new Map(Game, World, ColumnsManager, null, diverseManager);
+        _map.Initialize();
+
+        _map.LoadContent();
+        diverseManager.LoadContent();
+        ColumnsManager.LoadContent();
+
     }
 
 
@@ -129,7 +149,12 @@ public class MapScreen : Screen
 
         if (keyboard.IsKeyDown(Keys.M))
         {
-            Camera.Scale -= 50 * (float)gameTime.ElapsedGameTime.TotalSeconds; 
+            Camera.Scale -= 50 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
+        if (keyboard.IsKeyDown(Keys.Space))
+        {
+            createNewLevel(20);
         }
 
         Debug.Print(movement.ToString());

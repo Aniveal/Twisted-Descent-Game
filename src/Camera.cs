@@ -39,6 +39,7 @@ public class Camera {
     //Determines whether an object with radius < 10 is in the camera FOW
     //Does not accurately work for bigger objects, need another method if case arises
     public bool IsVisible(Vector2 pos) {
+        
         if (pos.X < aa.X || pos.Y < aa.Y || pos.X > bb.X || pos.Y > bb.Y) {
             return false;
         }
