@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -64,6 +66,7 @@ public class Enemy : DrawableGameElement {
     public bool drawDeathAnimation = false;
     public bool drawElectrify = false;
     public Vector2 Orientation;
+    private int[] dashdir = new int[0];
 
     private Boolean _canShoot = false;
     private Boolean _hasImmunity = false;
@@ -340,35 +343,66 @@ public class Enemy : DrawableGameElement {
                 }
                 if (_dash)
                 {
-                    if (Body.Position.X < _player.Body.Position.X)
+                    if (dashdir.Length != 0)
                     {
-                        _input.X += 0.1f;
-                        _isWalking = true;
-                    }
+                        if (dashdir.Contains(1))
+                        {
+                            _input.X += 0.1f;
+                            _isWalking = true;
+                        }
+                        if (dashdir.Contains(2))
+                        {
+                            _input.X -= 0.1f;
+                            _isWalking = true;
+                        }
+                        if (dashdir.Contains(3))
+                        {
+                            _input.Y += 0.1f;
+                            _isWalking = true;
+                        }
+                        if (dashdir.Contains(4))
+                        {
+                            _input.Y -= 0.1f;
+                            _isWalking = true;
+                        }
 
-                    if (Body.Position.X > _player.Body.Position.X)
-                    {
-                        _input.X -= 0.1f;
-                        _isWalking = true;
                     }
+                    else
+                    {
+                        if (Body.Position.X < _player.Body.Position.X)
+                        {
+                            _input.X += 0.1f;
+                            _isWalking = true;
+                            dashdir.Append(1);
+                        }
+                        if (Body.Position.X > _player.Body.Position.X)
+                        {
+                            _input.X -= 0.1f;
+                            _isWalking = true;
+                            dashdir.Append(2);
+                        }
 
-                    if (Body.Position.Y < _player.Body.Position.Y)
-                    {
-                        _input.Y += 0.1f;
-                        _isWalking = true;
-                    }
+                        if (Body.Position.Y < _player.Body.Position.Y)
+                        {
+                            _input.Y += 0.1f;
+                            _isWalking = true;
+                            dashdir.Append(3);
+                        }
 
-                    if (Body.Position.Y > _player.Body.Position.Y)
-                    {
-                        _input.Y -= 0.1f;
-                        _isWalking = true;
-                    }
+                        if (Body.Position.Y > _player.Body.Position.Y)
+                        {
+                            _input.Y -= 0.1f;
+                            _isWalking = true;
+                            dashdir.Append(4);
+                        }
+                    }        
                 }
                 if (DashTimer >= DashUsageTime && _dash)
                 {
                     DashTimer = 0;
                     _dash = false;
                     _isAngry = !_dash;
+                    dashdir = new int[0];
                 }
             }
         }
