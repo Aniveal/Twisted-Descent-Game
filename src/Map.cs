@@ -372,16 +372,17 @@ public class Map : DrawableGameElement {
                 j++;
             }
 
-            for (int i = 0; i < r.EnemyPositions.Count; i++) {
-                if (r is TutorialRoom) {
-                    Em.AddTutorialEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
-                   _game.GameData.currentDifficulty); // pass map diff here as second arg
-                } else {
-                    Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
-                        _game.GameData.currentDifficulty); // pass map diff here as second arg
-                }
+            if(Em != null)
+                for (int i = 0; i < r.EnemyPositions.Count; i++) {
+                    if (r is TutorialRoom) {
+                        Em.AddTutorialEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
+                       _game.GameData.currentDifficulty); // pass map diff here as second arg
+                    } else {
+                        Em.AddEnemy(MapToWorld(r.EnemyPositions[i].X + r.PosX, r.EnemyPositions[i].Y + r.PosY),
+                            _game.GameData.currentDifficulty); // pass map diff here as second arg
+                    }
                
-            }
+                }
             
 
             foreach (Vector2 pos in r.AmphoraPositions) {

@@ -127,5 +127,7 @@ public class Camera {
 
     public void Move(Vector2 amount) {
         _position += amount;
+        aa = _position + cornerDist;
+        bb = _position - cornerDist;
     }
 }
