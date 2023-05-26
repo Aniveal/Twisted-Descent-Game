@@ -85,7 +85,7 @@ public class Enemy : DrawableGameElement {
     public void generateRandomAbilities(int diff)
     {
         Random rng = new Random();
-        if (rng.Next(100) < 50) // 50 percent dash enemies, 50 percent normal
+        if (rng.Next(100) < Math.Min(7 + diff * 3, 40)) // 50 percent dash enemies, 50 percent normal
         {
             _DashEnemies = true;
             _enemyForce = 0.09f;
