@@ -111,6 +111,11 @@ public class Room {
             placeEnemies(Math.Max(1, RnGsus.Instance.Next(enemyBudget)));
         }
 
+        foreach(Tile t in TileMap)
+        {
+            t.SetTexture();
+        }
+
         return true;
     }
 

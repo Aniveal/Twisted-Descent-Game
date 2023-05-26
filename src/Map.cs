@@ -511,13 +511,13 @@ public class Map : DrawableGameElement {
                             SpriteEffects.None, layerDepthWalls);
                     }
 
-                    if (t.FinalPrototype.GroundTex != null) {
+                    if (t.FinalPrototype.GroundTex != null || t.FinalPrototype.Name == "ground") {
                         // We put cliffs below ground (between 0.025 and 0.075)
                         if (t.FinalPrototype.IsCliff) {
                             layerDepthFloor = camera.getLayerDepth(tilePos.Y) / 10f;
                         }
 
-                        batch.Draw(t.FinalPrototype.GroundTex, tilePos, null, Color.White, 0f, Vector2.Zero,
+                        batch.Draw(t.Texture, tilePos, null, Color.White, 0f, Vector2.Zero,
                             SpriteEffects.None, layerDepthFloor);
                     }
                 }

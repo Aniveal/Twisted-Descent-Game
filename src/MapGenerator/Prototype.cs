@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TwistedDescent; 
 
@@ -15,6 +16,9 @@ public class Prototype {
     //Name of prototype (i.e. "Wall1ur" for Wall1, up, right)
     public Texture2D GroundTex;
     public Texture2D WallTex;
+
+    public List<Texture2D> GroundTextures;
+    public int[] TexWeights; //Weights for picking ground tiles
 
     public bool IsCliff;
 
@@ -34,5 +38,43 @@ public class Prototype {
         Weight = w;
         Walkable = wal;
         IsCliff = isCliff;
+    }
+
+    public Prototype(List<Texture2D> groundTextures, Texture2D wallTex, string n, int[] sockets, int w, bool wal, int[] weights, bool isCliff = false)
+    {
+        this.GroundTextures = groundTextures;
+        WallTex = wallTex;
+        Name = n;
+        Sockets = sockets;
+        Weight = w;
+        Walkable = wal;
+        IsCliff = isCliff;
+        TexWeights = weights;
+    }
+
+    public Texture2D chooseTexture()
+    {
+        if(TexWeights == null || TexWeights.Length == 0)
+            return GroundTex;
+        if (TexWeights.Length != GroundTextures.Count) return GroundTex;
+
+        List<int> weightList = new List<int>();
+
+        int i = 0;
+        foreach(int x in TexWeights)
+        {
+            i += x;
+            weightList.Add(i);
+        }
+
+        int r = RnGsus.Instance.Next(i);
+
+        int j = 0;
+        while(weightList[j] < r)
+        {
+            j++;
+        }
+
+       return GroundTextures[j];
     }
 }

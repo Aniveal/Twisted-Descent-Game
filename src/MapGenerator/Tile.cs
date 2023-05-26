@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using tainicom.Aether.Physics2D.Dynamics;
@@ -9,6 +10,8 @@ public class Tile {
     public Body Body;
 
     public Prototype FinalPrototype;
+
+    public Texture2D Texture;
 
     public Room ParentRoom;
 
@@ -33,6 +36,12 @@ public class Tile {
         FinalPrototype = prot;
         Superpositions = new List<Prototype> { prot };
         ParentRoom = parentRoom;
+    }
+
+    //Chooses a random texture from the texture list
+    public void SetTexture()
+    {
+        this.Texture = this.FinalPrototype.chooseTexture();
     }
 
     public bool makeWalkable() {

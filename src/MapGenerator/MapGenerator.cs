@@ -23,6 +23,7 @@ public class MapGenerator {
 
     //All rock textures
     private List<Texture2D> _rockTextures;
+    private List<Texture2D> _groundTextures;
 
     private Texture2D _exitTexture;
     
@@ -145,7 +146,15 @@ public class MapGenerator {
             _rg.Content.Load<Texture2D>("Sprites/Rock/wall_4") //
    
         };
-        var ground = _rg.Content.Load<Texture2D>("Sprites/ground");
+        _groundTextures = new List<Texture2D>();
+
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/dusty_ground_00"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/dusty_ground_01"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/dusty_ground_02"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_00"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_01"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_02"));
+        int[] GroundTextureWeights = { 1, 1, 1, 1, 1, 1 };
 
         //Create prototypes for each texture; Look from bottom or from right side!!!
         //0: nothing; 1: right wall; 2: left wall; 3: all wall
@@ -163,7 +172,7 @@ public class MapGenerator {
         RockPrototypes.Add(new Prototype(_rockTextures[11], _rockTextures[23], "Wall3ur", new[] { 2, 3, 3, 2 }, 1, false, false));
         RockPrototypes.Add(new Prototype(null, _rockTextures[24], "FullWall", new[] { 3, 3, 3, 3 }, 16000, false));
 
-        RockPrototypes.Add(new Prototype(ground, null, "ground", new[] { 0, 0, 0, 0 }, 10000, true));
+        RockPrototypes.Add(new Prototype(_groundTextures, null, "ground", new[] { 0, 0, 0, 0 }, 10000, true, GroundTextureWeights));
 
         _wallTextures = new List<Texture2D> {
             _rg.Content.Load<Texture2D>("Sprites/Wall/rockwall_01"), //0
