@@ -58,6 +58,7 @@ public class Player : DrawableGameElement {
         _rope = rope;
         _game = game;
         _world = world;
+        SoundEngine.Instance.SetPlayer(this);
     }
 
     public void Initialize() {

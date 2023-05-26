@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using tainicom.Aether.Physics2D.Collision;
 using TwistedDescent.Theseus;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TwistedDescent; 
 
@@ -124,7 +125,9 @@ public sealed class SoundEngine {
     {
         double distance = Vector2.Distance(position, this.player.Body.Position);
 
-        if(distance <= 1) return 1;
+        
+
+        if (distance <= 1) return 1;
 
         //Assume base sound is 100db loud
         double reduction = Math.Abs(20f * Math.Log(distance * 3));
@@ -178,8 +181,14 @@ public sealed class SoundEngine {
     }
     public void Amphora(Vector2 position)
     {
-        PlayEffect(_amphora, position);
-        PlayEffect(_explosion, position);
+        SoundEffectInstance a = _amphora.CreateInstance();
+        a.Volume = Math.Max(CalculateIntensity(position) - 0.2f, 0.1f);
+        //i.Pan = CalculatePan(position);
+        a.Play();
+        SoundEffectInstance b = _explosion.CreateInstance();
+        b.Volume = Math.Max(CalculateIntensity(position) - 0.2f, 0.1f);
+        //i.Pan = CalculatePan(position);
+        b.Play();
     }
     
     public void ButtonClick()

@@ -40,8 +40,8 @@ internal class ElectricColumn : ActivableColumn {
         {
             if (Activated)
             {
-                SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(Body.Position);
-                SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.3f, 0.1f);
+                SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(this.Body.Position);
+                SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.1f, 0.1f);
                 SoundEffect.Play();  
             }
         }
@@ -52,16 +52,20 @@ internal class ElectricColumn : ActivableColumn {
             {
                 if (SoundEffect.State == SoundState.Stopped)
                 {
-                    SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(Body.Position);
-                    SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.3f, 0.1f);
+                    SoundEffect = SoundEngine.Instance.GetElectroColumnInstance(this.Body.Position);
+                    SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(this.Body.Position) - 0.1f, 0.1f);
                     SoundEffect.Play();
                 }
                 else
                 {
-                    SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(Body.Position) - 0.3f, 0.1f);
+                    SoundEffect.Volume = Math.Max(SoundEngine.Instance.CalculateIntensity(this.Body.Position) - 0.1f, 0.1f);
                 }
             }
-            else SoundEffect = null;
+            else if (SoundEffect != null)
+            {
+                SoundEffect.Stop();
+                SoundEffect = null;
+            }
         }
             
 
