@@ -182,7 +182,7 @@ public class Enemy : DrawableGameElement {
         if (drawDeathAnimation) {
             return;
         }
-        if (cause == 0 && !_DashEnemies) // normal
+        if (cause == 0 && !_DashEnemies) // collide to wall
         {
             SoundEngine.Instance.Squish(this.Body.Position);
             _game.GameData.Kills += 1;
@@ -209,6 +209,15 @@ public class Enemy : DrawableGameElement {
         }
         if (cause == 3) // cliff
         {
+            _game.GameData.Kills += 1;
+            _game.GameData.AddTime(10f);
+            _game.GameData.Score += 1000;
+            drawDeathAnimation = true;
+        }
+
+        if (cause == 4) // sqish with rope
+        {
+            SoundEngine.Instance.Squish(this.Body.Position);
             _game.GameData.Kills += 1;
             _game.GameData.AddTime(10f);
             _game.GameData.Score += 1000;
@@ -303,7 +312,7 @@ public class Enemy : DrawableGameElement {
         if (CollidingSegments > CrushThreshold) {
             Crushed++;
             if (Crushed > CrushDuration) {
-                Kill(0);
+                Kill(4);
                 return;
             }
         } else {
