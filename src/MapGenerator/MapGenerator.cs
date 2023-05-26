@@ -64,12 +64,22 @@ public class MapGenerator {
         {
             generationFail = false;
             RnGsus.Instance.NewSeed();
+            graph = new DungeonGraph(this);
             graph.createDungeonMap(size, roomSize, nRooms, _rg.GameData.currentDifficulty, 0);
             RoomList = graph.Rooms;
 
             foreach (var room in RoomList)
             {
-                if (!room.generateRoom())
+                int tries = 0;
+                while (tries < 10)
+                {
+                    bool success = room.generateRoom();
+                    if (!success)
+                        tries++;
+                    else break;
+                }
+
+                if (tries > 99)
                 {
                     generationFail = true;
                     break;
@@ -258,18 +268,18 @@ public class MapGenerator {
         
         //Create prototypes for each texture; Look from bottom or from right side!!!
         //New slots: 6: cliff left, ground right    7: cliff right, ground left        8: full Cliff
-        CliffPrototypes.Add(new Prototype(_cliffTextures[0], null, "Cliff_1rd", new[] { 8, 6, 8, 7 }, 5000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[1], null, "Cliff_1ul", new[] { 7, 8, 6, 8 }, 5000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[2], null, "Cliff_1dl", new[] { 8, 7, 7, 8 }, 5000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[3], null, "Cliff_1dr", new[] { 6, 8, 8, 6 }, 5000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[4], null, "Cliff_2u", new[] { 8, 0, 7, 7 }, 5000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[5], null, "Cliff_2r", new[] { 7, 7, 0, 8 }, 5000, false, true));
-        CliffPrototypes.Add(new Prototype( _cliffTextures[6], null, "Cliff_2l", new[] { 6, 6, 8, 0 }, 5000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[7], null, "Cliff_2d", new[] { 0, 8, 7, 7 }, 5000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[8], null, "Cliff_3ur", new[] { 7, 0, 0, 7 }, 2000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[9], null, "Cliff_3dr", new[] { 0, 7, 0, 6 }, 2000, false, true));
-        CliffPrototypes.Add(new Prototype( _cliffTextures[10], null, "Cliff_3dl", new[] { 0, 6, 6, 0 }, 2000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[11], null, "Cliff_3ul", new[] { 6, 0, 7, 0 }, 2000, false, true));
-        CliffPrototypes.Add(new Prototype(_cliffTextures[12], null , "FullCliff", new[] { 8, 8, 8, 8 }, 10000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[0], null, "Cliff_1rd", new[] { 8, 6, 8, 7 }, 1000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[1], null, "Cliff_1ul", new[] { 7, 8, 6, 8 }, 1000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[2], null, "Cliff_1dl", new[] { 8, 7, 7, 8 }, 1000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[3], null, "Cliff_1dr", new[] { 6, 8, 8, 6 }, 1000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[4], null, "Cliff_2u", new[] { 8, 0, 7, 7 }, 1000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[5], null, "Cliff_2r", new[] { 7, 7, 0, 8 }, 1000, false, true));
+        CliffPrototypes.Add(new Prototype( _cliffTextures[6], null, "Cliff_2l", new[] { 6, 6, 8, 0 }, 1000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[7], null, "Cliff_2d", new[] { 0, 8, 7, 7 }, 1000, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[8], null, "Cliff_3ur", new[] { 7, 0, 0, 7 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[9], null, "Cliff_3dr", new[] { 0, 7, 0, 6 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype( _cliffTextures[10], null, "Cliff_3dl", new[] { 0, 6, 6, 0 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[11], null, "Cliff_3ul", new[] { 6, 0, 7, 0 }, 500, false, true));
+        CliffPrototypes.Add(new Prototype(_cliffTextures[12], null , "FullCliff", new[] { 8, 8, 8, 8 }, 3000, false, true));
     }
 }

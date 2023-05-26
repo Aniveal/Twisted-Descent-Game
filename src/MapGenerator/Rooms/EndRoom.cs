@@ -23,5 +23,7 @@ public class EndRoom : Room{
         columnDensity = 0f;
         nTreasures = 1;
 
+        this.hasCliff = false;
+
     }
 }

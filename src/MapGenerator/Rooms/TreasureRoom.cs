@@ -32,6 +32,7 @@ namespace TwistedDescent
                 float tY = RnGsus.Instance.Next(3) + 1.5f;
                 TreasurePositions.Add(new Microsoft.Xna.Framework.Vector2(tX, tY));
             }
+            this.hasCliff = false;
         }
     }
 }

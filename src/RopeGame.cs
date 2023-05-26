@@ -42,7 +42,7 @@ public class RopeGame : Game {
     public int displayHeight;
 
     private State _currentState;
-    private bool gameScreen = false;
+    private bool gameScreen = true;
 
     public GraphicsDeviceManager Graphics;
     private int currentWidth;

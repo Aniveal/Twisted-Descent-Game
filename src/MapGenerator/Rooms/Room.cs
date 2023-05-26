@@ -30,6 +30,8 @@ public class Room {
 
     public float[] columnWeight;
 
+    public bool hasCliff;
+
     public int Index;
 
     //If all tiles have been initialized
@@ -41,7 +43,9 @@ public class Room {
     public int NInnerOpenings;
 
     //Stores the points where there is an opening
-    protected List<Vector2> Openings;
+    protected List<Vector2> Openings = new();
+
+    public List<Vector3> outerOpenings = new();
 
     //Top left edge of the room,
     public int PosX, PosY;
@@ -70,6 +74,9 @@ public class Room {
         PosY = y;
         TileMap = new Tile[sizeX, sizeY];
         NInnerOpenings = (int)Math.Sqrt(sizeX * sizeY);
+        
+        if(sizeX + sizeY > 30)
+            hasCliff = true;
         this.protList = protList;
         initializeTileMap();
         if (columnWeight == null)
@@ -79,10 +86,23 @@ public class Room {
         roomDifficulty = diff;
     }
 
+    public void resetRoom()
+    {
+        if (this.GetType() == typeof(StartRoom) || this.GetType() == typeof(EndRoom))
+            return;
+        initializeTileMap();
+        Openings.Clear();
+    }
+
     //Finishes the room generation, results in a workable tileMap
-    public bool generateRoom() {
+    public bool generateRoom() 
+    {
+        resetRoom();
+        initializeOuterOpenings();
         createBorder();
         addMoreFloor();
+        if(hasCliff)
+            placeCliff();
         connectOpenings();
         runWaveFunctionCollapse();
 
@@ -122,6 +142,27 @@ public class Room {
     //Adds an inner opening, i.e. a guaranteed connected tile
     public void innerOpening(int x, int y) {
         Openings.Add(new Vector2(x, y));
+    }
+
+    void placeCliff()
+    {
+        var x = (float)RnGsus.Instance.NextDouble() * (SizeX - 4) + 2;
+        var y = (float)RnGsus.Instance.NextDouble() * (SizeY - 4) + 2;
+
+        int brake = 0;
+
+        while (TileMap[(int)Math.Floor(x), (int)Math.Floor(y)].FinalPrototype != null && !TileMap[(int)Math.Floor(x), (int)Math.Floor(y)].FinalPrototype.Walkable)
+        {
+            x = (float)RnGsus.Instance.NextDouble() * SizeX;
+            y = (float)RnGsus.Instance.NextDouble() * SizeY;
+            brake++;
+            if (brake > 100000) return;
+        }
+
+        TileMap[(int)Math.Floor(x), (int)Math.Floor(y)].setFinalPrototype(Mg.CliffPrototypes[Mg.CliffPrototypes.Count - 1], true);
+        collapseTile(TileMap[(int)Math.Floor(x), (int)Math.Floor(y)]);
+
+
     }
 
     public void placeColumns(int n) {
@@ -273,38 +314,55 @@ public class Room {
 
     //Creates an opening to another room at x, y with length l. l goes from x,y into the positive direction. Has to be at least 3
     //Don't go too close to an edge, otherwise undefined behaviuor may happen
-    public void createOpening(int x, int y, int l) {
-        Debug.WriteLine("Create Opening");
+    public void createOpening(int x, int y, int l) 
+    {
+
 
         if (!(x == 0 || x == SizeX - 1 || y == 0 || y == SizeY - 1))
             Debug.WriteLine("Error, opening cant be created, wrong values");
 
+        else outerOpenings.Add(new Vector3(x, y, l));
 
-        Openings.Add(new Vector2(x, y));
+    }
 
-        if (x == 0 || x == SizeX - 1)
-            for (var i = 0; i < l; i++) {
-                if (i > SizeY - 1) {
-                    Debug.WriteLine("Error, l was too large in createOpening()");
-                    return;
+    void initializeOuterOpenings()
+    {
+        foreach (Vector3 v in outerOpenings)
+        {
+            int x = (int)v.X;
+            int y = (int)v.Y;
+            int l = (int)v.Z;
+
+            Openings.Add(new Vector2(x, y));
+
+            if (x == 0 || x == SizeX - 1)
+                for (var i = 0; i < l; i++)
+                {
+                    if (i > SizeY - 1)
+                    {
+                        Debug.WriteLine("Error, l was too large in createOpening()");
+                        return;
+                    }
+
+                    TileMap[x, y + i].setFinalPrototype(getPrototype("ground"));
+                    collapseTile(TileMap[x, y + i]);
                 }
+            else if (y == 0 || y == SizeY - 1)
+                for (var i = 0; i < l; i++)
+                {
+                    if (i > SizeX - 1)
+                    {
+                        Debug.WriteLine("Error, l was too large in createOpening()");
+                        return;
+                    }
 
-                TileMap[x, y + i].setFinalPrototype(getPrototype("ground"));
-                collapseTile(TileMap[x, y + i]);
-            }
-        else if (y == 0 || y == SizeY - 1)
-            for (var i = 0; i < l; i++) {
-                if (i > SizeX - 1) {
-                    Debug.WriteLine("Error, l was too large in createOpening()");
-                    return;
+                    TileMap[x + i, y].setFinalPrototype(getPrototype("ground"));
+                    collapseTile(TileMap[x + i, y]);
                 }
-
-                TileMap[x + i, y].setFinalPrototype(getPrototype("ground"));
-                collapseTile(TileMap[x + i, y]);
-            }
-        else
-            Debug.WriteLine("Error while creating opening: Point " + x + "," + y + " is not on the border!!! SizeX = " +
-                            SizeX + ", SizeY = " + SizeY);
+            else
+                Debug.WriteLine("Error while creating opening: Point " + x + "," + y + " is not on the border!!! SizeX = " +
+                                SizeX + ", SizeY = " + SizeY);
+        }
     }
 
     public void setTile(int x, int y, Prototype p) {

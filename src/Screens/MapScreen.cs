@@ -157,8 +157,6 @@ public class MapScreen : Screen
             createNewLevel(20);
         }
 
-        Debug.Print(movement.ToString());
-
         if(movement.X == 0 && movement.Y == 0)
         {
             return;

@@ -25,5 +25,9 @@ public class StartRoom : Room{
 
         nTreasures = 1;
         columnDensity = 0f;
+
+        this.hasCliff = false;
+
+        
     }
 }
