@@ -158,13 +158,32 @@ public class MapGenerator {
         };
         _groundTextures = new List<Texture2D>();
 
-        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/dusty_ground_00"));
-        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/dusty_ground_01"));
-        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/dusty_ground_02"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/ground"));
+
         _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_00"));
         _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_01"));
         _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_02"));
-        int[] GroundTextureWeights = { 1, 1, 1, 1, 1, 1 };
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_03"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_04"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_05"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_06"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_07"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_08"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_09"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_11"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_rocks_11"));
+
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_bones_00"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_bones_01"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_bones_02"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_bones_03"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_bones_04"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/ground_bones_05"));
+
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/plant_ground_00"));
+        _groundTextures.Add(_rg.Content.Load<Texture2D>("Sprites/GroundTiles/plant_ground_01"));
+
+        int[] GroundTextureWeights = { 60, 2, 2, 2, 6, 6, 8, 8, 4, 4, 6, 8, 8, 1, 1, 1, 1, 1, 1, 2, 2};
 
         //Create prototypes for each texture; Look from bottom or from right side!!!
         //0: nothing; 1: right wall; 2: left wall; 3: all wall

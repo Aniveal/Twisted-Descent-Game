@@ -4359,7 +4359,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/ground.png
 
-#begin Sprites/GroundTiles/dusty_ground_00.png
+#begin Sprites/GroundTiles/ground_bones_00.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4369,9 +4369,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/dusty_ground_00.png
+/build:Sprites/GroundTiles/ground_bones_00.png
 
-#begin Sprites/GroundTiles/dusty_ground_01.png
+#begin Sprites/GroundTiles/ground_bones_01.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4381,9 +4381,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/dusty_ground_01.png
+/build:Sprites/GroundTiles/ground_bones_01.png
 
-#begin Sprites/GroundTiles/dusty_ground_02.png
+#begin Sprites/GroundTiles/ground_bones_02.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4393,7 +4393,43 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/dusty_ground_02.png
+/build:Sprites/GroundTiles/ground_bones_02.png
+
+#begin Sprites/GroundTiles/ground_bones_03.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/GroundTiles/ground_bones_03.png
+
+#begin Sprites/GroundTiles/ground_bones_04.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/GroundTiles/ground_bones_04.png
+
+#begin Sprites/GroundTiles/ground_bones_05.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/GroundTiles/ground_bones_05.png
 
 #begin Sprites/GroundTiles/ground_rocks_00.png
 /importer:TextureImporter
@@ -4443,7 +4479,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/GroundTiles/ground_rocks_03.png
 
-#begin Sprites/GroundTiles/RockTile_01.png
+#begin Sprites/GroundTiles/ground_rocks_04.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4453,9 +4489,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/RockTile_01.png
+/build:Sprites/GroundTiles/ground_rocks_04.png
 
-#begin Sprites/GroundTiles/RockTile_01.png
+#begin Sprites/GroundTiles/ground_rocks_05.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4465,9 +4501,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/RockTile_01.png
+/build:Sprites/GroundTiles/ground_rocks_05.png
 
-#begin Sprites/GroundTiles/RockTile_02.png
+#begin Sprites/GroundTiles/ground_rocks_06.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4477,9 +4513,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/RockTile_02.png
+/build:Sprites/GroundTiles/ground_rocks_06.png
 
-#begin Sprites/GroundTiles/RockTile_02.png
+#begin Sprites/GroundTiles/ground_rocks_07.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4489,9 +4525,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/RockTile_02.png
+/build:Sprites/GroundTiles/ground_rocks_07.png
 
-#begin Sprites/GroundTiles/RockTile_03.png
+#begin Sprites/GroundTiles/ground_rocks_08.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4501,9 +4537,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/RockTile_03.png
+/build:Sprites/GroundTiles/ground_rocks_08.png
 
-#begin Sprites/GroundTiles/RockTile_03.png
+#begin Sprites/GroundTiles/ground_rocks_09.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4513,9 +4549,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/RockTile_03.png
+/build:Sprites/GroundTiles/ground_rocks_09.png
 
-#begin Sprites/GroundTiles/RockTile_04.png
+#begin Sprites/GroundTiles/ground_rocks_10.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4525,9 +4561,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/RockTile_04.png
+/build:Sprites/GroundTiles/ground_rocks_10.png
 
-#begin Sprites/GroundTiles/RockTile_04.png
+#begin Sprites/GroundTiles/ground_rocks_11.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -4537,7 +4573,31 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GroundTiles/RockTile_04.png
+/build:Sprites/GroundTiles/ground_rocks_11.png
+
+#begin Sprites/GroundTiles/plant_ground_00.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/GroundTiles/plant_ground_00.png
+
+#begin Sprites/GroundTiles/plant_ground_01.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/GroundTiles/plant_ground_01.png
 
 #begin Sprites/Rock/ground_wall_1b.png
 /importer:TextureImporter
