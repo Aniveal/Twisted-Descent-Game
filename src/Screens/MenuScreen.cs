@@ -107,10 +107,10 @@ public class MenuScreen : Screen {
 
         _components = new List<Component> {
             _continueButton,
-            tutorialButton,
             newGameButton,
-            optionsButton,
+            tutorialButton,
             controlsButton,
+            optionsButton,
             highScoreButton,
             quitGameButton
         };
