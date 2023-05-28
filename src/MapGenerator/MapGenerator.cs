@@ -93,6 +93,12 @@ public class MapGenerator {
         RoomList = new List<Room>();
         Room tRoom = new TutorialRoom(this, RockPrototypes);
         RoomList.Add(tRoom);
+
+        //Set a random texture for each tile
+        foreach (Tile t in tRoom.TileMap)
+        {
+            t.SetTexture();
+        }
     }
 
 

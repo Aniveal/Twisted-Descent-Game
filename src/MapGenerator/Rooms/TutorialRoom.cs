@@ -38,13 +38,13 @@ public class TutorialRoom : Room
 
     private void SquareRoom(int x1, int x2, int y1, int y2) {
         //top left corner
-        TileMap[x1, y1].FinalPrototype = protList[10];
+        TileMap[x1, y1].setFinalPrototype(protList[10], true); 
         //top right corner
-        TileMap[x2, y1].FinalPrototype = protList[9];
+        TileMap[x2, y1].setFinalPrototype(protList[9], true);
         //bottom right corner
-        TileMap[x2, y2].FinalPrototype = protList[8];
+        TileMap[x2, y2].setFinalPrototype(protList[8], true);
         //bottom left corner
-        TileMap[x1, y2].FinalPrototype = protList[11];
+        TileMap[x1, y2].setFinalPrototype(protList[11], true);
         //top wall
         Horizontal(y1, x1+1, x2-1, protList[5]);
         //right wall

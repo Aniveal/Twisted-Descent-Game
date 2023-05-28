@@ -521,6 +521,7 @@ public class Map : DrawableGameElement {
 
                         batch.Draw(t.Texture, tilePos, null, Color.White, 0f, Vector2.Zero,
                             SpriteEffects.None, layerDepthFloor);
+
                     }
                 }
             }
