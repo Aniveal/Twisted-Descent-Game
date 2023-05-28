@@ -24,6 +24,8 @@ public class Enemy : DrawableGameElement {
     protected int _difficultyLevel;
     protected float _enemyForce = 0.004f;
     private int randomDir = new Random().Next(4);
+    private float _player_last_x = 0;
+    private float _player_last_y = 0;
 
     private const int DashCoolDown = 4000;
     private const int DashUsageTime = 500;
@@ -349,62 +351,17 @@ public class Enemy : DrawableGameElement {
                     _dash = true;
                     _isAngry = !_dash;
                     DashTimer = 0;
+                    _player_last_x = _player.Body.Position.X;
+                    _player_last_y = _player.Body.Position.Y;
                 }
                 if (_dash)
                 {
-                    if (dashdir.Length != 0)
-                    {
-                        if (dashdir.Contains(1))
-                        {
-                            _input.X += 0.1f;
-                            _isWalking = true;
-                        }
-                        if (dashdir.Contains(2))
-                        {
-                            _input.X -= 0.1f;
-                            _isWalking = true;
-                        }
-                        if (dashdir.Contains(3))
-                        {
-                            _input.Y += 0.1f;
-                            _isWalking = true;
-                        }
-                        if (dashdir.Contains(4))
-                        {
-                            _input.Y -= 0.1f;
-                            _isWalking = true;
-                        }
-
-                    }
-                    else
-                    {
-                        if (Body.Position.X < _player.Body.Position.X)
-                        {
-                            _input.X += 0.1f;
-                            _isWalking = true;
-                            dashdir.Append(1);
-                        }
-                        if (Body.Position.X > _player.Body.Position.X)
-                        {
-                            _input.X -= 0.1f;
-                            _isWalking = true;
-                            dashdir.Append(2);
-                        }
-
-                        if (Body.Position.Y < _player.Body.Position.Y)
-                        {
-                            _input.Y += 0.1f;
-                            _isWalking = true;
-                            dashdir.Append(3);
-                        }
-
-                        if (Body.Position.Y > _player.Body.Position.Y)
-                        {
-                            _input.Y -= 0.1f;
-                            _isWalking = true;
-                            dashdir.Append(4);
-                        }
-                    }        
+                           
+                    var x_diff = Body.Position.X - _player_last_x;
+                    var y_diff = Body.Position.Y - _player_last_y;
+                    var denom = Math.Sqrt(x_diff * x_diff + y_diff * y_diff);
+                    _input.X -= (0.1f * (float)x_diff) / (float)denom;
+                    _input.Y -= (0.1f * (float)y_diff) / (float)denom;
                 }
                 if (DashTimer >= DashUsageTime && _dash)
                 {
