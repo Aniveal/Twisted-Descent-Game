@@ -158,7 +158,7 @@ public class MenuScreen : Screen {
     }
     private void QuitGameButton_Click(object sender, EventArgs e) {
 
-        File.WriteAllLines("leaderBoard.txt", base.getGame().leaderBoard.Select(x => $"{x.Key},{x.Value}"));
+        File.WriteAllLines("leaderBoard.txt", base.getGame().leaderBoard.Select(x => $"{x.Item1},{x.Item2},{x.Item3},{x.Item4}"));
         base.getGame().Exit();
     }
 

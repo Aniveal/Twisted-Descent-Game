@@ -16,8 +16,9 @@ public class GameData {
     private RopeGame _game;
     public int MaxHealth;
 
-    public int Score = 0;
+    public long Score = 0;
     public int Kills = 0;
+    public int mapLevel = 1;
     public string playerName = "PL1";
 
     private int previousKills = 0;

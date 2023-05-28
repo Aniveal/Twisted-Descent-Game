@@ -13,7 +13,7 @@ namespace TwistedDescent;
 
 public class RopeGame : Game {
 
-    public List<KeyValuePair<string, int>> leaderBoard = new List<KeyValuePair<string, int>>();
+    public List<Tuple<string, long, int, int>> leaderBoard = new List<Tuple<string, long, int, int>>();
     private const int TargetFrameRate = 144;
 
     public OptionsScreen _optionsScreen;
@@ -75,8 +75,8 @@ public class RopeGame : Game {
             foreach (var line in lines)
             {
                 string[] arr = line.Split(',');
-                KeyValuePair<string, int> keyValue = new KeyValuePair<string, int>(arr[0], Int16.Parse(String.Join(",", arr.Skip(1))));
-                leaderBoard.Add(keyValue);
+                Tuple<string, long, int, int> tuple = new Tuple<string, long, int, int>(arr[0], Int32.Parse(arr[1]), Int16.Parse(arr[2]), Int16.Parse(arr[3]));
+                leaderBoard.Add(tuple);
             } 
         }
         Graphics = new GraphicsDeviceManager(this);

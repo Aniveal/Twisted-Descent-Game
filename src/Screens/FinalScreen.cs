@@ -233,11 +233,13 @@ public class FinalScreen : Screen {
 
     private void save_game() {
         // update leaderboard:
-        int score = base.getGame().GameData.Score;
+        long score = base.getGame().GameData.Score;
+        int kills = base.getGame().GameData.Kills;
+        int level = base.getGame().GameData.mapLevel;
         playerName = letter0 + "." + letter1 + "." + letter2;
-        _game.leaderBoard.Add(new KeyValuePair<string, int>(playerName, score));
-        _game.leaderBoard = _game.leaderBoard.OrderByDescending(x => x.Value).ToList().GetRange(0, Math.Min(5, _game.leaderBoard.Count()));
-        File.WriteAllLines("leaderBoard.txt", base.getGame().leaderBoard.Select(x => $"{x.Key},{x.Value}"));
+        _game.leaderBoard.Add(new Tuple<string, long, int, int>(playerName, score, kills, level));
+        _game.leaderBoard = _game.leaderBoard.OrderByDescending(x => x.Item2).ToList().GetRange(0, Math.Min(5, _game.leaderBoard.Count()));
+        File.WriteAllLines("leaderBoard.txt", base.getGame().leaderBoard.Select(x => $"{x.Item1} , {x.Item2} , {x.Item3} , {x.Item4}"));
 
         // return to menu screen:
         base.getGame()._menuScreen = new MenuScreen(base.getGame(), base.getGame().GraphicsDevice, _content);

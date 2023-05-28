@@ -65,18 +65,25 @@ public class HighScoreScreen : Screen
         spriteBatch.Draw(_bg, new Rectangle(0, 0, w, h), Color.White);
 
         // Write Text:
-        int font_height = (int)font.MeasureString("PLY").Y;
-        int font_width = (int)font.MeasureString("PLY").X;
+        int font_height = (int)font.MeasureString("SCORE").Y;
+        int font_width = (int)font.MeasureString("SCORE").X;
         int start_name_width = w / 2;
         int start_name_height = h / 16;
 
         int index = 0;
+        spriteBatch.DrawString(font, "Rank", new Vector2(start_name_width - 3 * font_width, start_name_height + index * font_height), font_color);
+        spriteBatch.DrawString(font, "Name", new Vector2(start_name_width - 2 * font_width, start_name_height + index * font_height), font_color);
+        spriteBatch.DrawString(font, "Score", new Vector2(start_name_width, start_name_height + index * font_height), font_color);
+        spriteBatch.DrawString(font, "Kills", new Vector2(start_name_width + 2 * font_width, start_name_height + index * font_height), font_color);
+        spriteBatch.DrawString(font, "Level", new Vector2(start_name_width + 3 * font_width, start_name_height + index * font_height), font_color);
         foreach (var item in _game.leaderBoard)
         {
             index += 1;
             spriteBatch.DrawString(font, index.ToString() + ". ", new Vector2(start_name_width - 3 * font_width, start_name_height + index * font_height), font_color);
-            spriteBatch.DrawString(font, item.Key, new Vector2(start_name_width - 2 * font_width, start_name_height + index * font_height), font_color);
-            spriteBatch.DrawString(font, item.Value.ToString(), new Vector2(start_name_width + font_width, start_name_height + index * font_height), font_color);
+            spriteBatch.DrawString(font, item.Item1, new Vector2(start_name_width - 2 * font_width, start_name_height + index * font_height), font_color);
+            spriteBatch.DrawString(font, item.Item2.ToString(), new Vector2(start_name_width, start_name_height + index * font_height), font_color);
+            spriteBatch.DrawString(font, item.Item3.ToString(), new Vector2(start_name_width + 2 * font_width, start_name_height + index * font_height), font_color);
+            spriteBatch.DrawString(font, item.Item4.ToString(), new Vector2(start_name_width + 3 * font_width, start_name_height + index * font_height), font_color);
         }
 
         spriteBatch.End();
