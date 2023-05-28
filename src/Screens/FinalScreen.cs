@@ -27,8 +27,11 @@ public class FinalScreen : Screen {
     private Texture2D _name_selection_arrow_down;
     private Texture2D _menu_selection_highlight;
     private Texture2D _skull_pile;
+    private Texture2D Start;
+    private Texture2D Esc;
 
     private SpriteFont font;
+    private SpriteFont smaller_font;
 
     private bool _timedOut;
 
@@ -60,6 +63,7 @@ public class FinalScreen : Screen {
     public FinalScreen(RopeGame game, ContentManager content, bool timedOut) : base(game)
     {
         font = content.Load<SpriteFont>("Fonts/damn");
+        smaller_font = content.Load<SpriteFont>("Fonts/damn_ui");
         _content = content;
 
         n_kills = this.getGame().GameData.Kills;
@@ -73,6 +77,9 @@ public class FinalScreen : Screen {
         _name_selection_arrow_down = content.Load<Texture2D>("Sprites/UI/name_selection_arrow_down");
         _menu_selection_highlight = content.Load<Texture2D>("Sprites/UI/menu_selection_highlight");
         _skull_pile = content.Load<Texture2D>("Sprites/UI/SkullPile/skull_pile_" + pile_size);
+
+        Start = content.Load<Texture2D>("Sprites/Controller/Start");
+        Esc = content.Load<Texture2D>("Sprites/Controller/Esc");
 
         w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
         h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
@@ -160,6 +167,21 @@ public class FinalScreen : Screen {
             spriteBatch.Draw(_menu_selection_highlight, new Rectangle(x_save_pos - 10, name_selection_y, save_width + 20, (int) font_height), Color.White);
         
         spriteBatch.DrawString(font, save_str, new Vector2(x_save_pos, name_selection_y + letters_y_offset), font_color);
+
+        // Return to Menu Hint
+        var return_msg = " Skip to Menu";
+        int empty_space = 4;
+        var smaller_font_size = smaller_font.MeasureString(return_msg);
+        var icon_height = (int)smaller_font_size.Y;
+        var return_msg_x_pos = (int)(w - margin.X - smaller_font_size.X);
+        var return_msg_y_pos = (int)(h - margin.Y / 2 - smaller_font_size.Y);
+
+        if (_game.controller_connected)
+            spriteBatch.Draw(Start, new Rectangle(return_msg_x_pos - empty_space - icon_height, return_msg_y_pos, icon_height, icon_height), Color.White);
+        else
+            spriteBatch.Draw(Esc, new Rectangle(return_msg_x_pos - empty_space - icon_height, return_msg_y_pos, icon_height, icon_height), Color.White);
+
+        spriteBatch.DrawString(smaller_font, return_msg, new Vector2(return_msg_x_pos, return_msg_y_pos), font_color);
 
         spriteBatch.End();
     }

@@ -31,11 +31,15 @@ public class ControlScreen : Screen {
     private Texture2D Space;
     private Texture2D WASD;
     private Texture2D Arrow_Keys;
+    private Texture2D Start;
+    private Texture2D Esc;
 
     public Boolean gameLoaded;
     double timer;
     private SpriteFont font;
     private Color font_color;
+
+    bool _controller_connected;
 
     private int w;
     private int h;
@@ -63,12 +67,14 @@ public class ControlScreen : Screen {
         Space = content.Load<Texture2D>("Sprites/Controller/Space");
         WASD = content.Load<Texture2D>("Sprites/Controller/WASD");
         Arrow_Keys = content.Load<Texture2D>("Sprites/Controller/Arrow_Keys");
+        Start = content.Load<Texture2D>("Sprites/Controller/Start");
+        Esc = content.Load<Texture2D>("Sprites/Controller/Esc");
 
         w = game.GraphicsDevice.PresentationParameters.BackBufferWidth;
         h = game.GraphicsDevice.PresentationParameters.BackBufferHeight;
         gameLoaded = false;
         timer = 0;
-
+        _controller_connected = game.controller_connected;
     }
     
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -139,8 +145,26 @@ public class ControlScreen : Screen {
         spriteBatch.DrawString(font, "/", new Vector2(x_pos + font_height + empty_space, y_pos), font_color);
         spriteBatch.Draw(R, new Rectangle(x_pos + font_height + 2 * empty_space + slash_length, y_pos, font_height, font_height), Color.White);
 
+        y_pos = vertical_margin + 9 * font_height;
         spriteBatch.DrawString(font, "Pause/Back to Menu: ", new Vector2(horizontal_margin, vertical_margin + 9 * font_height), font_color);
-        spriteBatch.DrawString(font, "Start / Esc", new Vector2(8 * horizontal_margin, vertical_margin + 9 * font_height), font_color);
+        spriteBatch.Draw(Start, new Rectangle(x_pos, y_pos, font_height, font_height), Color.White);
+        spriteBatch.DrawString(font, "/", new Vector2(x_pos + font_height + empty_space, y_pos), font_color);
+        spriteBatch.Draw(Esc, new Rectangle(x_pos + font_height + 2 * empty_space + slash_length, y_pos, font_height, font_height), Color.White);
+
+        // hint on how to exit to the main menu:
+
+        var return_msg = " Return to Menu";
+        var return_msg_x_pos = w - horizontal_margin - (int) font.MeasureString(return_msg).X;
+        var return_msg_y_pos = h - vertical_margin - font_height;
+
+        if (_controller_connected)
+            spriteBatch.Draw(Start, new Rectangle(return_msg_x_pos - empty_space - font_height, return_msg_y_pos, font_height, font_height), Color.White);
+        else
+            spriteBatch.Draw(Esc, new Rectangle(return_msg_x_pos - empty_space - font_height, return_msg_y_pos, font_height, font_height), Color.White);
+
+        spriteBatch.DrawString(font, return_msg, new Vector2(return_msg_x_pos, return_msg_y_pos), font_color);
+        
+        
 
         spriteBatch.End();
     }
