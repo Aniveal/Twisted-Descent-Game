@@ -28,8 +28,11 @@ public class GameData {
 
     public bool tutorial = false;
     public bool DeathByTimeOut = true;
-    public double TimeLeft = 60f;
+    public double TimeLeft = 15f;
     public double MaxTimeLeft = 120f;
+
+    private bool overAlertThreshold = false;
+    private float tickTimer = 0f; 
 
     private double finalScreenDelay = -3f;
 
@@ -58,6 +61,16 @@ public class GameData {
 
     public void DecayTime(GameTime gameTime) {
         TimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
+
+        //Ticking sound when only 10 seconds left
+        if(!overAlertThreshold && TimeLeft < 10)
+        {
+            SoundEngine.Instance.fastTicking();
+            overAlertThreshold = true;
+        }
+        if (overAlertThreshold && TimeLeft > 10)
+            overAlertThreshold = false;
+
         if (TimeLeft < 0) {
             //TimeLeft = 0;
             EndGame(true);
@@ -66,6 +79,12 @@ public class GameData {
 
     public void AddTime(float seconds) {
         TimeLeft += seconds;
+
+        if(!overAlertThreshold && TimeLeft > 10)
+        {
+            overAlertThreshold = true;
+        }
+
         if (TimeLeft > MaxTimeLeft) {
             TimeLeft = MaxTimeLeft;
         }

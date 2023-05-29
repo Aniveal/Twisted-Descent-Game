@@ -36,8 +36,13 @@ public sealed class SoundEngine {
     private SoundEffect _electricityColumn;
     private SoundEffect _explosion;
     private SoundEffect _wilhelmScream;
+    private SoundEffect _fastTick;
+    private SoundEffectInstance fastTickInstance;
+    private SoundEffect slowTick;
     private Song _song;
     private readonly List<SoundEffect> _swordHits = new();
+
+    private const float degradationFactor = 0.01f;
 
     private Player player;
 
@@ -80,6 +85,8 @@ public sealed class SoundEngine {
         _amphora = _game.Content.Load<SoundEffect>("Sound/Hits/AmphoraSmash1");
         _wilhelmScream = _game.Content.Load<SoundEffect>("Sound/WilhelmScream");
         _song = _game.Content.Load<Song>("Sound/Theseus");
+        _fastTick = _game.Content.Load<SoundEffect>("Sound/fastTick");
+        slowTick = _game.Content.Load<SoundEffect>("Sound/slowTick");
 
         MediaPlayer.Volume = musicVolume;
         SoundEffect.MasterVolume = effectVolume;
@@ -157,6 +164,11 @@ public sealed class SoundEngine {
         i.Volume = CalculateIntensity(position);
         //i.Pan = CalculatePan(position);
         i.Play();
+    }
+
+    public void fastTicking()
+    {
+        _fastTick.Play();
     }
 
     public void ChestSound()

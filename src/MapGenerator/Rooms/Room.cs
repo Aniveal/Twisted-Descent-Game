@@ -88,7 +88,7 @@ public class Room {
 
     public void resetRoom()
     {
-        if (this.GetType() == typeof(StartRoom) || this.GetType() == typeof(EndRoom))
+        if (this.GetType() == typeof(StartRoom) || this.GetType() == typeof(TreasureRoom) || this.GetType() == typeof(EndRoom))
             return;
         initializeTileMap();
         Openings.Clear();

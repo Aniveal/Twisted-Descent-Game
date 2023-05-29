@@ -127,7 +127,6 @@ public class Tile {
 
         //Finished!!
         if (Superpositions.Count == 1) FinalPrototype = Superpositions[0];
-        if (Superpositions.Count == 0) Debug.WriteLine("There are no possible blueprints for this cell!!!");
 
         return changed;
     }
@@ -137,9 +136,7 @@ public class Tile {
             FinalPrototype = p;
             Superpositions.Clear();
             Superpositions = new List<Prototype> { p };
-        } else {
-            Debug.WriteLine("Tried setting prototype not in superposition list!!!");
-        }
+        } 
     }
 
 

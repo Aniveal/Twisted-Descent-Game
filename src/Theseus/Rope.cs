@@ -320,7 +320,10 @@ public class Rope : DrawableGameElement {
         last.SetNext(nextLast);
 
         var disableIndex = _segments.Count - KeepActive - 1;
-        if (disableIndex >= 0) _segments[disableIndex].Body.BodyType = BodyType.Static;
+        if (disableIndex >= 0)
+        {
+            _segments[disableIndex].Body.BodyType = BodyType.Static;
+        }
 
         return nextLast;
     }
@@ -328,7 +331,7 @@ public class Rope : DrawableGameElement {
     public bool RemoveLastSegment() {
         var removeIndex = _segments.Count - 2;
 
-        if (removeIndex > 0) {
+        if (removeIndex > 0) { 
             return RemoveSegment(removeIndex);
         }
 

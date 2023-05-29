@@ -73,7 +73,7 @@ internal class DungeonGraph {
             switch(weight)
             {
                 case < 0.05f:
-                    newRoom = new TreasureRoom(_mg, allPrototypes, target.PosX, target.PosY, i); break;
+                    newRoom = new TreasureRoom(_mg, _mg.RockPrototypes, target.PosX, target.PosY, i); break;
                 case < 0.1f:
                     newRoom = new AmphoraRoom(_mg, allPrototypes, target.PosX, target.PosY, sizeX, sizeY, i, diff); break;
                 default:
@@ -405,8 +405,9 @@ internal class DungeonGraph {
     }
 
     //Occupies grid space for a room
-    public void occupy(Room room) {
-        Debug.WriteLine("Adding Room nr " + room.Index);
+    public void occupy(Room room) 
+    {
+        
         for (var x = room.PosX; x < room.PosX + room.SizeX; x++)
         for (var y = room.PosY; y < room.PosY + room.SizeY; y++)
             _occupationMap[x, y] = room.Index;

@@ -117,6 +117,12 @@
 /processorParam:Quality=Best
 /build:Sound/ElectricityArc.mp3
 
+#begin Sound/fastTick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/fastTick.wav
+
 #begin Sound/GravelFootsteps/gravel0.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -303,11 +309,23 @@
 /processorParam:Quality=Best
 /build:Sound/Rope/RopeFling1.mp3
 
+#begin Sound/slowTick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/slowTick.wav
+
 #begin Sound/Theseus.wav
 /importer:WavImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Sound/Theseus.wav
+
+#begin Sound/ticking.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/ticking.wav
 
 #begin Sound/WilhelmScream.mp3
 /importer:Mp3Importer

@@ -117,9 +117,6 @@ public class MapScreen : Screen
         ColumnsManager.Update(gameTime);
         //guiManager.Update(gameTime);
 
-        // Update Game Timer
-        Game.GameData.DecayTime(gameTime);
-
         Vector2 movement = new Vector2(0, 0);
 
         //Player input

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
+
 
 namespace TwistedDescent; 
 //This is the map generator creating rooms using wave function collapse. 
@@ -65,6 +68,7 @@ public class MapGenerator {
             generationFail = false;
             RnGsus.Instance.NewSeed();
             graph = new DungeonGraph(this);
+            size = (nRooms + 1) * (roomSize / 2);
             graph.createDungeonMap(size, roomSize, nRooms, _rg.GameData.currentDifficulty, 0);
             RoomList = graph.Rooms;
 
@@ -86,6 +90,7 @@ public class MapGenerator {
                 }
             }
         }
+        Debug.WriteLine("Created Map with " + RoomList.Count + " rooms");
     }
 
     public void CreateTutorialMap() {

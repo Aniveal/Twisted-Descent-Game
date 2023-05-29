@@ -341,7 +341,6 @@ public class Map : DrawableGameElement {
         var brokenTexture = _game.Content.Load<Texture2D>("Sprites/Columns/fragile_column_broken");
 
         foreach (var r in RoomList) {
-            Debug.WriteLine("Sending coords to ColumnsManager: " + r.Columns.Count);
 
             int j = 0;
             foreach (var v in r.Columns) {
@@ -519,8 +518,15 @@ public class Map : DrawableGameElement {
                             layerDepthFloor = camera.getLayerDepth(tilePos.Y) / 10f;
                         }
 
-                        batch.Draw(t.Texture, tilePos, null, Color.White, 0f, Vector2.Zero,
-                            SpriteEffects.None, layerDepthFloor);
+                        try
+                        {
+                            batch.Draw(t.Texture, tilePos, null, Color.White, 0f, Vector2.Zero,
+                                SpriteEffects.None, layerDepthFloor);
+                        }
+                        catch
+                        {
+                            //Debug.WriteLine("Error when trying to draw!!!");
+                        }
 
                     }
                 }
