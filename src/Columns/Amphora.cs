@@ -116,6 +116,7 @@ public class Amphora : DrawableGameElement {
         currentExplosionSize = ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
         SoundEngine.Instance.Amphora(_body.Position);
+        _game._gameScreen.Camera.Shake(2);
     }
 
     public void BiggerExplode() {

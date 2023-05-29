@@ -145,6 +145,8 @@ public class GameScreen : Screen {
         
         // Update Game Timer
         Game.GameData.DecayTime(gameTime);
+        
+        Camera.Update(gameTime);
 
         if (!_startTimeSet)
         {
