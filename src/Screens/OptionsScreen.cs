@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -104,12 +104,12 @@ public class OptionsScreen : Screen
 
 
         this._components = new List<Component> {
-            backButton,
-            fullscreenButton,
-            effectVolumeButton,
-            musicVolumeButton,
             resolutionButton,
-            applyButton
+            applyButton,
+			musicVolumeButton,
+			effectVolumeButton,
+			fullscreenButton,
+			backButton
         };
     }
 
