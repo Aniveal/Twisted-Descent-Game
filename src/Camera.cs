@@ -11,6 +11,7 @@ public class Camera {
     private Vector2 aa; //top left corner of the camera are in world coords
     private Vector2 bb; //bot right corner of the camera area in world coords
     private Vector2 cornerDist;
+    public bool isInMapMode = false;
 
     // private readonly Matrix IsometricToEuclidean = Matrix.CreateRotationX((float)-Math.PI / 4) *
     //                                                Matrix.CreateRotationY((float)-Math.PI / 4) *
@@ -40,6 +41,11 @@ public class Camera {
     //Does not accurately work for bigger objects, need another method if case arises
     public bool IsVisible(Vector2 pos) {
         
+        if(isInMapMode)
+        {
+            return true;
+        }
+
         if (pos.X < aa.X || pos.Y < aa.Y || pos.X > bb.X || pos.Y > bb.Y) {
             return false;
         }
