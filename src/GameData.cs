@@ -28,7 +28,7 @@ public class GameData {
 
     public bool tutorial = false;
     public bool DeathByTimeOut = true;
-    public double TimeLeft = 15f;
+    public double TimeLeft = 60f;
     public double MaxTimeLeft = 120f;
 
     private bool overAlertThreshold = false;
