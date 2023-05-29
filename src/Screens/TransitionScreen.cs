@@ -15,7 +15,7 @@ public class TransitionScreen : Screen {
     private readonly List<Component> _components;
     private SpriteBatch _spriteBatch;
     public GraphicsDeviceManager Graphics;
-
+    private String _loadingText;
     private Texture2D _loading_img;
     private Texture2D _menu_title;
     private Texture2D _bg;
@@ -42,7 +42,7 @@ public class TransitionScreen : Screen {
         gameLoaded = true;
         timer = 0;
         font_colour = new Color(154, 134, 129);
-
+        _loadingText = "Loading ...";
     }
     
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -57,11 +57,11 @@ public class TransitionScreen : Screen {
         img_width = (int)(5 * img_width / 4);
         spriteBatch.Draw(_loading_img, new Rectangle(w - 100 - img_width, h - 100 - img_height, img_width, img_height), Color.White);
 
-        String text = "Press Space/A  to Continue ...";
-        Vector2 text_position = new Vector2(w - 100 - font.MeasureString(text).X, h - 85 - font.MeasureString(text).Y);
-        spriteBatch.DrawString(font, text, text_position, font_colour);
+        
+        Vector2 text_position = new Vector2(w - 100 - font.MeasureString(_loadingText).X, h - 85 - font.MeasureString(_loadingText).Y);
+        spriteBatch.DrawString(font, _loadingText, text_position, font_colour);
 
-        text = "Level Complete! Proceed to Next Level" ;
+        String text = "Level Complete! Proceed to Next Level" ;
         text_position = new Vector2(w / 16, 90 + font.MeasureString(text).Y);
         spriteBatch.DrawString(font, text, text_position, font_colour);
 
@@ -71,11 +71,11 @@ public class TransitionScreen : Screen {
     public override void Update(GameTime gameTime) {
         Input.GetState();
         timer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
         if (!gameLoaded && timer > 100)
         {
             gameLoaded = true;
             base.getGame()._gameScreen.LoadNextLevel();
+            _loadingText = "Press Space/A  to Continue ...";
         }
         if (Keyboard.GetState().IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
         {
