@@ -182,21 +182,33 @@ public class StatsGui : DrawableGameElement
                 msg = "Nice Kill!";
                 break;
             case 2:
-                msg = "Double-Kill!";
+                msg = "Diplo-Kill!";
                 break;
             case 3:
-                msg = "Tetra-Kill!";
+                msg = "Triplo-Kill!";
                 break;
             case 4:
-                msg = "Quad-Kill!";
+                msg = "Tetraplo-Kill!";
                 break;
             case 5:
-                msg = "Penta-Kill!";
+                msg = "Pentaplo-Kill!";
                 break;
             case 6:
-                msg = "Hexa-Kill!";
+                msg = "Hexaplo-Kill!";
                 break;
-            case > 6:
+            case 7:
+                msg = "Heptaplo-Kill!";
+                break;
+            case 8:
+                msg = "Octaplo-Kill!";
+                break;
+            case 9:
+                msg = "Enneaplo-Kill!";
+                break;
+            case 10:
+                msg = "Decaplo-Kill!";
+                break;
+            case > 10:
                 msg = killstreak + "-Kills!";
                 break;
         }
