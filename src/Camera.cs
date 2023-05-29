@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace TwistedDescent; 
@@ -12,6 +13,10 @@ public class Camera {
     private Vector2 bb; //bot right corner of the camera area in world coords
     private Vector2 cornerDist;
     public bool isInMapMode = false;
+
+    private Vector2 offset;
+    private float shakeRadius;
+    private float shakeAngle;
 
     // private readonly Matrix IsometricToEuclidean = Matrix.CreateRotationX((float)-Math.PI / 4) *
     //                                                Matrix.CreateRotationY((float)-Math.PI / 4) *
@@ -33,6 +38,7 @@ public class Camera {
 
     public void SetCameraPos(Vector2 pos) {
         _position = pos;
+        _position += offset;
         aa = pos + cornerDist;
         bb = pos - cornerDist;
     }
@@ -136,5 +142,22 @@ public class Camera {
         _position += amount;
         aa = _position + cornerDist;
         bb = _position - cornerDist;
+    }
+
+    public void Update(GameTime gameTime) {
+        if (shakeRadius < 0) {
+            shakeRadius = 0;
+            offset = Vector2.Zero;
+        }
+
+        if (shakeRadius > 0) {
+            offset = new Vector2((float)(Math.Sin(shakeAngle) * shakeRadius), (float)(Math.Cos(shakeAngle) * shakeRadius));
+            shakeRadius -= 0.1f;
+            shakeAngle += (150 + RnGsus.Instance.Next(60));
+        }
+    }
+    
+    public void Shake(float strength) {
+        shakeRadius = Math.Min(shakeRadius + strength, 10f);
     }
 }

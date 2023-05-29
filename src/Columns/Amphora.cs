@@ -28,7 +28,7 @@ public class Amphora : DrawableGameElement {
     //flag indicating the explosion animation has finished and the item can be cleaned up
     public bool hasExploded = false;
 
-    private const float explosionSpeedThreshold = 2f;
+    private const float explosionSpeedThreshold = 1.7f;
     private const double ExplosionDuration = 0.5; //explosion in milliseconds
     private double explosionStart = 0;
     private bool exploding = false;
@@ -116,6 +116,7 @@ public class Amphora : DrawableGameElement {
         currentExplosionSize = ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
         SoundEngine.Instance.Amphora(_body.Position);
+        _game._gameScreen.Camera.Shake(2);
     }
 
     public void BiggerExplode() {

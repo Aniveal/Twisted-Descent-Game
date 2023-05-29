@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -80,7 +80,8 @@ public class TransitionScreen : Screen {
         if (Keyboard.GetState().IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
         {
         
-            base.getGame().ChangeState(RopeGame.State.Running);
+            _loadingText = "Loading ...";
+			base.getGame().ChangeState(RopeGame.State.Running);
         }
 
     }

@@ -93,7 +93,7 @@ public class Enemy : DrawableGameElement {
             _enemyForce = 0.09f;
             _enemySize = new Point(2, 2);
 
-            if (rng.Next(100) < diff * 2 * 7 / 10) // dash enemies has a chance to have one immunitiybut they are immune to squish
+            if (rng.Next(100) < Math.Min(diff * 2 * 7 / 10, 50)) // dash enemies has a chance to have one immunitiybut they are immune to squish
             {
                 _hasImmunity = true;
                 if (rng.Next(100) > 50)
@@ -104,7 +104,7 @@ public class Enemy : DrawableGameElement {
         }
         else // normal enemies
         {
-            if (rng.Next(100) < diff * 2)
+            if (rng.Next(100) < Math.Min( diff * 2, 25))
             {
                 _hasImmunity = true;
                 _isImmuneToAmphoras = true;
@@ -112,7 +112,7 @@ public class Enemy : DrawableGameElement {
             }
             else
             {
-                if (rng.Next(100) < diff * 2 * 7 / 10)
+                if (rng.Next(100) < Math.Min( diff * 2 * 7 / 10, 50))
                 {
                     _hasImmunity = true;
                     if (rng.Next(100) > 50)
