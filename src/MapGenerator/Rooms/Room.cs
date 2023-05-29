@@ -188,7 +188,6 @@ public class Room {
             }
 
             if (j > 1000) {
-                Debug.WriteLine("Didnt find walkable space!!!");
                 return;
             }
         }
@@ -288,7 +287,6 @@ public class Room {
             }
 
             if (j > 1000) {
-                Debug.WriteLine("Didnt find walkable space!!!");
                 return;
             }
         }
@@ -381,13 +379,9 @@ public class Room {
         var midX = SizeX / 2;
         var midY = SizeY / 2;
 
-        Debug.WriteLine("Connecting the openings: midX = " + midX + "  And midY = " + midY);
-
         foreach (var opening in Openings) {
             var x = (int)opening.X;
             var y = (int)opening.Y;
-
-            Debug.Write("Opening.... " + x + ", " + y);
 
             //Handle case where opening is on left or right
             if (x <= 1 || x >= SizeX - 2) {
@@ -422,7 +416,6 @@ public class Room {
             }
 
             while (!(x == midX && y == midY)) {
-                Debug.WriteLine("Setting tile to walkable!!!  x = " + x + ", y = " + y);
                 var rand = RnGsus.Instance.NextDouble();
 
                 //Corner cases
@@ -458,7 +451,6 @@ public class Room {
                 TileMap[x, y].makeWalkable();
             }
 
-            Debug.Write("Complete!\n");
         }
     }
 
@@ -475,7 +467,6 @@ public class Room {
     //Creates a border of solid walls around room everywhere where there is no opening
     //Do this after setting openings!
     public void createBorder() {
-        Debug.WriteLine("Creating Borders");
 
         for (var x = 0; x < SizeX; x++) {
             if (TileMap[x, 0].Superpositions.Contains(getPrototype("FullWall"))) {
@@ -509,8 +500,6 @@ public class Room {
     private void runWaveFunctionCollapse() {
         var mapX = TileMap.GetLength(0);
         var mapY = TileMap.GetLength(1);
-
-        Debug.WriteLine("Started Wave function collapse! Map x = " + mapX + ", mapY = " + mapY);
 
         var counter = 0;
         while (true) {

@@ -96,6 +96,8 @@ public class MapScreen : Screen
 
         diverseManager.LoadContent();
         ColumnsManager.LoadContent();
+
+        Camera.isInMapMode = true;
     }
 
     public override void Update(GameTime gameTime)
@@ -154,7 +156,7 @@ public class MapScreen : Screen
 
         if (keyboard.IsKeyDown(Keys.Space))
         {
-            createNewLevel(20);
+            createNewLevel(40);
         }
 
         if(movement.X == 0 && movement.Y == 0)
@@ -167,6 +169,8 @@ public class MapScreen : Screen
 
         movement = movement * 50 * (float)gameTime.ElapsedGameTime.TotalSeconds;
         Camera.Move(movement);
+
+        Game.GameData.TimeLeft = 60;
 
     }
 
