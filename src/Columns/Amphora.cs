@@ -129,6 +129,7 @@ public class Amphora : DrawableGameElement {
         currentExplosionSize = 1.5f*ExplosionSize;
         _world.QueryAABB(ExplodeObject, aabb);
         SoundEngine.Instance.Amphora(_body.Position);
+        _game._gameScreen.Camera.Shake(3);
     }
 
     protected bool OnCollision(Fixture sender, Fixture other, Contact contact) {
