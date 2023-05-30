@@ -78,6 +78,9 @@ public class GameData {
     }
 
     public void AddTime(float seconds) {
+        if (TimeLeft <= 0) {
+            return;
+        }
         TimeLeft += seconds;
 
         if(!overAlertThreshold && TimeLeft > 10)
