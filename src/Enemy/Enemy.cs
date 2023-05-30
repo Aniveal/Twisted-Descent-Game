@@ -52,6 +52,9 @@ public class Enemy : DrawableGameElement {
     private Texture2D _skeleton;
     protected readonly World _world;
 
+    private Texture2D _fire_icon;
+    private Texture2D _electricity_icon;
+
     private int _enemySpriteWidth = 512;
     private int _enemySpriteHeight = 768;
 
@@ -173,6 +176,9 @@ public class Enemy : DrawableGameElement {
             _deathAnimation = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_dying");  // 5 frames, each one is 512 pixels wide
             _skeleton = _game.Content.Load<Texture2D>("Sprites/Enemies/cyclop_skeleton");
         }
+
+        _fire_icon = _game.Content.Load<Texture2D>("Sprites/Enemies/fire_icon");
+        _electricity_icon = _game.Content.Load<Texture2D>("Sprites/Enemies/electricity_icon");
     }
 
     public virtual void Electrify() {
@@ -512,25 +518,35 @@ public class Enemy : DrawableGameElement {
                 camera.getLayerDepth(spritePos.Y + spritePos.Height)
             );
 
+            // Drawing Flame Icon next to fire resitant enemies.
             if (_isImmuneToAmphoras)
             {
-                Color[] data = new Color[10 * 20];
-                Texture2D rectTexture = new Texture2D(_game.GraphicsDevice, 10, 20);
-                for (int i = 0; i < data.Length; ++i)
-                    data[i] = Color.Red;
-                rectTexture.SetData(data);
-                var position = new Vector2(spritePos.X, spritePos.Y - 5);
-                batch.Draw(rectTexture, position, null, Color.Red, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, camera.getLayerDepth(spritePos.Y + spritePos.Height));
+                var position = new Rectangle(spritePos.X, spritePos.Y - 5, 25, 25);
+                batch.Draw(
+                    _fire_icon,
+                    position,
+                    null,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(spritePos.Y + spritePos.Height) + 0.001f
+                );
             }
+            // Drawing Electricity Icon next to fire resitant enemies.
             if (_isImmuneToElectricity)
             {
-                Color[] data = new Color[10 * 20];
-                Texture2D rectTexture = new Texture2D(_game.GraphicsDevice, 10, 20);
-                for (int i = 0; i < data.Length; ++i)
-                    data[i] = Color.Yellow;
-                rectTexture.SetData(data);
-                var position = new Vector2(spritePos.X + spritePos.Width, spritePos.Y - 5);
-                batch.Draw(rectTexture, position, null, Color.Yellow, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, camera.getLayerDepth(spritePos.Y + spritePos.Height));
+                var position = new Rectangle(spritePos.X + spritePos.Width, spritePos.Y - 5, 25, 25);
+                batch.Draw(
+                    _electricity_icon,
+                    position,
+                    null,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(spritePos.Y + spritePos.Height)
+                );
             }
 
 
@@ -582,27 +598,36 @@ public class Enemy : DrawableGameElement {
                     camera.getLayerDepth(yPos + spritePos.Height)
                 );
             }
-            
 
+            // Drawing Flame Icon next to fire resitant enemies.
             if (_isImmuneToAmphoras)
             {
-                Color[] data = new Color[10 * 20];
-                Texture2D rectTexture = new Texture2D(_game.GraphicsDevice, 10, 20);
-                for (int i = 0; i < data.Length; ++i)
-                    data[i] = Color.Red;
-                rectTexture.SetData(data);
-                var position = new Vector2(spritePos.X, spritePos.Y - 5);
-                batch.Draw(rectTexture, position, null, Color.Red, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, camera.getLayerDepth(spritePos.Y + spritePos.Height));
+                var position = new Rectangle(spritePos.X, spritePos.Y - 5, 25, 25);
+                batch.Draw(
+                    _fire_icon,
+                    position,
+                    null,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(spritePos.Y + spritePos.Height) + 0.001f
+                );
             }
+            // Drawing Electricity Icon next to fire resitant enemies.
             if (_isImmuneToElectricity)
             {
-                Color[] data = new Color[10 * 20];
-                Texture2D rectTexture = new Texture2D(_game.GraphicsDevice, 10, 20);
-                for (int i = 0; i < data.Length; ++i)
-                    data[i] = Color.Yellow;
-                rectTexture.SetData(data);
-                var position = new Vector2(spritePos.X + spritePos.Width, spritePos.Y - 5);
-                batch.Draw(rectTexture, position, null, Color.Yellow, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, camera.getLayerDepth(spritePos.Y + spritePos.Height));
+                var position = new Rectangle(spritePos.X + spritePos.Width, spritePos.Y - 5, 25, 25);
+                batch.Draw(
+                    _electricity_icon,
+                    position,
+                    null,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    camera.getLayerDepth(spritePos.Y + spritePos.Height)
+                );
             }
         }
     }
