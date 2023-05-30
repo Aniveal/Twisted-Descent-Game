@@ -66,7 +66,7 @@ public class DashGui : DrawableGameElement
             );
 
 
-        batch.Draw(_dash_bar_background, position, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.8f);
+        batch.Draw(_dash_bar_background, position, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.99f);
 
         if (dash_timer >= reload_duration) // draw the running icon blue if a dash is available
         {
@@ -76,7 +76,7 @@ public class DashGui : DrawableGameElement
             batch.Draw(_running_icon, position, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
         
-        batch.Draw(_dash_bar, dashbar_position, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9f);
+        batch.Draw(_dash_bar, dashbar_position, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.995f);
         
         // Draw controls hint
         var controlsSize = 48;
