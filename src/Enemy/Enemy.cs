@@ -362,7 +362,7 @@ public class Enemy : DrawableGameElement {
                 }
                 if (_dash)
                 {
-                           
+                    _isWalking = true;
                     var x_diff = Body.Position.X - _player_last_x;
                     var y_diff = Body.Position.Y - _player_last_y;
                     var denom = Math.Sqrt(x_diff * x_diff + y_diff * y_diff);

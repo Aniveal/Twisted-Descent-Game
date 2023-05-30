@@ -67,8 +67,9 @@ public class StatsGui : DrawableGameElement
         var TimeDelta = gameTime.TotalGameTime.TotalMilliseconds - (_game.GameData.levelStartTime + 1000);
         if (TimeDelta < level_msg_duration && TimeDelta > 0)
         {
-            var level_text = "Level " + _game._gameScreen._map.mapLevel;
-            if (_game.GameData.tutorial)
+            var level_i = _game._gameScreen._map.mapLevel;
+            var level_text = "Level " + level_i;
+            if (_game.GameData.tutorial && level_i <= 1)
                 level_text = "Tutorial";
 
             var level_stringSize = _font.MeasureString(level_text);
