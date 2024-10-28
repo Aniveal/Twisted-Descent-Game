@@ -7,6 +7,9 @@ You are playing as Theseus exploring the labyrinth of the minotaur.
 Armed with nothing but the thread of ariadne you have to defeat hordes of enemies by flinging them into walls, holes or explosive amphoras. 
 The deeper you go into the procedurally generated labyrinth levels the more dangerous it gets. How far can you go?
 
+## Trailer
+[![Trailer](https://img.youtube.com/vi/sELlfsgtPJE/0.jpg)](https://www.youtube.com/watch?v=sELlfsgtPJE)
+
 ## Features
 ### Physics
 Like in real life, this game has physics. Unlike real life, your thread is indestructible and can throw a 200kg minotaur!
