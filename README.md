@@ -1,14 +1,19 @@
 
-# :exclamation: READ FIRST :exclamation:
-Before committing anything, set up gitignore and git LFS correctly for your project and your programming environment. When gitignore and git LFS are configured, remove this section from the readme.
+# Twisted Descent
+A small rogue-like game with physics based combat. Made for ETH Game Lab 2022.
 
-# :grey_exclamation: FIRST STEPS
-Please update the [game teaser image](game_teaser.jpg) and the [game teaser text](game_teaser.txt) throughout the semester. Please don't rename, move or delete these files.
+## Overview
+You are playing as Theseus exploring the labyrinth of the minotaur. 
+Armed with nothing but the thread of ariadne you have to defeat hordes of enemies by flinging them into walls, holes or explosive amphoras. 
+The deeper you go into the procedurally generated labyrinth levels the more dangerous it gets. How far can you go?
 
-![teaser image](game_teaser.jpg){width=200px}
-# ENTER YOUR GAME TITLE HERE
-# :video_game: Game Programming Lab 2023 - House Meridian - Team2
+## Features
+### Physics
+Like in real life, this game has physics. Unlike real life, your thread is indestructible and can throw a 200kg minotaur!
+### Procedurally generated Levels
+Each level is randomly generated once you enter. The deeper you go the bigger and confusing they get. Smartly use your thread to mark the paths you already explored or find back to the entrance.
 
-ENTER DESCRIPTION HERE
-
-Members: Timo Loher, David Enderlin, Jules Bachmann, Benjamin Glaus, and Arad Mohammadi
+## Installation
+In assignments/releases you can find different stages of the development process. We highly suggest you play the final_release version.
+The game runs only on a Windows machine.
+You can also install MonoGame and build the game yourself.
